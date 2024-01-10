@@ -15,7 +15,7 @@ class ControllerMain(object):
 
     def __init__(self, view_title, logger):
         self._logger = logger
-        self._logger.debug('Load main controller')
+        self._logger.info('Load main controller')
         self._settings = Settings()
         self._view = ViewMain(view_title)
         size = self._settings.get_main_window_size()
@@ -44,9 +44,25 @@ class ControllerMain(object):
         dlg.set_end_time(self._configuration.get_end_time())
         dlg.set_continuous_mode(self._configuration.get_continuous_mode())
         if dlg.ShowModal() == wx.ID_OK:
-            self._configuration.set_sample_time(dlg.get_sample_time())
-            self._configuration.set_end_time(dlg.get_end_time())
-            self._configuration.set_continuous_mode(dlg.get_continuous_mode())
+            self._logger.info('Edit configuration settings')
+            current_sample_time = self._configuration.get_sample_time()
+            new_sample_time = dlg.get_sample_time()
+            current_end_time = self._configuration.get_end_time()
+            new_end_time = dlg.get_end_time()
+            current_continuous_mode = self._configuration.get_continuous_mode()
+            new_continuous_mode = dlg.get_continuous_mode()
+            self._configuration.set_sample_time(new_sample_time)
+            self._configuration.set_end_time(new_end_time)
+            self._configuration.set_continuous_mode(new_continuous_mode)
+            if current_sample_time != new_sample_time:
+                self._logger.debug('Sample time changed from {} to {} seconds'.format(current_sample_time,
+                                                                                      new_sample_time))
+            if current_end_time != new_end_time:
+                self._logger.debug('End time changed from {} to {} seconds'.format(current_end_time,
+                                                                                   new_end_time))
+            if current_continuous_mode != new_continuous_mode:
+                self._logger.debug('Continuous mode changed from {} to {}'.format(current_continuous_mode,
+                                                                                  new_continuous_mode))
             self._update_view_from_configuration()
         dlg.Destroy()
         event.Skip()
@@ -103,7 +119,7 @@ class ControllerMain(object):
     ##########
 
     def show_view(self):
-        self._logger.debug('Show main view')
+        self._logger.info('Show main view')
         self._view.Show()
 
 
