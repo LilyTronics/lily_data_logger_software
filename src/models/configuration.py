@@ -49,13 +49,25 @@ class Configuration(object):
         return self._configuration.get(self.KEY_GENERAL, {}).get(
             self.KEY_SAMPLE_TIME, self._DEFAULT_CONFIGURATION[self.KEY_GENERAL][self.KEY_SAMPLE_TIME])
 
+    def set_sample_time(self, value):
+        self._configuration[self.KEY_GENERAL][self.KEY_SAMPLE_TIME] = value
+        self._is_changed = True
+
     def get_end_time(self):
         return self._configuration.get(self.KEY_GENERAL, {}).get(
             self.KEY_END_TIME, self._DEFAULT_CONFIGURATION[self.KEY_GENERAL][self.KEY_END_TIME])
 
+    def set_end_time(self, value):
+        self._configuration[self.KEY_GENERAL][self.KEY_END_TIME] = value
+        self._is_changed = True
+
     def get_continuous_mode(self):
         return self._configuration.get(self.KEY_GENERAL, {}).get(
             self.KEY_CONTINUOUS_MODE, self._DEFAULT_CONFIGURATION[self.KEY_GENERAL][self.KEY_CONTINUOUS_MODE])
+
+    def set_continuous_mode(self, value):
+        self._configuration[self.KEY_GENERAL][self.KEY_CONTINUOUS_MODE] = value
+        self._is_changed = True
 
     ###############
     # Instruments #
@@ -97,6 +109,29 @@ class TestConfiguration(lily_unit_test.TestSuite):
     def test_empty_configuration(self):
         conf = Configuration()
         self._check_default_values(conf)
+
+    def test_general_settings(self):
+        conf = Configuration()
+
+        current_value = conf.get_sample_time()
+        new_value = current_value + 2
+        conf.set_sample_time(new_value)
+        self.fail_if(conf.get_sample_time() != new_value, 'Failed to store the sample time')
+        self.fail_if(not conf.is_changed(), 'The changed flag is incorrect')
+
+        conf._is_changed = False
+        current_value = conf.get_end_time()
+        new_value = current_value + 2
+        conf.set_end_time(new_value)
+        self.fail_if(conf.get_end_time() != new_value, 'Failed to store the end time')
+        self.fail_if(not conf.is_changed(), 'The changed flag is incorrect')
+
+        conf._is_changed = False
+        current_value = conf.get_continuous_mode()
+        new_value = not current_value
+        conf.set_continuous_mode(new_value)
+        self.fail_if(conf.get_continuous_mode() != new_value, 'Failed to store the continuous mode')
+        self.fail_if(not conf.is_changed(), 'The changed flag is incorrect')
 
 
 if __name__ == '__main__':
