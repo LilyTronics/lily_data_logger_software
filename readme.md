@@ -11,7 +11,6 @@ Things to do for the first release:
 * Add/edit/delete instruments
 * Add/edit/delete process steps
 * Add/delete measurements
-* Edit configuration
 * Save/load configurations
 * Start/Stop data logger
 * Export measurements to CVS
