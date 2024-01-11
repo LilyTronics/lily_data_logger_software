@@ -6,8 +6,12 @@ import wx
 
 from src.models.configuration import Configuration
 from src.models.settings import Settings
-from src.views.view_logger import ViewLogger
+from src.views.view_dialogs import show_confirm
+from src.views.view_dialogs import show_message
+from src.views.view_dialogs import show_open_file
+from src.views.view_dialogs import show_save_file
 from src.views.view_edit_configuration import ViewEditConfiguration
+from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
 
 
@@ -26,6 +30,8 @@ class ControllerMain(object):
             self._view.SetPosition(pos)
         self._view.Maximize(self._settings.get_main_window_maximized())
         self._view.Bind(wx.EVT_CLOSE, self._on_view_close)
+        self._view.Bind(wx.EVT_TOOL, self._on_open_configuration, id=self._view.ID_TOOL_OPEN_CONFIGURATION)
+        self._view.Bind(wx.EVT_TOOL, self._on_save_configuration, id=self._view.ID_TOOL_SAVE_CONFIGURATION)
         self._view.Bind(wx.EVT_TOOL, self._on_edit_configuration, id=self._view.ID_TOOL_EDIT_CONFIGURATION)
         self._view.Bind(wx.EVT_TOOL, self._on_show_log, id=self._view.ID_TOOL_SHOW_LOG)
         self._configuration = Configuration()
@@ -37,6 +43,25 @@ class ControllerMain(object):
     ##################
     # Event handlers #
     ##################
+
+    def _on_open_configuration(self, event):
+        self._check_configuration_is_changed()
+        filename = show_open_file(self._view, 'Open configuration', file_filter='Configuration files (*.json)|*.json')
+        if filename is not None:
+            self._logger.debug("Load configuration from file: '%s'" % filename)
+            try:
+                self._configuration.load_from_file(filename)
+                self._update_view_from_configuration()
+            except Exception as e:
+                self._logger.error(str(e))
+                show_message(self._view, "Error when reading file '%s':\n'%s'" % (filename, e),
+                             'Open configuration')
+
+        event.Skip()
+
+    def _on_save_configuration(self, event):
+        self._save_configuration()
+        event.Skip()
 
     def _on_edit_configuration(self, event):
         dlg = ViewEditConfiguration(self._view)
@@ -80,6 +105,7 @@ class ControllerMain(object):
         event.Skip()
 
     def _on_view_close(self, event):
+        self._check_configuration_is_changed()
         if self._log_view is not None:
             self._log_view.Close()
         self._settings.store_main_window_maximized(self._view.IsMaximized())
@@ -91,6 +117,24 @@ class ControllerMain(object):
     ###########
     # Private #
     ###########
+
+    def _check_configuration_is_changed(self):
+        if self._configuration.is_changed():
+            if show_confirm(self._view, 'The configuration is changed. Save configuration?', 'Save configuration') == \
+                    wx.ID_YES:
+                self._save_configuration()
+
+    def _save_configuration(self):
+        filename = show_save_file(self._view, 'Save configuration', file_filter='Configuration files (*.json)|*.json')
+        if filename is not None:
+            self._logger.debug("Save configuration to file: '%s'" % filename)
+            try:
+                self._configuration.save_to_file(filename)
+                self._update_view_from_configuration()
+            except Exception as e:
+                self._logger.error(str(e))
+                show_message(self._view, "Error when writing file '%s':\n'%s'" % (filename, e),
+                             'Save configuration')
 
     def _update_view_from_configuration(self):
         self._view.update_configuration_filename(self._configuration.get_filename(), self._configuration.is_changed())
