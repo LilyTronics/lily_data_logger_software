@@ -91,6 +91,8 @@ class TestLogger(lily_unit_test.TestSuite):
         _dummy = 1 / 0
 
     def setup(self):
+        if not os.path.isdir(AppData.USER_FOLDER):
+            os.makedirs(AppData.USER_FOLDER)
         self._logger = Logger()
 
     def test_log_file_empty(self):

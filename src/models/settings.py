@@ -90,9 +90,11 @@ class Settings(object):
         self._store_property('log_window', 'maximized', is_maximized)
 
 
-class TestSetting(lily_unit_test.TestSuite):
+class TestSettings(lily_unit_test.TestSuite):
 
     def setup(self):
+        if not os.path.isdir(AppData.USER_FOLDER):
+            os.makedirs(AppData.USER_FOLDER)
         self._settings = Settings()
         if os.path.isfile(self._settings._settings_file):
             os.remove(self._settings._settings_file)
@@ -132,4 +134,4 @@ class TestSetting(lily_unit_test.TestSuite):
 
 if __name__ == '__main__':
 
-    TestSetting().run()
+    TestSettings().run()
