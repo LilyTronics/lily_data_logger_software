@@ -1,2 +1,3 @@
 wxpython       >= 4.2.1
 lily-unit-test >= 1.6.0
+pyserial       >= 3.5
