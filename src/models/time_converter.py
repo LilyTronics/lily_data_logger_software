@@ -14,8 +14,8 @@ def create_duration_time_string(seconds):
     h, m = divmod(m, 60)
     output = ''
     if d > 0:
-        output = '%d days, ' % d
-    output += '%02d:%02d:%02d' % (h, m, s)
+        output = '{} days, '.format(d)
+    output += '{:02}:{:02}:{:02}'.format(h, m, s)
     return output
 
 
