@@ -5,6 +5,12 @@ Base class for all the interfaces.
 
 class Interface(object):
 
+    def __del__(self):
+        try:
+            self.close()
+        except (Exception, ):
+            pass
+
     def raise_connection_exception(self, params):
         raise Exception(f'Could not connect to {params}')
 
