@@ -6,7 +6,6 @@ import wx.grid
 
 from src.models.image_data import ImageData
 from src.models.time_converter import create_duration_time_string
-from wx.dataview import DataViewTreeCtrl
 
 
 class ViewMain(wx.Frame):
@@ -20,11 +19,16 @@ class ViewMain(wx.Frame):
     ID_TOOL_EXPORT_CSV = 106
     ID_TOOL_SHOW_LOG = 107
 
+    ID_LIST_INSTRUMENTS = 200
+    ID_BTN_ADD_INSTRUMENT = 201
+    ID_BTN_DELETE_INSTRUMENT = 202
+
     _GAP = 5
 
-    _LIST_COL_INDEX_SIZE = 30
-    _LIST_COL_STEP_SIZE = 120
     _LIST_COL_DATA_SIZE = 120
+    _LIST_COL_INDEX_SIZE = 30
+    _LIST_COL_NAME_SIZE = 160
+    _LIST_COL_STEP_SIZE = 120
     _TABLE_MIN_COL_WIDTH = 100
 
     _LED_SIZE = (16, 16)
@@ -111,16 +115,18 @@ class ViewMain(wx.Frame):
     def _create_instruments_controls(self, parent):
         box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, ' Instruments: '), wx.VERTICAL)
 
-        self.instruments = DataViewTreeCtrl(parent)
+        self._lst_instruments = wx.ListCtrl(parent, self.ID_LIST_INSTRUMENTS, style=wx.LC_REPORT | wx.LC_SORT_ASCENDING
+                                            | wx.LC_SINGLE_SEL)
+        self._lst_instruments.InsertColumn(0, 'Name', width=self._LIST_COL_NAME_SIZE)
 
-        btn_add_instrument = wx.Button(parent, wx.ID_ANY, 'Add')
-        btn_delete_instrument = wx.Button(parent, wx.ID_ANY, 'Delete')
+        btn_add_instrument = wx.Button(parent, self.ID_BTN_ADD_INSTRUMENT, 'Add')
+        btn_delete_instrument = wx.Button(parent, self.ID_BTN_DELETE_INSTRUMENT, 'Delete')
 
         buttons = wx.BoxSizer(wx.HORIZONTAL)
         buttons.Add(btn_add_instrument, 0)
         buttons.Add(btn_delete_instrument, 0)
 
-        box.Add(self.instruments, 1, wx.EXPAND | wx.ALL, self._GAP)
+        box.Add(self._lst_instruments, 1, wx.EXPAND | wx.ALL, self._GAP)
         box.Add(buttons, 0, wx.ALL, self._GAP)
 
         return box
