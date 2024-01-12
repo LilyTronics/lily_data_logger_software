@@ -13,6 +13,7 @@ from src.models.interfaces.interface import Interface
 
 class SerialPortInterface(Interface):
 
+    NAME = 'Serial port'
     DEFAULT_TERMINATOR = b'\n'
     DEFAULT_TIMEOUT = 5
 

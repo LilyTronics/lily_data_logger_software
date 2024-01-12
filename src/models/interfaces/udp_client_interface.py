@@ -11,6 +11,8 @@ from unit_test.test_suite import TestSuite
 
 class UdpClientInterface(Interface):
 
+    NAME = 'Ethernet UDP'
+
     def __init__(self, server_ip_address, server_port, timeout, rx_buffer_size=1500):
         self._server_ip_address = server_ip_address
         self._server_port = server_port
