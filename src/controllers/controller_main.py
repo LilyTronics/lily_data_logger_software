@@ -37,6 +37,8 @@ class ControllerMain(object):
         self._configuration = Configuration()
         self._elapsed_time = 0
         self._log_view = None
+        self._logger.info('Show main view')
+        self._view.Show()
 
         wx.CallAfter(self._update_view_from_configuration)
 
@@ -158,14 +160,6 @@ class ControllerMain(object):
         else:
             self._log_view.Raise()
 
-    ##########
-    # Public #
-    ##########
-
-    def show_view(self):
-        self._logger.info('Show main view')
-        self._view.Show()
-
 
 if __name__ == '__main__':
 
@@ -174,5 +168,4 @@ if __name__ == '__main__':
     test_logger = Logger(True)
     app = wx.App(redirect=False)
     controller = ControllerMain('ControllerMain Test', test_logger)
-    controller.show_view()
     app.MainLoop()
