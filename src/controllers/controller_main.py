@@ -29,6 +29,48 @@ class ControllerMain(object):
 
         wx.CallAfter(self._update_view_from_configuration)
 
+    ###########
+    # Private #
+    ###########
+
+    def _initialize_main_view(self, view_title):
+        frame = ViewMain(view_title)
+        size = self._settings.get_main_window_size()
+        if -1 not in size:
+            frame.SetSize(size)
+        pos = self._settings.get_main_window_position()
+        if -1 not in pos:
+            frame.SetPosition(pos)
+        frame.Maximize(self._settings.get_main_window_maximized())
+        frame.Bind(wx.EVT_CLOSE, self._on_view_close)
+        frame.Bind(wx.EVT_TOOL, self._on_open_configuration, id=frame.ID_TOOL_OPEN_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_save_configuration, id=frame.ID_TOOL_SAVE_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_edit_configuration, id=frame.ID_TOOL_EDIT_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_show_log, id=frame.ID_TOOL_SHOW_LOG)
+        frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=frame.ID_BTN_ADD_INSTRUMENT)
+        frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument, id=frame.ID_LIST_INSTRUMENTS)
+        return frame
+
+    def _initialize_log_view(self):
+        frame = ViewLogger('Log Messages')
+        size = self._settings.get_log_window_size()
+        if -1 not in size:
+            frame.SetSize(size)
+        pos = self._settings.get_log_window_position()
+        if -1 not in pos:
+            frame.SetPosition(pos)
+        frame.Maximize(self._settings.get_log_window_maximized())
+        frame.Bind(wx.EVT_CLOSE, self._on_close_log)
+        return frame
+
+    def _update_view_from_configuration(self):
+        self._main_view.update_configuration_filename(self._configuration.get_filename(),
+                                                      self._configuration.is_changed())
+        self._main_view.update_configuration_info(self._configuration.get_sample_time(),
+                                                  self._configuration.get_end_time(),
+                                                  self._configuration.get_continuous_mode())
+        self._main_view.update_elapsed_time(self._elapsed_time)
+
     ##################
     # Event handlers #
     ##################
@@ -76,48 +118,6 @@ class ControllerMain(object):
             self._settings.store_main_window_size(*self._main_view.GetSize())
             self._settings.store_main_window_position(*self._main_view.GetPosition())
         event.Skip()
-
-    ###########
-    # Private #
-    ###########
-
-    def _initialize_main_view(self, view_title):
-        frame = ViewMain(view_title)
-        size = self._settings.get_main_window_size()
-        if -1 not in size:
-            frame.SetSize(size)
-        pos = self._settings.get_main_window_position()
-        if -1 not in pos:
-            frame.SetPosition(pos)
-        frame.Maximize(self._settings.get_main_window_maximized())
-        frame.Bind(wx.EVT_CLOSE, self._on_view_close)
-        frame.Bind(wx.EVT_TOOL, self._on_open_configuration, id=frame.ID_TOOL_OPEN_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_save_configuration, id=frame.ID_TOOL_SAVE_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_edit_configuration, id=frame.ID_TOOL_EDIT_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_show_log, id=frame.ID_TOOL_SHOW_LOG)
-        frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=frame.ID_BTN_ADD_INSTRUMENT)
-        frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument, id=frame.ID_LIST_INSTRUMENTS)
-        return frame
-
-    def _initialize_log_view(self):
-        frame = ViewLogger('Log Messages')
-        size = self._settings.get_log_window_size()
-        if -1 not in size:
-            frame.SetSize(size)
-        pos = self._settings.get_log_window_position()
-        if -1 not in pos:
-            frame.SetPosition(pos)
-        frame.Maximize(self._settings.get_log_window_maximized())
-        frame.Bind(wx.EVT_CLOSE, self._on_close_log)
-        return frame
-
-    def _update_view_from_configuration(self):
-        self._main_view.update_configuration_filename(self._configuration.get_filename(),
-                                                      self._configuration.is_changed())
-        self._main_view.update_configuration_info(self._configuration.get_sample_time(),
-                                                  self._configuration.get_end_time(),
-                                                  self._configuration.get_continuous_mode())
-        self._main_view.update_elapsed_time(self._elapsed_time)
 
 
 if __name__ == '__main__':
