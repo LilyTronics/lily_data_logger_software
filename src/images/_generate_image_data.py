@@ -31,15 +31,16 @@ def generate_image_data():
                 names.append(name)
                 with open(item, 'rb') as fp_image:
                     content = base64.b64encode(fp_image.read())
-                data_indent = len(name) + _INDENT_WIDTH * 2 - 1
                 fp_model.write('\n    {} = PyEmbeddedImage(\n'.format(name))
-                max_data_length = _MAX_LINE_LENGTH - data_indent - _INDENT_WIDTH * 2 - 1
+                max_data_length = _MAX_LINE_LENGTH - _INDENT_WIDTH
+                indent = _INDENT_WIDTH * 2
                 while len(content) > max_data_length:
-                    fp_model.write('{}{}\n'.format(' ' * (data_indent + 4), content[:max_data_length]))
+                    fp_model.write('{}{}\n'.format(' ' * indent, content[:max_data_length]))
                     content = content[max_data_length:]
                 if len(content) > 0:
-                    fp_model.write('{}{}\n'.format(' ' * (data_indent + 4), content))
-                fp_model.write('{})\n'.format(' ' * data_indent))
+                    fp_model.write('{}{}\n'.format(' ' * indent, content))
+                indent -= 4
+                fp_model.write('{})\n'.format(' ' * indent))
 
         fp_model.write("\n\nif __name__ == '__main__':\n\n")
         fp_model.write('    import wx\n\n')
