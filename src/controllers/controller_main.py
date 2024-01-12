@@ -7,7 +7,6 @@ import wx
 from src.controllers.controller_configuration import ControllerConfiguration
 from src.models.configuration import Configuration
 from src.models.settings import Settings
-from src.views.view_edit_configuration import ViewEditConfiguration
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
 
@@ -58,32 +57,8 @@ class ControllerMain(object):
         event.Skip()
 
     def _on_edit_configuration(self, event):
-        dlg = ViewEditConfiguration(self._view)
-        dlg.set_sample_time(self._configuration.get_sample_time())
-        dlg.set_end_time(self._configuration.get_end_time())
-        dlg.set_continuous_mode(self._configuration.get_continuous_mode())
-        if dlg.ShowModal() == wx.ID_OK:
-            self._logger.info('Edit configuration settings')
-            current_sample_time = self._configuration.get_sample_time()
-            new_sample_time = dlg.get_sample_time()
-            current_end_time = self._configuration.get_end_time()
-            new_end_time = dlg.get_end_time()
-            current_continuous_mode = self._configuration.get_continuous_mode()
-            new_continuous_mode = dlg.get_continuous_mode()
-            self._configuration.set_sample_time(new_sample_time)
-            self._configuration.set_end_time(new_end_time)
-            self._configuration.set_continuous_mode(new_continuous_mode)
-            if current_sample_time != new_sample_time:
-                self._logger.debug('Sample time changed from {} to {} seconds'.format(current_sample_time,
-                                                                                      new_sample_time))
-            if current_end_time != new_end_time:
-                self._logger.debug('End time changed from {} to {} seconds'.format(current_end_time,
-                                                                                   new_end_time))
-            if current_continuous_mode != new_continuous_mode:
-                self._logger.debug('Continuous mode changed from {} to {}'.format(current_continuous_mode,
-                                                                                  new_continuous_mode))
-            self._update_view_from_configuration()
-        dlg.Destroy()
+        ControllerConfiguration.edit_configuration(self._configuration, self._view, self._logger)
+        self._update_view_from_configuration()
         event.Skip()
 
     def _on_show_log(self, event):
