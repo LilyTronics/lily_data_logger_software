@@ -5,7 +5,6 @@ Edit instrument view.
 import lily_unit_test
 import wx
 
-from src.models.interfaces import get_interface_names
 from src.views.view_dialogs import show_message
 
 
@@ -83,7 +82,7 @@ class ViewEditInstrument(wx.Dialog):
     def _on_ok_click(self, event):
         dlg_title = 'Edit instrument'
         name = self._txt_name.GetValue().strip()
-        instrument = self._cmb_instruments.GetValue()
+        instrument = self._cmb_instrument.GetValue()
         if name == '':
             show_message(self, 'Enter a name', dlg_title)
             return
@@ -165,7 +164,7 @@ class TestViewEditInstrument(lily_unit_test.TestSuite):
         self.fail_if(self._dlg.get_name() != test_name,
                      'The instrument name is not correct {}'.format(self._dlg.get_name()))
 
-    def test_instrument_name(self):
+    def test_instrument_names(self):
         test_instrument_names = ['Multimeter UDP', 'Temperature Chamber']
         self._dlg.set_instrument_names(test_instrument_names.copy())
         for name in test_instrument_names:
