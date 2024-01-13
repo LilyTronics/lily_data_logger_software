@@ -14,7 +14,7 @@ _INTERFACES = [
 ]
 
 
-def get_list_of_interface_names():
+def get_interface_names():
     return sorted(list(map(lambda x: x.NAME, _INTERFACES)))
 
 
@@ -26,5 +26,5 @@ def get_interface_by_name(interface_name):
 
 if __name__ == '__main__':
 
-    for name in get_list_of_interface_names():
+    for name in get_interface_names():
         print('{:12}: {}'.format(name, get_interface_by_name(name)))
