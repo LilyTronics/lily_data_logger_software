@@ -11,7 +11,7 @@ from src.views.view_dialogs import show_message
 
 class ViewEditInstrument(wx.Dialog):
 
-    ID_CMB_INTERFACE = 1
+    ID_CMB_INSTRUMENT = 1
     ID_BTN_TEST = 2
 
     _GAP = 5
@@ -23,7 +23,7 @@ class ViewEditInstrument(wx.Dialog):
         self._settings_controls = {}
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(self._create_main_settings_box(), 0, wx.EXPAND | wx.ALL, self._GAP)
-        box.Add(self._create_interface_settings_box(), 0, wx.EXPAND | wx.ALL, self._GAP)
+        box.Add(self._create_instrument_settings_box(), 0, wx.EXPAND | wx.ALL, self._GAP)
         box.Add(self._create_test_box(), 0, wx.EXPAND | wx.ALL, self._GAP)
         box.Add(self._create_buttons_box(), 0, wx.ALIGN_RIGHT | wx.ALL, self._GAP)
         self.Bind(wx.EVT_BUTTON, self._on_ok_click, id=wx.ID_OK)
@@ -39,21 +39,21 @@ class ViewEditInstrument(wx.Dialog):
         box = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, ' Settings: '), wx.VERTICAL)
         lbl_name = wx.StaticText(self, wx.ID_ANY, 'Name:')
         self._txt_name = wx.TextCtrl(self, wx.ID_ANY)
-        lbl_interface = wx.StaticText(self, wx.ID_ANY, 'Interface:')
-        self._cmb_interface = wx.ComboBox(self, self.ID_CMB_INTERFACE, style=wx.CB_READONLY)
+        lbl_instrument = wx.StaticText(self, wx.ID_ANY, 'Instrument:')
+        self._cmb_instrument = wx.ComboBox(self, self.ID_CMB_INSTRUMENT, style=wx.CB_READONLY)
         grid = wx.GridBagSizer(self._GAP, self._GAP)
         grid.Add(lbl_name, (0, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
         grid.Add(self._txt_name, (0, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
-        grid.Add(lbl_interface, (1, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
-        grid.Add(self._cmb_interface, (1, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
+        grid.Add(lbl_instrument, (1, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
+        grid.Add(self._cmb_instrument, (1, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
         grid.AddGrowableCol(1)
         box.Add(grid, 0, wx.EXPAND | wx.ALL, self._GAP)
         return box
 
-    def _create_interface_settings_box(self):
+    def _create_instrument_settings_box(self):
         self._lbl_no_settings = wx.StaticText(self, wx.ID_ANY, 'No settings')
         self._settings_grid = wx.GridBagSizer(self._GAP, self._GAP)
-        box = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, ' Interface settings: '), wx.VERTICAL)
+        box = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, ' Instrument settings: '), wx.VERTICAL)
         box.Add(self._lbl_no_settings, 0, wx.EXPAND | wx.ALL, self._GAP)
         box.Add(self._settings_grid, 0, wx.EXPAND | wx.ALL, self._GAP)
         return box
@@ -83,12 +83,12 @@ class ViewEditInstrument(wx.Dialog):
     def _on_ok_click(self, event):
         dlg_title = 'Edit instrument'
         name = self._txt_name.GetValue().strip()
-        interface = self._cmb_interface.GetValue()
+        instrument = self._cmb_instruments.GetValue()
         if name == '':
             show_message(self, 'Enter a name', dlg_title)
             return
-        if interface == '':
-            show_message(self, 'Select an interface', dlg_title)
+        if instrument == '':
+            show_message(self, 'Select an instrument', dlg_title)
             return
         for parameter_name in self._settings_controls.keys():
             if self._settings_controls[parameter_name][1].GetValue().strip() == '':
@@ -106,20 +106,20 @@ class ViewEditInstrument(wx.Dialog):
     def get_name(self):
         return self._txt_name.GetValue().strip()
 
-    def set_interface_names(self, interface_names):
-        interface_names.insert(0, '')
-        self._cmb_interface.SetItems(interface_names)
-        self._cmb_interface.GetParent().Layout()
+    def set_instrument_names(self, instrument_names):
+        instrument_names.insert(0, '')
+        self._cmb_instrument.SetItems(instrument_names)
+        self._cmb_instrument.GetParent().Layout()
 
-    def set_interface_name(self, name):
-        self._cmb_interface.SetValue('')
-        if name in self._cmb_interface.GetItems():
-            self._cmb_interface.SetValue(name)
+    def set_instrument_name(self, name):
+        self._cmb_instrument.SetValue('')
+        if name in self._cmb_instrument.GetItems():
+            self._cmb_instrument.SetValue(name)
 
-    def get_selected_interface_name(self):
-        return self._cmb_interface.GetValue()
+    def get_selected_instrument_name(self):
+        return self._cmb_instrument.GetValue()
 
-    def update_interface_settings_controls(self, driver_controls):
+    def update_instrument_settings_controls(self, driver_controls):
         self._settings_grid.Clear(True)
         self._settings_controls = driver_controls
         if len(self._settings_controls.keys()) > 0:
@@ -165,20 +165,20 @@ class TestViewEditInstrument(lily_unit_test.TestSuite):
         self.fail_if(self._dlg.get_name() != test_name,
                      'The instrument name is not correct {}'.format(self._dlg.get_name()))
 
-    def test_interface_name(self):
-        test_interface_names = get_interface_names()
-        self._dlg.set_interface_names(test_interface_names.copy())
-        for name in test_interface_names:
-            self._dlg.set_interface_name(name)
-            self.fail_if(self._dlg.get_selected_interface_name() != name,
-                         'The selected interface name is not correct {}'.format(
-                             self._dlg.get_selected_interface_name()))
-        self._dlg.set_interface_name('not existing interface')
-        self.fail_if(self._dlg.get_selected_interface_name() != '',
-                     'The selected interface name is not correct {}'.format(
-                         self._dlg.get_selected_interface_name()))
+    def test_instrument_name(self):
+        test_instrument_names = ['Multimeter UDP', 'Temperature Chamber']
+        self._dlg.set_instrument_names(test_instrument_names.copy())
+        for name in test_instrument_names:
+            self._dlg.set_instrument_name(name)
+            self.fail_if(self._dlg.get_selected_instrument_name() != name,
+                         'The selected instrument name is not correct {}'.format(
+                             self._dlg.get_selected_instrument_name()))
+        self._dlg.set_instrument_name('not existing instrument')
+        self.fail_if(self._dlg.get_selected_instrument_name() != '',
+                     'The selected instrument name is not correct {}'.format(
+                         self._dlg.get_selected_instrument_name()))
 
-    def test_interface_settings(self):
+    def test_instrument_settings(self):
         settings = {
             'ip_address': (
                 wx.StaticText(self._dlg, wx.ID_ANY, 'IP Address:'),
@@ -189,7 +189,7 @@ class TestViewEditInstrument(lily_unit_test.TestSuite):
                 wx.TextCtrl(self._dlg, wx.ID_ANY, '')
             )
         }
-        self._dlg.update_interface_settings_controls(settings)
+        self._dlg.update_instrument_settings_controls(settings)
         settings['ip_address'][1].SetValue('1.2.3.4')
         settings['port'][1].SetValue('17000')
         self.fail_if(settings['ip_address'][1].GetValue() != '1.2.3.4',
