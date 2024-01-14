@@ -17,8 +17,8 @@ class ViewEditInstrument(wx.Dialog):
     _WINDOW_SIZE = (500, -1)
     _CONSOLE_SIZE = (-1, 150)
 
-    def __init__(self, parent):
-        super(ViewEditInstrument, self).__init__(parent, wx.ID_ANY, 'Edit instrument')
+    def __init__(self, parent, title):
+        super(ViewEditInstrument, self).__init__(parent, wx.ID_ANY, title)
         self._settings_controls = {}
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(self._create_main_settings_box(), 0, wx.EXPAND | wx.ALL, self._GAP)
@@ -80,18 +80,17 @@ class ViewEditInstrument(wx.Dialog):
     ##################
 
     def _on_ok_click(self, event):
-        dlg_title = 'Edit instrument'
         name = self._txt_name.GetValue().strip()
         instrument = self._cmb_instrument.GetValue()
         if name == '':
-            show_message(self, 'Enter a name', dlg_title)
+            show_message(self, 'Enter a name', self.GetTitle())
             return
         if instrument == '':
-            show_message(self, 'Select an instrument', dlg_title)
+            show_message(self, 'Select an instrument', self.GetTitle())
             return
         for parameter_name in self._settings_controls.keys():
             if self._settings_controls[parameter_name][1].GetValue().strip() == '':
-                show_message(self, 'One of the settings has no value.', dlg_title)
+                show_message(self, 'One of the settings has no value.', self.GetTitle())
                 return
         event.Skip()
 
@@ -147,7 +146,7 @@ class TestViewEditInstrument(lily_unit_test.TestSuite):
 
     def setup(self):
         self._app = wx.App(redirect=False)
-        self._dlg = ViewEditInstrument(None)
+        self._dlg = ViewEditInstrument(None, 'Test edit instrument')
 
     def test_show_dialog(self):
         button = {
