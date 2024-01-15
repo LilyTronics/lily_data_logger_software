@@ -16,13 +16,15 @@ class SerialPortInterface(Interface):
     NAME = 'Serial port'
     DEFAULT_TERMINATOR = b'\n'
     DEFAULT_TIMEOUT = 5
+    DEFAULT_BAUD_RATE = 9600
 
-    def __init__(self, port_name, rx_timeout=DEFAULT_TIMEOUT, terminator=DEFAULT_TERMINATOR, tx_timeout=0):
+    def __init__(self, port_name, baud_rate=DEFAULT_BAUD_RATE, rx_timeout=DEFAULT_TIMEOUT,
+                 terminator=DEFAULT_TERMINATOR, tx_timeout=0):
         if tx_timeout == 0:
             tx_timeout = rx_timeout
         self._rx_time_out = rx_timeout
         self._terminator = terminator
-        self._serial = serial.Serial(port_name, write_timeout=tx_timeout)
+        self._serial = serial.Serial(port_name, baudrate=int(baud_rate), write_timeout=tx_timeout)
 
     def send_command(self, command):
         response = b''
