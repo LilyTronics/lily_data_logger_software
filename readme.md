@@ -110,4 +110,17 @@ There are a number of variations possible:
 * `{str:6-32}`: a literal string value with a length of 6 to 32 characters, spaces will be added at the end of the string to match the length.
   Strings longer than 32 characters are truncated.
 
+
+## Development
+
+Requirements for running the software:
+
+* Python (>= 3.10)
+* Upgrade pip: python -m pip install --upgrade pip
+* pip install -r requirements.txt
+
+In `unit_test` is a script for running the unit tests `run_unit_tests.py`
+Test reports are written to `unit_test/test_reports`.
+
+
 2023 - LilyTronics (https://lilytronics.nl)
