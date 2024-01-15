@@ -110,6 +110,12 @@ class TestInstrument(lily_unit_test.TestSuite):
                 'type': 'input',
                 'command': 'get_float?\n',
                 'response': 'voltage={float}V\n'
+            },
+            {
+                'name': 'get int',
+                'type': 'input',
+                'command': 'get_int?\n',
+                'response': 'count={int}\n'
             }
         ]
     }
@@ -141,7 +147,7 @@ class TestInstrument(lily_unit_test.TestSuite):
         self.fail_if(instrument.get_interface_type() != 'test interface',
                      'The interface type is not correct {}'.format(instrument.get_interface_type()))
 
-    def test_inputs(self):
+    def test_float_input(self):
         instrument = Instrument(self.instrument_data)
         interface = TestInterface()
         instrument.set_interface_object(interface)
@@ -150,11 +156,21 @@ class TestInstrument(lily_unit_test.TestSuite):
         self.fail_if(type(value) is not float, 'Value is not type float')
         self.fail_if(value != 5.03, 'Value is not correct')
 
+    def test_int_input(self):
+        instrument = Instrument(self.instrument_data)
+        interface = TestInterface()
+        instrument.set_interface_object(interface)
+        self.log.debug('Test int input')
+        value = instrument.get_value('get int')
+        self.fail_if(type(value) is not int, 'Value is not type int')
+        self.fail_if(value != 12, 'Value is not correct')
+
 
 class TestInterface(Interface):
 
     _COMMAND_TO_RESPONSE = {
-        b'get_float?\n': b'voltage=5.03V\n'
+        b'get_float?\n': b'voltage=5.03V\n',
+        b'get_int?\n': b'count=12\n'
     }
 
     def send_command(self, command):
