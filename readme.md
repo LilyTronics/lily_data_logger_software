@@ -19,16 +19,12 @@ Things to do for the first release:
   * NI USB-6009 (requires drivers from NI)
   * Protek 506 digital multimeter
   * Arduino Uno IO module (reading analog voltages, reading and writing digital IO, sketch for the Arduino Uno is included in this repo)
-
  
 ## Installation
 
-Requirements for running the application:
-
-* Python
-* Upgrade pip: python -m pip install --upgrade pip
-* pip install -r requirements.txt
-
+There will be an executable for Windows available when the first release is ready (portable).
+Download the executable and run it. There is no need to install any software.
+Settings and logs are stored in: `C:\users\your_name\LilyDataLoggerStudio`.
 
 ## Instruments
 
@@ -36,7 +32,6 @@ The following instruments are included in the application:
 * Simulators (for testing/demo):
   * Multimeter giving random values for voltage and current
   * Temperature chamber that can be set to heat up or cool down to a specified temperature.
-
 
 # Adding your own instruments
 
@@ -110,7 +105,6 @@ There are a number of variations possible:
 * `{str:6-32}`: a literal string value with a length of 6 to 32 characters, spaces will be added at the end of the string to match the length.
   Strings longer than 32 characters are truncated.
 
-
 ## Development
 
 Requirements for running the software:
@@ -121,6 +115,5 @@ Requirements for running the software:
 
 In `unit_test` is a script for running the unit tests `run_unit_tests.py`
 Test reports are written to `unit_test/test_reports`.
-
 
 2023 - LilyTronics (https://lilytronics.nl)
