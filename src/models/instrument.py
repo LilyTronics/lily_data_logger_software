@@ -68,7 +68,7 @@ class Instrument(object):
             response = response[len(pre_response):]
         if len(post_response) > 0 and response.endswith(post_response):
             response = response[:-len(post_response)]
-        return self._TYPE_NAME_TO_TYPE[value_type](response)
+        return self._TYPE_NAME_TO_TYPE[value_type](response.decode(self.BYTE_ENCODING))
 
     ##########
     # Public #
@@ -116,9 +116,21 @@ class TestInstrument(lily_unit_test.TestSuite):
                 'type': 'input',
                 'command': 'get_int?\n',
                 'response': 'count={int}\n'
+            },
+            {
+                'name': 'get str',
+                'type': 'input',
+                'command': 'get_str?\n',
+                'response': 'name={str}\n'
             }
         ]
     }
+
+    def _create_instrument(self):
+        instrument = Instrument(self.instrument_data)
+        interface = TestInterface()
+        instrument.set_interface_object(interface)
+        return instrument
 
     def test_default_values(self):
         instrument = Instrument({})
@@ -148,29 +160,33 @@ class TestInstrument(lily_unit_test.TestSuite):
                      'The interface type is not correct {}'.format(instrument.get_interface_type()))
 
     def test_float_input(self):
-        instrument = Instrument(self.instrument_data)
-        interface = TestInterface()
-        instrument.set_interface_object(interface)
+        instrument = self._create_instrument()
         self.log.debug('Test float input')
         value = instrument.get_value('get float')
         self.fail_if(type(value) is not float, 'Value is not type float')
         self.fail_if(value != 5.03, 'Value is not correct')
 
     def test_int_input(self):
-        instrument = Instrument(self.instrument_data)
-        interface = TestInterface()
-        instrument.set_interface_object(interface)
+        instrument = self._create_instrument()
         self.log.debug('Test int input')
         value = instrument.get_value('get int')
         self.fail_if(type(value) is not int, 'Value is not type int')
         self.fail_if(value != 12, 'Value is not correct')
+
+    def test_str_input(self):
+        instrument = self._create_instrument()
+        self.log.debug('Test str input')
+        value = instrument.get_value('get str')
+        self.fail_if(type(value) is not str, 'Value is not type str')
+        self.fail_if(value != 'test instrument', 'Value is not correct')
 
 
 class TestInterface(Interface):
 
     _COMMAND_TO_RESPONSE = {
         b'get_float?\n': b'voltage=5.03V\n',
-        b'get_int?\n': b'count=12\n'
+        b'get_int?\n': b'count=12\n',
+        b'get_str?\n': b'name=test instrument\n'
     }
 
     def send_command(self, command):
