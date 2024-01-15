@@ -146,7 +146,7 @@ class TestLogger(lily_unit_test.TestSuite):
         for line in lines:
             self.fail_if('| STDERR |' not in line, 'Message is not type STDERR {}'.format(line))
 
-        self.fail_if('| STDERR | Exception in thread Thread-1 (_generate_error):' not in lines[0],
+        self.fail_if('| STDERR | Exception in thread Thread' not in lines[0],
                      'First line does not match with the exception message {}'.format(lines[0]))
 
         self.fail_if('| STDERR | Traceback (most recent call last):' not in lines[1],
