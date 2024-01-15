@@ -86,6 +86,10 @@ class TestStartStopSimulators(lily_unit_test.TestSuite):
         stop_simulators()
         self._check_running_simulators(False)
 
+    @staticmethod
+    def teardown():
+        del _SIMULATORS[:]
+
 
 if __name__ == '__main__':
 
