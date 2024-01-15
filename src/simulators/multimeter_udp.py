@@ -25,6 +25,7 @@ class MultimeterUdp(object):
         self._thread = None
         self._stop_event = threading.Event()
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self._socket.settimeout(SimulatorSettings.MultimeterUdp.RX_TIME_OUT)
         self._socket.bind((SimulatorSettings.MultimeterUdp.IP, SimulatorSettings.MultimeterUdp.PORT))
 
