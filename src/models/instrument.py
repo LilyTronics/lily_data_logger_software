@@ -121,6 +121,8 @@ class Instrument(object):
         self._interface_object = interface_object
 
     def get_value(self, channel_name, debug=False):
+        if debug:
+            print('<{}>.get_value( \'{}\' )'.format(self.get_name(), channel_name))
         channel = self._get_channel(self.TYPE_INPUT, channel_name)
         if debug:
             print(self._DEBUG_FORMAT.format('Channel', channel))
@@ -130,6 +132,8 @@ class Instrument(object):
         return self._parse_response(channel[self.KEY_RESPONSE], response, debug)
 
     def set_value(self, channel_name, value, debug=False):
+        if debug:
+            print('DEBUG: <{}>.set_value( \'{}\', {} )'.format(self.get_name(), channel_name, value))
         channel = self._get_channel(self.TYPE_OUTPUT, channel_name)
         if debug:
             print(self._DEBUG_FORMAT.format('Channel', channel))
@@ -242,7 +246,7 @@ class TestInstrument(lily_unit_test.TestSuite):
         response = instrument.set_value('set float 1', '5')
         self.fail_if(response != 'OK\n', 'The response is not correct')
         self.log.debug('Test float 2 output')
-        response = instrument.set_value('set float 2', '8', True)
+        response = instrument.set_value('set float 2', '8')
         self.fail_if(response != 'OK\n', 'The response is not correct')
 
 
