@@ -115,6 +115,8 @@ class Instrument(object):
         return False
 
     def _process_command(self, command_data, debug):
+        if debug:
+            print(self._DEBUG_FORMAT.format('Command data', command_data))
         response = b''
         command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
         if debug:
@@ -163,8 +165,6 @@ class Instrument(object):
         response = None
         for command_data in channel[self.KEY_COMMAND_LIST]:
             response = self._process_command(command_data, debug)
-            if self.KEY_RESPONSE in command_data.keys():
-                response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
         return response
 
     def set_value(self, channel_name, value, debug=False):
