@@ -12,6 +12,7 @@ class Instrument(object):
     KEY_CHANNELS = 'channels'
     KEY_COMMAND = 'command'
     KEY_INFO = 'info'
+    KEY_INITIALIZE = 'initialize'
     KEY_INTERFACE = 'interface'
     KEY_NAME = 'name'
     KEY_RESPONSE = 'response'
@@ -38,7 +39,8 @@ class Instrument(object):
         self._name = instrument_definition.get(self.KEY_NAME, self.DEFAULT_NAME)
         self._info = instrument_definition.get(self.KEY_INFO, self.DEFAULT_INFO)
         self._interface_data = instrument_definition.get(self.KEY_INTERFACE, {})
-        self._channel_data = instrument_definition.get(self.KEY_CHANNELS, {})
+        self._initialize_data = instrument_definition.get(self.KEY_INITIALIZE, [])
+        self._channel_data = instrument_definition.get(self.KEY_CHANNELS, [])
         self._interface_object = None
 
     ###########
@@ -118,6 +120,19 @@ class Instrument(object):
     def set_interface_object(self, interface_object):
         self._interface_object = interface_object
 
+    def initialize(self, debug=False):
+        if debug:
+            print('Initialize instrument')
+        for command_data in self._initialize_data:
+            command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
+            print(self._DEBUG_FORMAT.format('Command', command))
+            expect_response = command_data[self.KEY_RESPONSE] != ''
+            response = self._interface_object.send_command(command, expect_response)
+            if expect_response:
+                response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
+                assert response == command_data[self.KEY_RESPONSE], 'Initialize command {} failed {}'.format(
+                    command_data[self.KEY_COMMAND], command_data[self.KEY_RESPONSE])
+
     def get_value(self, channel_name, debug=False):
         if debug:
             print('<{}>.get_value( \'{}\' )'.format(self.get_name(), channel_name))
@@ -153,6 +168,16 @@ class TestInstrument(TestSuite):
         'interface': {
             'type': 'test interface'
         },
+        'initialize': [
+            {
+                'command': 'test init\n',
+                'response': 'OK\n'
+            },
+            {
+                'command': 'test init no response\n',
+                'response': ''
+            }
+        ],
         'channels': [
             {
                 'name': 'get float',
@@ -286,6 +311,10 @@ class TestInstrument(TestSuite):
         response = instrument.set_value('set no response', 'no response')
         self.fail_if(response is not None, 'The response is not correct')
 
+    def test_initialize(self):
+        instrument = self._create_instrument()
+        instrument.initialize(True)
+
 
 class TestInterface(Interface):
 
@@ -296,7 +325,8 @@ class TestInterface(Interface):
         b'voltage=5.0\n': b'OK\n',
         b'voltage=8.00\n': b'OK\n',
         b'state=7\n': b'OK\n',
-        b'label=test output\n': b'OK\n'
+        b'label=test output\n': b'OK\n',
+        b'test init\n': b'OK\n',
     }
 
     def send_command(self, command, expect_response=True):
