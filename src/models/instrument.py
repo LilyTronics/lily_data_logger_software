@@ -160,15 +160,10 @@ class Instrument(object):
         channel = self._get_channel(self.TYPE_INPUT, channel_name)
         if debug:
             print(self._DEBUG_FORMAT.format('Channel', channel))
-
         response = None
         for command_data in channel[self.KEY_COMMAND_LIST]:
-            command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
-            if debug:
-                print(self._DEBUG_FORMAT.format('Command', command))
-            expect_response = self.KEY_RESPONSE in command_data.keys()
-            response = self._interface_object.send_command(command, expect_response)
-            if expect_response:
+            response = self._process_command(command_data, debug)
+            if self.KEY_RESPONSE in command_data.keys():
                 response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
         return response
 
