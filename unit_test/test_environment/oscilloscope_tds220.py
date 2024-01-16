@@ -7,7 +7,7 @@ import serial
 import time
 
 
-def get_power_supply_serial_port(serial_ports):
+def get_oscilloscope_serial_port(serial_ports):
     id_command = b'*IDN?\n'
     id_data = b'TEKTRONIX,TDS 220'
 
