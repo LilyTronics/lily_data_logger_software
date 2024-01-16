@@ -11,6 +11,7 @@ class Instrument(object):
     KEY_BAUD_RATE = 'baud_rate'
     KEY_CHANNELS = 'channels'
     KEY_COMMAND = 'command'
+    KEY_COMMAND_LIST = 'command_list'
     KEY_INFO = 'info'
     KEY_INITIALIZE = 'initialize'
     KEY_INTERFACE = 'interface'
@@ -140,10 +141,17 @@ class Instrument(object):
         channel = self._get_channel(self.TYPE_INPUT, channel_name)
         if debug:
             print(self._DEBUG_FORMAT.format('Channel', channel))
-        if debug:
-            print(self._DEBUG_FORMAT.format('Command', channel[self.KEY_COMMAND].encode(self.BYTE_ENCODING)))
-        response = self._interface_object.send_command(channel[self.KEY_COMMAND].encode(self.BYTE_ENCODING))
-        return self._parse_response(channel[self.KEY_RESPONSE], response, debug)
+
+        response = None
+        for command_data in channel[self.KEY_COMMAND_LIST]:
+            command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
+            if debug:
+                print(self._DEBUG_FORMAT.format('Command', command))
+            expect_response = command_data[self.KEY_RESPONSE] != ''
+            response = self._interface_object.send_command(command, expect_response)
+            if expect_response:
+                response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
+        return response
 
     def set_value(self, channel_name, value, debug=False):
         if debug:
@@ -183,20 +191,32 @@ class TestInstrument(TestSuite):
             {
                 'name': 'get float',
                 'type': 'input',
-                'command': 'get_float?\n',
-                'response': 'voltage={float}V\n'
+                'command_list': [
+                    {
+                        'command': 'get_float?\n',
+                        'response': 'voltage={float}V\n'
+                    }
+                ]
             },
             {
                 'name': 'get int',
                 'type': 'input',
-                'command': 'get_int?\n',
-                'response': 'count={int}\n'
+                'command_list': [
+                    {
+                        'command': 'get_int?\n',
+                        'response': 'count={int}\n'
+                    }
+                ]
             },
             {
                 'name': 'get str',
                 'type': 'input',
-                'command': 'get_str?\n',
-                'response': 'name={str}\n'
+                'command_list': [
+                    {
+                        'command': 'get_str?\n',
+                        'response': 'name={str}\n'
+                    }
+                ]
             },
             {
                 'name': 'set float 1',
