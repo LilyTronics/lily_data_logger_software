@@ -3,6 +3,26 @@
 Universal data logger software aiming to work with any kind of electronics measurement device.
 Not only logging data but also controlling instruments (process automation).
 
+## Installation
+
+There will be an executable for Windows available when the first release is ready (portable).
+Download the executable and run it. There is no need to install any software.
+Settings and logs are stored in: `C:\users\your_name\LilyDataLoggerStudio`.
+
+## Instruments
+
+The following instruments are included in the application:
+* Power supply: TTi PL303QMD-P (USB virtual COM port)
+* Simulators (for testing/demo):
+  * Multimeter giving random values for voltage and current
+  * Temperature chamber that can be set to heat up or cool down to a specified temperature.
+
+Note that not all commands for the instruments are implemented.
+A set of the most practical commands are chosen.
+
+On request, we can add an instrument for you, or help you create instrument files.
+Contact us for more information at: info@lilytronics.nl
+
 ## Releases
 
 No releases yet, still work in progress.
@@ -20,19 +40,6 @@ Things to do for the first release:
   * Protek 506 digital multimeter
   * Arduino Uno IO module (reading analog voltages, reading and writing digital IO, sketch for the Arduino Uno is included in this repo)
  
-## Installation
-
-There will be an executable for Windows available when the first release is ready (portable).
-Download the executable and run it. There is no need to install any software.
-Settings and logs are stored in: `C:\users\your_name\LilyDataLoggerStudio`.
-
-## Instruments
-
-The following instruments are included in the application:
-* Simulators (for testing/demo):
-  * Multimeter giving random values for voltage and current
-  * Temperature chamber that can be set to heat up or cool down to a specified temperature.
-
 # Adding your own instruments
 
 You can add your own instruments using JSON files. Simply make a definition for your instrument and store the file in
