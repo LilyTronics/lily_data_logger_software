@@ -26,22 +26,21 @@ class SerialPortInterface(Interface):
         self._terminator = terminator
         self._serial = serial.Serial(port_name, baudrate=int(baud_rate), write_timeout=tx_timeout)
 
-    def send_command(self, command):
+    def send_command(self, command, expect_response=True):
         response = b''
         self._serial.write(command + self._terminator)
-        t = 0
-        while t < self._rx_time_out:
-            if self._serial.in_waiting > 0:
-                t = 0
-                response += self._serial.read(self._serial.in_waiting)
-            if response.endswith(self._terminator):
-                break
-
-            time.sleep(0.1)
-            t += 0.1
-        else:
-            self.raise_timeout_exception()
-
+        if expect_response:
+            t = 0
+            while t < self._rx_time_out:
+                if self._serial.in_waiting > 0:
+                    t = 0
+                    response += self._serial.read(self._serial.in_waiting)
+                if response.endswith(self._terminator):
+                    break
+                time.sleep(0.1)
+                t += 0.1
+            else:
+                self.raise_timeout_exception()
         return response
 
     def close(self):
@@ -91,6 +90,10 @@ class TestSerialPortInterface(lily_unit_test.TestSuite):
     def test_send_command(self):
         response = self._serial.send_command(self._TEST_COMMAND)
         self.fail_if(self._TEST_COMMAND + b'\n' != response, 'Invalid response received: {}'.format(response))
+
+    def test_no_response(self):
+        response = self._serial.send_command(self._TEST_COMMAND, False)
+        self.fail_if(response is not None, 'Invalid response received: {}'.format(response))
 
     def teardown(self):
         if self._serial is not None:
