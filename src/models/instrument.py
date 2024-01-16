@@ -88,7 +88,6 @@ class Instrument(object):
         value_type = parts[0]
         if value_type == b'float' and len(parts) > 1:
             format_string = '{{:0.{}f}}'.format(int(parts[1]))
-
         if debug:
             print(self._DEBUG_FORMAT.format('Command mask', command_mask))
             print(self._DEBUG_FORMAT.format('Value', value))
