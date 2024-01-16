@@ -229,6 +229,13 @@ class TestInstrument(TestSuite):
                 'type': 'input',
                 'command_list': [
                     {
+                        'command': 'prepare_string\n',
+                        'response': 'OK\n'
+                    },
+                    {
+                        'command': 'instrument_delay:0.5',
+                    },
+                    {
                         'command': 'get_str?\n',
                         'response': 'name={str}\n'
                     }
@@ -357,6 +364,7 @@ class TestInterface(Interface):
     _COMMAND_TO_RESPONSE = {
         b'get_float?\n': b'voltage=5.03V\n',
         b'get_int?\n': b'count=12\n',
+        b'prepare_string\n': b'OK\n',
         b'get_str?\n': b'name=test instrument\n',
         b'voltage=5.0\n': b'OK\n',
         b'voltage=8.00\n': b'OK\n',
