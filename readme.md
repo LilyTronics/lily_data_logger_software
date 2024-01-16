@@ -64,7 +64,7 @@ Instrument file format:
     {
       "name": "set voltage",
       "type": "output",
-      "command": "U={float:2,3}V\n",
+      "command": "U={float:3}V\n",
       "response": "OK\n"
     }
   ]
@@ -87,23 +87,16 @@ The keyword `{float}` indicates we expect a floating point value there.
 The application will try to match the actual response with this definition and returns the extracted value as a floating point.
 
 The second channel is for setting the desired output voltage (set voltage). This can be used in process automation.
-The command has a keyword `{float:2,3}` the desired value, will be converted to a string with a floating point representation.
-The representation will have 2 digits before the decimal point and 3 digits behind the digital point.
-For example if the desired value is 3.5V this will be sent as: `U=03.500V`.
+The command has a keyword `{float:3}` the desired value, will be converted to a string with a floating point representation.
+The representation will have as many digits as required before the decimal point and 3 digits behind the digital point.
+For example if the desired value is 3.5V this will be sent as: `U=3.500V`.
 
 There are a number of variations possible:
 
 * `{float}`: a floating point with as many digits as required.
-* `{float:,3}`: a floating point with as many digits as required before the decimal point and 3 digits behind the decimal point
-* `{float:2,3}`: a floating point with as 2 digits as before the decimal point and 3 digits behind the decimal point
-* `{float:1-2,1-3}`: a floating point with 1 to 2 digits before the decimal point and 1 to 3 digits behind the decimal point.
+* `{float:3}`: a floating point with as many digits as required before the decimal point and 3 digits behind the decimal point
 * `{int}`: an integer with as many digits as required.
-* `{int:3}`: an integer with three digits using leading zeros if needed.
-* `{str}`: a literal string value with undefined length.
-* `{str:32}`: a literal string value with a length of 32 characters, spaces will be added at the end of the string to match the length.
-  Strings longer than 32 characters are truncated.
-* `{str:6-32}`: a literal string value with a length of 6 to 32 characters, spaces will be added at the end of the string to match the length.
-  Strings longer than 32 characters are truncated.
+* `{str}`: a literal string value.
 
 ## Development
 
