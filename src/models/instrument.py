@@ -300,7 +300,7 @@ class TestInterface(Interface):
         b'label=test output\n': b'OK\n'
     }
 
-    def send_command(self, command, expect_response):
+    def send_command(self, command, expect_response=True):
         if expect_response:
             return self._COMMAND_TO_RESPONSE[command]
         return b''
