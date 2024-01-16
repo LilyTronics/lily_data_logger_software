@@ -33,6 +33,8 @@ class Instrument(object):
         b'str': str
     }
 
+    _DEBUG_FORMAT = '{:14}: {}'
+
     def __init__(self, instrument_definition):
         self._name = instrument_definition.get(self.KEY_NAME, self.DEFAULT_NAME)
         self._info = instrument_definition.get(self.KEY_INFO, self.DEFAULT_INFO)
@@ -50,37 +52,54 @@ class Instrument(object):
         assert len(matches) == 1, 'Channel {} of type {} not found'.format(channel_name, channel_type)
         return matches[0]
 
-    def _get_value(self, channel_name, debug):
-        debug_format = '{:13}: {}'
+    @staticmethod
+    def _parse_mask(mask):
         pre_response = b''
         post_response = b''
         value_type = b'str'
-
-        channel = self._get_channel(self.TYPE_INPUT, channel_name)
-        if debug:
-            print(debug_format.format('Channel', channel))
-        response_mask = channel[self.KEY_RESPONSE].encode(self.BYTE_ENCODING)
-        x1 = response_mask.find(b'{')
-        x2 = response_mask.find(b'}')
+        x1 = mask.find(b'{')
+        x2 = mask.find(b'}')
         if x1 >= 0 and x2 >= 0:
-            pre_response = response_mask[:x1]
-            post_response = response_mask[x2 + 1:]
-            value_type = response_mask[x1 + 1:x2]
+            pre_response = mask[:x1]
+            post_response = mask[x2 + 1:]
+            value_type = mask[x1 + 1:x2]
+        return pre_response, post_response, value_type
+
+    def _parse_response(self, response_mask, response, debug):
+        response_data = self._parse_mask(response_mask.encode(self.BYTE_ENCODING))
         if debug:
-            print(debug_format.format('Command', channel[self.KEY_COMMAND].encode(self.BYTE_ENCODING)))
-        response = self._interface_object.send_command(channel[self.KEY_COMMAND].encode(self.BYTE_ENCODING))
+            print(self._DEBUG_FORMAT.format('Response', response))
+            print(self._DEBUG_FORMAT.format('Pre response', response_data[0]))
+            print(self._DEBUG_FORMAT.format('Post response', response_data[1]))
+        if len(response_data[0]) > 0 and response.startswith(response_data[0]):
+            response = response[len(response_data[0]):]
+        if len(response_data[1]) > 0 and response.endswith(response_data[1]):
+            response = response[:-len(response_data[1])]
         if debug:
-            print(debug_format.format('Response', response))
-            print(debug_format.format('Pre response', pre_response))
-            print(debug_format.format('Post response', post_response))
-        if len(pre_response) > 0 and response.startswith(pre_response):
-            response = response[len(pre_response):]
-        if len(post_response) > 0 and response.endswith(post_response):
-            response = response[:-len(post_response)]
+            print(self._DEBUG_FORMAT.format('Value', response))
+            print(self._DEBUG_FORMAT.format('Value type', response_data[2]))
+        return self._TYPE_NAME_TO_TYPE[response_data[2]](response.decode(self.BYTE_ENCODING))
+
+    def _insert_value_in_command(self, command_mask, value, debug):
+        format_string = '{}'
+        command_mask = command_mask.encode(self.BYTE_ENCODING)
+        command_data = self._parse_mask(command_mask)
+        parts = command_data[2].split(b':')
+        value_type = parts[0]
+        if value_type == b'float' and len(parts) > 1:
+            format_string = '{{:0.{}f}}'.format(int(parts[1]))
+
         if debug:
-            print(debug_format.format('Value', response))
-            print(debug_format.format('Value type', value_type))
-        return self._TYPE_NAME_TO_TYPE[value_type](response.decode(self.BYTE_ENCODING))
+            print(self._DEBUG_FORMAT.format('Command mask', command_mask))
+            print(self._DEBUG_FORMAT.format('Value', value))
+            print(self._DEBUG_FORMAT.format('Pre response', command_data[0]))
+            print(self._DEBUG_FORMAT.format('Post response', command_data[1]))
+            print(self._DEBUG_FORMAT.format('Value type', value_type))
+            print(self._DEBUG_FORMAT.format('Format string', format_string))
+        command = command_data[0]
+        command += format_string.format(self._TYPE_NAME_TO_TYPE[value_type](value)).encode(self.BYTE_ENCODING)
+        command += command_data[1]
+        return command
 
     ##########
     # Public #
@@ -102,10 +121,23 @@ class Instrument(object):
         self._interface_object = interface_object
 
     def get_value(self, channel_name, debug=False):
-        return self._get_value(channel_name, debug)
+        channel = self._get_channel(self.TYPE_INPUT, channel_name)
+        if debug:
+            print(self._DEBUG_FORMAT.format('Channel', channel))
+        if debug:
+            print(self._DEBUG_FORMAT.format('Command', channel[self.KEY_COMMAND].encode(self.BYTE_ENCODING)))
+        response = self._interface_object.send_command(channel[self.KEY_COMMAND].encode(self.BYTE_ENCODING))
+        return self._parse_response(channel[self.KEY_RESPONSE], response, debug)
 
-    def set_value(self, channel_name, value):
-        pass
+    def set_value(self, channel_name, value, debug=False):
+        channel = self._get_channel(self.TYPE_OUTPUT, channel_name)
+        if debug:
+            print(self._DEBUG_FORMAT.format('Channel', channel))
+        command = self._insert_value_in_command(channel[self.KEY_COMMAND], value, debug)
+        if debug:
+            print(self._DEBUG_FORMAT.format('Command', command))
+        response = self._interface_object.send_command(command)
+        return self._parse_response(channel[self.KEY_RESPONSE], response, debug)
 
 
 class TestInstrument(lily_unit_test.TestSuite):
@@ -134,6 +166,18 @@ class TestInstrument(lily_unit_test.TestSuite):
                 'type': 'input',
                 'command': 'get_str?\n',
                 'response': 'name={str}\n'
+            },
+            {
+                'name': 'set float 1',
+                'type': 'output',
+                'command': 'voltage={float}\n',
+                'response': 'OK\n'
+            },
+            {
+                'name': 'set float 2',
+                'type': 'output',
+                'command': 'voltage={float:2}\n',
+                'response': 'OK\n'
             }
         ]
     }
@@ -192,13 +236,24 @@ class TestInstrument(lily_unit_test.TestSuite):
         self.fail_if(type(value) is not str, 'Value is not type str')
         self.fail_if(value != 'test instrument', 'Value is not correct')
 
+    def test_float_output(self):
+        instrument = self._create_instrument()
+        self.log.debug('Test float 1 output')
+        response = instrument.set_value('set float 1', '5')
+        self.fail_if(response != 'OK\n', 'The response is not correct')
+        self.log.debug('Test float 2 output')
+        response = instrument.set_value('set float 2', '8', True)
+        self.fail_if(response != 'OK\n', 'The response is not correct')
+
 
 class TestInterface(Interface):
 
     _COMMAND_TO_RESPONSE = {
         b'get_float?\n': b'voltage=5.03V\n',
         b'get_int?\n': b'count=12\n',
-        b'get_str?\n': b'name=test instrument\n'
+        b'get_str?\n': b'name=test instrument\n',
+        b'voltage=5.0\n': b'OK\n',
+        b'voltage=8.00\n': b'OK\n'
     }
 
     def send_command(self, command):
