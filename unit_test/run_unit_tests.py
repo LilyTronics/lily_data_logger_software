@@ -5,13 +5,19 @@ Runs all the unit tests
 import os
 
 from lily_unit_test import TestRunner
-from unit_test.setup_environment import setup_environment
+from src.models.list_serial_ports import get_available_serial_ports
+from unit_test.test_environment.check_serial_loopback import is_serial_loopback_available
+from unit_test.test_environment.setup_environment import clear_reports
 
 
 REPORT_FOLDER = os.path.join(os.path.dirname(__file__), 'test_reports')
 EXCLUDE_TESTS = ['TestSuite']
+serial_ports = get_available_serial_ports()
 
-setup_environment(REPORT_FOLDER, EXCLUDE_TESTS)
+clear_reports(REPORT_FOLDER)
+
+if not is_serial_loopback_available(serial_ports):
+    EXCLUDE_TESTS.append('TestSerialPortInterface')
 
 options = {
     'report_folder': REPORT_FOLDER,
