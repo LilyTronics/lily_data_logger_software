@@ -50,24 +50,36 @@ class Instrument(object):
         assert len(matches) == 1, 'Channel {} of type {} not found'.format(channel_name, channel_type)
         return matches[0]
 
-    def _get_value(self, channel_name):
+    def _get_value(self, channel_name, debug):
+        debug_format = '{:13}: {}'
         pre_response = b''
         post_response = b''
         value_type = b'str'
 
         channel = self._get_channel(self.TYPE_INPUT, channel_name)
+        if debug:
+            print(debug_format.format('Channel', channel))
         response_mask = channel[self.KEY_RESPONSE].encode(self.BYTE_ENCODING)
         x1 = response_mask.find(b'{')
         x2 = response_mask.find(b'}')
         if x1 >= 0 and x2 >= 0:
             pre_response = response_mask[:x1]
             post_response = response_mask[x2 + 1:]
-            value_type = response_mask[x1 + 1:x2].split(b':')[0]
+            value_type = response_mask[x1 + 1:x2]
+        if debug:
+            print(debug_format.format('Command', channel[self.KEY_COMMAND].encode(self.BYTE_ENCODING)))
         response = self._interface_object.send_command(channel[self.KEY_COMMAND].encode(self.BYTE_ENCODING))
+        if debug:
+            print(debug_format.format('Response', response))
+            print(debug_format.format('Pre response', pre_response))
+            print(debug_format.format('Post response', post_response))
         if len(pre_response) > 0 and response.startswith(pre_response):
             response = response[len(pre_response):]
         if len(post_response) > 0 and response.endswith(post_response):
             response = response[:-len(post_response)]
+        if debug:
+            print(debug_format.format('Value', response))
+            print(debug_format.format('Value type', value_type))
         return self._TYPE_NAME_TO_TYPE[value_type](response.decode(self.BYTE_ENCODING))
 
     ##########
@@ -89,8 +101,8 @@ class Instrument(object):
     def set_interface_object(self, interface_object):
         self._interface_object = interface_object
 
-    def get_value(self, channel_name):
-        return self._get_value(channel_name)
+    def get_value(self, channel_name, debug=False):
+        return self._get_value(channel_name, debug)
 
     def set_value(self, channel_name, value):
         pass
