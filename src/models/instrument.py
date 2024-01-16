@@ -139,8 +139,11 @@ class Instrument(object):
         command = self._insert_value_in_command(channel[self.KEY_COMMAND], value, debug)
         if debug:
             print(self._DEBUG_FORMAT.format('Command', command))
-        response = self._interface_object.send_command(command)
-        return self._parse_response(channel[self.KEY_RESPONSE], response, debug)
+        expect_response = channel[self.KEY_RESPONSE] != ''
+        response = self._interface_object.send_command(command, expect_response)
+        if expect_response:
+            return self._parse_response(channel[self.KEY_RESPONSE], response, debug)
+        return None
 
 
 class TestInstrument(lily_unit_test.TestSuite):
@@ -193,6 +196,12 @@ class TestInstrument(lily_unit_test.TestSuite):
                 'type': 'output',
                 'command': 'label={str}\n',
                 'response': 'OK\n'
+            },
+            {
+                'name': 'set no response',
+                'type': 'output',
+                'command': 'label={str}\n',
+                'response': ''
             }
         ]
     }
@@ -272,6 +281,12 @@ class TestInstrument(lily_unit_test.TestSuite):
         response = instrument.set_value('set str', 'test output')
         self.fail_if(response != 'OK\n', 'The response is not correct')
 
+    def test_no_response(self):
+        instrument = self._create_instrument()
+        self.log.debug('Test command with no response')
+        response = instrument.set_value('set no response', 'no response')
+        self.fail_if(response is not None, 'The response is not correct')
+
 
 class TestInterface(Interface):
 
@@ -285,8 +300,10 @@ class TestInterface(Interface):
         b'label=test output\n': b'OK\n'
     }
 
-    def send_command(self, command):
-        return self._COMMAND_TO_RESPONSE[command]
+    def send_command(self, command, expect_response):
+        if expect_response:
+            return self._COMMAND_TO_RESPONSE[command]
+        return b''
 
 
 if __name__ == '__main__':
