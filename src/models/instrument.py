@@ -173,14 +173,16 @@ class Instrument(object):
         channel = self._get_channel(self.TYPE_OUTPUT, channel_name)
         if debug:
             print(self._DEBUG_FORMAT.format('Channel', channel))
-        command = self._insert_value_in_command(channel[self.KEY_COMMAND], value, debug)
-        if debug:
-            print(self._DEBUG_FORMAT.format('Command', command))
-        expect_response = self.KEY_RESPONSE in channel.keys()
-        response = self._interface_object.send_command(command, expect_response)
-        if expect_response:
-            return self._parse_response(channel[self.KEY_RESPONSE], response, debug)
-        return None
+        response = None
+        for command_data in channel[self.KEY_COMMAND_LIST]:
+            command = self._insert_value_in_command(command_data[self.KEY_COMMAND], value, debug)
+            if debug:
+                print(self._DEBUG_FORMAT.format('Command', command))
+            expect_response = self.KEY_RESPONSE in command_data.keys()
+            response = self._interface_object.send_command(command, expect_response)
+            if expect_response:
+                response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
+        return response
 
 
 class TestInstrument(TestSuite):
@@ -244,31 +246,51 @@ class TestInstrument(TestSuite):
             {
                 'name': 'set float 1',
                 'type': 'output',
-                'command': 'voltage={float}\n',
-                'response': 'OK\n'
+                'command_list': [
+                    {
+                        'command': 'voltage={float}\n',
+                        'response': 'OK\n'
+                    }
+                ]
             },
             {
                 'name': 'set float 2',
                 'type': 'output',
-                'command': 'voltage={float:2}\n',
-                'response': 'OK\n'
+                'command_list': [
+                    {
+                        'command': 'voltage={float:2}\n',
+                        'response': 'OK\n'
+                    }
+                ]
             },
             {
                 'name': 'set int',
                 'type': 'output',
-                'command': 'state={int}\n',
-                'response': 'OK\n'
+                'command_list': [
+                    {
+                        'command': 'state={int}\n',
+                        'response': 'OK\n'
+                    }
+                ]
             },
             {
                 'name': 'set str',
                 'type': 'output',
-                'command': 'label={str}\n',
-                'response': 'OK\n'
+                'command_list': [
+                    {
+                        'command': 'label={str}\n',
+                        'response': 'OK\n'
+                    }
+                ]
             },
             {
                 'name': 'set no response',
                 'type': 'output',
-                'command': 'label={str}\n',
+                'command_list': [
+                    {
+                        'command': 'label={str}\n',
+                    }
+                ]
             }
         ]
     }
@@ -352,7 +374,7 @@ class TestInstrument(TestSuite):
         instrument = self._create_instrument()
         self.log.debug('Test command with no response')
         response = instrument.set_value('set no response', 'no response')
-        self.fail_if(response is not None, 'The response is not correct')
+        self.fail_if(response is not b'', 'The response is not correct')
 
     def test_initialize(self):
         instrument = self._create_instrument()
