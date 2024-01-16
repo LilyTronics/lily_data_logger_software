@@ -2,7 +2,7 @@
 Module with time converter functions.
 """
 
-import lily_unit_test
+from unit_test.test_suite import TestSuite
 
 
 TIME_UNITS = {'seconds': 1, 'minutes': 60, 'hours': 3600, 'days': 86400}
@@ -28,7 +28,7 @@ def convert_seconds_to_time_with_unit(seconds):
     return int(seconds / factor), unit
 
 
-class TestTimeConverter(lily_unit_test.TestSuite):
+class TestTimeConverter(TestSuite):
 
     def test_create_duration_time_string(self):
         test_values = [

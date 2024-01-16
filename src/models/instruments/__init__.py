@@ -2,10 +2,9 @@
 Instruments package.
 """
 
-import lily_unit_test
-
 from src.models.instruments.simulator_multimeter import simulator_multimeter
 from src.models.instruments.simulator_temperature_chamber import simulator_temperature_chamber
+from unit_test.test_suite import TestSuite
 
 
 _INSTRUMENTS = [
@@ -25,7 +24,7 @@ def get_instrument_by_name(instrument_name):
     return None
 
 
-class TestInstruments(lily_unit_test.TestSuite):
+class TestInstruments(TestSuite):
 
     def test_instruments(self):
         for name in get_instrument_names():

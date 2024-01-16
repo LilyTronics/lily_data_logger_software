@@ -4,9 +4,9 @@ Model for storing and recalling the application settings.
 
 import json
 import os
-import lily_unit_test
 
 from src.app_data import AppData
+from unit_test.test_suite import TestSuite
 
 
 class Settings(object):
@@ -90,7 +90,7 @@ class Settings(object):
         self._store_property('log_window', 'maximized', is_maximized)
 
 
-class TestSettings(lily_unit_test.TestSuite):
+class TestSettings(TestSuite):
 
     def setup(self):
         if not os.path.isdir(AppData.USER_FOLDER):

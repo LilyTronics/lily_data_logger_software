@@ -4,8 +4,9 @@ Configuration model.
 
 import copy
 import json
-import lily_unit_test
 import os
+
+from unit_test.test_suite import TestSuite
 
 
 class Configuration(object):
@@ -112,7 +113,7 @@ class Configuration(object):
                                                      self._DEFAULT_CONFIGURATION[self.KEY_PROCESS_STEPS]))
 
 
-class TestConfiguration(lily_unit_test.TestSuite):
+class TestConfiguration(TestSuite):
 
     def setup(self):
         self._filename = 'test_config.json'

@@ -2,13 +2,13 @@
 Logger for the application.
 """
 
-import lily_unit_test
 import os
 import sys
 import threading
 
 from src.app_data import AppData
 from datetime import datetime
+from unit_test.test_suite import TestSuite
 
 
 class Logger(object):
@@ -76,7 +76,7 @@ class Logger(object):
                 self._orgStdout.write(message)
 
 
-class TestLogger(lily_unit_test.TestSuite):
+class TestLogger(TestSuite):
 
     _TEST_MESSAGES = [
         ('info', 'This is an info message'),

@@ -2,10 +2,9 @@
 Running simulators.
 """
 
-import lily_unit_test
-
 from src.simulators.multimeter_udp import MultimeterUdp
 from src.simulators.temperature_chamber_tcp import TemperatureChamberTcp
+from unit_test.test_suite import TestSuite
 
 
 _SIMULATORS = []
@@ -37,7 +36,7 @@ def _start_simulator(simulator_class):
         raise Exception('Could not start {}: {}'.format(simulator_class.__name__, e))
 
 
-class TestStartStopSimulators(lily_unit_test.TestSuite):
+class TestStartStopSimulators(TestSuite):
 
     def _check_running_simulators(self, expected_running):
         for simulator in _SIMULATORS:

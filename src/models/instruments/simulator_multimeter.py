@@ -2,9 +2,8 @@
 Instrument model for the multimeter simulator
 """
 
-import lily_unit_test
-
 from src.models.instrument import Instrument
+from unit_test.test_suite import TestSuite
 
 
 simulator_multimeter = Instrument({
@@ -13,7 +12,7 @@ simulator_multimeter = Instrument({
 })
 
 
-class TestSimulatorMultimeter(lily_unit_test.TestSuite):
+class TestSimulatorMultimeter(TestSuite):
 
     def test_properties(self):
         self.fail_if(simulator_multimeter.get_name() != 'Simulator multimeter',

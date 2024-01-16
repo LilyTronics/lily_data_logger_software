@@ -3,13 +3,13 @@ Serial port interface.
 The unit test requires a serial port, with a loopback connector connected (automatically detected).
 """
 
-import lily_unit_test
 import serial
 import time
 
 from src.models.list_serial_ports import get_available_serial_ports
 from src.models.interfaces.interface import Interface
 from unit_test.test_environment.serial_loopback import get_serial_loopback_port
+from unit_test.test_suite import TestSuite
 
 
 class SerialPortInterface(Interface):
@@ -48,7 +48,7 @@ class SerialPortInterface(Interface):
         self._serial.close()
 
 
-class TestSerialPortInterface(lily_unit_test.TestSuite):
+class TestSerialPortInterface(TestSuite):
 
     _CHECK_FOR_LOOPBACK_DATA = b'check_for_loopback'
     _TEST_COMMAND = b'serial_port_test'

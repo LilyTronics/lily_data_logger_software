@@ -2,8 +2,9 @@
 View for editing the configuration.
 """
 
-import lily_unit_test
 import wx
+
+from unit_test.test_suite import TestSuite
 
 
 class ViewEditConfiguration(wx.Dialog):
@@ -157,7 +158,7 @@ class ViewEditConfiguration(wx.Dialog):
         self._update_total_samples()
 
 
-class TestViewEditConfiguration(lily_unit_test.TestSuite):
+class TestViewEditConfiguration(TestSuite):
 
     _SHOW_VIEW = False
 

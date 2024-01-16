@@ -2,9 +2,8 @@
 Instrument model.
 """
 
-import lily_unit_test
-
 from src.models.interfaces.interface import Interface
+from unit_test.test_suite import TestSuite
 
 
 class Instrument(object):
@@ -146,7 +145,7 @@ class Instrument(object):
         return None
 
 
-class TestInstrument(lily_unit_test.TestSuite):
+class TestInstrument(TestSuite):
 
     instrument_data = {
         'name': 'Test instrument',

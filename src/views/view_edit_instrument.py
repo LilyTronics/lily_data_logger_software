@@ -2,10 +2,10 @@
 Edit instrument view.
 """
 
-import lily_unit_test
 import wx
 
 from src.views.view_dialogs import show_message
+from unit_test.test_suite import TestSuite
 
 
 class ViewEditInstrument(wx.Dialog):
@@ -140,7 +140,7 @@ class ViewEditInstrument(wx.Dialog):
         self._txt_console.AppendText('%s\n' % text)
 
 
-class TestViewEditInstrument(lily_unit_test.TestSuite):
+class TestViewEditInstrument(TestSuite):
 
     _SHOW_VIEW = False
 

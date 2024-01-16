@@ -2,11 +2,10 @@
 Interfaces package.
 """
 
-import lily_unit_test
-
 from src.models.interfaces.serial_port_interface import SerialPortInterface
 from src.models.interfaces.tcp_client_interface import TcpClientInterface
 from src.models.interfaces.udp_client_interface import UdpClientInterface
+from unit_test.test_suite import TestSuite
 
 
 _INTERFACES = [
@@ -27,7 +26,7 @@ def get_interface_by_name(interface_name):
     return None
 
 
-class TestInterfaces(lily_unit_test.TestSuite):
+class TestInterfaces(TestSuite):
 
     def test_interfaces(self):
         for name in get_interface_names():

@@ -2,12 +2,12 @@
 Multimeter using UDP interface.
 """
 
-import lily_unit_test
 import random
 import socket
 import threading
 
 from src.simulators.simulator_settings import SimulatorSettings
+from unit_test.test_suite import TestSuite
 
 
 class MultimeterUdp(object):
@@ -72,7 +72,7 @@ class MultimeterUdp(object):
         return self._thread is not None and self._thread.is_alive()
 
 
-class TestMultimeterUdp(lily_unit_test.TestSuite):
+class TestMultimeterUdp(TestSuite):
 
     _RX_TIME_OUT = 0.5
     _RX_BUFFER_SIZE = 1500
