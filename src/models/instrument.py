@@ -181,6 +181,18 @@ class TestInstrument(lily_unit_test.TestSuite):
                 'type': 'output',
                 'command': 'voltage={float:2}\n',
                 'response': 'OK\n'
+            },
+            {
+                'name': 'set int',
+                'type': 'output',
+                'command': 'state={int}\n',
+                'response': 'OK\n'
+            },
+            {
+                'name': 'set str',
+                'type': 'output',
+                'command': 'label={str}\n',
+                'response': 'OK\n'
             }
         ]
     }
@@ -248,6 +260,18 @@ class TestInstrument(lily_unit_test.TestSuite):
         response = instrument.set_value('set float 2', '8')
         self.fail_if(response != 'OK\n', 'The response is not correct')
 
+    def test_int_output(self):
+        instrument = self._create_instrument()
+        self.log.debug('Test int output')
+        response = instrument.set_value('set int', '7')
+        self.fail_if(response != 'OK\n', 'The response is not correct')
+
+    def test_str_output(self):
+        instrument = self._create_instrument()
+        self.log.debug('Test str output')
+        response = instrument.set_value('set str', 'test output')
+        self.fail_if(response != 'OK\n', 'The response is not correct')
+
 
 class TestInterface(Interface):
 
@@ -256,7 +280,9 @@ class TestInterface(Interface):
         b'get_int?\n': b'count=12\n',
         b'get_str?\n': b'name=test instrument\n',
         b'voltage=5.0\n': b'OK\n',
-        b'voltage=8.00\n': b'OK\n'
+        b'voltage=8.00\n': b'OK\n',
+        b'state=7\n': b'OK\n',
+        b'label=test output\n': b'OK\n'
     }
 
     def send_command(self, command):
