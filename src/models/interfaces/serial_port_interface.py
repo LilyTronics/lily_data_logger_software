@@ -9,6 +9,7 @@ import time
 
 from src.models.list_serial_ports import get_available_serial_ports
 from src.models.interfaces.interface import Interface
+from unit_test.test_environment.serial_loopback import get_serial_loopback_port
 
 
 class SerialPortInterface(Interface):
@@ -55,35 +56,11 @@ class TestSerialPortInterface(lily_unit_test.TestSuite):
 
     _serial = None
 
-    def _check_for_loopback(self, port_name):
-        self.log.debug('Check for loopback on port: {}'.format(port_name))
-        with serial.Serial(port_name, write_timeout=0.2) as s:
-            s.write(self._CHECK_FOR_LOOPBACK_DATA)
-            i = 5
-            rx_data = b''
-            while i > 0:
-                if s.in_waiting > 0:
-                    rx_data += s.read(s.in_waiting)
-                if rx_data == self._CHECK_FOR_LOOPBACK_DATA:
-                    break
-                time.sleep(0.1)
-                i -= 1
-            else:
-                raise Exception('Loopback data not found (timeout)')
-
     def setup(self):
         self.log.info('Get available serial ports')
         ports = get_available_serial_ports()
         self.fail_if('no ports' in ports, 'No serial ports available')
-        port = None
-        for port in ports:
-            try:
-                self._check_for_loopback(port)
-                break
-            except Exception as e:
-                self.log.debug(e)
-        else:
-            self.fail('No port with loopback found')
+        port = get_serial_loopback_port(ports)
         self.log.info('Loopback found on port: {}'.format(port))
         self._serial = SerialPortInterface(port, self._RX_TIMEOUT)
 
