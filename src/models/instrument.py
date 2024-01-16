@@ -2,6 +2,8 @@
 Instrument model.
 """
 
+import time
+
 from src.models.interfaces.interface import Interface
 from unit_test.test_suite import TestSuite
 
@@ -102,6 +104,28 @@ class Instrument(object):
         command += command_data[1]
         return command
 
+    def _execute_internal_command(self, command, debug):
+        if command.startswith(b'instrument_delay:'):
+            delay = float(command.split(b':')[-1])
+            if debug:
+                print(self._DEBUG_FORMAT.format('Delay (s)', delay))
+            time.sleep(delay)
+            return True
+
+        return False
+
+    def _process_command(self, command_data, debug):
+        response = b''
+        command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
+        if debug:
+            print(self._DEBUG_FORMAT.format('Command', command))
+        if not self._execute_internal_command(command, debug):
+            expect_response = self.KEY_RESPONSE in command_data.keys()
+            response = self._interface_object.send_command(command, expect_response)
+            if expect_response:
+                response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
+        return response
+
     ##########
     # Public #
     ##########
@@ -125,13 +149,8 @@ class Instrument(object):
         if debug:
             print('Initialize instrument')
         for command_data in self._initialize_data:
-            command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
-            if debug:
-                print(self._DEBUG_FORMAT.format('Command', command))
-            expect_response = command_data[self.KEY_RESPONSE] != ''
-            response = self._interface_object.send_command(command, expect_response)
-            if expect_response:
-                response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
+            response = self._process_command(command_data, debug)
+            if self.KEY_RESPONSE in command_data.keys():
                 assert response == command_data[self.KEY_RESPONSE], 'Initialize command {} failed {}'.format(
                     command_data[self.KEY_COMMAND], command_data[self.KEY_RESPONSE])
 
@@ -147,7 +166,7 @@ class Instrument(object):
             command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
             if debug:
                 print(self._DEBUG_FORMAT.format('Command', command))
-            expect_response = command_data[self.KEY_RESPONSE] != ''
+            expect_response = self.KEY_RESPONSE in command_data.keys()
             response = self._interface_object.send_command(command, expect_response)
             if expect_response:
                 response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
@@ -162,7 +181,7 @@ class Instrument(object):
         command = self._insert_value_in_command(channel[self.KEY_COMMAND], value, debug)
         if debug:
             print(self._DEBUG_FORMAT.format('Command', command))
-        expect_response = channel[self.KEY_RESPONSE] != ''
+        expect_response = self.KEY_RESPONSE in channel.keys()
         response = self._interface_object.send_command(command, expect_response)
         if expect_response:
             return self._parse_response(channel[self.KEY_RESPONSE], response, debug)
@@ -183,8 +202,10 @@ class TestInstrument(TestSuite):
                 'response': 'OK\n'
             },
             {
+                'command': 'instrument_delay:0.5'
+            },
+            {
                 'command': 'test init no response\n',
-                'response': ''
             }
         ],
         'channels': [
@@ -246,7 +267,6 @@ class TestInstrument(TestSuite):
                 'name': 'set no response',
                 'type': 'output',
                 'command': 'label={str}\n',
-                'response': ''
             }
         ]
     }
@@ -347,10 +367,13 @@ class TestInterface(Interface):
         b'voltage=8.00\n': b'OK\n',
         b'state=7\n': b'OK\n',
         b'label=test output\n': b'OK\n',
+        b'label=no response\n': b'',
         b'test init\n': b'OK\n',
+        b'test init no response\n': b''
     }
 
     def send_command(self, command, expect_response=True):
+        assert command in self._COMMAND_TO_RESPONSE.keys(), 'Unknown command {}'.format(command)
         if expect_response:
             return self._COMMAND_TO_RESPONSE[command]
         return b''
