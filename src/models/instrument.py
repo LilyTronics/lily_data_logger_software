@@ -125,7 +125,8 @@ class Instrument(object):
             print('Initialize instrument')
         for command_data in self._initialize_data:
             command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
-            print(self._DEBUG_FORMAT.format('Command', command))
+            if debug:
+                print(self._DEBUG_FORMAT.format('Command', command))
             expect_response = command_data[self.KEY_RESPONSE] != ''
             response = self._interface_object.send_command(command, expect_response)
             if expect_response:
@@ -313,7 +314,7 @@ class TestInstrument(TestSuite):
 
     def test_initialize(self):
         instrument = self._create_instrument()
-        instrument.initialize(True)
+        instrument.initialize()
 
 
 class TestInterface(Interface):
