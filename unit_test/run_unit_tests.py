@@ -6,7 +6,7 @@ import os
 
 from lily_unit_test import TestRunner
 from src.models.list_serial_ports import get_available_serial_ports
-from unit_test.test_environment.check_serial_loopback import is_serial_loopback_available
+from unit_test.test_environment.serial_loopback import get_serial_loopback_port
 from unit_test.test_environment.setup_environment import clear_reports
 
 
@@ -16,7 +16,7 @@ serial_ports = get_available_serial_ports()
 
 clear_reports(REPORT_FOLDER)
 
-if not is_serial_loopback_available(serial_ports):
+if get_serial_loopback_port(serial_ports) is None:
     EXCLUDE_TESTS.append('TestSerialPortInterface')
 
 options = {
