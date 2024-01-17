@@ -1,0 +1,110 @@
+{
+    "name": "Test instrument",
+    "info": "Instrument for testing the model",
+    "interface": {
+        "type": "test interface"
+    },
+    "initialize": [
+        {
+            "command": "test init\n",
+            "response": "OK\n"
+        },
+        {
+            "command": "instrument_delay:0.5"
+        },
+        {
+            "command": "test init no response\n"
+        }
+    ],
+    "channels": [
+        {
+            "name": "get float",
+            "type": "input",
+            "command_list": [
+                {
+                    "command": "get_float?\n",
+                    "response": "voltage={float}V\n"
+                }
+            ]
+        },
+        {
+            "name": "get int",
+            "type": "input",
+            "command_list": [
+                {
+                    "command": "get_int?\n",
+                    "response": "count={int}\n"
+                }
+            ]
+        },
+        {
+            "name": "get str",
+            "type": "input",
+            "command_list": [
+                {
+                    "command": "prepare_string\n",
+                    "response": "OK\n"
+                },
+                {
+                    "command": "instrument_delay:0.5"
+                },
+                {
+                    "command": "get_str?\n",
+                    "response": "name={str}\n"
+                }
+            ]
+        },
+        {
+            "name": "set float 1",
+            "type": "output",
+            "command_list": [
+                {
+                    "command": "voltage={float}\n",
+                    "response": "OK\n"
+                }
+            ]
+        },
+        {
+            "name": "set float 2",
+            "type": "output",
+            "command_list": [
+                {
+                    "command": "voltage={float:2}\n",
+                    "response": "OK\n"
+                }
+            ]
+        },
+        {
+            "name": "set int",
+            "type": "output",
+            "command_list": [
+                {
+                    "command": "state={int}\n",
+                    "response": "OK\n"
+                }
+            ]
+        },
+        {
+            "name": "set str",
+            "type": "output",
+            "command_list": [
+                {
+                    "command": "instrument_delay:0.5"
+                },
+                {
+                    "command": "label={str}\n",
+                    "response": "OK\n"
+                }
+            ]
+        },
+        {
+            "name": "set no response",
+            "type": "output",
+            "command_list": [
+                {
+                    "command": "label={str}\n"
+                }
+            ]
+        }
+    ]
+}
