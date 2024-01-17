@@ -374,7 +374,7 @@ class TestInstrument(TestSuite):
         instrument = self._create_instrument()
         self.log.debug('Test command with no response')
         response = instrument.set_value('set no response', 'no response')
-        self.fail_if(response is not b'', 'The response is not correct')
+        self.fail_if(response != b'', 'The response is not correct')
 
     def test_initialize(self):
         instrument = self._create_instrument()
