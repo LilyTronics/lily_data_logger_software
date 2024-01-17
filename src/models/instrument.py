@@ -1,7 +1,7 @@
 """
 Instrument model.
 """
-
+import json
 import time
 
 from src.models.interfaces.interface import Interface
@@ -147,6 +147,16 @@ class Instrument(object):
     ##########
     # Public #
     ##########
+
+    def export_to_file(self, filename):
+        output = {
+            self.KEY_NAME: self._name,
+            self.KEY_INFO: self._info,
+            self.KEY_INTERFACE: self._interface_data,
+            self.KEY_INITIALIZE: self._initialize_data,
+            self.KEY_CHANNELS: self._channel_data
+        }
+        json.dump(output, open(filename, 'w'), indent=4)
 
     def get_name(self):
         return self._name
@@ -392,6 +402,10 @@ class TestInstrument(TestSuite):
     def test_initialize(self):
         instrument = self._create_instrument()
         instrument.initialize()
+
+    def test_export_to_file(self):
+        instrument = self._create_instrument()
+        instrument.export_to_file('test_instrument.json')
 
 
 class TestInterface(Interface):
