@@ -1,6 +1,7 @@
 """
 Instrument model.
 """
+
 import json
 import time
 
