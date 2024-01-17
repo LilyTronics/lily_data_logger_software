@@ -36,7 +36,7 @@ class Instrument(object):
         b'str': str
     }
 
-    _DEBUG_FORMAT = '{:14}: {}'
+    _DEBUG_FORMAT = '{:18}: {}'
 
     def __init__(self, instrument_definition):
         self._name = instrument_definition.get(self.KEY_NAME, self.DEFAULT_NAME)
@@ -58,50 +58,63 @@ class Instrument(object):
 
     @staticmethod
     def _parse_mask(mask):
+        has_mask = False
         pre_response = b''
         post_response = b''
         value_type = b'str'
         x1 = mask.find(b'{')
         x2 = mask.find(b'}')
-        if x1 >= 0 and x2 >= 0:
+        if 0 <= x1 < x2:
+            has_mask = True
             pre_response = mask[:x1]
             post_response = mask[x2 + 1:]
             value_type = mask[x1 + 1:x2]
-        return pre_response, post_response, value_type
+        return has_mask, pre_response, post_response, value_type
 
-    def _parse_response(self, response_mask, response, debug):
-        response_data = self._parse_mask(response_mask.encode(self.BYTE_ENCODING))
+    def _parse_response(self, expected_response, response, debug):
         if debug:
+            print(self._DEBUG_FORMAT.format('Expected response', expected_response))
             print(self._DEBUG_FORMAT.format('Response', response))
-            print(self._DEBUG_FORMAT.format('Pre response', response_data[0]))
-            print(self._DEBUG_FORMAT.format('Post response', response_data[1]))
-        if len(response_data[0]) > 0 and response.startswith(response_data[0]):
-            response = response[len(response_data[0]):]
-        if len(response_data[1]) > 0 and response.endswith(response_data[1]):
-            response = response[:-len(response_data[1])]
+        response_data = self._parse_mask(expected_response)
         if debug:
-            print(self._DEBUG_FORMAT.format('Value', response))
-            print(self._DEBUG_FORMAT.format('Value type', response_data[2]))
-        return self._TYPE_NAME_TO_TYPE[response_data[2]](response.decode(self.BYTE_ENCODING))
+            print(self._DEBUG_FORMAT.format('Has mask', response_data[0]))
+            print(self._DEBUG_FORMAT.format('Pre response', response_data[1]))
+            print(self._DEBUG_FORMAT.format('Post response', response_data[2]))
+            print(self._DEBUG_FORMAT.format('Value type', response_data[3]))
+        if response_data[0]:
+            if len(response_data[1]) > 0 and response.startswith(response_data[1]):
+                response = response[len(response_data[1]):]
+            if len(response_data[2]) > 0 and response.endswith(response_data[2]):
+                response = response[:-len(response_data[2])]
+            value = self._TYPE_NAME_TO_TYPE[response_data[3]](response.decode(self.BYTE_ENCODING))
+        else:
+            value = response.decode(self.BYTE_ENCODING)
+        if debug:
+            print(self._DEBUG_FORMAT.format('Value', '({}) {}'.format(
+                type(value), str(value).encode(self.BYTE_ENCODING))))
+        return value
 
     def _insert_value_in_command(self, command_mask, value, debug):
         format_string = '{}'
-        command_mask = command_mask.encode(self.BYTE_ENCODING)
         command_data = self._parse_mask(command_mask)
-        parts = command_data[2].split(b':')
-        value_type = parts[0]
-        if value_type == b'float' and len(parts) > 1:
-            format_string = '{{:0.{}f}}'.format(int(parts[1]))
         if debug:
             print(self._DEBUG_FORMAT.format('Command mask', command_mask))
-            print(self._DEBUG_FORMAT.format('Value', value))
-            print(self._DEBUG_FORMAT.format('Pre response', command_data[0]))
-            print(self._DEBUG_FORMAT.format('Post response', command_data[1]))
-            print(self._DEBUG_FORMAT.format('Value type', value_type))
-            print(self._DEBUG_FORMAT.format('Format string', format_string))
-        command = command_data[0]
-        command += format_string.format(self._TYPE_NAME_TO_TYPE[value_type](value)).encode(self.BYTE_ENCODING)
-        command += command_data[1]
+            print(self._DEBUG_FORMAT.format('Has mask', command_data[0]))
+            print(self._DEBUG_FORMAT.format('Pre response', command_data[1]))
+            print(self._DEBUG_FORMAT.format('Post response', command_data[2]))
+            print(self._DEBUG_FORMAT.format('Value type', command_data[3]))
+        if command_data[0]:
+            parts = command_data[3].split(b':')
+            value_type = parts[0]
+            if value_type == b'float' and len(parts) > 1:
+                format_string = '{{:0.{}f}}'.format(int(parts[1]))
+            if debug:
+                print(self._DEBUG_FORMAT.format('Format string', format_string))
+            command = command_data[1]
+            command += format_string.format(self._TYPE_NAME_TO_TYPE[value_type](value)).encode(self.BYTE_ENCODING)
+            command += command_data[2]
+        else:
+            command = command_mask
         return command
 
     def _execute_internal_command(self, command, debug):
@@ -111,21 +124,24 @@ class Instrument(object):
                 print(self._DEBUG_FORMAT.format('Delay (s)', delay))
             time.sleep(delay)
             return True
-
         return False
 
-    def _process_command(self, command_data, debug):
+    def _process_command(self, command_data, debug, value=None):
         if debug:
             print(self._DEBUG_FORMAT.format('Command data', command_data))
         response = b''
         command = command_data[self.KEY_COMMAND].encode(self.BYTE_ENCODING)
+        if value is not None:
+            command = self._insert_value_in_command(command, value, debug)
         if debug:
             print(self._DEBUG_FORMAT.format('Command', command))
         if not self._execute_internal_command(command, debug):
             expect_response = self.KEY_RESPONSE in command_data.keys()
             response = self._interface_object.send_command(command, expect_response)
             if expect_response:
-                response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
+                expected_response = command_data[self.KEY_RESPONSE].encode(self.BYTE_ENCODING)
+                response = self._parse_response(expected_response, response, debug)
+
         return response
 
     ##########
@@ -175,13 +191,7 @@ class Instrument(object):
             print(self._DEBUG_FORMAT.format('Channel', channel))
         response = None
         for command_data in channel[self.KEY_COMMAND_LIST]:
-            command = self._insert_value_in_command(command_data[self.KEY_COMMAND], value, debug)
-            if debug:
-                print(self._DEBUG_FORMAT.format('Command', command))
-            expect_response = self.KEY_RESPONSE in command_data.keys()
-            response = self._interface_object.send_command(command, expect_response)
-            if expect_response:
-                response = self._parse_response(command_data[self.KEY_RESPONSE], response, debug)
+            response = self._process_command(command_data, debug, value)
         return response
 
 
@@ -277,6 +287,9 @@ class TestInstrument(TestSuite):
                 'name': 'set str',
                 'type': 'output',
                 'command_list': [
+                    {
+                        'command': 'instrument_delay:0.5',
+                    },
                     {
                         'command': 'label={str}\n',
                         'response': 'OK\n'
@@ -406,4 +419,4 @@ class TestInterface(Interface):
 
 if __name__ == '__main__':
 
-    TestInstrument().run(True)
+    TestInstrument().run()
