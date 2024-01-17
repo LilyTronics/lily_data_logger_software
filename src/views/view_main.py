@@ -17,7 +17,8 @@ class ViewMain(wx.Frame):
     ID_TOOL_START_PROCESS = 104
     ID_TOOL_STOP_PROCESS = 105
     ID_TOOL_EXPORT_CSV = 106
-    ID_TOOL_SHOW_LOG = 107
+    ID_TOOL_EXPORT_INSTRUMENT = 107
+    ID_TOOL_SHOW_LOG = 108
 
     ID_LIST_INSTRUMENTS = 200
     ID_BTN_ADD_INSTRUMENT = 201
@@ -71,7 +72,8 @@ class ViewMain(wx.Frame):
             (self.ID_TOOL_START_PROCESS, ImageData.start.Bitmap, 'Start'),
             (self.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, ' Stop'),
             (0,),
-            (self.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap, 'Export to CSV'),
+            (self.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap, 'Export measurement data to CSV'),
+            (self.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap, 'Export instrument'),
             (0,),
             (self.ID_TOOL_SHOW_LOG, ImageData.show_log.Bitmap, 'Show log'),
         ]

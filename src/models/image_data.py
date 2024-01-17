@@ -39,6 +39,18 @@ class ImageData(object):
         b'c91O8/x9WwluLF7qPTzz9Pf2U28vZEysAlWhmqSqVIEq4Y5v5AFwyXAS+ebG4qX8C7bLc9zJ6EyLAAAAAElFTkSuQmCC'
     )
 
+    export_instrument = PyEmbeddedImage(
+        b'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACL0lEQVRIia2VP2sUURTF'
+        b'f2czLIJBLCxWsZAUMUVY2EFSSIpYJdgYCVaOH8JPsDulVT6B3S4IEoIpBGOTymKLXTCNpFayhaCNIAvxWLyZ/Z/NrHiry5t7'
+        b'z7n3vHvfiIJWe95Yk/QWA/Cs06p/KZJXKkogadewjli32C2aV5gAXMYGjKD83wmMkAgcC1hUNFAYBiTFWRaQKDcjFY9eSCJs'
+        b'whRpqWjeYhItUnpm/yQR5qJo9FQHcZKuAe9sR5JedJr1TwFWKL9csTQS/xC7BfQtPek2xxdwqgPbO4ZVpBXgIE7SzYCZSTQi'
+        b'U5ykm4YDS/eQVoV3JvGmCCQdy/Syga8Ah3GSPhgpAcxFdnYoqIQRpgc6nsKbPACoJWlV8AFcCV3xHWhLPA7roPfGGzK3so56'
+        b'NtvdVv1zIYLQfmMDdGC4O5ngkUTDV8Fep1lvz8IpBbB0SqpOs9G22RP0ZCOye8j8bJt78mzwHHOplqSvsI/uVLdWzk9PjkaD'
+        b'eqcn325XH31EegpeHrYhJOWydCbBa0n6WuZNpbp1Q3GS/gBuAn+A651m/fc8uXSFLHGSXjP8AkqCnyV7sAsl45mbHeTynvAZ'
+        b'cCb7Us0NkexSuCNH0XCs57+Q3VajDdyfGzRJ5rFN1uUjtagpe9wlIo+/Yctxkg4rYGwcByM637wclj5ET0p0PlbIDF+htOGv'
+        b'bcofocok6ucQRarMMZRVdoXfj4B94CVQVvYl72qmRPawUDPP74P2/wLIYu0REsnklAAAAABJRU5ErkJggg=='
+    )
+
     open_config = PyEmbeddedImage(
         b'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACOElEQVRIidWVP2sUURTF'
         b'f2cYJIUsQSzEQlJIsAq4WCmkELGwEAu7HRE/gqRKNTN+AbuAoEh0FxQbC0kl+QBBdmGxtIgiIYgasJAQljkWb2ZnNmyTsdFb'
@@ -123,6 +135,7 @@ if __name__ == '__main__':
 
     print(ImageData.check_instruments.Bitmap)
     print(ImageData.export_csv.Bitmap)
+    print(ImageData.export_instrument.Bitmap)
     print(ImageData.open_config.Bitmap)
     print(ImageData.save_config.Bitmap)
     print(ImageData.settings.Bitmap)
