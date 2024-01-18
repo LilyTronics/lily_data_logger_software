@@ -81,7 +81,7 @@ class TestControllerConfiguration(TestSuite):
     def setup(self):
         self._conf = Configuration()
         self._app = wx.App(redirect=False)
-        self._exception = None
+        self._values = None
 
     def _get_values_from_view(self):
         return {
