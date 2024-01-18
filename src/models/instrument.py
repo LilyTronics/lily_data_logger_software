@@ -3,6 +3,8 @@ Instrument model.
 """
 
 import json
+import os
+import tempfile
 import time
 
 from src.models.interfaces.interface import Interface
@@ -406,7 +408,8 @@ class TestInstrument(TestSuite):
 
     def test_export_to_file(self):
         instrument = self._create_instrument()
-        instrument.export_to_file('test_instrument.json')
+        path = os.path.join(tempfile.gettempdir(), 'test_instrument.json')
+        instrument.export_to_file(path)
 
 
 class TestInterface(Interface):
