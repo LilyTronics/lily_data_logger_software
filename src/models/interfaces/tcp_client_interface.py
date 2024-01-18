@@ -11,7 +11,7 @@ from unit_test.test_suite import TestSuite
 
 class TcpClientInterface(Interface):
 
-    NAME = 'Ethernet TCP'
+    NAME = "Ethernet TCP"
 
     def __init__(self, server_ip_address, server_port, timeout, rx_buffer_size=1500):
         self._server_ip_address = server_ip_address
@@ -21,11 +21,11 @@ class TcpClientInterface(Interface):
         self._socket = None
 
     def send_command(self, command):
-        response = b''
+        response = b""
         try:
             self._socket = socket.create_connection((self._server_ip_address, self._server_port), self._timeout)
         except (Exception, ):
-            self.raise_connection_exception(f'{self._server_ip_address}:{self._server_port}')
+            self.raise_connection_exception(f"{self._server_ip_address}:{self._server_port}")
 
         self._socket.sendall(command)
         try:
@@ -42,13 +42,13 @@ class TcpClientInterface(Interface):
 
 class TestTcpClientInterface(TestSuite):
 
-    _IP = 'localhost'
+    _IP = "localhost"
     _PORT = 21000
     _CLIENT_TIMEOUT = 0.5
     _SERVER_TIMEOUT = 0.1
     _RX_BUFFER_SIZE = 1500
-    _TEST_DATA = b'test TCP interface'
-    _TEST_TIMEOUT_DATA = b'do_timeout'
+    _TEST_DATA = b"test TCP interface"
+    _TEST_TIMEOUT_DATA = b"do_timeout"
 
     _socket = None
     _stop_event = None
@@ -81,29 +81,29 @@ class TestTcpClientInterface(TestSuite):
         try:
             self._client.send_command(self._TEST_DATA)
         except Exception as e:
-            self.log.debug('Error message: {}'.format(e))
-            if str(e).startswith('Could not connect to '):
+            self.log.debug("Error message: {}".format(e))
+            if str(e).startswith("Could not connect to "):
                 result = True
             else:
-                self.log.error('Invalid error message, expect to start with: Could not connect to')
+                self.log.error("Invalid error message, expect to start with: 'Could not connect to'")
         return result
 
     def test_server_running(self):
         self._start_server()
         response = self._client.send_command(self._TEST_DATA)
-        self.log.debug('Response: {}'.format(response))
-        self.fail_if(response != self._TEST_DATA, 'Invalid response received, expected: {}'.format(self._TEST_DATA))
+        self.log.debug("Response: {}".format(response))
+        self.fail_if(response != self._TEST_DATA, "Invalid response received, expected: '{}'".format(self._TEST_DATA))
 
     def test_timeout(self):
         result = False
         try:
             self._client.send_command(self._TEST_TIMEOUT_DATA)
         except Exception as e:
-            self.log.debug('Error message: {}'.format(e))
-            if str(e) == 'Error receiver timeout':
+            self.log.debug("Error message: {}".format(e))
+            if str(e) == "Error receiver timeout":
                 result = True
             else:
-                self.log.error('Invalid error message, expected: Error receiver timeout')
+                self.log.error("Invalid error message, expected: 'Error receiver timeout'")
         return result
 
     def teardown(self):
@@ -114,6 +114,6 @@ class TestTcpClientInterface(TestSuite):
         self._client.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     TestTcpClientInterface().run(True)

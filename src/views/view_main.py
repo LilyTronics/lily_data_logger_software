@@ -33,7 +33,7 @@ class ViewMain(wx.Frame):
     _TABLE_MIN_COL_WIDTH = 100
 
     _LED_SIZE = (16, 16)
-    _COLOR_LED_OFF = '#060'
+    _COLOR_LED_OFF = "#060"
 
     _MINIMUM_WINDOW_SIZE = (1100, 700)
 
@@ -62,25 +62,25 @@ class ViewMain(wx.Frame):
 
     def _create_toolbar(self, parent):
         tools = [
-            (self.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap, 'Open configuration'),
-            (self.ID_TOOL_SAVE_CONFIGURATION, ImageData.save_config.Bitmap, 'Save configuration'),
+            (self.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap, "Open configuration"),
+            (self.ID_TOOL_SAVE_CONFIGURATION, ImageData.save_config.Bitmap, "Save configuration"),
             (0,),
-            (self.ID_TOOL_EDIT_CONFIGURATION, ImageData.settings.Bitmap, 'Configuration settings'),
+            (self.ID_TOOL_EDIT_CONFIGURATION, ImageData.settings.Bitmap, "Configuration settings"),
             (0,),
-            (self.ID_TOOL_CHECK_INSTRUMENTS, ImageData.check_instruments.Bitmap, 'Check instruments'),
+            (self.ID_TOOL_CHECK_INSTRUMENTS, ImageData.check_instruments.Bitmap, "Check instruments"),
             (0,),
-            (self.ID_TOOL_START_PROCESS, ImageData.start.Bitmap, 'Start'),
-            (self.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, ' Stop'),
+            (self.ID_TOOL_START_PROCESS, ImageData.start.Bitmap, "Start"),
+            (self.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, " Stop"),
             (0,),
-            (self.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap, 'Export measurement data to CSV'),
-            (self.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap, 'Export instrument'),
+            (self.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap, "Export measurement data to CSV"),
+            (self.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap, "Export instrument"),
             (0,),
-            (self.ID_TOOL_SHOW_LOG, ImageData.show_log.Bitmap, 'Show log'),
+            (self.ID_TOOL_SHOW_LOG, ImageData.show_log.Bitmap, "Show log"),
         ]
         self._toolbar = wx.ToolBar(parent, style=wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_NODIVIDER)
         for tool in tools:
             if tool[0] > 0:
-                self._toolbar.AddTool(tool[0], '', tool[1], tool[2])
+                self._toolbar.AddTool(tool[0], "", tool[1], tool[2])
             else:
                 self._toolbar.AddSeparator()
 
@@ -89,16 +89,16 @@ class ViewMain(wx.Frame):
         return self._toolbar
 
     def _create_config_info(self, parent):
-        box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, ' Configuration: '), wx.HORIZONTAL)
+        box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Configuration: "), wx.HORIZONTAL)
 
-        lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, 'Sample time:')
-        self._lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, '-')
-        self._lbl_end_time = wx.StaticText(parent, wx.ID_ANY, 'End time:')
-        self._value_end_time = wx.StaticText(parent, wx.ID_ANY, '-')
-        self._lbl_total_samples = wx.StaticText(parent, wx.ID_ANY, 'Total samples:')
-        self._value_total_samples = wx.StaticText(parent, wx.ID_ANY, '-')
-        lbl_elapsed_time = wx.StaticText(parent, wx.ID_ANY, 'Elapsed time:')
-        self._lbl_elapsed_time = wx.StaticText(parent, wx.ID_ANY, '-')
+        lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, "Sample time:")
+        self._lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, "-")
+        self._lbl_end_time = wx.StaticText(parent, wx.ID_ANY, "End time:")
+        self._value_end_time = wx.StaticText(parent, wx.ID_ANY, "-")
+        self._lbl_total_samples = wx.StaticText(parent, wx.ID_ANY, "Total samples:")
+        self._value_total_samples = wx.StaticText(parent, wx.ID_ANY, "-")
+        lbl_elapsed_time = wx.StaticText(parent, wx.ID_ANY, "Elapsed time:")
+        self._lbl_elapsed_time = wx.StaticText(parent, wx.ID_ANY, "-")
         self._activity_led = wx.Panel(parent, wx.ID_ANY, size=self._LED_SIZE, style=wx.BORDER_SIMPLE)
         self._activity_led.SetBackgroundColour(self._COLOR_LED_OFF)
 
@@ -115,14 +115,14 @@ class ViewMain(wx.Frame):
         return box
 
     def _create_instruments_controls(self, parent):
-        box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, ' Instruments: '), wx.VERTICAL)
+        box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Instruments: "), wx.VERTICAL)
 
         self._lst_instruments = wx.ListCtrl(parent, self.ID_LIST_INSTRUMENTS, style=wx.LC_REPORT | wx.LC_SORT_ASCENDING
                                             | wx.LC_SINGLE_SEL)
-        self._lst_instruments.InsertColumn(0, 'Name', width=self._LIST_COL_NAME_SIZE)
+        self._lst_instruments.InsertColumn(0, "Name", width=self._LIST_COL_NAME_SIZE)
 
-        btn_add_instrument = wx.Button(parent, self.ID_BTN_ADD_INSTRUMENT, 'Add')
-        btn_delete_instrument = wx.Button(parent, self.ID_BTN_DELETE_INSTRUMENT, 'Delete')
+        btn_add_instrument = wx.Button(parent, self.ID_BTN_ADD_INSTRUMENT, "Add")
+        btn_delete_instrument = wx.Button(parent, self.ID_BTN_DELETE_INSTRUMENT, "Delete")
 
         buttons = wx.BoxSizer(wx.HORIZONTAL)
         buttons.Add(btn_add_instrument, 0)
@@ -139,13 +139,13 @@ class ViewMain(wx.Frame):
         self._lst_process = wx.ListCtrl(parent, wx.ID_ANY, style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_HRULES |
                                         wx.LC_VRULES)
         self._lst_process.SetInitialSize((-1, 100))
-        self._lst_process.InsertColumn(0, '#', width=self._LIST_COL_INDEX_SIZE)
-        self._lst_process.InsertColumn(1, 'Step', width=self._LIST_COL_STEP_SIZE)
-        self._lst_process.InsertColumn(2, 'Data', width=self._LIST_COL_DATA_SIZE)
+        self._lst_process.InsertColumn(0, "#", width=self._LIST_COL_INDEX_SIZE)
+        self._lst_process.InsertColumn(1, "Step", width=self._LIST_COL_STEP_SIZE)
+        self._lst_process.InsertColumn(2, "Data", width=self._LIST_COL_DATA_SIZE)
 
-        btn_add_step = wx.Button(parent, wx.ID_ANY, 'Add')
-        btn_insert_step = wx.Button(parent, wx.ID_ANY, 'Insert')
-        btn_delete_step = wx.Button(parent, wx.ID_ANY, 'Delete')
+        btn_add_step = wx.Button(parent, wx.ID_ANY, "Add")
+        btn_insert_step = wx.Button(parent, wx.ID_ANY, "Insert")
+        btn_delete_step = wx.Button(parent, wx.ID_ANY, "Delete")
 
         buttons = wx.BoxSizer(wx.HORIZONTAL)
         buttons.Add(btn_add_step, 0)
@@ -158,14 +158,14 @@ class ViewMain(wx.Frame):
         return box
 
     def _create_measurement_box(self, parent):
-        box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, ' Measurements: '), wx.VERTICAL)
+        box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Measurements: "), wx.VERTICAL)
 
         grid_panel = wx.Panel(parent, wx.ID_ANY)
-        grid_panel.SetBackgroundColour('#abadb3')
+        grid_panel.SetBackgroundColour("#abadb3")
 
         self._grid_measurements = wx.grid.Grid(grid_panel, wx.ID_ANY)
         self._grid_measurements.CreateGrid(0, 1)
-        self._grid_measurements.SetColLabelValue(0, 'Time')
+        self._grid_measurements.SetColLabelValue(0, "Time")
         self._grid_measurements.SetColMinimalWidth(0, self._TABLE_MIN_COL_WIDTH)
         self._grid_measurements.AutoSizeColLabelSize(0)
         self._grid_measurements.EnableEditing(False)
@@ -173,8 +173,8 @@ class ViewMain(wx.Frame):
         self._grid_measurements.EnableDragColMove(False)
         self._grid_measurements.EnableDragColSize(False)
 
-        btn_add_measurement = wx.Button(parent, wx.ID_ANY, 'Add')
-        btn_delete_measurement = wx.Button(parent, wx.ID_ANY, 'Delete')
+        btn_add_measurement = wx.Button(parent, wx.ID_ANY, "Add")
+        btn_delete_measurement = wx.Button(parent, wx.ID_ANY, "Delete")
 
         buttons = wx.BoxSizer(wx.HORIZONTAL)
         buttons.Add(btn_add_measurement, 0)
@@ -194,15 +194,15 @@ class ViewMain(wx.Frame):
     ##########
 
     def update_configuration_filename(self, filename, is_changed):
-        title = '%s - %s' % (self._title, filename)
+        title = "%s - %s" % (self._title, filename)
         if is_changed:
-            title += ' *'
+            title += " *"
         self.SetTitle(title)
 
     def update_configuration_info(self, sample_time, end_time, continuous_mode):
         self._lbl_sample_time.SetLabel(create_duration_time_string(sample_time))
         if continuous_mode:
-            self._value_end_time.SetLabel('Continuous mode')
+            self._value_end_time.SetLabel("Continuous mode")
             self._lbl_end_time.Hide()
             self._lbl_total_samples.Hide()
             self._value_total_samples.Hide()
@@ -211,7 +211,7 @@ class ViewMain(wx.Frame):
             self._lbl_total_samples.Show()
             self._value_total_samples.Show()
             self._value_end_time.SetLabel(create_duration_time_string(end_time))
-            total_samples = '-'
+            total_samples = "-"
             if sample_time > 0 and end_time > 0:
                 total_samples = int(end_time / sample_time) + 1
             self._value_total_samples.SetLabel(str(total_samples))
@@ -223,11 +223,11 @@ class ViewMain(wx.Frame):
         self._lbl_elapsed_time.GetParent().Layout()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     app = wx.App(redirect=False)
 
-    frame = ViewMain('ViewMain Test')
+    frame = ViewMain("ViewMain Test")
     frame.Show()
 
     app.MainLoop()

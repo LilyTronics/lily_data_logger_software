@@ -13,14 +13,14 @@ class ViewLogger(wx.Frame):
     _UPDATE_TIME = 300
     _WINDOW_MIN_SIZE = (800, 500)
 
-    _COLOR_DEFAULT = '#000'
+    _COLOR_DEFAULT = "#000"
 
     _TEXT_COLORS = {
-        Logger.TYPE_DEBUG: '#666',
-        Logger.TYPE_ERROR: '#f60',
-        Logger.TYPE_INFO: '#00f',
-        Logger.TYPE_STDERR: '#f00',
-        Logger.TYPE_STDOUT: '#999'
+        Logger.TYPE_DEBUG: "#666",
+        Logger.TYPE_ERROR: "#f60",
+        Logger.TYPE_INFO: "#00f",
+        Logger.TYPE_STDERR: "#f00",
+        Logger.TYPE_STDOUT: "#999"
     }
 
     def __init__(self, title):
@@ -39,13 +39,13 @@ class ViewLogger(wx.Frame):
         self.SetInitialSize(self._WINDOW_MIN_SIZE)
 
     def _on_update_timer(self, event):
-        with open(self._filename, 'r') as fp:
+        with open(self._filename, "r") as fp:
             lines = fp.readlines()
 
         content = self._txt_console.GetValue()
         for line in filter(lambda x: x not in content, lines):
             for key in self._TEXT_COLORS:
-                if ' | {:6} | '.format(key) in line:
+                if " | {:6} | ".format(key) in line:
                     self._txt_console.SetDefaultStyle(wx.TextAttr(self._TEXT_COLORS[key]))
                     break
             else:
@@ -65,7 +65,7 @@ class ViewLogger(wx.Frame):
         self.Show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     import random
     import threading
@@ -87,7 +87,7 @@ if __name__ == '__main__':
         while True:
             log_type = random.randint(0, len(logger_types))
             if log_type < len(logger_types):
-                logger_types[log_type]('Log message number {}'.format(log_nr))
+                logger_types[log_type]("Log message number {}".format(log_nr))
             else:
                 et = threading.Thread(target=_generate_exception)
                 et.start()
@@ -95,7 +95,7 @@ if __name__ == '__main__':
             log_nr += 1
 
     log = Logger()
-    log.info('Start thread for generating messages')
+    log.info("Start thread for generating messages")
 
     mt = threading.Thread(target=_generate_messages, args=(log, ))
     mt.daemon = True
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
     app = wx.App(redirect=False)
 
-    frame = ViewLogger('Test log messages')
+    frame = ViewLogger("Test log messages")
     frame.show()
 
     app.MainLoop()

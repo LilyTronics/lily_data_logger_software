@@ -15,12 +15,12 @@ class GuiUnitTest(object):
     def get_value_from_window(window_id):
         value = wx.Window.FindWindowById(window_id)
         if value is not None:
-            if hasattr(value, 'GetValue'):
+            if hasattr(value, "GetValue"):
                 value = value.GetValue()
-            elif hasattr(value, 'GetLabel'):
+            elif hasattr(value, "GetLabel"):
                 value = value.GetLabel()
             else:
-                raise Exception('Could not get value from window with ID {} ({})'.format(window_id, value))
+                raise Exception("Could not get value from window with ID {} ({})".format(window_id, value))
         return value
 
     @staticmethod

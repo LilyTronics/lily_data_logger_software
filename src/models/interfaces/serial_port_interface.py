@@ -14,8 +14,8 @@ from unit_test.test_suite import TestSuite
 
 class SerialPortInterface(Interface):
 
-    NAME = 'Serial port'
-    DEFAULT_TERMINATOR = b'\n'
+    NAME = "Serial port"
+    DEFAULT_TERMINATOR = b"\n"
     DEFAULT_TIMEOUT = 5
     DEFAULT_BAUD_RATE = 9600
 
@@ -28,7 +28,7 @@ class SerialPortInterface(Interface):
         self._serial = serial.Serial(port_name, baudrate=int(baud_rate), write_timeout=tx_timeout)
 
     def send_command(self, command, expect_response=True):
-        response = b''
+        response = b""
         self._serial.write(command + self._terminator)
         if expect_response:
             t = 0
@@ -50,33 +50,33 @@ class SerialPortInterface(Interface):
 
 class TestSerialPortInterface(TestSuite):
 
-    _CHECK_FOR_LOOPBACK_DATA = b'check_for_loopback'
-    _TEST_COMMAND = b'serial_port_test'
+    _CHECK_FOR_LOOPBACK_DATA = b"check_for_loopback"
+    _TEST_COMMAND = b"serial_port_test"
     _RX_TIMEOUT = 1
 
     _serial = None
 
     def setup(self):
-        self.log.info('Get available serial ports')
+        self.log.info("Get available serial ports")
         ports = get_available_serial_ports()
-        self.fail_if('no ports' in ports, 'No serial ports available')
+        self.fail_if("no ports" in ports, "No serial ports available")
         port = get_serial_loopback_port(ports)
-        self.log.info('Loopback found on port: {}'.format(port))
+        self.log.info("Loopback found on port: {}".format(port))
         self._serial = SerialPortInterface(port, self._RX_TIMEOUT)
 
     def test_send_command(self):
         response = self._serial.send_command(self._TEST_COMMAND)
-        self.fail_if(self._TEST_COMMAND + b'\n' != response, 'Invalid response received: {}'.format(response))
+        self.fail_if(self._TEST_COMMAND + b"\n" != response, "Invalid response received: {}".format(response))
 
     def test_no_response(self):
         response = self._serial.send_command(self._TEST_COMMAND, False)
-        self.fail_if(response is not None, 'Invalid response received: {}'.format(response))
+        self.fail_if(response is not None, "Invalid response received: {}".format(response))
 
     def teardown(self):
         if self._serial is not None:
             self._serial.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     TestSerialPortInterface().run()

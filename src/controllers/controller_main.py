@@ -15,7 +15,7 @@ class ControllerMain(object):
 
     def __init__(self, view_title, logger):
         self._logger = logger
-        self._logger.info('Load main controller')
+        self._logger.info("Load main controller")
 
         self._settings = Settings()
         self._configuration = Configuration()
@@ -24,7 +24,7 @@ class ControllerMain(object):
         self._main_view = self._initialize_main_view(view_title)
         self._log_view = None
 
-        self._logger.info('Show main view')
+        self._logger.info("Show main view")
         self._main_view.Show()
 
         wx.CallAfter(self._update_view_from_configuration)
@@ -52,7 +52,7 @@ class ControllerMain(object):
         return frame
 
     def _initialize_log_view(self):
-        frame = ViewLogger('Log Messages')
+        frame = ViewLogger("Log Messages")
         size = self._settings.get_log_window_size()
         if -1 not in size:
             frame.SetSize(size)
@@ -120,11 +120,11 @@ class ControllerMain(object):
         event.Skip()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     from src.models.logger import Logger
 
     test_logger = Logger(True)
     app = wx.App(redirect=False)
-    controller = ControllerMain('ControllerMain Test', test_logger)
+    controller = ControllerMain("ControllerMain Test", test_logger)
     app.MainLoop()
