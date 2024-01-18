@@ -144,6 +144,7 @@ class TestControllerConfiguration(TestSuite):
             if self.gui.is_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
                 self._values = self._get_values_from_view()
                 self.gui.click_button(wx.ID_CANCEL)
+                break
             self.sleep(0.1)
 
     def test_show_edit_configuration(self):
