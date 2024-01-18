@@ -94,46 +94,62 @@ class TestControllerConfiguration(TestSuite):
             "total_samples": self.gui.get_value_from_window(ViewEditConfiguration.ID_TOTAL_SAMPLES)
         }
 
-    def _check_default_values(self):
-        self.log.debug("Check default values")
-        self._exception = None
+    def _check_values(self):
+        self.fail_if(self._values is None, 'No values from the GUI available')
+        # Check the values from the GUI to the configuration values
+        # Sample time with sample time units
+        sample_time = float(self._values["sample_time"])
+        if self._values["sample_time_units"] == "days":
+            sample_time *= 86400
+        elif self._values["sample_time_units"] == "hours":
+            sample_time *= 3600
+        elif self._values["sample_time_units"] == "minutes":
+            sample_time *= 60
+        elif self._values["sample_time_units"] != "seconds":
+            self.fail("The sample time units are not correct: '{}'".format(self._values["sample_time_units"]))
+        self.fail_if(sample_time != self._conf.get_sample_time(),
+                     "Sample time does not have the correct value, is {} expected {}".format(
+                        sample_time, self._conf.get_sample_time()))
+        # End time with end time units
+        end_time = float(self._values["end_time"])
+        if self._values["end_time_units"] == "days":
+            end_time *= 86400
+        elif self._values["end_time_units"] == "hours":
+            end_time *= 3600
+        elif self._values["end_time_units"] == "minutes":
+            end_time *= 60
+        elif self._values["end_time_units"] != "seconds":
+            self.fail("The end time units are not correct: '{}'".format(self._values["end_time_units"]))
+        self.fail_if(end_time != self._conf.get_end_time(),
+                     "End time does not have the correct value, is {} expected {}".format(
+                         end_time, self._conf.get_end_time()))
+        # Continuous mode
+        self.fail_if(self._values["is_continuous"] != self._conf.get_continuous_mode(),
+                     "Continuous mode does not have the correct value, is {} expected {}".format(
+                         self._values["is_continuous"], self._conf.get_continuous_mode()))
+        # Fixed mode
+        self.fail_if(self._values["is_fixed"] == self._conf.get_continuous_mode(),
+                     "Fixed edn time mode does not have the correct value, is {} expected {}".format(
+                         self._values["is_fixed"], not self._conf.get_continuous_mode()))
+        # Total samples
+        total_samples = int(end_time / sample_time) + 1
+        self.fail_if(int(self._values["total_samples"]) != total_samples,
+                     "Total samples does not have the correct value, is {} expected {}".format(
+                         self._values["total_samples"], total_samples))
+
+    def _get_default_values(self):
+        self.log.debug("Get default values")
+        self._values = None
         while True:
             if self.gui.is_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
-                values = self._get_values_from_view()
-                try:
-                    self.fail_if(float(values["sample_time"]) != self._conf.get_sample_time(),
-                                 "Sample time does not have the correct value, is {} expected {}".format(
-                                     values["sample_time"], self._conf.get_sample_time()))
-                    self.fail_if(values["sample_time_units"] != "seconds",
-                                 "Sample time units does not have the correct value, is '{}' expected 'seconds'".format(
-                                     values["sample_time_units"]))
-                    self.fail_if(float(values["end_time"]) * 60 != self._conf.get_end_time(),
-                                 "End time does not have the correct value, is {} expected {}".format(
-                                     values["end_time"], self._conf.get_end_time()))
-                    self.fail_if(values["end_time_units"] != "minutes",
-                                 "End time units does not have the correct value, is '{}' expected 'minutes'".format(
-                                     values["end_time_units"]))
-                    self.fail_if(values["is_fixed"] == self._conf.get_continuous_mode(),
-                                 "Fixed mode does not have the correct value, is {} expected {}".format(
-                                     values["is_fixed"], not self._conf.get_continuous_mode()))
-                    self.fail_if(values["is_continuous"] != self._conf.get_continuous_mode(),
-                                 "Continuous mode does not have the correct value, is {} expected {}".format(
-                                     values["is_continuous"], self._conf.get_continuous_mode()))
-                    total_samples = int(float(values["end_time"]) * 60 / float(values["sample_time"])) + 1
-                    self.fail_if(int(values["total_samples"]) != total_samples,
-                                 "Total samples does not have the correct value, is {} expected {}".format(
-                                     values["total_samples"], total_samples))
-                except Exception as e:
-                    self._exception = e
-                finally:
-                    self.gui.click_button(wx.ID_CANCEL)
+                self._values = self._get_values_from_view()
+                self.gui.click_button(wx.ID_CANCEL)
             self.sleep(0.1)
 
     def test_show_edit_configuration(self):
-        self.start_thread(self._check_default_values)
+        self.start_thread(self._get_default_values)
         ControllerConfiguration.edit_configuration(self._conf, None, self.log)
-        if self._exception is not None:
-            raise self._exception
+        self._check_values()
 
     def teardown(self):
         self._app.MainLoop()
