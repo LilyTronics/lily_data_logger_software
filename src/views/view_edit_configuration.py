@@ -9,6 +9,14 @@ from unit_test.test_suite import TestSuite
 
 class ViewEditConfiguration(wx.Dialog):
 
+    ID_SAMPLE_TIME = 101
+    ID_SAMPLE_TIME_UNITS = 102
+    ID_END_TIME = 103
+    ID_END_TIME_UNITS = 104
+    ID_FIXED = 105
+    ID_CONTINUOUS = 106
+    ID_TOTAL_SAMPLES = 107
+
     _GAP = 5
     _TIME_UNITS = ['seconds', 'minutes', 'hours', 'days']
 
@@ -34,16 +42,17 @@ class ViewEditConfiguration(wx.Dialog):
         box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Time settings: "), wx.VERTICAL)
 
         lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, 'Sample time:')
-        self._txt_sample_time = wx.TextCtrl(parent, wx.ID_ANY, size=(50, -1))
-        self._cmb_sample_time = wx.ComboBox(parent, wx.ID_ANY, style=wx.CB_READONLY, choices=self._TIME_UNITS)
-        self._radio_end_time = wx.RadioButton(parent, wx.ID_ANY, 'Fixed end time:')
-        self._txt_end_time = wx.TextCtrl(parent, wx.ID_ANY, size=(50, -1))
-        self._cmb_end_time = wx.ComboBox(parent, wx.ID_ANY, style=wx.CB_READONLY, choices=self._TIME_UNITS)
-        self._radio_continuous = wx.RadioButton(parent, wx.ID_ANY, 'Continuous mode:')
+        self._txt_sample_time = wx.TextCtrl(parent, self.ID_SAMPLE_TIME, size=(50, -1))
+        self._cmb_sample_time = wx.ComboBox(parent, self.ID_SAMPLE_TIME_UNITS, style=wx.CB_READONLY,
+                                            choices=self._TIME_UNITS)
+        self._radio_end_time = wx.RadioButton(parent, self.ID_FIXED, 'Fixed end time:')
+        self._txt_end_time = wx.TextCtrl(parent, self.ID_END_TIME, size=(50, -1))
+        self._cmb_end_time = wx.ComboBox(parent, self.ID_END_TIME_UNITS, style=wx.CB_READONLY, choices=self._TIME_UNITS)
+        self._radio_continuous = wx.RadioButton(parent, self.ID_CONTINUOUS, 'Continuous mode:')
         lbl_continuous = wx.StaticText(parent, wx.ID_ANY, 'Process must be stopped manually or by\n'
                                        'using the stop command in the process steps.')
         lbl_total_samples = wx.StaticText(parent, wx.ID_ANY, 'Total samples:')
-        self._lbl_total_samples = wx.StaticText(parent, wx.ID_ANY, '-')
+        self._lbl_total_samples = wx.StaticText(parent, self.ID_TOTAL_SAMPLES, '-')
 
         grid = wx.GridBagSizer(self._GAP, self._GAP)
         grid.Add(lbl_sample_time, (0, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
