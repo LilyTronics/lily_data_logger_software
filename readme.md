@@ -12,6 +12,7 @@ Settings and logs are stored in: `C:\users\your_name\LilyDataLoggerStudio`.
 ## Instruments
 
 The following instruments are included in the application:
+* Oscilloscope: Tektronix TDS220 (or compatible like: TDS200, TDS1000 or TDS2000)
 * Power supply: TTi PL303QMD-P (USB virtual COM port)
 * Simulators (for testing/demo):
   * Multimeter giving random values for voltage and current
