@@ -67,12 +67,11 @@ class TestInstruments(TestSuite):
         n_found = 0
         path = os.path.dirname(__file__)
         self.log.debug('Looking for instruments in: {}'.format(path))
-        for item in os.listdir(path):
-            if item.endswith('.py'):
-                content = open(item, 'r').read()
-                matches = re.findall(self._instrument_def, content)
-                if len(matches) == 1:
-                    n_found += 1
+        for item in glob.glob(os.path.join(path, '*.py')):
+            content = open(item, 'r').read()
+            matches = re.findall(self._instrument_def, content)
+            if len(matches) == 1:
+                n_found += 1
         self._n_instruments = n_found
         self.log.debug('Copy test instrument to user folder')
         shutil.copy2(os.path.join(os.path.dirname(unit_test.__file__), 'test_files', 'test_instrument.json'),
@@ -86,7 +85,8 @@ class TestInstruments(TestSuite):
             self.log.debug('{:30}: {}'.format(name, instrument))
             self.fail_if(instrument is None, 'Instrument not found')
             count += 1
-        self.fail_if(count != self._n_instruments, 'The number of instruments is not correct')
+        self.fail_if(count != self._n_instruments, 'The number of instruments is not correct, expecting {}'.format(
+            self._n_instruments))
         instrument = get_instrument_by_name('Unknown instrument name')
         self.fail_if(instrument is not None, 'Unknown instrument name did not return None')
 
