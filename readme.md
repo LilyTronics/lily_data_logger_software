@@ -12,7 +12,7 @@ Settings and logs are stored in: `C:\users\your_name\LilyDataLoggerStudio`.
 ## Instruments
 
 The following instruments are included in the application:
-* Oscilloscope: Tektronix TDS220 (or compatible like: TDS200, TDS1000 or TDS2000)
+* Oscilloscope: Tektronix TDS220 or compatible like: TDS200, TDS1000 or TDS2000 (serial port)
 * Power supply: TTi PL303QMD-P (USB virtual COM port)
 * Simulators (for testing/demo):
   * Multimeter giving random values for voltage and current
@@ -36,7 +36,6 @@ Things to do for the first release:
 * Export measurements to CVS
 * Check instruments
 * Add the following instruments:
-  * TDS220 oscilloscope (or compatible TDS200, TDS1000 and TDS2000, they have the same interface)
   * NI USB-6009 (requires drivers from NI)
   * Protek 506 digital multimeter
   * Arduino Uno IO module (reading analog voltages, reading and writing digital IO, sketch for the Arduino Uno is included in this repo)
