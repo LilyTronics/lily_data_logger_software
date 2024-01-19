@@ -54,15 +54,30 @@ if __name__ == "__main__":
 
     class TestFrame(wx.Frame):
 
-        ID_TEXT = 100
-        ID_BUTTON = 101
+        ID_TEXT = 101
+        ID_RADIO1 = 102
+        ID_RADIO2 = 103
+        ID_BUTTON = 201
+
+        _GAP = 5
 
         def __init__(self):
             super().__init__(None, wx.ID_ANY, "Test Frame")
             panel = wx.Panel(self)
-            wx.TextCtrl(panel, self.ID_TEXT, "Change this text", size=(300, -1), pos=(10, 10))
-            btn = wx.Button(panel, self.ID_BUTTON, "Close", pos=(10, 50))
+
+            text = wx.TextCtrl(panel, self.ID_TEXT, "Change this text", size=(300, -1))
+            radio1 = wx.RadioButton(panel, self.ID_RADIO1, 'Radio button 1')
+            radio2 = wx.RadioButton(panel, self.ID_RADIO2, 'Radio button 2')
+            btn = wx.Button(panel, self.ID_BUTTON, "Close")
             btn.Bind(wx.EVT_BUTTON, self._on_close_button)
+
+            box = wx.BoxSizer(wx.VERTICAL)
+            box.Add(text, 0, wx.ALL, self._GAP)
+            box.Add(radio1, 0, wx.ALL, self._GAP)
+            box.Add(radio2, 0, wx.ALL, self._GAP)
+            box.Add(btn, 0, wx.ALL, self._GAP)
+
+            panel.SetSizer(box)
             self.SetInitialSize((400, 300))
 
         def _on_close_button(self, event):
@@ -83,12 +98,17 @@ if __name__ == "__main__":
             print("Change text")
             GuiUnitTest.set_value_in_control(TestFrame.ID_TEXT, "And now for something completely different!")
             # Sleep so we can see the text is changed
-            time.sleep(2)
+            time.sleep(1)
             new_text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
             if new_text != org_text:
                 print("Yes! Text has changed")
             else:
                 print("Oops... text is not changed :(")
+            print("Toggle radio buttons")
+            GuiUnitTest.set_value_in_control(TestFrame.ID_RADIO2, True)
+            time.sleep(1)
+            GuiUnitTest.set_value_in_control(TestFrame.ID_RADIO1, True)
+            time.sleep(1)
             GuiUnitTest.click_button(TestFrame.ID_BUTTON)
 
 
