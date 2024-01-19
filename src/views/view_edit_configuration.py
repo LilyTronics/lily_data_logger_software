@@ -7,13 +7,13 @@ import wx
 
 class ViewEditConfiguration(wx.Dialog):
 
-    ID_SAMPLE_TIME = 101
-    ID_SAMPLE_TIME_UNITS = 102
-    ID_END_TIME = 103
-    ID_END_TIME_UNITS = 104
-    ID_FIXED = 105
-    ID_CONTINUOUS = 106
-    ID_TOTAL_SAMPLES = 107
+    ID_SAMPLE_TIME = wx.Window.NewControlId()
+    ID_SAMPLE_TIME_UNITS = wx.Window.NewControlId()
+    ID_END_TIME = wx.Window.NewControlId()
+    ID_END_TIME_UNITS = wx.Window.NewControlId()
+    ID_FIXED = wx.Window.NewControlId()
+    ID_CONTINUOUS = wx.Window.NewControlId()
+    ID_TOTAL_SAMPLES = wx.Window.NewControlId()
 
     _GAP = 5
     _TIME_UNITS = ["seconds", "minutes", "hours", "days"]
