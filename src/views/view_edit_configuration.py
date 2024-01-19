@@ -4,8 +4,6 @@ View for editing the configuration.
 
 import wx
 
-from unit_test.test_suite import TestSuite
-
 
 class ViewEditConfiguration(wx.Dialog):
 
@@ -167,68 +165,11 @@ class ViewEditConfiguration(wx.Dialog):
         self._update_total_samples()
 
 
-class TestViewEditConfiguration(TestSuite):
-
-    _SHOW_VIEW = False
-
-    def setup(self):
-        self._app = wx.App(redirect=False)
-        self._dlg = ViewEditConfiguration(None)
-
-    def test_show_dialog(self):
-        button = {
-            wx.ID_OK: "OK button",
-            wx.ID_CANCEL: "Cancel button"
-        }
-        if self._SHOW_VIEW:
-            result = self._dlg.ShowModal()
-            self.log.info("Dialog exit with code: {} ({})".format(result, button[result]))
-
-    def test_continuous_mode(self):
-        self._dlg.set_sample_time(1)
-        self._dlg.set_end_time(30)
-        for mode in (True, False):
-            self.log.debug("Set continuous mode {}".format(mode))
-            self._dlg.set_continuous_mode(mode)
-            self.fail_if(self._dlg._radio_continuous.GetValue() != mode, "Failed to set the continuous mode")
-            self.fail_if(self._dlg._radio_end_time.GetValue() == mode, "Failed to set the continuous mode")
-            self.fail_if(mode and self._dlg._lbl_total_samples.GetLabel() != "-" or
-                         not mode and self._dlg._lbl_total_samples.GetLabel() == "-",
-                         "Total samples label has the wrong value")
-
-    def test_time_values(self):
-        time_values = (
-            ((3, 40), ("3", "seconds"), ("40", "seconds"), "14"),
-            ((120, 3000), ("2", "minutes"), ("50", "minutes"), "26"),
-            ((14400, 72000), ("4", "hours"), ("20", "hours"), "6"),
-            ((432000, 2592000), ("5", "days"), ("30", "days"), "7")
-        )
-        self._dlg.set_continuous_mode(False)
-        for time_value in time_values:
-            sample_time, end_time = time_value[0]
-            self.log.debug("Set sample time to {} seconds ({} {})".format(sample_time, *time_value[1]))
-            self._dlg.set_sample_time(sample_time)
-            self.log.debug("Set end time to {} seconds ({} {})".format(end_time, *time_value[2]))
-            self._dlg.set_end_time(end_time)
-            self.fail_if(self._dlg._txt_sample_time.GetValue() != time_value[1][0],
-                         "Wrong sample time value {}".format(self._dlg._txt_sample_time.GetValue()))
-            self.fail_if(self._dlg._cmb_sample_time.GetValue() != time_value[1][1],
-                         "Wrong sample time units {}".format(self._dlg._cmb_sample_time.GetValue()))
-            self.fail_if(self._dlg._txt_end_time.GetValue() != time_value[2][0],
-                         "Wrong end time value {}".format(self._dlg._txt_end_time.GetValue()))
-            self.fail_if(self._dlg._cmb_end_time.GetValue() != time_value[2][1],
-                         "Wrong end time units {}".format(self._dlg._cmb_end_time.GetValue()))
-            self.fail_if(self._dlg._lbl_total_samples.GetLabel() != time_value[3],
-                         "Wrong total samples {}".format(self._dlg._lbl_total_samples.GetLabel()))
-            self.fail_if(self._dlg.get_sample_time() != sample_time,
-                         "Get sample time returned wrong value {}".format(self._dlg.get_sample_time()))
-            self.fail_if(self._dlg.get_end_time() != end_time,
-                         "Get end time returned wrong value {}".format(self._dlg.get_end_time()))
-
-    def teardown(self):
-        self._dlg.Destroy()
-
-
 if __name__ == "__main__":
 
-    TestViewEditConfiguration().run()
+    # Unit test in controller edit configuration
+    app = wx.App(redirect=False)
+    dlg = ViewEditConfiguration(None)
+    dlg.ShowModal()
+    dlg.Destroy()
+    app.MainLoop()
