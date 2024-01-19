@@ -16,8 +16,8 @@ class TestSuite(lily_unit_test.TestSuite):
         self.gui = GuiUnitTest()
 
     @staticmethod
-    def start_thread(target):
-        t = threading.Thread(target=target)
+    def start_thread(target, args=()):
+        t = threading.Thread(target=target, args=args)
         t.daemon = True
         t.start()
         return t
