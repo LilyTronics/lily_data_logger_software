@@ -79,9 +79,37 @@ class ControllerConfiguration(object):
 class TestControllerConfiguration(TestSuite):
 
     def setup(self):
-        self._conf = Configuration()
         self._app = wx.App(redirect=False)
         self._values = None
+
+    ##########################
+    # Generic test functions #
+    ##########################
+
+    @staticmethod
+    def _convert_seconds_to_time(value):
+        units = "seconds"
+        if value % 86400 == 0:
+            units = "days"
+            value = int(value / 86400)
+        elif value % 3600 == 0:
+            units = "hours"
+            value = int(value / 3600)
+        elif value % 60 == 0:
+            units = "minutes"
+            value = int(value / 60)
+        return value, units
+
+    def _get_time(self, value, units):
+        if units == "days":
+            value *= 86400
+        elif units == "hours":
+            value *= 3600
+        elif units == "minutes":
+            value *= 60
+        elif units != "seconds":
+            self.fail("The units are not correct: '{}'".format(units))
+        return value
 
     def _get_values_from_view(self):
         return {
@@ -94,63 +122,78 @@ class TestControllerConfiguration(TestSuite):
             "total_samples": self.gui.get_value_from_window(ViewEditConfiguration.ID_TOTAL_SAMPLES)
         }
 
-    def _check_values(self):
+    def _check_values_from_gui(self, conf):
         self.fail_if(self._values is None, 'No values from the GUI available')
         # Check the values from the GUI to the configuration values
         # Sample time with sample time units
-        sample_time = float(self._values["sample_time"])
-        if self._values["sample_time_units"] == "days":
-            sample_time *= 86400
-        elif self._values["sample_time_units"] == "hours":
-            sample_time *= 3600
-        elif self._values["sample_time_units"] == "minutes":
-            sample_time *= 60
-        elif self._values["sample_time_units"] != "seconds":
-            self.fail("The sample time units are not correct: '{}'".format(self._values["sample_time_units"]))
-        self.fail_if(sample_time != self._conf.get_sample_time(),
+        sample_time = self._get_time(float(self._values["sample_time"]), self._values["sample_time_units"])
+        self.fail_if(sample_time != conf.get_sample_time(),
                      "Sample time does not have the correct value, is {} expected {}".format(
-                        sample_time, self._conf.get_sample_time()))
+                        sample_time, conf.get_sample_time()))
         # End time with end time units
-        end_time = float(self._values["end_time"])
-        if self._values["end_time_units"] == "days":
-            end_time *= 86400
-        elif self._values["end_time_units"] == "hours":
-            end_time *= 3600
-        elif self._values["end_time_units"] == "minutes":
-            end_time *= 60
-        elif self._values["end_time_units"] != "seconds":
-            self.fail("The end time units are not correct: '{}'".format(self._values["end_time_units"]))
-        self.fail_if(end_time != self._conf.get_end_time(),
+        end_time = self._get_time(float(self._values["end_time"]), self._values["end_time_units"])
+        self.fail_if(end_time != conf.get_end_time(),
                      "End time does not have the correct value, is {} expected {}".format(
-                         end_time, self._conf.get_end_time()))
+                         end_time, conf.get_end_time()))
         # Continuous mode
-        self.fail_if(self._values["is_continuous"] != self._conf.get_continuous_mode(),
+        self.fail_if(self._values["is_continuous"] != conf.get_continuous_mode(),
                      "Continuous mode does not have the correct value, is {} expected {}".format(
-                         self._values["is_continuous"], self._conf.get_continuous_mode()))
+                         self._values["is_continuous"], conf.get_continuous_mode()))
         # Fixed mode
-        self.fail_if(self._values["is_fixed"] == self._conf.get_continuous_mode(),
+        self.fail_if(self._values["is_fixed"] == conf.get_continuous_mode(),
                      "Fixed edn time mode does not have the correct value, is {} expected {}".format(
-                         self._values["is_fixed"], not self._conf.get_continuous_mode()))
-        # Total samples
-        total_samples = int(end_time / sample_time) + 1
-        self.fail_if(int(self._values["total_samples"]) != total_samples,
-                     "Total samples does not have the correct value, is {} expected {}".format(
-                         self._values["total_samples"], total_samples))
+                         self._values["is_fixed"], not conf.get_continuous_mode()))
+        # Total samples, only with fixed end time
+        if self._values["is_fixed"]:
+            total_samples = int(end_time / sample_time) + 1
+            self.fail_if(int(self._values["total_samples"]) != total_samples,
+                         "Total samples does not have the correct value, is {} expected {}".format(
+                             self._values["total_samples"], total_samples))
+        else:
+            self.fail_if(self._values["total_samples"] != "-",
+                         "Total samples should be '-', but is {}".format(self._values["total_samples"]))
 
-    def _get_default_values(self):
+    ################################
+    # Test show edit configuration #
+    ################################
+
+    def _test_show_edit_configuration(self):
         self.log.debug("Get default values")
-        self._values = None
-        while True:
-            if self.gui.is_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
-                self._values = self._get_values_from_view()
-                self.gui.click_button(wx.ID_CANCEL)
-                break
-            self.sleep(0.1)
+        if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
+            self._values = self._get_values_from_view()
+            self.gui.click_button(wx.ID_CANCEL)
 
     def test_show_edit_configuration(self):
-        self.start_thread(self._get_default_values)
-        ControllerConfiguration.edit_configuration(self._conf, None, self.log)
-        self._check_values()
+        self._values = None
+        self.start_thread(self._test_show_edit_configuration)
+        conf = Configuration()
+        ControllerConfiguration.edit_configuration(conf, None, self.log)
+        self._check_values_from_gui(conf)
+
+    #########################
+    # Test edit time values #
+    #########################
+
+    def _test_edit_time_values(self, time_value):
+        self.log.debug("Set time values to {} seconds".format(time_value))
+        if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
+            time_value, units = self._convert_seconds_to_time(time_value)
+            self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME, str(time_value))
+            self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME_UNITS, units)
+            self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME, str(time_value))
+            self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME_UNITS, units)
+            self.gui.click_button(wx.ID_OK)
+
+    def test_edit_time_values(self):
+        for time_value in (23, 120, 14400, 172800):
+            self.start_thread(self._test_edit_time_values, (time_value, ))
+            # Always start with default values
+            conf = Configuration()
+            ControllerConfiguration.edit_configuration(conf, None, self.log)
+            self.fail_if(time_value != conf.get_sample_time(),
+                         "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), time_value))
+            self.fail_if(time_value != conf.get_end_time(),
+                         "The end time is not correct, is {} expected {}".format(conf.get_end_time(), time_value))
 
     def teardown(self):
         self._app.MainLoop()
@@ -158,4 +201,4 @@ class TestControllerConfiguration(TestSuite):
 
 if __name__ == "__main__":
 
-    TestControllerConfiguration().run(True)
+    TestControllerConfiguration().run()
