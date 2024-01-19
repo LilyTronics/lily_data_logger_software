@@ -80,7 +80,6 @@ class TestControllerConfiguration(TestSuite):
 
     def setup(self):
         self._app = wx.App(redirect=False)
-        self._values = None
 
     ##########################
     # Generic test functions #
@@ -194,6 +193,42 @@ class TestControllerConfiguration(TestSuite):
                          "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), time_value))
             self.fail_if(time_value != conf.get_end_time(),
                          "The end time is not correct, is {} expected {}".format(conf.get_end_time(), time_value))
+
+    #############################
+    # Test edit continuous mode #
+    #############################
+
+    def _test_edit_continuous_mode(self, mode):
+        self.log.debug("Set continuous mode to {}".format(mode))
+        if self.gui.wait_until_window_available(ViewEditConfiguration.ID_CONTINUOUS):
+            if mode:
+                self.gui.select_radio_button(ViewEditConfiguration.ID_CONTINUOUS)
+            else:
+                self.gui.select_radio_button(ViewEditConfiguration.ID_FIXED)
+            # Wait for total sample to change, should be fast
+            t = 1
+            while t > 0:
+                self._total_samples = self.gui.get_value_from_window(ViewEditConfiguration.ID_TOTAL_SAMPLES)
+                if mode and self._total_samples == '-' or not mode and self._total_samples != '-':
+                    break
+                self.sleep(0.1)
+                t -= 0.1
+            self.gui.click_button(wx.ID_OK)
+
+    def test_edit_continuous_mode(self):
+        self._total_samples = None
+        conf = Configuration()
+        for mode in (True, False):
+            self.start_thread(self._test_edit_continuous_mode, (mode,))
+            ControllerConfiguration.edit_configuration(conf, None, self.log)
+            self.fail_if(conf.get_continuous_mode() != mode,
+                         "Continuous mode is not correct, is {} should be {}".format(conf.get_continuous_mode(), mode))
+            if mode:
+                self.fail_if(self._total_samples != "-",
+                             "Total samples should be '-', but got '{}'".format(self._total_samples))
+            else:
+                self.fail_if(self._total_samples == "-",
+                             "Total samples should be a number, but got '{}'".format(self._total_samples))
 
     def teardown(self):
         self._app.MainLoop()
