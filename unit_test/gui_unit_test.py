@@ -43,6 +43,12 @@ class GuiUnitTest(object):
         wx.PostEvent(wx.Window.FindWindowById(button_id), wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, button_id))
 
     @staticmethod
+    def select_radio_button(button_id):
+        ctrl = wx.Window.FindWindowById(button_id)
+        ctrl.SetValue(True)
+        wx.PostEvent(ctrl, wx.CommandEvent(wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, button_id))
+
+    @staticmethod
     def set_value_in_control(control_id, value):
         wx.Window.FindWindowById(control_id).SetValue(value)
 
@@ -65,20 +71,27 @@ if __name__ == "__main__":
             super().__init__(None, wx.ID_ANY, "Test Frame")
             panel = wx.Panel(self)
 
-            text = wx.TextCtrl(panel, self.ID_TEXT, "Change this text", size=(300, -1))
+            self._text = wx.TextCtrl(panel, self.ID_TEXT, "Change this text", size=(300, -1))
             radio1 = wx.RadioButton(panel, self.ID_RADIO1, 'Radio button 1')
+            radio1.Bind(wx.EVT_RADIOBUTTON, self._on_radio_button)
             radio2 = wx.RadioButton(panel, self.ID_RADIO2, 'Radio button 2')
+            radio2.Bind(wx.EVT_RADIOBUTTON, self._on_radio_button)
+
             btn = wx.Button(panel, self.ID_BUTTON, "Close")
             btn.Bind(wx.EVT_BUTTON, self._on_close_button)
 
             box = wx.BoxSizer(wx.VERTICAL)
-            box.Add(text, 0, wx.ALL, self._GAP)
+            box.Add(self._text, 0, wx.ALL, self._GAP)
             box.Add(radio1, 0, wx.ALL, self._GAP)
             box.Add(radio2, 0, wx.ALL, self._GAP)
             box.Add(btn, 0, wx.ALL, self._GAP)
 
             panel.SetSizer(box)
             self.SetInitialSize((400, 300))
+
+        def _on_radio_button(self, event):
+            self._text.SetValue("Radio ID: {}".format(event.GetId()))
+            event.Skip()
 
         def _on_close_button(self, event):
             self.Close()
@@ -91,24 +104,31 @@ if __name__ == "__main__":
         if GuiUnitTest.wait_until_window_available(TestFrame.ID_BUTTON):
             print("GUI is available")
             print("Is GUI available:", GuiUnitTest.is_window_available(TestFrame.ID_BUTTON))
-            org_text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
-            print("Original text:", org_text)
+
+            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            print("Original text:", text)
             # Sleep so we can see the text changing
             time.sleep(1)
+
             print("Change text")
             GuiUnitTest.set_value_in_control(TestFrame.ID_TEXT, "And now for something completely different!")
+            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            print("New text:", text)
             # Sleep so we can see the text is changed
             time.sleep(1)
-            new_text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
-            if new_text != org_text:
-                print("Yes! Text has changed")
-            else:
-                print("Oops... text is not changed :(")
+
             print("Toggle radio buttons")
-            GuiUnitTest.set_value_in_control(TestFrame.ID_RADIO2, True)
+            GuiUnitTest.select_radio_button(TestFrame.ID_RADIO2)
+            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            print("Active radio button:", text)
             time.sleep(1)
-            GuiUnitTest.set_value_in_control(TestFrame.ID_RADIO1, True)
+
+            GuiUnitTest.select_radio_button(TestFrame.ID_RADIO1)
+            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            print("Active radio button:", text)
             time.sleep(1)
+
+            print("Click the close button")
             GuiUnitTest.click_button(TestFrame.ID_BUTTON)
 
 
