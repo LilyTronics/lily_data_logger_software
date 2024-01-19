@@ -167,9 +167,6 @@ class ViewEditConfiguration(wx.Dialog):
 
 if __name__ == "__main__":
 
-    # Unit test in controller edit configuration
-    app = wx.App(redirect=False)
-    dlg = ViewEditConfiguration(None)
-    dlg.ShowModal()
-    dlg.Destroy()
-    app.MainLoop()
+    from src.controllers.controller_configuration import TestControllerConfiguration
+
+    TestControllerConfiguration().run()
