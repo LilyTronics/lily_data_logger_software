@@ -60,10 +60,10 @@ if __name__ == "__main__":
 
     class TestFrame(wx.Frame):
 
-        ID_TEXT = 101
-        ID_RADIO1 = 102
-        ID_RADIO2 = 103
-        ID_BUTTON = 201
+        ID_TEXT = wx.Window.NewControlId()
+        ID_RADIO1 = wx.Window.NewControlId()
+        ID_RADIO2 = wx.Window.NewControlId()
+        ID_BUTTON = wx.Window.NewControlId()
 
         _GAP = 5
 
