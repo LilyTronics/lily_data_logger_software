@@ -168,6 +168,7 @@ class TestControllerConfiguration(TestSuite):
         conf = Configuration()
         ControllerConfiguration.edit_configuration(conf, None, self.log)
         self._check_values_from_gui(conf)
+        wx.Yield()
 
     #########################
     # Test edit time values #
@@ -193,6 +194,7 @@ class TestControllerConfiguration(TestSuite):
                          "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), time_value))
             self.fail_if(time_value != conf.get_end_time(),
                          "The end time is not correct, is {} expected {}".format(conf.get_end_time(), time_value))
+            wx.Yield()
 
     #############################
     # Test edit continuous mode #
@@ -229,6 +231,7 @@ class TestControllerConfiguration(TestSuite):
             else:
                 self.fail_if(self._total_samples == "-",
                              "Total samples should be a number, but got '{}'".format(self._total_samples))
+            wx.Yield()
 
     def teardown(self):
         self._app.MainLoop()
