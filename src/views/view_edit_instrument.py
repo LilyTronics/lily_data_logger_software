@@ -10,8 +10,8 @@ from unit_test.test_suite import TestSuite
 
 class ViewEditInstrument(wx.Dialog):
 
-    ID_CMB_INSTRUMENT = 1
-    ID_BTN_TEST = 2
+    ID_CMB_INSTRUMENT = 100
+    ID_BTN_TEST = 101
 
     _GAP = 5
     _WINDOW_SIZE = (500, -1)

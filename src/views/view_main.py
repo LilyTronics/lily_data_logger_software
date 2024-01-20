@@ -21,9 +21,9 @@ class ViewMain(wx.Frame):
     ID_TOOL_EXPORT_INSTRUMENT = 107
     ID_TOOL_SHOW_LOG = 108
 
-    ID_LIST_INSTRUMENTS = wx.Window.NewControlId()
-    ID_BTN_ADD_INSTRUMENT = wx.Window.NewControlId()
-    ID_BTN_DELETE_INSTRUMENT = wx.Window.NewControlId()
+    ID_LIST_INSTRUMENTS = 200
+    ID_BTN_ADD_INSTRUMENT = 201
+    ID_BTN_DELETE_INSTRUMENT = 202
 
     _GAP = 5
 
