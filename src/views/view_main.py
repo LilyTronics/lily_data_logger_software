@@ -10,6 +10,7 @@ from src.models.time_converter import create_duration_time_string
 
 class ViewMain(wx.Frame):
 
+    # Toolbar IDs must be positive
     ID_TOOL_OPEN_CONFIGURATION = 100
     ID_TOOL_SAVE_CONFIGURATION = 101
     ID_TOOL_EDIT_CONFIGURATION = 102
@@ -20,9 +21,9 @@ class ViewMain(wx.Frame):
     ID_TOOL_EXPORT_INSTRUMENT = 107
     ID_TOOL_SHOW_LOG = 108
 
-    ID_LIST_INSTRUMENTS = 200
-    ID_BTN_ADD_INSTRUMENT = 201
-    ID_BTN_DELETE_INSTRUMENT = 202
+    ID_LIST_INSTRUMENTS = wx.Window.NewControlId()
+    ID_BTN_ADD_INSTRUMENT = wx.Window.NewControlId()
+    ID_BTN_DELETE_INSTRUMENT = wx.Window.NewControlId()
 
     _GAP = 5
 
@@ -225,9 +226,9 @@ class ViewMain(wx.Frame):
 
 if __name__ == "__main__":
 
+    from src.controllers.controller_main import ControllerMain
+    from src.models.logger import Logger
+
     app = wx.App(redirect=False)
-
-    frame = ViewMain("ViewMain Test")
-    frame.Show()
-
+    ControllerMain("Test ViewMain", Logger())
     app.MainLoop()
