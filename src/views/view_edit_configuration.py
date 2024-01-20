@@ -36,8 +36,6 @@ class ViewEditConfiguration(wx.Dialog):
         self.Bind(wx.EVT_RADIOBUTTON, self._on_time_change, self._radio_end_time)
         self.Bind(wx.EVT_RADIOBUTTON, self._on_time_change, self._radio_continuous)
 
-        print(self._txt_sample_time)
-
     def _create_time_settings_box(self, parent):
         box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Time settings: "), wx.VERTICAL)
 
