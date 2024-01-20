@@ -7,13 +7,13 @@ import wx
 
 class ViewEditConfiguration(wx.Dialog):
 
-    ID_SAMPLE_TIME = wx.Window.NewControlId()
-    ID_SAMPLE_TIME_UNITS = wx.Window.NewControlId()
-    ID_END_TIME = wx.Window.NewControlId()
-    ID_END_TIME_UNITS = wx.Window.NewControlId()
-    ID_FIXED = wx.Window.NewControlId()
-    ID_CONTINUOUS = wx.Window.NewControlId()
-    ID_TOTAL_SAMPLES = wx.Window.NewControlId()
+    ID_SAMPLE_TIME = 100
+    ID_SAMPLE_TIME_UNITS = 101
+    ID_END_TIME = 102
+    ID_END_TIME_UNITS = 103
+    ID_FIXED = 104
+    ID_CONTINUOUS = 105
+    ID_TOTAL_SAMPLES = 106
 
     _GAP = 5
     _TIME_UNITS = ["seconds", "minutes", "hours", "days"]
@@ -35,6 +35,8 @@ class ViewEditConfiguration(wx.Dialog):
         self.Bind(wx.EVT_COMBOBOX, self._on_time_change, self._cmb_end_time)
         self.Bind(wx.EVT_RADIOBUTTON, self._on_time_change, self._radio_end_time)
         self.Bind(wx.EVT_RADIOBUTTON, self._on_time_change, self._radio_continuous)
+
+        print(self._txt_sample_time)
 
     def _create_time_settings_box(self, parent):
         box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Time settings: "), wx.VERTICAL)
