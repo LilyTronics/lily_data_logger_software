@@ -152,6 +152,17 @@ class TestControllerConfiguration(TestSuite):
             self.fail_if(self._values["total_samples"] != "-",
                          "Total samples should be '-', but is {}".format(self._values["total_samples"]))
 
+    def _wait_for_dialog(self, test_frame, break_if_dialog_present):
+        dlg = None
+        t = 2
+        while t > 0:
+            dlg = test_frame.active_dialog
+            if (break_if_dialog_present and dlg is not None) or (not break_if_dialog_present and dlg is None):
+                break
+            self.sleep(0.2)
+            t -= 0.2
+        return dlg
+
     ################################
     # Test show edit configuration #
     ################################
@@ -232,6 +243,66 @@ class TestControllerConfiguration(TestSuite):
                 self.fail_if(self._total_samples == "-",
                              "Total samples should be a number, but got '{}'".format(self._total_samples))
             wx.Yield()
+
+    ##################################
+    # Test configuration has changed #
+    ##################################
+
+    def _test_configuration_is_changed(self, test, test_frame):
+        dlg = self._wait_for_dialog(test_frame, True)
+        if test == 1:
+            if dlg is not None:
+                self._error = "A dialog was shown when not expected"
+                # Close the dialog
+                self.gui.send_key_press(self.gui.KEY_TAB)
+                self.gui.send_key_press(self.gui.KEY_ENTER)
+                self._wait_for_dialog(test_frame, False)
+            return
+
+        if test > 1 and dlg is None:
+            self._error = "No dialog was shown when expected"
+            return
+
+        # A dialog is shown, as expected
+        if test == 2:
+            # Close with no button, we expect no new dialog
+            self.gui.send_key_press(self.gui.KEY_TAB)
+            self.gui.send_key_press(self.gui.KEY_ENTER)
+            self._wait_for_dialog(test_frame, False)
+
+        elif test == 3:
+            # Click Yes button, there must be a save file dialog
+            self.gui.send_key_press(self.gui.KEY_ENTER)
+            # Wait for message dialog to be gone
+            self._wait_for_dialog(test_frame, False)
+            # Wait for file dialog
+            dlg = self._wait_for_dialog(test_frame, True)
+            # Send escape to close the file dialog
+            self.gui.send_key_press(self.gui.KEY_ESCAPE)
+            # Wait for dialog to be gone
+            self._wait_for_dialog(test_frame, False)
+
+    def test_configuration_is_changed(self):
+        # Test 1: no change
+        # Test 2: is changed, no save
+        # Test 3: is changed, do save
+        for test in range(1, 4):
+            self._error = ""
+            test_frame = wx.Frame(None)
+            test_frame.active_dialog = None
+            conf = Configuration()
+            if test == 1:
+                self.log.debug("Test when configuration is not changed (expecting no dialogs)")
+            else:
+                self.log.debug("Test when configuration is changed (expecting dialogs)")
+                conf.set_sample_time(conf.get_sample_time() + 1)
+            t = self.start_thread(self._test_configuration_is_changed, (test, test_frame))
+            ControllerConfiguration.check_configuration_is_changed(conf, test_frame, self.log)
+            while t.is_alive():
+                self.sleep(0.1)
+            test_frame.Destroy()
+            wx.Yield()
+            self.fail_if(self._error != "", self._error)
 
     def teardown(self):
         self._app.MainLoop()
