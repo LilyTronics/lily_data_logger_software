@@ -174,9 +174,9 @@ class TestControllerConfiguration(TestSuite):
     #########################
 
     def _test_edit_time_values(self, time_value):
-        self.log.debug("Set time values to {} seconds".format(time_value))
         if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
             time_value, units = self._convert_seconds_to_time(time_value)
+            self.log.debug("Set time values to {} {}".format(time_value, units))
             self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME, str(time_value))
             self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME_UNITS, units)
             self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME, str(time_value))
@@ -205,7 +205,7 @@ class TestControllerConfiguration(TestSuite):
                 self.gui.select_radio_button(ViewEditConfiguration.ID_CONTINUOUS)
             else:
                 self.gui.select_radio_button(ViewEditConfiguration.ID_FIXED)
-            # Wait for total sample to change, should be fast
+            # Wait for total samples to change, should be fast
             t = 1
             while t > 0:
                 self._total_samples = self.gui.get_value_from_window(ViewEditConfiguration.ID_TOTAL_SAMPLES)
