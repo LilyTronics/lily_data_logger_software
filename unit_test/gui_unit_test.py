@@ -8,6 +8,10 @@ import wx
 
 class GuiUnitTest(object):
 
+    KEY_TAB = 9
+    KEY_ENTER = 13
+    KEY_ESCAPE = 27
+
     _WAIT_TIMEOUT = 5
 
     @staticmethod
@@ -51,6 +55,11 @@ class GuiUnitTest(object):
     @staticmethod
     def set_value_in_control(control_id, value):
         wx.Window.FindWindowById(control_id).SetValue(value)
+
+    @staticmethod
+    def send_key_press(key_code):
+        ui = wx.UIActionSimulator()
+        ui.Char(key_code)
 
 
 if __name__ == "__main__":
