@@ -2,6 +2,8 @@
 Controller for handling the configuration.
 """
 
+import os
+import tempfile
 import wx
 
 from src.models.configuration import Configuration
@@ -79,6 +81,7 @@ class ControllerConfiguration(object):
 class TestControllerConfiguration(TestSuite):
 
     def setup(self):
+        self._filename = os.path.join(tempfile.gettempdir(), "test_config.json")
         self._app = wx.App(redirect=False)
 
     ##########################
@@ -276,7 +279,7 @@ class TestControllerConfiguration(TestSuite):
             # Wait for message dialog to be gone
             self._wait_for_dialog(test_frame, False)
             # Wait for file dialog
-            dlg = self._wait_for_dialog(test_frame, True)
+            self._wait_for_dialog(test_frame, True)
             # Send escape to close the file dialog
             self.gui.send_key_press(self.gui.KEY_ESCAPE)
             # Wait for dialog to be gone
@@ -304,8 +307,64 @@ class TestControllerConfiguration(TestSuite):
             wx.Yield()
             self.fail_if(self._error != "", self._error)
 
+    ###########################
+    # Test save configuration #
+    ###########################
+
+    def _test_save_configuration(self, test_frame):
+        dlg = self._wait_for_dialog(test_frame, True)
+        if dlg is None:
+            self._error = "No dialog was shown when expected"
+            return
+
+        self.log.debug("Save configuration to {}".format(self._filename))
+        self.gui.send_text(self._filename)
+        self.gui.send_key_press(self.gui.KEY_ENTER)
+
+    def test_save_configuration(self):
+        self._error = ""
+        test_frame = wx.Frame(None)
+        test_frame.active_dialog = None
+        conf = Configuration()
+        conf.set_sample_time(2)
+        conf.set_end_time(120)
+        self.start_thread(self._test_save_configuration, (test_frame, ))
+        ControllerConfiguration.save_to_file(conf, test_frame, self.log)
+        test_frame.Destroy()
+        wx.Yield()
+        self.fail_if(self._error != "", self._error)
+
+    ###########################
+    # Test load configuration #
+    ###########################
+
+    def _test_load_configuration(self, test_frame):
+        dlg = self._wait_for_dialog(test_frame, True)
+        if dlg is None:
+            self._error = "No dialog was shown when expected"
+            return
+
+        self.log.debug("Load configuration from {}".format(self._filename))
+        self.gui.send_text(self._filename)
+        self.gui.send_key_press(self.gui.KEY_ENTER)
+
+    def test_load_configuration(self):
+        self._error = ""
+        test_frame = wx.Frame(None)
+        test_frame.active_dialog = None
+        conf = Configuration()
+        self.start_thread(self._test_save_configuration, (test_frame,))
+        ControllerConfiguration.load_from_file(conf, test_frame, self.log)
+        test_frame.Destroy()
+        wx.Yield()
+        self.fail_if(self._error != "", self._error)
+        self.fail_if(conf.get_sample_time() != 2, "Sample time is not loaded from the file")
+        self.fail_if(conf.get_end_time() != 120, "Sample time is not loaded from the file")
+
     def teardown(self):
         self._app.MainLoop()
+        if os.path.isfile(self._filename):
+            os.remove(self._filename)
 
 
 if __name__ == "__main__":
