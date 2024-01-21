@@ -21,7 +21,7 @@ class GuiUnitTest(object):
     @staticmethod
     def wait_until_window_available(window_id, timeout=_WAIT_TIMEOUT):
         while timeout > 0:
-            wx.Yield()
+            wx.YieldIfNeeded()
             if wx.Window.FindWindowById(window_id) is not None:
                 # Even though it is available, we need to wait a bit to have full access to all properties
                 time.sleep(0.1)
@@ -45,21 +45,32 @@ class GuiUnitTest(object):
     @staticmethod
     def click_button(button_id):
         wx.PostEvent(wx.Window.FindWindowById(button_id), wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, button_id))
+        wx.YieldIfNeeded()
 
     @staticmethod
     def select_radio_button(button_id):
         ctrl = wx.Window.FindWindowById(button_id)
         ctrl.SetValue(True)
         wx.PostEvent(ctrl, wx.CommandEvent(wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, button_id))
+        wx.YieldIfNeeded()
 
     @staticmethod
     def set_value_in_control(control_id, value):
         wx.Window.FindWindowById(control_id).SetValue(value)
+        wx.YieldIfNeeded()
 
     @staticmethod
     def send_key_press(key_code):
         ui = wx.UIActionSimulator()
         ui.Char(key_code)
+        wx.YieldIfNeeded()
+
+    @classmethod
+    def send_text(cls, text, char_delay=0.001):
+        for c in text:
+            cls.send_key_press(ord(c))
+            wx.YieldIfNeeded()
+            time.sleep(char_delay)
 
 
 if __name__ == "__main__":
@@ -121,6 +132,14 @@ if __name__ == "__main__":
 
             print("Change text")
             GuiUnitTest.set_value_in_control(TestFrame.ID_TEXT, "And now for something completely different!")
+            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            print("New text:", text)
+            # Sleep so we can see the text is changed
+            time.sleep(1)
+
+            print('Change text using send keys')
+            GuiUnitTest.set_value_in_control(TestFrame.ID_TEXT, "")
+            GuiUnitTest.send_text("Ham, spam and bacon", 0.05)
             text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
             print("New text:", text)
             # Sleep so we can see the text is changed
