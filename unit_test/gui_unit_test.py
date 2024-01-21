@@ -14,6 +14,10 @@ class GuiUnitTest(object):
 
     _WAIT_TIMEOUT = 5
 
+    ##########
+    # Public #
+    ##########
+
     @staticmethod
     def is_window_available(window_id):
         return wx.Window.FindWindowById(window_id) is not None
@@ -60,17 +64,28 @@ class GuiUnitTest(object):
         wx.YieldIfNeeded()
 
     @staticmethod
-    def send_key_press(key_code):
+    def send_key_press(key_code, key_modifier=wx.MOD_NONE):
         ui = wx.UIActionSimulator()
-        ui.Char(key_code)
+        ui.Char(key_code, key_modifier)
         wx.YieldIfNeeded()
 
     @classmethod
     def send_text(cls, text, char_delay=0.001):
         for c in text:
-            cls.send_key_press(ord(c))
+            key_modifier = cls._determine_modifier_for_char(c)
+            cls.send_key_press(ord(c), key_modifier)
             wx.YieldIfNeeded()
             time.sleep(char_delay)
+
+    ###########
+    # Private #
+    ###########
+
+    @staticmethod
+    def _determine_modifier_for_char(c):
+        if c in '~!@#$%^&*()_+{}:"<>?' or c.isupper():
+            return wx.MOD_SHIFT
+        return wx.MOD_NONE
 
 
 if __name__ == "__main__":
@@ -139,7 +154,7 @@ if __name__ == "__main__":
 
             print('Change text using send keys')
             GuiUnitTest.set_value_in_control(TestFrame.ID_TEXT, "")
-            GuiUnitTest.send_text("Ham, spam and bacon", 0.05)
+            GuiUnitTest.send_text("I said: 'Ham, spam and bacon'! OK?", 0.05)
             text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
             print("New text:", text)
             # Sleep so we can see the text is changed
