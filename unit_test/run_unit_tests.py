@@ -5,27 +5,15 @@ Runs all the unit tests
 import os
 
 from lily_unit_test import TestRunner
-from src.models.list_serial_ports import get_available_serial_ports
-from unit_test.test_environment.oscilloscope_tds220 import get_oscilloscope_serial_port
-from unit_test.test_environment.power_supply_pl303qmd import get_power_supply_serial_port
-from unit_test.test_environment.serial_loopback import get_serial_loopback_port
 from unit_test.test_environment.setup_environment import clear_reports
+from unit_test.test_environment.setup_environment import check_for_instruments
 
 
 REPORT_FOLDER = os.path.join(os.path.dirname(__file__), "test_reports")
 EXCLUDE_TESTS = ["TestSuite"]
-serial_ports = get_available_serial_ports()
+EXCLUDE_TESTS.extend(check_for_instruments())
 
 clear_reports(REPORT_FOLDER)
-
-if get_serial_loopback_port(serial_ports) is None:
-    EXCLUDE_TESTS.append("TestSerialPortInterface")
-
-if get_power_supply_serial_port(serial_ports) is None:
-    EXCLUDE_TESTS.append("TestPowerSupplyPL303QMD")
-
-if get_oscilloscope_serial_port(serial_ports) is None:
-    EXCLUDE_TESTS.append("TestOscilloscopeTDS220")
 
 options = {
     "report_folder": REPORT_FOLDER,
