@@ -4,16 +4,18 @@ View for editing the configuration.
 
 import wx
 
+from src.models.id_manager import IdManager
+
 
 class ViewEditConfiguration(wx.Dialog):
 
-    ID_SAMPLE_TIME = 100
-    ID_SAMPLE_TIME_UNITS = 101
-    ID_END_TIME = 102
-    ID_END_TIME_UNITS = 103
-    ID_FIXED = 104
-    ID_CONTINUOUS = 105
-    ID_TOTAL_SAMPLES = 106
+    ID_SAMPLE_TIME = IdManager.get_widget_id()
+    ID_SAMPLE_TIME_UNITS = IdManager.get_widget_id()
+    ID_END_TIME = IdManager.get_widget_id()
+    ID_END_TIME_UNITS = IdManager.get_widget_id()
+    ID_FIXED = IdManager.get_widget_id()
+    ID_CONTINUOUS = IdManager.get_widget_id()
+    ID_TOTAL_SAMPLES = IdManager.get_widget_id()
 
     _GAP = 5
     _TIME_UNITS = ["seconds", "minutes", "hours", "days"]

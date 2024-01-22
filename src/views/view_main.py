@@ -4,6 +4,7 @@ Main view for the application
 
 import wx.grid
 
+from src.models.id_manager import IdManager
 from src.models.image_data import ImageData
 from src.models.time_converter import create_duration_time_string
 
@@ -11,19 +12,19 @@ from src.models.time_converter import create_duration_time_string
 class ViewMain(wx.Frame):
 
     # Toolbar IDs must be positive
-    ID_TOOL_OPEN_CONFIGURATION = 100
-    ID_TOOL_SAVE_CONFIGURATION = 101
-    ID_TOOL_EDIT_CONFIGURATION = 102
-    ID_TOOL_CHECK_INSTRUMENTS = 103
-    ID_TOOL_START_PROCESS = 104
-    ID_TOOL_STOP_PROCESS = 105
-    ID_TOOL_EXPORT_CSV = 106
-    ID_TOOL_EXPORT_INSTRUMENT = 107
-    ID_TOOL_SHOW_LOG = 108
+    ID_TOOL_OPEN_CONFIGURATION = IdManager.get_widget_id()
+    ID_TOOL_SAVE_CONFIGURATION = IdManager.get_widget_id()
+    ID_TOOL_EDIT_CONFIGURATION = IdManager.get_widget_id()
+    ID_TOOL_CHECK_INSTRUMENTS = IdManager.get_widget_id()
+    ID_TOOL_START_PROCESS = IdManager.get_widget_id()
+    ID_TOOL_STOP_PROCESS = IdManager.get_widget_id()
+    ID_TOOL_EXPORT_CSV = IdManager.get_widget_id()
+    ID_TOOL_EXPORT_INSTRUMENT = IdManager.get_widget_id()
+    ID_TOOL_SHOW_LOG = IdManager.get_widget_id()
 
-    ID_LIST_INSTRUMENTS = 200
-    ID_BTN_ADD_INSTRUMENT = 201
-    ID_BTN_DELETE_INSTRUMENT = 202
+    ID_LIST_INSTRUMENTS = IdManager.get_widget_id()
+    ID_BTN_ADD_INSTRUMENT = IdManager.get_widget_id()
+    ID_BTN_DELETE_INSTRUMENT = IdManager.get_widget_id()
 
     _GAP = 5
 

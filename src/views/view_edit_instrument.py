@@ -4,14 +4,15 @@ Edit instrument view.
 
 import wx
 
+from src.models.id_manager import IdManager
 from src.views.view_dialogs import show_message
 from unit_test.test_suite import TestSuite
 
 
 class ViewEditInstrument(wx.Dialog):
 
-    ID_CMB_INSTRUMENT = 100
-    ID_BTN_TEST = 101
+    ID_CMB_INSTRUMENT = IdManager.get_widget_id()
+    ID_BTN_TEST = IdManager.get_widget_id()
 
     _GAP = 5
     _WINDOW_SIZE = (500, -1)
