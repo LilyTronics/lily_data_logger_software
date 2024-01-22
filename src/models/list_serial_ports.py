@@ -6,14 +6,18 @@ import serial
 import threading
 import time
 
+from serial.tools.list_ports import comports
+
 
 def get_available_serial_ports():
     ports = []
     threads = []
     lock = threading.RLock()
 
-    for i in range(1, 256):
-        t = threading.Thread(target=_check_serial_port, args=(lock, f"COM{i}", ports))
+    serial_ports = comports()
+
+    for port in serial_ports:
+        t = threading.Thread(target=_check_serial_port, args=(lock, port.device, ports))
         t.daemon = True
         t.start()
         threads.append(t)
@@ -21,21 +25,18 @@ def get_available_serial_ports():
     while True in list(map(lambda x: x.is_alive(), threads)):
         time.sleep(0.01)
 
-    if len(ports) == 0:
-        ports.append("no ports")
-
     return sorted(ports)
 
 
 def _check_serial_port(lock_object, port_name, port_list):
     try:
         p = serial.Serial(port_name)
+        p.close()
         lock_object.acquire()
         try:
             port_list.append(port_name)
         finally:
             lock_object.release()
-            p.close()
     except (Exception, ):
         pass
 
