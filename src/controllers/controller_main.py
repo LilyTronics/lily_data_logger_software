@@ -9,6 +9,7 @@ from src.models.configuration import Configuration
 from src.models.settings import Settings
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
+from unit_test.test_suite import TestSuite
 
 
 class ControllerMain(object):
@@ -114,12 +115,51 @@ class ControllerMain(object):
             self._settings.store_main_window_position(*self._main_view.GetPosition())
         event.Skip()
 
+    ##########
+    # Public #
+    ##########
+
+    def get_view_main(self):
+        return self._main_view
+
+
+class TestControllerMain(TestSuite):
+
+    _view_main = None
+
+    def _wait_until_view_available(self):
+        t = 2
+        while t > 0:
+            if self._view_main is not None:
+                return ""
+            self.sleep(0.1)
+            t -= 0.1
+        return "View main did not load"
+
+    def _show_view_main(self):
+        self._app = wx.App(redirect=False)
+        controller = ControllerMain("ControllerMain Test", self.log)
+        self._view_main = controller.get_view_main()
+        self._app.MainLoop()
+
+    ###########################
+    # Test show the main view #
+    ###########################
+
+    def _test_show_view_main(self):
+        self._error = self._wait_until_view_available()
+        if self._error == "":
+            if not self.gui.is_window_available(self._view_main.ID_LIST_INSTRUMENTS):
+                self._error = "The view main was not shown properly"
+        if self._view_main is not None:
+            self._view_main.Close()
+
+    def test_show_view_main(self):
+        self.start_thread(self._test_show_view_main)
+        self._show_view_main()
+        self.fail_if(self._error != "", self._error)
+
 
 if __name__ == "__main__":
 
-    from src.models.logger import Logger
-
-    test_logger = Logger(True)
-    app = wx.App(redirect=False)
-    controller = ControllerMain("ControllerMain Test", test_logger)
-    app.MainLoop()
+    TestControllerMain().run()

@@ -226,9 +226,6 @@ class ViewMain(wx.Frame):
 
 if __name__ == "__main__":
 
-    from src.controllers.controller_main import ControllerMain
-    from src.models.logger import Logger
+    from src.controllers.controller_main import TestControllerMain
 
-    app = wx.App(redirect=False)
-    ControllerMain("Test ViewMain", Logger())
-    app.MainLoop()
+    TestControllerMain().run()
