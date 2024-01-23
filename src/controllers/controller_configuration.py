@@ -84,10 +84,6 @@ class TestControllerConfiguration(TestSuite):
         self._filename = os.path.join(tempfile.gettempdir(), "test_config.json")
         self._app = wx.App(redirect=False)
 
-    ##########################
-    # Generic test functions #
-    ##########################
-
     @staticmethod
     def _convert_seconds_to_time(value):
         units = "seconds"
@@ -155,76 +151,64 @@ class TestControllerConfiguration(TestSuite):
             self.fail_if(self._values["total_samples"] != "-",
                          "Total samples should be '-', but is {}".format(self._values["total_samples"]))
 
-    ################################
-    # Test show edit configuration #
-    ################################
-
-    def _test_show_edit_configuration(self):
-        self.log.debug("Get default values")
-        if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
-            self._values = self._get_values_from_view()
-            self.gui.click_button(wx.ID_CANCEL)
-
     def test_show_edit_configuration(self):
+        def _test_show_edit_configuration():
+            self.log.debug("Get default values")
+            if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
+                self._values = self._get_values_from_view()
+                self.gui.click_button(wx.ID_CANCEL)
+
         self._values = None
-        self.start_thread(self._test_show_edit_configuration)
+        self.start_thread(_test_show_edit_configuration)
         conf = Configuration()
         ControllerConfiguration.edit_configuration(conf, None, self.log)
         self._check_values_from_gui(conf)
         wx.Yield()
 
-    #########################
-    # Test edit time values #
-    #########################
-
-    def _test_edit_time_values(self, time_value):
-        if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
-            time_value, units = self._convert_seconds_to_time(time_value)
-            self.log.debug("Set time values to {} {}".format(time_value, units))
-            self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME, str(time_value))
-            self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME_UNITS, units)
-            self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME, str(time_value))
-            self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME_UNITS, units)
-            self.gui.click_button(wx.ID_OK)
-
     def test_edit_time_values(self):
-        for time_value in (23, 120, 14400, 172800):
-            self.start_thread(self._test_edit_time_values, (time_value, ))
+        def _test_edit_time_values(time_value):
+            if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
+                time_value, units = self._convert_seconds_to_time(time_value)
+                self.log.debug("Set time values to {} {}".format(time_value, units))
+                self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME, str(time_value))
+                self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME_UNITS, units)
+                self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME, str(time_value))
+                self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME_UNITS, units)
+                self.gui.click_button(wx.ID_OK)
+
+        for test_value in (23, 120, 14400, 172800):
+            self.start_thread(_test_edit_time_values, (test_value, ))
             # Always start with default values
             conf = Configuration()
             ControllerConfiguration.edit_configuration(conf, None, self.log)
-            self.fail_if(time_value != conf.get_sample_time(),
-                         "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), time_value))
-            self.fail_if(time_value != conf.get_end_time(),
-                         "The end time is not correct, is {} expected {}".format(conf.get_end_time(), time_value))
+            self.fail_if(test_value != conf.get_sample_time(),
+                         "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), test_value))
+            self.fail_if(test_value != conf.get_end_time(),
+                         "The end time is not correct, is {} expected {}".format(conf.get_end_time(), test_value))
             wx.Yield()
 
-    #############################
-    # Test edit continuous mode #
-    #############################
-
-    def _test_edit_continuous_mode(self, mode):
-        self.log.debug("Set continuous mode to {}".format(mode))
-        if self.gui.wait_until_window_available(ViewEditConfiguration.ID_CONTINUOUS):
-            if mode:
-                self.gui.select_radio_button(ViewEditConfiguration.ID_CONTINUOUS)
-            else:
-                self.gui.select_radio_button(ViewEditConfiguration.ID_FIXED)
-            # Wait for total samples to change, should be fast
-            t = 1
-            while t > 0:
-                self._total_samples = self.gui.get_value_from_window(ViewEditConfiguration.ID_TOTAL_SAMPLES)
-                if mode and self._total_samples == '-' or not mode and self._total_samples != '-':
-                    break
-                self.sleep(0.1)
-                t -= 0.1
-            self.gui.click_button(wx.ID_OK)
-
     def test_edit_continuous_mode(self):
+        def _test_edit_continuous_mode(test_mode):
+            self.log.debug("Set continuous mode to {}".format(test_mode))
+            if self.gui.wait_until_window_available(ViewEditConfiguration.ID_CONTINUOUS):
+                if test_mode:
+                    self.gui.select_radio_button(ViewEditConfiguration.ID_CONTINUOUS)
+                else:
+                    self.gui.select_radio_button(ViewEditConfiguration.ID_FIXED)
+                # Wait for total samples to change, should be fast
+                t = 1
+                while t > 0:
+                    self._total_samples = self.gui.get_value_from_window(ViewEditConfiguration.ID_TOTAL_SAMPLES)
+                    if test_mode and self._total_samples == '-' or not test_mode and self._total_samples != '-':
+                        break
+                    self.sleep(0.1)
+                    t -= 0.1
+                self.gui.click_button(wx.ID_OK)
+
         self._total_samples = None
         conf = Configuration()
         for mode in (True, False):
-            self.start_thread(self._test_edit_continuous_mode, (mode,))
+            self.start_thread(_test_edit_continuous_mode, (mode,))
             ControllerConfiguration.edit_configuration(conf, None, self.log)
             self.fail_if(conf.get_continuous_mode() != mode,
                          "Continuous mode is not correct, is {} should be {}".format(conf.get_continuous_mode(), mode))
@@ -236,59 +220,52 @@ class TestControllerConfiguration(TestSuite):
                              "Total samples should be a number, but got '{}'".format(self._total_samples))
             wx.Yield()
 
-    ##################################
-    # Test configuration has changed #
-    ##################################
-
-    def _test_configuration_is_changed(self, test, test_frame):
-        self.gui.wait_for_dialog(test_frame, True)
-        if test == 1:
-            if test_frame.active_dialog is not None:
-                self._error = "A dialog was shown when not expected"
-                # Close the dialog
+    def test_configuration_is_changed(self):
+        def _test_configuration_is_changed(test, frame):
+            self.gui.wait_for_dialog(frame, True)
+            if test == 1:
+                if frame.active_dialog is not None:
+                    self._error = "A dialog was shown when not expected"
+                    # Close the dialog
+                    self.gui.send_key_press(self.gui.KEY_TAB)
+                    self.gui.send_key_press(self.gui.KEY_ENTER)
+                    self.gui.wait_for_dialog(frame, False)
+                return
+            if test > 1 and frame.active_dialog is None:
+                self._error = "No dialog was shown when expected"
+                return
+            # A dialog is shown, as expected
+            if test == 2:
+                # Close with no button, we expect no new dialog
                 self.gui.send_key_press(self.gui.KEY_TAB)
                 self.gui.send_key_press(self.gui.KEY_ENTER)
-                self.gui.wait_for_dialog(test_frame, False)
-            return
+                self.gui.wait_for_dialog(frame, False)
+            elif test == 3:
+                # Click Yes button, there must be a save file dialog
+                self.gui.send_key_press(self.gui.KEY_ENTER)
+                # Wait for message dialog to be gone
+                self.gui.wait_for_dialog(frame, False)
+                # Wait for file dialog
+                self.gui.wait_for_dialog(frame, True)
+                # Send escape to close the file dialog
+                self.gui.send_key_press(self.gui.KEY_ESCAPE)
+                # Wait for dialog to be gone
+                self.gui.wait_for_dialog(frame, False)
 
-        if test > 1 and test_frame.active_dialog is None:
-            self._error = "No dialog was shown when expected"
-            return
-
-        # A dialog is shown, as expected
-        if test == 2:
-            # Close with no button, we expect no new dialog
-            self.gui.send_key_press(self.gui.KEY_TAB)
-            self.gui.send_key_press(self.gui.KEY_ENTER)
-            self.gui.wait_for_dialog(test_frame, False)
-
-        elif test == 3:
-            # Click Yes button, there must be a save file dialog
-            self.gui.send_key_press(self.gui.KEY_ENTER)
-            # Wait for message dialog to be gone
-            self.gui.wait_for_dialog(test_frame, False)
-            # Wait for file dialog
-            self.gui.wait_for_dialog(test_frame, True)
-            # Send escape to close the file dialog
-            self.gui.send_key_press(self.gui.KEY_ESCAPE)
-            # Wait for dialog to be gone
-            self.gui.wait_for_dialog(test_frame, False)
-
-    def test_configuration_is_changed(self):
         # Test 1: no change
         # Test 2: is changed, no save
         # Test 3: is changed, do save
-        for test in range(1, 4):
+        for test_id in range(1, 4):
             self._error = ""
             test_frame = wx.Frame(None)
             test_frame.active_dialog = None
             conf = Configuration()
-            if test == 1:
+            if test_id == 1:
                 self.log.debug("Test when configuration is not changed (expecting no dialogs)")
             else:
                 self.log.debug("Test when configuration is changed (expecting dialogs)")
                 conf.set_sample_time(conf.get_sample_time() + 1)
-            t = self.start_thread(self._test_configuration_is_changed, (test, test_frame))
+            t = self.start_thread(_test_configuration_is_changed, (test_id, test_frame))
             ControllerConfiguration.check_configuration_is_changed(conf, test_frame, self.log)
             while t.is_alive():
                 self.sleep(0.1)
@@ -296,53 +273,43 @@ class TestControllerConfiguration(TestSuite):
             wx.Yield()
             self.fail_if(self._error != "", self._error)
 
-    ###########################
-    # Test save configuration #
-    ###########################
-
-    def _test_save_configuration(self, test_frame):
-        self.gui.wait_for_dialog(test_frame, True)
-        if test_frame.active_dialog is None:
-            self._error = "No dialog was shown when expected"
-            return
-
-        self.log.debug("Save configuration to {}".format(self._filename))
-        self.gui.send_text(self._filename)
-        self.gui.send_key_press(self.gui.KEY_ENTER)
-
     def test_save_configuration(self):
+        def _test_save_configuration(frame):
+            self.gui.wait_for_dialog(frame, True)
+            if test_frame.active_dialog is None:
+                self._error = "No dialog was shown when expected"
+                return
+            self.log.debug("Save configuration to {}".format(self._filename))
+            self.gui.send_text(self._filename)
+            self.gui.send_key_press(self.gui.KEY_ENTER)
+
         self._error = ""
         test_frame = wx.Frame(None)
         test_frame.active_dialog = None
         conf = Configuration()
         conf.set_sample_time(2)
         conf.set_end_time(120)
-        self.start_thread(self._test_save_configuration, (test_frame, ))
+        self.start_thread(_test_save_configuration, (test_frame, ))
         ControllerConfiguration.save_to_file(conf, test_frame, self.log)
         test_frame.Destroy()
         wx.Yield()
         self.fail_if(self._error != "", self._error)
 
-    ###########################
-    # Test load configuration #
-    ###########################
-
-    def _test_load_configuration(self, test_frame):
-        self.gui.wait_for_dialog(test_frame, True)
-        if test_frame.active_dialog is None:
-            self._error = "No dialog was shown when expected"
-            return
-
-        self.log.debug("Load configuration from {}".format(self._filename))
-        self.gui.send_text(self._filename)
-        self.gui.send_key_press(self.gui.KEY_ENTER)
-
     def test_load_configuration(self):
+        def _test_load_configuration(frame):
+            self.gui.wait_for_dialog(frame, True)
+            if test_frame.active_dialog is None:
+                self._error = "No dialog was shown when expected"
+                return
+            self.log.debug("Load configuration from {}".format(self._filename))
+            self.gui.send_text(self._filename)
+            self.gui.send_key_press(self.gui.KEY_ENTER)
+
         self._error = ""
         test_frame = wx.Frame(None)
         test_frame.active_dialog = None
         conf = Configuration()
-        self.start_thread(self._test_save_configuration, (test_frame,))
+        self.start_thread(_test_load_configuration, (test_frame,))
         ControllerConfiguration.load_from_file(conf, test_frame, self.log)
         test_frame.Destroy()
         wx.Yield()
