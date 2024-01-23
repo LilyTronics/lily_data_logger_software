@@ -142,20 +142,16 @@ class TestControllerMain(TestSuite):
         self._view_main = controller.get_view_main()
         self._app.MainLoop()
 
-    ###########################
-    # Test show the main view #
-    ###########################
-
-    def _test_show_view_main(self):
-        self._error = self._wait_until_view_available()
-        if self._error == "":
+    def test_show_view_main(self):
+        def _test_show_view_main():
+            self._error = self._wait_until_view_available()
+            if self._error != "":
+                return
             if not self.gui.is_window_available(self._view_main.ID_LIST_INSTRUMENTS):
                 self._error = "The view main was not shown properly"
-        if self._view_main is not None:
             self._view_main.Close()
 
-    def test_show_view_main(self):
-        self.start_thread(self._test_show_view_main)
+        self.start_thread(_test_show_view_main)
         self._show_view_main()
         self.fail_if(self._error != "", self._error)
 
