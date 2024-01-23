@@ -77,6 +77,15 @@ class GuiUnitTest(object):
             wx.YieldIfNeeded()
             time.sleep(char_delay)
 
+    @classmethod
+    def wait_for_dialog(cls, frame, break_if_dialog_present, timeout=2):
+        while timeout > 0:
+            if ((break_if_dialog_present and frame.active_dialog is not None) or
+                    (not break_if_dialog_present and frame.active_dialog is None)):
+                break
+            time.sleep(0.2)
+            timeout -= 0.2
+
     ###########
     # Private #
     ###########
@@ -98,13 +107,15 @@ if __name__ == "__main__":
         ID_TEXT = wx.Window.NewControlId()
         ID_RADIO1 = wx.Window.NewControlId()
         ID_RADIO2 = wx.Window.NewControlId()
-        ID_BUTTON = wx.Window.NewControlId()
+        ID_BUTTON_DIALOG = wx.Window.NewControlId()
+        ID_BUTTON_CLOSE = wx.Window.NewControlId()
 
         _GAP = 5
 
         def __init__(self):
             super().__init__(None, wx.ID_ANY, "Test Frame")
             panel = wx.Panel(self)
+            self.active_dialog = None
 
             self._text = wx.TextCtrl(panel, self.ID_TEXT, "Change this text", size=(300, -1))
             radio1 = wx.RadioButton(panel, self.ID_RADIO1, 'Radio button 1')
@@ -112,14 +123,18 @@ if __name__ == "__main__":
             radio2 = wx.RadioButton(panel, self.ID_RADIO2, 'Radio button 2')
             radio2.Bind(wx.EVT_RADIOBUTTON, self._on_radio_button)
 
-            btn = wx.Button(panel, self.ID_BUTTON, "Close")
-            btn.Bind(wx.EVT_BUTTON, self._on_close_button)
+            btn_dialog = wx.Button(panel, self.ID_BUTTON_DIALOG, "Show dialog")
+            btn_dialog.Bind(wx.EVT_BUTTON, self._on_show_dialog_button)
+
+            btn_close = wx.Button(panel, self.ID_BUTTON_CLOSE, "Close")
+            btn_close.Bind(wx.EVT_BUTTON, self._on_close_button)
 
             box = wx.BoxSizer(wx.VERTICAL)
             box.Add(self._text, 0, wx.ALL, self._GAP)
             box.Add(radio1, 0, wx.ALL, self._GAP)
             box.Add(radio2, 0, wx.ALL, self._GAP)
-            box.Add(btn, 0, wx.ALL, self._GAP)
+            box.Add(btn_dialog, 0, wx.ALL, self._GAP)
+            box.Add(btn_close, 0, wx.ALL, self._GAP)
 
             panel.SetSizer(box)
             self.SetInitialSize((400, 300))
@@ -128,17 +143,23 @@ if __name__ == "__main__":
             self._text.SetValue("Radio ID: {}".format(event.GetId()))
             event.Skip()
 
+        def _on_show_dialog_button(self, event):
+            self.active_dialog = wx.MessageDialog(self, "Please close me.", "Dialog")
+            self.active_dialog.ShowModal()
+            self.active_dialog.Destroy()
+            self.active_dialog = None
+
         def _on_close_button(self, event):
             self.Close()
             event.Skip()
 
 
-    def test_thread():
+    def test_thread(frame):
         print("Wait for GUI to be available")
-        print("Is GUI available:", GuiUnitTest.is_window_available(TestFrame.ID_BUTTON))
-        if GuiUnitTest.wait_until_window_available(TestFrame.ID_BUTTON):
+        print("Is GUI available:", GuiUnitTest.is_window_available(TestFrame.ID_BUTTON_CLOSE))
+        if GuiUnitTest.wait_until_window_available(TestFrame.ID_BUTTON_CLOSE):
             print("GUI is available")
-            print("Is GUI available:", GuiUnitTest.is_window_available(TestFrame.ID_BUTTON))
+            print("Is GUI available:", GuiUnitTest.is_window_available(TestFrame.ID_BUTTON_CLOSE))
 
             text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
             print("Original text:", text)
@@ -154,7 +175,7 @@ if __name__ == "__main__":
 
             print('Change text using send keys')
             GuiUnitTest.set_value_in_control(TestFrame.ID_TEXT, "")
-            GuiUnitTest.send_text("I said: 'Ham, spam and bacon'! OK?", 0.05)
+            GuiUnitTest.send_text("I said: 'Ham, spam and bacon'! OK?", 0.02)
             text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
             print("New text:", text)
             # Sleep so we can see the text is changed
@@ -171,14 +192,25 @@ if __name__ == "__main__":
             print("Active radio button:", text)
             time.sleep(1)
 
+            print("Click show dialog")
+            GuiUnitTest.click_button(TestFrame.ID_BUTTON_DIALOG)
+            GuiUnitTest.wait_for_dialog(frame, True)
+            print("Dialog:", frame.active_dialog)
+            time.sleep(1)
+            if frame.active_dialog is not None:
+                GuiUnitTest.send_key_press(GuiUnitTest.KEY_ENTER)
+            time.sleep(1)
+
             print("Click the close button")
-            GuiUnitTest.click_button(TestFrame.ID_BUTTON)
+            GuiUnitTest.click_button(TestFrame.ID_BUTTON_CLOSE)
 
 
-    t = threading.Thread(target=test_thread)
+    app = wx.App(redirect=False)
+    test_frame = TestFrame()
+
+    t = threading.Thread(target=test_thread, args=(test_frame,))
     t.daemon = True
     t.start()
 
-    app = wx.App(redirect=False)
-    TestFrame().Show()
+    test_frame.Show()
     app.MainLoop()
