@@ -71,20 +71,20 @@ class TestIdManager(TestSuite):
                 break
         self.fail_if(i == 9, "No run time error was raised, while it was expected")
 
-    def _get_widget_id(self):
-        self._lock.acquire()
-        try:
-            self._widget_ids.append(IdManager.get_widget_id())
-        finally:
-            self._lock.release()
-
     def test_multi_threading(self):
+        def _get_widget_id():
+            self._lock.acquire()
+            try:
+                self._widget_ids.append(IdManager.get_widget_id())
+            finally:
+                self._lock.release()
+
         self._widget_ids = []
         self._lock = threading.RLock()
         self.log.debug("Test generate IDs from multiple threads")
         threads = []
         for i in range(500):
-            threads.append(self.start_thread(self._get_widget_id))
+            threads.append(self.start_thread(_get_widget_id))
         while True in list(map(lambda x: x.is_alive(), threads)):
             self.sleep(0.1)
         self.fail_if(len(self._widget_ids) != 500,
