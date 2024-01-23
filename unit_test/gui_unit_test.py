@@ -148,6 +148,7 @@ if __name__ == "__main__":
             self.active_dialog.ShowModal()
             self.active_dialog.Destroy()
             self.active_dialog = None
+            event.Skip()
 
         def _on_close_button(self, event):
             self.Close()
