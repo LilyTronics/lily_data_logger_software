@@ -54,24 +54,22 @@ class TestTcpClientInterface(TestSuite):
     _stop_event = None
     _thread = None
 
-    def _process_data(self):
-        while not self._stop_event.is_set():
-            try:
-                connection = self._socket.accept()[0]
-            except TimeoutError:
-                continue
-            data = connection.recv(self._RX_BUFFER_SIZE)
-            if data == self._TEST_TIMEOUT_DATA:
-                continue
-            connection.sendall(data)
-
     def _start_server(self):
+        def _process_data():
+            while not self._stop_event.is_set():
+                try:
+                    connection = self._socket.accept()[0]
+                except TimeoutError:
+                    continue
+                data = connection.recv(self._RX_BUFFER_SIZE)
+                if data == self._TEST_TIMEOUT_DATA:
+                    continue
+                connection.sendall(data)
+
         self._socket = socket.create_server((self._IP, self._PORT))
         self._socket.settimeout(self._SERVER_TIMEOUT)
         self._stop_event = threading.Event()
-        self._thread = threading.Thread(target=self._process_data)
-        self._thread.daemon = True
-        self._thread.start()
+        self._thread = self.start_thread(_process_data)
 
     def setup(self):
         self._client = TcpClientInterface(self._IP, self._PORT, self._CLIENT_TIMEOUT)

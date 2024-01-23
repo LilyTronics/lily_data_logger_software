@@ -50,24 +50,22 @@ class TestUdpClientInterface(TestSuite):
     _stop_event = None
     _thread = None
 
-    def _process_data(self):
-        while not self._stop_event.is_set():
-            try:
-                data, client_address = self._socket.recvfrom(self._RX_BUFFER_SIZE)
-                if data == self._TEST_TIMEOUT_DATA:
-                    continue
-                self._socket.sendto(data, client_address)
-            except TimeoutError:
-                pass
-
     def _start_server(self):
+        def _process_data():
+            while not self._stop_event.is_set():
+                try:
+                    data, client_address = self._socket.recvfrom(self._RX_BUFFER_SIZE)
+                    if data == self._TEST_TIMEOUT_DATA:
+                        continue
+                    self._socket.sendto(data, client_address)
+                except TimeoutError:
+                    pass
+
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._socket.settimeout(self._SERVER_TIMEOUT)
         self._socket.bind((self._IP, self._PORT))
         self._stop_event = threading.Event()
-        self._thread = threading.Thread(target=self._process_data)
-        self._thread.daemon = True
-        self._thread.start()
+        self._thread = self.start_thread(_process_data)
 
     def setup(self):
         self._client = UdpClientInterface(self._IP, self._PORT, self._CLIENT_TIMEOUT)
