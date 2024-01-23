@@ -11,7 +11,6 @@ from src.models.time_converter import create_duration_time_string
 
 class ViewMain(wx.Frame):
 
-    # Toolbar IDs must be positive
     ID_TOOL_OPEN_CONFIGURATION = IdManager.get_widget_id()
     ID_TOOL_SAVE_CONFIGURATION = IdManager.get_widget_id()
     ID_TOOL_EDIT_CONFIGURATION = IdManager.get_widget_id()
@@ -72,7 +71,7 @@ class ViewMain(wx.Frame):
             (self.ID_TOOL_CHECK_INSTRUMENTS, ImageData.check_instruments.Bitmap, "Check instruments"),
             (0,),
             (self.ID_TOOL_START_PROCESS, ImageData.start.Bitmap, "Start"),
-            (self.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, " Stop"),
+            (self.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, "Stop"),
             (0,),
             (self.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap, "Export measurement data to CSV"),
             (self.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap, "Export instrument"),
