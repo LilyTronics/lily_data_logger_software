@@ -47,8 +47,6 @@ class ControllerMain(object):
         frame.Bind(wx.EVT_TOOL, self._on_save_configuration, id=frame.ID_TOOL_SAVE_CONFIGURATION)
         frame.Bind(wx.EVT_TOOL, self._on_edit_configuration, id=frame.ID_TOOL_EDIT_CONFIGURATION)
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=frame.ID_TOOL_SHOW_LOG)
-        frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=frame.ID_BTN_ADD_INSTRUMENT)
-        frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument, id=frame.ID_LIST_INSTRUMENTS)
         return frame
 
     def _initialize_log_view(self):
@@ -88,9 +86,6 @@ class ControllerMain(object):
     def _on_edit_configuration(self, event):
         ControllerConfiguration.edit_configuration(self._configuration, self._main_view, self._logger)
         self._update_view_from_configuration()
-        event.Skip()
-
-    def _on_edit_instrument(self, event):
         event.Skip()
 
     def _on_show_log(self, event):
