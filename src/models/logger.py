@@ -4,7 +4,6 @@ Logger for the application.
 
 import os
 import sys
-import threading
 
 from src.app_data import AppData
 from datetime import datetime
@@ -86,10 +85,6 @@ class TestLogger(TestSuite):
         ("info", "This is a\nmulti line message"),
     ]
 
-    @staticmethod
-    def _generate_error():
-        _dummy = 1 / 0
-
     def setup(self):
         if not os.path.isdir(AppData.USER_FOLDER):
             os.makedirs(AppData.USER_FOLDER)
@@ -129,12 +124,14 @@ class TestLogger(TestSuite):
                 self.fail("Message '{}' not found in the log file".format(message))
 
     def test_exception(self):
+        def _generate_error():
+            _dummy = 1 / 0
+
         # Clear the file
         filename = self._logger.get_filename()
         open(filename, "w").close()
         # To prevent this from failing, we generate an error in a thread
-        t = threading.Thread(target=self._generate_error)
-        t.start()
+        t = self.start_thread(_generate_error)
         while t.is_alive():
             pass
 
