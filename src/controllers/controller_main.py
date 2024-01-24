@@ -128,32 +128,57 @@ class TestControllerMain(TestSuite):
     _view_main = None
 
     def _wait_until_view_available(self):
+        self._error = ""
         t = 2
         while t > 0:
             if self._view_main is not None:
-                return ""
+                return True
             self.sleep(0.1)
             t -= 0.1
-        return "View main did not load"
+        self._error = "View main did not load"
+        return False
 
-    def _show_view_main(self):
-        self._app = wx.App(redirect=False)
+    def _show_view_main(self, test_thread):
+        self.start_thread(test_thread)
+        app = wx.App(redirect=False)
         controller = ControllerMain("ControllerMain Test", self.log)
         self._view_main = controller.get_view_main()
-        self._app.MainLoop()
+        app.MainLoop()
+        self.fail_if(self._error != "", self._error)
+        self._view_main = None
 
     def test_show_view_main(self):
         def _test_show_view_main():
-            self._error = self._wait_until_view_available()
-            if self._error != "":
-                return
-            if not self.gui.is_window_available(self._view_main.ID_LIST_INSTRUMENTS):
-                self._error = "The view main was not shown properly"
-            self._view_main.Close()
+            if self._wait_until_view_available():
+                if not self.gui.is_window_available(self._view_main.ID_LIST_INSTRUMENTS):
+                    self._error = "The view main was not shown properly"
+                self._view_main.Close()
 
-        self.start_thread(_test_show_view_main)
-        self._show_view_main()
-        self.fail_if(self._error != "", self._error)
+        self._show_view_main(_test_show_view_main)
+
+    def test_configuration_default_values(self):
+        def _test_configuration_default_values():
+            if self._wait_until_view_available():
+                if self.gui.is_window_available(self._view_main.ID_TOTAL_SAMPLES):
+                    self.log.debug("Check default settings")
+                    value = self.gui.get_value_from_window(self._view_main.ID_SAMPLE_TIME)
+                    if value != "00:00:03":
+                        self._error = ("The sample time does not have the correct default value '{}', expected '{}'".
+                                       format(value, "00:00:03"))
+                        return
+                    value = self.gui.get_value_from_window(self._view_main.ID_END_TIME)
+                    if value != "00:01:00":
+                        self._error = ("The end time does not have the correct default value '{}', expected '{}'".
+                                       format(value, "00:01:00"))
+                        return
+                    value = self.gui.get_value_from_window(self._view_main.ID_TOTAL_SAMPLES)
+                    if value != "21":
+                        self._error = ("The total samples does not have the correct default value '{}', expected '{}'".
+                                       format(value, "21"))
+                        return
+                    self._view_main.Close()
+
+        self._show_view_main(_test_configuration_default_values)
 
 
 if __name__ == "__main__":
