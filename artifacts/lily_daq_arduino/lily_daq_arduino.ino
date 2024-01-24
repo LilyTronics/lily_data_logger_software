@@ -1,9 +1,9 @@
 /*
  * Firmware for turing the Arduino into a data logger.
  * Serial commands:
- *   rdx    : read digital input (x = 2 - 13)
- *   wdx 0/1: write 0/1 to digital output (x = 2 - 13)
- *   rax    : read analog input (x = 0 - 5)
+ *   rdx    : read digital input: x = 2 - 13 (0 and 1 are reserved for the serial port)
+ *   wdx 0/1: write 0/1 to digital output: x = 2 - 13
+ *   rax    : read analog input: x = 0 - 5
  */
 
 String rx_data;
