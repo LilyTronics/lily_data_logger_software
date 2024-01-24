@@ -104,6 +104,7 @@ if __name__ == "__main__":
 
     class TestFrame(wx.Frame):
 
+        ID_LABEL = wx.Window.NewControlId()
         ID_TEXT = wx.Window.NewControlId()
         ID_RADIO1 = wx.Window.NewControlId()
         ID_RADIO2 = wx.Window.NewControlId()
@@ -117,7 +118,8 @@ if __name__ == "__main__":
             panel = wx.Panel(self)
             self.active_dialog = None
 
-            self._text = wx.TextCtrl(panel, self.ID_TEXT, "Change this text", size=(300, -1))
+            label = wx.StaticText(panel, self.ID_LABEL, "Change this text:")
+            self._text = wx.TextCtrl(panel, self.ID_TEXT, "", size=(300, -1))
             radio1 = wx.RadioButton(panel, self.ID_RADIO1, 'Radio button 1')
             radio1.Bind(wx.EVT_RADIOBUTTON, self._on_radio_button)
             radio2 = wx.RadioButton(panel, self.ID_RADIO2, 'Radio button 2')
@@ -130,6 +132,7 @@ if __name__ == "__main__":
             btn_close.Bind(wx.EVT_BUTTON, self._on_close_button)
 
             box = wx.BoxSizer(wx.VERTICAL)
+            box.Add(label, 0, wx.ALL, self._GAP)
             box.Add(self._text, 0, wx.ALL, self._GAP)
             box.Add(radio1, 0, wx.ALL, self._GAP)
             box.Add(radio2, 0, wx.ALL, self._GAP)
@@ -161,6 +164,9 @@ if __name__ == "__main__":
         if GuiUnitTest.wait_until_window_available(TestFrame.ID_BUTTON_CLOSE):
             print("GUI is available")
             print("Is GUI available:", GuiUnitTest.is_window_available(TestFrame.ID_BUTTON_CLOSE))
+
+            label_text = GuiUnitTest.get_value_from_window(TestFrame.ID_LABEL)
+            print("Label text:", label_text)
 
             text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
             print("Original text:", text)
