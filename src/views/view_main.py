@@ -21,6 +21,11 @@ class ViewMain(wx.Frame):
     ID_TOOL_EXPORT_INSTRUMENT = IdManager.get_widget_id()
     ID_TOOL_SHOW_LOG = IdManager.get_widget_id()
 
+    ID_SAMPLE_TIME = IdManager.get_widget_id()
+    ID_END_TIME = IdManager.get_widget_id()
+    ID_TOTAL_SAMPLES = IdManager.get_widget_id()
+    ID_ELAPSED_TIME = IdManager.get_widget_id()
+
     ID_LIST_INSTRUMENTS = IdManager.get_widget_id()
     ID_BTN_ADD_INSTRUMENT = IdManager.get_widget_id()
     ID_BTN_DELETE_INSTRUMENT = IdManager.get_widget_id()
@@ -93,13 +98,13 @@ class ViewMain(wx.Frame):
         box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Configuration: "), wx.HORIZONTAL)
 
         lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, "Sample time:")
-        self._lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, "-")
+        self._lbl_sample_time = wx.StaticText(parent, self.ID_SAMPLE_TIME, "-")
         self._lbl_end_time = wx.StaticText(parent, wx.ID_ANY, "End time:")
-        self._value_end_time = wx.StaticText(parent, wx.ID_ANY, "-")
+        self._value_end_time = wx.StaticText(parent, self.ID_END_TIME, "-")
         self._lbl_total_samples = wx.StaticText(parent, wx.ID_ANY, "Total samples:")
-        self._value_total_samples = wx.StaticText(parent, wx.ID_ANY, "-")
+        self._value_total_samples = wx.StaticText(parent, self.ID_TOTAL_SAMPLES, "-")
         lbl_elapsed_time = wx.StaticText(parent, wx.ID_ANY, "Elapsed time:")
-        self._lbl_elapsed_time = wx.StaticText(parent, wx.ID_ANY, "-")
+        self._lbl_elapsed_time = wx.StaticText(parent, self.ID_ELAPSED_TIME, "-")
         self._activity_led = wx.Panel(parent, wx.ID_ANY, size=self._LED_SIZE, style=wx.BORDER_SIMPLE)
         self._activity_led.SetBackgroundColour(self._COLOR_LED_OFF)
 
