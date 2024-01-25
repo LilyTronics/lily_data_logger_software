@@ -25,3 +25,12 @@ class TestSuite(lily_unit_test.TestSuite):
     @staticmethod
     def sleep(sleep_time):
         time.sleep(sleep_time)
+
+    @staticmethod
+    def wait_for(function_to_call, expected_result, timeout, interval):
+        while timeout > 0:
+            if function_to_call() == expected_result:
+                return True
+            time.sleep(interval)
+            timeout -= interval
+        return False
