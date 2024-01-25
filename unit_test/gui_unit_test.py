@@ -52,6 +52,11 @@ class GuiUnitTest(object):
         wx.YieldIfNeeded()
 
     @staticmethod
+    def click_toolbar_item(window, item_id):
+        wx.PostEvent(window, wx.CommandEvent(wx.wxEVT_COMMAND_TOOL_CLICKED, item_id))
+        wx.YieldIfNeeded()
+
+    @staticmethod
     def select_radio_button(button_id):
         ctrl = wx.Window.FindWindowById(button_id)
         ctrl.SetValue(True)
@@ -104,6 +109,7 @@ if __name__ == "__main__":
 
     class TestFrame(wx.Frame):
 
+        ID_TOOL = wx.Window.NewControlId()
         ID_LABEL = wx.Window.NewControlId()
         ID_TEXT = wx.Window.NewControlId()
         ID_RADIO1 = wx.Window.NewControlId()
@@ -117,6 +123,11 @@ if __name__ == "__main__":
             super().__init__(None, wx.ID_ANY, "Test Frame")
             panel = wx.Panel(self)
             self.active_dialog = None
+
+            self.toolbar = wx.ToolBar(panel, style=wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_NODIVIDER)
+            self.toolbar.AddTool(self.ID_TOOL, "", wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_TOOLBAR), "Click me!")
+            self.toolbar.Realize()
+            self.Bind(wx.EVT_TOOL, self._on_tool_click, id=self.ID_TOOL)
 
             label = wx.StaticText(panel, self.ID_LABEL, "Change this text:")
             self._text = wx.TextCtrl(panel, self.ID_TEXT, "", size=(300, -1))
@@ -132,6 +143,7 @@ if __name__ == "__main__":
             btn_close.Bind(wx.EVT_BUTTON, self._on_close_button)
 
             box = wx.BoxSizer(wx.VERTICAL)
+            box.Add(self.toolbar, 0, wx.ALL, self._GAP)
             box.Add(label, 0, wx.ALL, self._GAP)
             box.Add(self._text, 0, wx.ALL, self._GAP)
             box.Add(radio1, 0, wx.ALL, self._GAP)
@@ -141,6 +153,10 @@ if __name__ == "__main__":
 
             panel.SetSizer(box)
             self.SetInitialSize((400, 300))
+
+        def _on_tool_click(self, event):
+            self._text.SetValue("Tool ID: {}".format(event.GetId()))
+            event.Skip()
 
         def _on_radio_button(self, event):
             self._text.SetValue("Radio ID: {}".format(event.GetId()))
@@ -160,47 +176,50 @@ if __name__ == "__main__":
 
     def test_thread(frame):
         print("Wait for GUI to be available")
-        print("Is GUI available:", GuiUnitTest.is_window_available(TestFrame.ID_BUTTON_CLOSE))
-        if GuiUnitTest.wait_until_window_available(TestFrame.ID_BUTTON_CLOSE):
+        print("Is GUI available:", GuiUnitTest.is_window_available(frame.ID_BUTTON_CLOSE))
+        if GuiUnitTest.wait_until_window_available(frame.ID_BUTTON_CLOSE):
             print("GUI is available")
-            print("Is GUI available:", GuiUnitTest.is_window_available(TestFrame.ID_BUTTON_CLOSE))
+            print("Is GUI available:", GuiUnitTest.is_window_available(frame.ID_BUTTON_CLOSE))
 
-            label_text = GuiUnitTest.get_value_from_window(TestFrame.ID_LABEL)
+            label_text = GuiUnitTest.get_value_from_window(frame.ID_LABEL)
             print("Label text:", label_text)
 
-            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
             print("Original text:", text)
-            # Sleep so we can see the text changing
+            time.sleep(1)
+
+            print("Click toolbar button")
+            GuiUnitTest.click_toolbar_item(frame, frame.ID_TOOL)
+            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
+            print("New text:", text)
             time.sleep(1)
 
             print("Change text")
-            GuiUnitTest.set_value_in_control(TestFrame.ID_TEXT, "And now for something completely different!")
-            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            GuiUnitTest.set_value_in_control(frame.ID_TEXT, "And now for something completely different!")
+            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
             print("New text:", text)
-            # Sleep so we can see the text is changed
             time.sleep(1)
 
             print('Change text using send keys')
-            GuiUnitTest.set_value_in_control(TestFrame.ID_TEXT, "")
+            GuiUnitTest.set_value_in_control(frame.ID_TEXT, "")
             GuiUnitTest.send_text("I said: 'Ham, spam and bacon'! OK?", 0.02)
-            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
             print("New text:", text)
-            # Sleep so we can see the text is changed
             time.sleep(1)
 
             print("Toggle radio buttons")
-            GuiUnitTest.select_radio_button(TestFrame.ID_RADIO2)
-            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            GuiUnitTest.select_radio_button(frame.ID_RADIO2)
+            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
             print("Active radio button:", text)
             time.sleep(1)
 
-            GuiUnitTest.select_radio_button(TestFrame.ID_RADIO1)
-            text = GuiUnitTest.get_value_from_window(TestFrame.ID_TEXT)
+            GuiUnitTest.select_radio_button(frame.ID_RADIO1)
+            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
             print("Active radio button:", text)
             time.sleep(1)
 
             print("Click show dialog")
-            GuiUnitTest.click_button(TestFrame.ID_BUTTON_DIALOG)
+            GuiUnitTest.click_button(frame.ID_BUTTON_DIALOG)
             GuiUnitTest.wait_for_dialog(frame, True)
             print("Dialog:", frame.active_dialog)
             time.sleep(1)
@@ -209,7 +228,7 @@ if __name__ == "__main__":
             time.sleep(1)
 
             print("Click the close button")
-            GuiUnitTest.click_button(TestFrame.ID_BUTTON_CLOSE)
+            GuiUnitTest.click_button(frame.ID_BUTTON_CLOSE)
 
 
     app = wx.App(redirect=False)
