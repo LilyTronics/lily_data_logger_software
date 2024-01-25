@@ -127,6 +127,19 @@ class Instrument(object):
                 print(self._DEBUG_FORMAT.format("Delay (s)", delay))
             time.sleep(delay)
             return True
+        elif command.startswith(b"interface:"):
+            parts = command.split(b":")
+            command = parts[1]
+            param = None
+            if len(parts) > 2:
+                param = parts[2]
+            if debug:
+                print(self._DEBUG_FORMAT.format("Interface command", "{}, {}".format(command, param)))
+            if param is None:
+                getattr(self._interface_object, command.decode(self.BYTE_ENCODING))()
+            else:
+                getattr(self._interface_object, command.decode(self.BYTE_ENCODING))(param)
+            return True
         return False
 
     def _process_command(self, command_data, debug, value=None):
@@ -144,7 +157,6 @@ class Instrument(object):
             if expect_response:
                 expected_response = command_data[self.KEY_RESPONSE].encode(self.BYTE_ENCODING)
                 response = self._parse_response(expected_response, response, debug)
-
         return response
 
     ##########
@@ -222,10 +234,13 @@ class TestInstrument(TestSuite):
                 "response": "OK\n"
             },
             {
+                "command": "test init no response\n",
+            },
+            {
                 "command": "instrument_delay:0.5"
             },
             {
-                "command": "test init no response\n",
+                "command": "interface:custom_command:param"
             }
         ],
         "channels": [
@@ -433,6 +448,10 @@ class TestInterface(Interface):
         if expect_response:
             return self._COMMAND_TO_RESPONSE[command]
         return b""
+
+    @staticmethod
+    def custom_command(param):
+        print("Custom command with param {}".format(param))
 
 
 if __name__ == "__main__":
