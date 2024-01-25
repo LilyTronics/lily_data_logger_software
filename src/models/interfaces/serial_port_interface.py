@@ -19,6 +19,8 @@ class SerialPortInterface(Interface):
     DEFAULT_TIMEOUT = 5
     DEFAULT_BAUD_RATE = 9600
 
+    _TOGGLE_INTERVAL = 0.005
+
     def __init__(self, port_name, baud_rate=DEFAULT_BAUD_RATE, rx_timeout=DEFAULT_TIMEOUT,
                  terminator=DEFAULT_TERMINATOR, tx_timeout=0):
         if tx_timeout == 0:
@@ -26,6 +28,11 @@ class SerialPortInterface(Interface):
         self._rx_time_out = rx_timeout
         self._terminator = terminator
         self._serial = serial.Serial(port_name, baudrate=int(baud_rate), write_timeout=tx_timeout)
+
+    def toggle_dtr(self):
+        for value in (True, False, True):
+            self._serial.dtr = value
+            time.sleep(self._TOGGLE_INTERVAL)
 
     def send_command(self, command, expect_response=True):
         response = b""
