@@ -85,13 +85,11 @@ class ViewMain(wx.Frame):
         ]
         self._toolbar = wx.ToolBar(parent, style=wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_NODIVIDER)
         for tool in tools:
-            if tool[0] > 0:
-                self._toolbar.AddTool(tool[0], "", tool[1], tool[2])
-            else:
+            if tool[0] == 0:
                 self._toolbar.AddSeparator()
-
+            else:
+                self._toolbar.AddTool(tool[0], "", tool[1], tool[2])
         self._toolbar.Realize()
-
         return self._toolbar
 
     def _create_config_info(self, parent):
@@ -198,6 +196,9 @@ class ViewMain(wx.Frame):
     ##########
     # Public #
     ##########
+
+    def get_toolbar(self):
+        return self._toolbar
 
     def update_configuration_filename(self, filename, is_changed):
         title = "%s - %s" % (self._title, filename)
