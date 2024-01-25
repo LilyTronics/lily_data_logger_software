@@ -2,32 +2,18 @@
 Check if a loopback is available on a serial port.
 """
 
-import serial
-import time
+from unit_test.test_environment.check_serial_port import check_serial_port
 
 
 def get_serial_loopback_port(serial_ports):
-    _CHECK_FOR_LOOPBACK_DATA = b"check_for_loopback"
-    _RX_TIMEOUT = 1
-    print("Checking all available ports for a loopback")
+    print("Checking available ports for a loopback")
     for port_name in serial_ports:
         print("Check for loopback on port: {}".format(port_name))
-        try:
-            with serial.Serial(port_name, write_timeout=0.2) as s:
-                s.write(_CHECK_FOR_LOOPBACK_DATA)
-                i = 5
-                rx_data = b""
-                while i > 0:
-                    if s.in_waiting > 0:
-                        rx_data += s.read(s.in_waiting)
-                    if rx_data == _CHECK_FOR_LOOPBACK_DATA:
-                        return port_name
-                    time.sleep(0.1)
-                    i -= 1
-                else:
-                    raise Exception("RX timeout")
-        except Exception as e:
-            print("No loopback: {}".format(e))
+        if check_serial_port(port_name, 115200, b"CHECK_FOR_LOOPBACK", b"CHECK_FOR_LOOPBACK"):
+            print("Loopback found on {}".format(port_name))
+            return port_name
+        print("Loopback not found")
+    print("No loopback found on any of the available ports")
     return None
 
 
