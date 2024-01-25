@@ -82,15 +82,6 @@ class GuiUnitTest(object):
             wx.YieldIfNeeded()
             time.sleep(char_delay)
 
-    @classmethod
-    def wait_for_dialog(cls, frame, break_if_dialog_present, timeout=2):
-        while timeout > 0:
-            if ((break_if_dialog_present and frame.active_dialog is not None) or
-                    (not break_if_dialog_present and frame.active_dialog is None)):
-                break
-            time.sleep(0.2)
-            timeout -= 0.2
-
     ###########
     # Private #
     ###########
@@ -125,7 +116,8 @@ if __name__ == "__main__":
             self.active_dialog = None
 
             self.toolbar = wx.ToolBar(panel, style=wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_NODIVIDER)
-            self.toolbar.AddTool(self.ID_TOOL, "", wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_TOOLBAR), "Click me!")
+            self.toolbar.AddTool(self.ID_TOOL, "", wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_TOOLBAR),
+                                 "Click me!")
             self.toolbar.Realize()
             self.Bind(wx.EVT_TOOL, self._on_tool_click, id=self.ID_TOOL)
 
@@ -173,7 +165,6 @@ if __name__ == "__main__":
             self.Close()
             event.Skip()
 
-
     def test_thread(frame):
         print("Wait for GUI to be available")
         print("Is GUI available:", GuiUnitTest.is_window_available(frame.ID_BUTTON_CLOSE))
@@ -220,7 +211,12 @@ if __name__ == "__main__":
 
             print("Click show dialog")
             GuiUnitTest.click_button(frame.ID_BUTTON_DIALOG)
-            GuiUnitTest.wait_for_dialog(frame, True)
+            timeout = 2
+            while timeout > 0:
+                if frame.active_dialog is not None:
+                    break
+                time.sleep(0.1)
+                timeout -= 0.1
             print("Dialog:", frame.active_dialog)
             time.sleep(1)
             if frame.active_dialog is not None:
