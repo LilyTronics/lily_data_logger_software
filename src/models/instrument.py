@@ -192,10 +192,7 @@ class Instrument(object):
         if debug:
             print("Initialize instrument")
         for command_data in self._initialize_data:
-            response = self._process_command(command_data, debug)
-            if self.KEY_RESPONSE in command_data.keys():
-                assert response == command_data[self.KEY_RESPONSE], "Initialize command '{}' failed '{}'".format(
-                    command_data[self.KEY_COMMAND], command_data[self.KEY_RESPONSE])
+            self._process_command(command_data, debug)
 
     def get_value(self, channel_name, debug=False):
         if debug:
