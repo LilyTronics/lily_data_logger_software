@@ -2,7 +2,6 @@
 Our own test suite class derived from the lily-unit-test test suite.
 """
 
-import types
 import lily_unit_test
 import threading
 import time
