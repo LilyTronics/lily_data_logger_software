@@ -8,7 +8,7 @@ import time
 
 from src.models.list_serial_ports import get_available_serial_ports
 from src.models.interfaces.interface import Interface
-from unit_test.test_environment.serial_loopback import get_serial_loopback_port
+from unit_test.test_environment.check_serial_loopback import get_serial_loopback_port
 from unit_test.test_suite import TestSuite
 
 

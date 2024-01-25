@@ -6,9 +6,9 @@ import os
 import shutil
 
 from src.models.list_serial_ports import get_available_serial_ports
-from unit_test.test_environment.oscilloscope_tds220 import get_tds220_serial_port
-from unit_test.test_environment.power_supply_pl303qmd import get_pl303qmd_serial_port
-from unit_test.test_environment.serial_loopback import get_serial_loopback_port
+from unit_test.test_environment.check_oscilloscope_tds220 import get_tds220_serial_port
+from unit_test.test_environment.check_power_supply_pl303qmd import get_pl303qmd_serial_port
+from unit_test.test_environment.check_serial_loopback import get_serial_loopback_port
 
 
 def clear_reports(report_path):
