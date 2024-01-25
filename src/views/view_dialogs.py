@@ -62,7 +62,7 @@ class TestViewDialogs(TestSuite):
 
     def _check_dialog(self, test_id):
         self._error = ""
-        self.gui.wait_for_dialog(self._test_frame, True)
+        self.wait_for(self._test_frame.active_dialog, not None, 2, 0.1)
         if self._test_frame.active_dialog is None:
             self._error = "No dialog was present"
         else:
