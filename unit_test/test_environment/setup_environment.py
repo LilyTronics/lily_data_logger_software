@@ -6,8 +6,8 @@ import os
 import shutil
 
 from src.models.list_serial_ports import get_available_serial_ports
-from unit_test.test_environment.oscilloscope_tds220 import get_oscilloscope_serial_port
-from unit_test.test_environment.power_supply_pl303qmd import get_power_supply_serial_port
+from unit_test.test_environment.oscilloscope_tds220 import get_tds220_serial_port
+from unit_test.test_environment.power_supply_pl303qmd import get_pl303qmd_serial_port
 from unit_test.test_environment.serial_loopback import get_serial_loopback_port
 
 
@@ -33,10 +33,10 @@ def check_for_instruments():
     if get_serial_loopback_port(serial_ports) is None:
         exclude_tests.append("TestSerialPortInterface")
 
-    if get_power_supply_serial_port(serial_ports) is None:
+    if get_pl303qmd_serial_port(serial_ports) is None:
         exclude_tests.append("TestPowerSupplyPL303QMD")
 
-    if get_oscilloscope_serial_port(serial_ports) is None:
+    if get_tds220_serial_port(serial_ports) is None:
         exclude_tests.append("TestOscilloscopeTDS220")
 
     return exclude_tests
@@ -45,4 +45,4 @@ def check_for_instruments():
 if __name__ == "__main__":
 
     clear_reports("..\\test_reports")
-    print(check_for_instruments())
+    print("Exclude:", check_for_instruments())
