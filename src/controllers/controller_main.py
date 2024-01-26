@@ -180,6 +180,15 @@ class TestControllerMain(TestSuite):
 
         self._show_view_main(_test_configuration_default_values)
 
+    def test_edit_configuration(self):
+        def _test_edit_configuration():
+            if self._wait_until_view_available():
+                if self.gui.is_window_available(self._view_main.ID_TOTAL_SAMPLES):
+                    self.log.debug("Edit settings")
+                    self.gui.click_toolbar_item(self._view_main, self._view_main.ID_TOOL_EDIT_CONFIGURATION)
+
+        self._show_view_main(_test_edit_configuration)
+
 
 if __name__ == "__main__":
 
