@@ -14,7 +14,6 @@ The following instruments are included in the application:
 * Arduino Uno DAQ: reading analog voltages, reading and writing digital IO, sketch for the Arduino Uno is included in this repo.
 * Simulators (for testing/demo):
   * Multimeter giving random values for voltage and current
-  * Temperature chamber that can be set to heat up or cool down to a specified temperature.
 
 Note that not all commands for the instruments are implemented.
 A set of the most practical commands are chosen.
