@@ -8,6 +8,7 @@ The Lily Data Logger Studio has two editions:
 
 * CE: Community Edition.
   * A simple tool that only logs data (measurements).
+  * Free and open source.
   * Is provides as is and has no support.
 
 
