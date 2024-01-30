@@ -49,9 +49,8 @@ class ViewMain(wx.Frame):
         panel = wx.Panel(self)
 
         lab_box = wx.BoxSizer(wx.HORIZONTAL)
-        lab_box.Add(self._create_instruments_controls(panel), 20, wx.EXPAND | wx.TOP | wx.LEFT | wx.BOTTOM, self._GAP)
-        lab_box.Add(self._create_process_box(panel), 30, wx.EXPAND | wx.ALL, self._GAP)
-        lab_box.Add(self._create_measurement_box(panel), 50, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, self._GAP)
+        lab_box.Add(self._create_instruments_controls(panel), 20, wx.EXPAND | wx.ALL, self._GAP)
+        lab_box.Add(self._create_measurement_box(panel), 80, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, self._GAP)
 
         main_box = wx.BoxSizer(wx.VERTICAL)
         main_box.Add(self._create_toolbar(panel), 0, wx.EXPAND | wx.ALL, self._GAP)
@@ -133,30 +132,6 @@ class ViewMain(wx.Frame):
         buttons.Add(btn_delete_instrument, 0)
 
         box.Add(self._lst_instruments, 1, wx.EXPAND | wx.ALL, self._GAP)
-        box.Add(buttons, 0, wx.ALL, self._GAP)
-
-        return box
-
-    def _create_process_box(self, parent):
-        box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Process: "), wx.VERTICAL)
-
-        self._lst_process = wx.ListCtrl(parent, wx.ID_ANY, style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_HRULES |
-                                        wx.LC_VRULES)
-        self._lst_process.SetInitialSize((-1, 100))
-        self._lst_process.InsertColumn(0, "#", width=self._LIST_COL_INDEX_SIZE)
-        self._lst_process.InsertColumn(1, "Step", width=self._LIST_COL_STEP_SIZE)
-        self._lst_process.InsertColumn(2, "Data", width=self._LIST_COL_DATA_SIZE)
-
-        btn_add_step = wx.Button(parent, wx.ID_ANY, "Add")
-        btn_insert_step = wx.Button(parent, wx.ID_ANY, "Insert")
-        btn_delete_step = wx.Button(parent, wx.ID_ANY, "Delete")
-
-        buttons = wx.BoxSizer(wx.HORIZONTAL)
-        buttons.Add(btn_add_step, 0)
-        buttons.Add(btn_insert_step, 0)
-        buttons.Add(btn_delete_step, 0)
-
-        box.Add(self._lst_process, 1, wx.EXPAND | wx.ALL, self._GAP)
         box.Add(buttons, 0, wx.ALL, self._GAP)
 
         return box
