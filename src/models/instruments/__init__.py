@@ -12,22 +12,16 @@ import unit_test
 from src.app_data import AppData
 from src.models.instrument import Instrument
 from src.models.instruments.arduino_uno_daq import arduino_uno_daq
-from src.models.instruments.oscilloscope_tds220 import tektronix_tds220
-from src.models.instruments.power_supply_tti_pl303qmd_p import tti_pl303qmd_p
 from src.models.instruments.simulator_multimeter import simulator_multimeter
-from src.models.instruments.simulator_temperature_chamber import simulator_temperature_chamber
 from unit_test.test_suite import TestSuite
 
 
 _INSTRUMENTS = [
-    arduino_uno_daq,
-    tektronix_tds220,
-    tti_pl303qmd_p
+    arduino_uno_daq
 ]
 
 _SIMULATORS = [
-    simulator_multimeter,
-    simulator_temperature_chamber
+    simulator_multimeter
 ]
 
 

@@ -7,9 +7,9 @@ import sys
 
 
 class AppData(object):
-    APP_NAME = "Lily Data Logger Studio"
+    APP_NAME = "Lily Data Logger Studio CE"
     VERSION = "0.1"
-    EXE_NAME = "LilyDataLoggerStudio"
+    EXE_NAME = "LilyDataLoggerStudioCE"
     USER_FOLDER = os.path.join(os.path.join(os.path.expanduser("~")), EXE_NAME)
     # Application path depends on if run from script or from the executable
     if EXE_NAME in sys.executable:

@@ -13,6 +13,10 @@ REPORT_FOLDER = os.path.join(os.path.dirname(__file__), "test_reports")
 EXCLUDE_TESTS = ["TestSuite"]
 EXCLUDE_TESTS.extend(check_for_instruments())
 
+
+if not os.path.isdir(REPORT_FOLDER):
+    os.makedirs(REPORT_FOLDER)
+
 clear_reports(REPORT_FOLDER)
 
 options = {

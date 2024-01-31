@@ -3,7 +3,6 @@ Running simulators.
 """
 
 from src.simulators.multimeter_udp import MultimeterUdp
-from src.simulators.temperature_chamber_tcp import TemperatureChamberTcp
 from unit_test.test_suite import TestSuite
 
 
@@ -11,7 +10,7 @@ _SIMULATORS = []
 
 
 def start_simulators():
-    for simulator in [MultimeterUdp, TemperatureChamberTcp]:
+    for simulator in [MultimeterUdp]:
         _start_simulator(simulator)
 
 

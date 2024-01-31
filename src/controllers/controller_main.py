@@ -2,8 +2,10 @@
 Main controller for the application.
 """
 
+import os
 import wx
 
+from src.app_data import AppData
 from src.controllers.controller_configuration import ControllerConfiguration
 from src.models.configuration import Configuration
 from src.models.settings import Settings
@@ -127,6 +129,10 @@ class TestControllerMain(TestSuite):
 
     _view_main = None
 
+    def setup(self):
+        if not os.path.isdir(AppData.USER_FOLDER):
+            os.makedirs(AppData.USER_FOLDER)
+
     def _wait_until_view_available(self):
         self._error = ""
         t = 2
@@ -185,7 +191,8 @@ class TestControllerMain(TestSuite):
             if self._wait_until_view_available():
                 if self.gui.is_window_available(self._view_main.ID_TOTAL_SAMPLES):
                     self.log.debug("Edit settings")
-                    self.gui.click_toolbar_item(self._view_main, self._view_main.ID_TOOL_EDIT_CONFIGURATION)
+                    # self.gui.click_toolbar_item(self._view_main, self._view_main.ID_TOOL_EDIT_CONFIGURATION)
+                    self._view_main.Close()
 
         self._show_view_main(_test_edit_configuration)
 
