@@ -8,6 +8,7 @@ import wx
 from src.app_data import AppData
 from src.controllers.controller_configuration import ControllerConfiguration
 from src.models.configuration import Configuration
+from src.models.id_manager import IdManager
 from src.models.settings import Settings
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
@@ -46,10 +47,10 @@ class ControllerMain(object):
             frame.SetPosition(pos)
         frame.Maximize(self._settings.get_main_window_maximized())
         frame.Bind(wx.EVT_CLOSE, self._on_view_close)
-        frame.Bind(wx.EVT_TOOL, self._on_open_configuration, id=frame.ID_TOOL_OPEN_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_save_configuration, id=frame.ID_TOOL_SAVE_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_edit_configuration, id=frame.ID_TOOL_EDIT_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_show_log, id=frame.ID_TOOL_SHOW_LOG)
+        frame.Bind(wx.EVT_TOOL, self._on_open_configuration, id=IdManager.ID_TOOL_OPEN_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_save_configuration, id=IdManager.ID_TOOL_SAVE_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_edit_configuration, id=IdManager.ID_TOOL_EDIT_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
         return frame
 
     def _initialize_log_view(self):
@@ -129,7 +130,8 @@ class TestControllerMain(TestSuite):
 
     _view_main = None
 
-    def setup(self):
+    @staticmethod
+    def setup():
         if not os.path.isdir(AppData.USER_FOLDER):
             os.makedirs(AppData.USER_FOLDER)
 
@@ -156,7 +158,7 @@ class TestControllerMain(TestSuite):
     def test_show_view_main(self):
         def _test_show_view_main():
             if self._wait_until_view_available():
-                if not self.gui.is_window_available(self._view_main.ID_LIST_INSTRUMENTS):
+                if not self.gui.is_window_available(IdManager.ID_LIST_INSTRUMENTS):
                     self._error = "The view main was not shown properly"
                 self._view_main.Close()
 
@@ -165,19 +167,19 @@ class TestControllerMain(TestSuite):
     def test_configuration_default_values(self):
         def _test_configuration_default_values():
             if self._wait_until_view_available():
-                if self.gui.is_window_available(self._view_main.ID_TOTAL_SAMPLES):
+                if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
                     self.log.debug("Check default settings")
-                    value = self.gui.get_value_from_window(self._view_main.ID_SAMPLE_TIME)
+                    value = self.gui.get_value_from_window(IdManager.ID_LABEL_SAMPLE_TIME)
                     if value != "00:00:03":
                         self._error = ("The sample time does not have the correct default value '{}', expected '{}'".
                                        format(value, "00:00:03"))
                         return
-                    value = self.gui.get_value_from_window(self._view_main.ID_END_TIME)
+                    value = self.gui.get_value_from_window(IdManager.ID_LABEL_END_TIME)
                     if value != "00:01:00":
                         self._error = ("The end time does not have the correct default value '{}', expected '{}'".
                                        format(value, "00:01:00"))
                         return
-                    value = self.gui.get_value_from_window(self._view_main.ID_TOTAL_SAMPLES)
+                    value = self.gui.get_value_from_window(IdManager.ID_LABEL_TOTAL_SAMPLES)
                     if value != "21":
                         self._error = ("The total samples does not have the correct default value '{}', expected '{}'".
                                        format(value, "21"))
@@ -189,7 +191,7 @@ class TestControllerMain(TestSuite):
     def test_edit_configuration(self):
         def _test_edit_configuration():
             if self._wait_until_view_available():
-                if self.gui.is_window_available(self._view_main.ID_TOTAL_SAMPLES):
+                if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
                     self.log.debug("Edit settings")
                     # self.gui.click_toolbar_item(self._view_main, self._view_main.ID_TOOL_EDIT_CONFIGURATION)
                     self._view_main.Close()

@@ -11,25 +11,6 @@ from src.models.time_converter import create_duration_time_string
 
 class ViewMain(wx.Frame):
 
-    ID_TOOL_OPEN_CONFIGURATION = IdManager.get_widget_id()
-    ID_TOOL_SAVE_CONFIGURATION = IdManager.get_widget_id()
-    ID_TOOL_EDIT_CONFIGURATION = IdManager.get_widget_id()
-    ID_TOOL_CHECK_INSTRUMENTS = IdManager.get_widget_id()
-    ID_TOOL_START_PROCESS = IdManager.get_widget_id()
-    ID_TOOL_STOP_PROCESS = IdManager.get_widget_id()
-    ID_TOOL_EXPORT_CSV = IdManager.get_widget_id()
-    ID_TOOL_EXPORT_INSTRUMENT = IdManager.get_widget_id()
-    ID_TOOL_SHOW_LOG = IdManager.get_widget_id()
-
-    ID_SAMPLE_TIME = IdManager.get_widget_id()
-    ID_END_TIME = IdManager.get_widget_id()
-    ID_TOTAL_SAMPLES = IdManager.get_widget_id()
-    ID_ELAPSED_TIME = IdManager.get_widget_id()
-
-    ID_LIST_INSTRUMENTS = IdManager.get_widget_id()
-    ID_BTN_ADD_INSTRUMENT = IdManager.get_widget_id()
-    ID_BTN_DELETE_INSTRUMENT = IdManager.get_widget_id()
-
     _GAP = 5
 
     _LIST_COL_DATA_SIZE = 120
@@ -67,20 +48,20 @@ class ViewMain(wx.Frame):
 
     def _create_toolbar(self, parent):
         tools = [
-            (self.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap, "Open configuration"),
-            (self.ID_TOOL_SAVE_CONFIGURATION, ImageData.save_config.Bitmap, "Save configuration"),
+            (IdManager.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap, "Open configuration"),
+            (IdManager.ID_TOOL_SAVE_CONFIGURATION, ImageData.save_config.Bitmap, "Save configuration"),
             (0,),
-            (self.ID_TOOL_EDIT_CONFIGURATION, ImageData.settings.Bitmap, "Configuration settings"),
+            (IdManager.ID_TOOL_EDIT_CONFIGURATION, ImageData.settings.Bitmap, "Configuration settings"),
             (0,),
-            (self.ID_TOOL_CHECK_INSTRUMENTS, ImageData.check_instruments.Bitmap, "Check instruments"),
+            (IdManager.ID_TOOL_CHECK_INSTRUMENTS, ImageData.check_instruments.Bitmap, "Check instruments"),
             (0,),
-            (self.ID_TOOL_START_PROCESS, ImageData.start.Bitmap, "Start"),
-            (self.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, "Stop"),
+            (IdManager.ID_TOOL_START_PROCESS, ImageData.start.Bitmap, "Start"),
+            (IdManager.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, "Stop"),
             (0,),
-            (self.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap, "Export measurement data to CSV"),
-            (self.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap, "Export instrument"),
+            (IdManager.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap, "Export measurement data to CSV"),
+            (IdManager.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap, "Export instrument"),
             (0,),
-            (self.ID_TOOL_SHOW_LOG, ImageData.show_log.Bitmap, "Show log"),
+            (IdManager.ID_TOOL_SHOW_LOG, ImageData.show_log.Bitmap, "Show log"),
         ]
         self._toolbar = wx.ToolBar(parent, style=wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_NODIVIDER)
         for tool in tools:
@@ -95,13 +76,13 @@ class ViewMain(wx.Frame):
         box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Configuration: "), wx.HORIZONTAL)
 
         lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, "Sample time:")
-        self._lbl_sample_time = wx.StaticText(parent, self.ID_SAMPLE_TIME, "-")
+        self._lbl_sample_time = wx.StaticText(parent, IdManager.ID_LABEL_SAMPLE_TIME, "-")
         self._lbl_end_time = wx.StaticText(parent, wx.ID_ANY, "End time:")
-        self._value_end_time = wx.StaticText(parent, self.ID_END_TIME, "-")
+        self._value_end_time = wx.StaticText(parent, IdManager.ID_LABEL_END_TIME, "-")
         self._lbl_total_samples = wx.StaticText(parent, wx.ID_ANY, "Total samples:")
-        self._value_total_samples = wx.StaticText(parent, self.ID_TOTAL_SAMPLES, "-")
+        self._value_total_samples = wx.StaticText(parent, IdManager.ID_LABEL_TOTAL_SAMPLES, "-")
         lbl_elapsed_time = wx.StaticText(parent, wx.ID_ANY, "Elapsed time:")
-        self._lbl_elapsed_time = wx.StaticText(parent, self.ID_ELAPSED_TIME, "-")
+        self._lbl_elapsed_time = wx.StaticText(parent, IdManager.ID_LABEL_ELAPSED_TIME, "-")
         self._activity_led = wx.Panel(parent, wx.ID_ANY, size=self._LED_SIZE, style=wx.BORDER_SIMPLE)
         self._activity_led.SetBackgroundColour(self._COLOR_LED_OFF)
 
@@ -120,12 +101,12 @@ class ViewMain(wx.Frame):
     def _create_instruments_controls(self, parent):
         box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Instruments: "), wx.VERTICAL)
 
-        self._lst_instruments = wx.ListCtrl(parent, self.ID_LIST_INSTRUMENTS, style=wx.LC_REPORT | wx.LC_SORT_ASCENDING
-                                            | wx.LC_SINGLE_SEL)
+        self._lst_instruments = wx.ListCtrl(parent, IdManager.ID_LIST_INSTRUMENTS, style=wx.LC_REPORT |
+                                            wx.LC_SORT_ASCENDING | wx.LC_SINGLE_SEL)
         self._lst_instruments.InsertColumn(0, "Name", width=self._LIST_COL_NAME_SIZE)
 
-        btn_add_instrument = wx.Button(parent, self.ID_BTN_ADD_INSTRUMENT, "Add")
-        btn_delete_instrument = wx.Button(parent, self.ID_BTN_DELETE_INSTRUMENT, "Delete")
+        btn_add_instrument = wx.Button(parent, IdManager.ID_BTN_ADD_INSTRUMENT, "Add")
+        btn_delete_instrument = wx.Button(parent, IdManager.ID_BTN_DELETE_INSTRUMENT, "Delete")
 
         buttons = wx.BoxSizer(wx.HORIZONTAL)
         buttons.Add(btn_add_instrument, 0)
