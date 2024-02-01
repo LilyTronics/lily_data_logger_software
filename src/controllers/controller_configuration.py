@@ -7,6 +7,7 @@ import tempfile
 import wx
 
 from src.models.configuration import Configuration
+from src.models.id_manager import IdManager
 from src.views.view_dialogs import show_confirm
 from src.views.view_dialogs import show_message
 from src.views.view_dialogs import show_open_file
@@ -111,13 +112,13 @@ class TestControllerConfiguration(TestSuite):
 
     def _get_values_from_view(self):
         return {
-            "sample_time": self.gui.get_value_from_window(ViewEditConfiguration.ID_SAMPLE_TIME),
-            "sample_time_units": self.gui.get_value_from_window(ViewEditConfiguration.ID_SAMPLE_TIME_UNITS),
-            "end_time": self.gui.get_value_from_window(ViewEditConfiguration.ID_END_TIME),
-            "end_time_units": self.gui.get_value_from_window(ViewEditConfiguration.ID_END_TIME_UNITS),
-            "is_fixed": self.gui.get_value_from_window(ViewEditConfiguration.ID_FIXED),
-            "is_continuous": self.gui.get_value_from_window(ViewEditConfiguration.ID_CONTINUOUS),
-            "total_samples": self.gui.get_value_from_window(ViewEditConfiguration.ID_TOTAL_SAMPLES)
+            "sample_time": self.gui.get_value_from_window(IdManager.ID_SAMPLE_TIME),
+            "sample_time_units": self.gui.get_value_from_window(IdManager.ID_SAMPLE_TIME_UNITS),
+            "end_time": self.gui.get_value_from_window(IdManager.ID_END_TIME),
+            "end_time_units": self.gui.get_value_from_window(IdManager.ID_END_TIME_UNITS),
+            "is_fixed": self.gui.get_value_from_window(IdManager.ID_FIXED),
+            "is_continuous": self.gui.get_value_from_window(IdManager.ID_CONTINUOUS),
+            "total_samples": self.gui.get_value_from_window(IdManager.ID_TOTAL_SAMPLES)
         }
 
     def _check_values_from_gui(self, conf):
@@ -154,7 +155,7 @@ class TestControllerConfiguration(TestSuite):
     def test_show_edit_configuration(self):
         def _test_show_edit_configuration():
             self.log.debug("Get default values")
-            if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
+            if self.gui.wait_until_window_available(IdManager.ID_SAMPLE_TIME):
                 self._values = self._get_values_from_view()
                 self.gui.click_button(wx.ID_CANCEL)
 
@@ -167,13 +168,13 @@ class TestControllerConfiguration(TestSuite):
 
     def test_edit_time_values(self):
         def _test_edit_time_values(time_value):
-            if self.gui.wait_until_window_available(ViewEditConfiguration.ID_SAMPLE_TIME):
+            if self.gui.wait_until_window_available(IdManager.ID_SAMPLE_TIME):
                 time_value, units = self._convert_seconds_to_time(time_value)
                 self.log.debug("Set time values to {} {}".format(time_value, units))
-                self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME, str(time_value))
-                self.gui.set_value_in_control(ViewEditConfiguration.ID_SAMPLE_TIME_UNITS, units)
-                self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME, str(time_value))
-                self.gui.set_value_in_control(ViewEditConfiguration.ID_END_TIME_UNITS, units)
+                self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME, str(time_value))
+                self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME_UNITS, units)
+                self.gui.set_value_in_control(IdManager.ID_END_TIME, str(time_value))
+                self.gui.set_value_in_control(IdManager.ID_END_TIME_UNITS, units)
                 self.gui.click_button(wx.ID_OK)
 
         for test_value in (23, 120, 14400, 172800):
@@ -190,15 +191,15 @@ class TestControllerConfiguration(TestSuite):
     def test_edit_continuous_mode(self):
         def _test_edit_continuous_mode(test_mode):
             self.log.debug("Set continuous mode to {}".format(test_mode))
-            if self.gui.wait_until_window_available(ViewEditConfiguration.ID_CONTINUOUS):
+            if self.gui.wait_until_window_available(IdManager.ID_CONTINUOUS):
                 if test_mode:
-                    self.gui.select_radio_button(ViewEditConfiguration.ID_CONTINUOUS)
+                    self.gui.select_radio_button(IdManager.ID_CONTINUOUS)
                 else:
-                    self.gui.select_radio_button(ViewEditConfiguration.ID_FIXED)
+                    self.gui.select_radio_button(IdManager.ID_FIXED)
                 # Wait for total samples to change, should be fast
                 t = 1
                 while t > 0:
-                    self._total_samples = self.gui.get_value_from_window(ViewEditConfiguration.ID_TOTAL_SAMPLES)
+                    self._total_samples = self.gui.get_value_from_window(IdManager.ID_TOTAL_SAMPLES)
                     if test_mode and self._total_samples == '-' or not test_mode and self._total_samples != '-':
                         break
                     self.sleep(0.1)
