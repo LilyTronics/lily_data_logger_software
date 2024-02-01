@@ -147,6 +147,7 @@ class TestControllerMain(TestSuite):
         return False
 
     def _show_view_main(self, test_thread):
+        self._error = ""
         self.start_thread(test_thread)
         app = wx.App(redirect=False)
         controller = ControllerMain("ControllerMain Test", self.log)
@@ -154,6 +155,23 @@ class TestControllerMain(TestSuite):
         app.MainLoop()
         self.fail_if(self._error != "", self._error)
         self._view_main = None
+
+    def _check_configuration_values(self, sample_time, end_time, total_samples):
+        value = self.gui.get_value_from_window(IdManager.ID_LABEL_SAMPLE_TIME)
+        if value != sample_time:
+            self._error = ("The sample time does not have the correct value '{}', expected '{}'".
+                           format(value, sample_time))
+            return
+        value = self.gui.get_value_from_window(IdManager.ID_LABEL_END_TIME)
+        if value != end_time:
+            self._error = ("The end time does not have the correct value '{}', expected '{}'".
+                           format(value, end_time))
+            return
+        value = self.gui.get_value_from_window(IdManager.ID_LABEL_TOTAL_SAMPLES)
+        if value != total_samples:
+            self._error = ("The total samples does not have the correct value '{}', expected '{}'".
+                           format(value, total_samples))
+            return
 
     def test_show_view_main(self):
         def _test_show_view_main():
@@ -169,34 +187,25 @@ class TestControllerMain(TestSuite):
             if self._wait_until_view_available():
                 if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
                     self.log.debug("Check default settings")
-                    value = self.gui.get_value_from_window(IdManager.ID_LABEL_SAMPLE_TIME)
-                    if value != "00:00:03":
-                        self._error = ("The sample time does not have the correct default value '{}', expected '{}'".
-                                       format(value, "00:00:03"))
-                        return
-                    value = self.gui.get_value_from_window(IdManager.ID_LABEL_END_TIME)
-                    if value != "00:01:00":
-                        self._error = ("The end time does not have the correct default value '{}', expected '{}'".
-                                       format(value, "00:01:00"))
-                        return
-                    value = self.gui.get_value_from_window(IdManager.ID_LABEL_TOTAL_SAMPLES)
-                    if value != "21":
-                        self._error = ("The total samples does not have the correct default value '{}', expected '{}'".
-                                       format(value, "21"))
-                        return
+                    self._check_configuration_values("00:00:03", "00:01:00", "21")
                     self._view_main.Close()
 
         self._show_view_main(_test_configuration_default_values)
 
-    def test_edit_configuration(self):
-        def _test_edit_configuration():
+    def test_cancel_edit_configuration(self):
+        def _test_cancel_edit_configuration():
             if self._wait_until_view_available():
                 if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
                     self.log.debug("Edit settings")
-                    # self.gui.click_toolbar_item(self._view_main, self._view_main.ID_TOOL_EDIT_CONFIGURATION)
+                    self.gui.click_toolbar_item(self._view_main, IdManager.ID_TOOL_EDIT_CONFIGURATION)
+                    if self.gui.wait_until_window_available(IdManager.ID_END_TIME):
+                        self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME, "5")
+                        self.gui.set_value_in_control(IdManager.ID_END_TIME, "3")
+                        self.gui.click_button(wx.ID_CANCEL)
+                        self._check_configuration_values("00:00:03", "00:01:00", "21")
                     self._view_main.Close()
 
-        self._show_view_main(_test_edit_configuration)
+        self._show_view_main(_test_cancel_edit_configuration)
 
 
 if __name__ == "__main__":
