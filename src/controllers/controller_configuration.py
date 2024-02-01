@@ -222,7 +222,7 @@ class TestControllerConfiguration(TestSuite):
 
     def test_configuration_is_changed(self):
         def _test_configuration_is_changed(test, frame):
-            self.gui.wait_for_dialog(frame, True)
+            self.gui.wait_for_dialog(frame)
             if test == 1:
                 if frame.active_dialog is not None:
                     self._error = "A dialog was shown when not expected"
@@ -246,7 +246,7 @@ class TestControllerConfiguration(TestSuite):
                 # Wait for message dialog to be gone
                 self.gui.wait_for_dialog(frame, False)
                 # Wait for file dialog
-                self.gui.wait_for_dialog(frame, True)
+                self.gui.wait_for_dialog(frame)
                 # Send escape to close the file dialog
                 self.gui.send_key_press(self.gui.KEY_ESCAPE)
                 # Wait for dialog to be gone
@@ -275,7 +275,7 @@ class TestControllerConfiguration(TestSuite):
 
     def test_save_configuration(self):
         def _test_save_configuration(frame):
-            if not self.gui.wait_for_dialog(frame, True):
+            if not self.gui.wait_for_dialog(frame):
                 self._error = "No dialog was shown when expected"
                 return
             self.log.debug("Save configuration to {}".format(self._filename))
@@ -296,7 +296,7 @@ class TestControllerConfiguration(TestSuite):
 
     def test_load_configuration(self):
         def _test_load_configuration(frame):
-            if not self.gui.wait_for_dialog(frame, True):
+            if not self.gui.wait_for_dialog(frame):
                 self._error = "No dialog was shown when expected"
                 return
             self.log.debug("Load configuration from {}".format(self._filename))
