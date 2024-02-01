@@ -222,7 +222,7 @@ class TestControllerConfiguration(TestSuite):
 
     def test_configuration_is_changed(self):
         def _test_configuration_is_changed(test, frame):
-            self.wait_for(frame.active_dialog, not None, 2, 0.1)
+            self.gui.wait_for_dialog(frame, True)
             if test == 1:
                 if frame.active_dialog is not None:
                     self._error = "A dialog was shown when not expected"
@@ -239,18 +239,18 @@ class TestControllerConfiguration(TestSuite):
                 # Close with no button, we expect no new dialog
                 self.gui.send_key_press(self.gui.KEY_TAB)
                 self.gui.send_key_press(self.gui.KEY_ENTER)
-                self.wait_for(frame.active_dialog, None, 2, 0.1)
+                self.gui.wait_for_dialog(frame, False)
             elif test == 3:
                 # Click Yes button, there must be a save file dialog
                 self.gui.send_key_press(self.gui.KEY_ENTER)
                 # Wait for message dialog to be gone
-                self.wait_for(frame.active_dialog, None, 2, 0.1)
+                self.gui.wait_for_dialog(frame, False)
                 # Wait for file dialog
-                self.wait_for(frame.active_dialog, not None, 2, 0.1)
+                self.gui.wait_for_dialog(frame, True)
                 # Send escape to close the file dialog
                 self.gui.send_key_press(self.gui.KEY_ESCAPE)
                 # Wait for dialog to be gone
-                self.wait_for(frame.active_dialog, None, 2, 0.1)
+                self.gui.wait_for_dialog(frame, False)
 
         # Test 1: no change
         # Test 2: is changed, no save
@@ -275,8 +275,7 @@ class TestControllerConfiguration(TestSuite):
 
     def test_save_configuration(self):
         def _test_save_configuration(frame):
-            self.wait_for(frame.active_dialog, not None, 2, 0.1)
-            if test_frame.active_dialog is None:
+            if not self.gui.wait_for_dialog(frame, True):
                 self._error = "No dialog was shown when expected"
                 return
             self.log.debug("Save configuration to {}".format(self._filename))
@@ -297,8 +296,7 @@ class TestControllerConfiguration(TestSuite):
 
     def test_load_configuration(self):
         def _test_load_configuration(frame):
-            self.wait_for(frame.active_dialog, not None, 2, 0.1)
-            if test_frame.active_dialog is None:
+            if not self.gui.wait_for_dialog(frame, True):
                 self._error = "No dialog was shown when expected"
                 return
             self.log.debug("Load configuration from {}".format(self._filename))
