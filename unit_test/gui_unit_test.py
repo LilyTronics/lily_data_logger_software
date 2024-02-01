@@ -89,6 +89,8 @@ class GuiUnitTest(object):
                     (not expect_dialog and frame.active_dialog is None)):
                 if frame.active_dialog is not None:
                     frame.active_dialog.Raise()
+                    # Make sure dialog is fully available
+                    time.sleep(0.2)
                 return True
             time.sleep(0.1)
             timeout -= 0.1
