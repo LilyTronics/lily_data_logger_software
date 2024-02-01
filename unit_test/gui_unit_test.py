@@ -87,6 +87,8 @@ class GuiUnitTest(object):
         while timeout > 0:
             if ((expect_dialog and frame.active_dialog is not None) or
                     (not expect_dialog and frame.active_dialog is None)):
+                if frame.active_dialog is not None:
+                    frame.active_dialog.Raise()
                 return True
             time.sleep(0.1)
             timeout -= 0.1
@@ -203,6 +205,7 @@ if __name__ == "__main__":
 
             print('Change text using send keys')
             GuiUnitTest.set_value_in_control(frame.ID_TEXT, "")
+            frame.Raise()
             GuiUnitTest.send_text("I said: 'Ham, spam and bacon'! OK?", 0.02)
             text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
             print("New text:", text)
