@@ -11,9 +11,6 @@ from unit_test.test_suite import TestSuite
 
 class ViewEditInstrument(wx.Dialog):
 
-    ID_CMB_INSTRUMENT = IdManager.get_widget_id()
-    ID_BTN_TEST = IdManager.get_widget_id()
-
     _GAP = 5
     _WINDOW_SIZE = (500, -1)
     _CONSOLE_SIZE = (-1, 150)
@@ -40,7 +37,7 @@ class ViewEditInstrument(wx.Dialog):
         lbl_name = wx.StaticText(self, wx.ID_ANY, "Name:")
         self._txt_name = wx.TextCtrl(self, wx.ID_ANY)
         lbl_instrument = wx.StaticText(self, wx.ID_ANY, "Instrument:")
-        self._cmb_instrument = wx.ComboBox(self, self.ID_CMB_INSTRUMENT, style=wx.CB_READONLY)
+        self._cmb_instrument = wx.ComboBox(self, IdManager.ID_CMB_INSTRUMENT, style=wx.CB_READONLY)
         grid = wx.GridBagSizer(self._GAP, self._GAP)
         grid.Add(lbl_name, (0, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
         grid.Add(self._txt_name, (0, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
@@ -62,7 +59,7 @@ class ViewEditInstrument(wx.Dialog):
         self._txt_console = wx.TextCtrl(self, -1, size=self._CONSOLE_SIZE,
                                         style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY | wx.TE_RICH)
         self._txt_console.SetFont(wx.Font(9, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False))
-        btn_test = wx.Button(self, self.ID_BTN_TEST, "Test Settings")
+        btn_test = wx.Button(self, IdManager.ID_BTN_TEST, "Test Settings")
         box = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, " Test driver: "), wx.VERTICAL)
         box.Add(self._txt_console, 0, wx.EXPAND | wx.ALL, self._GAP)
         box.Add(btn_test, 0, wx.ALIGN_LEFT | wx.ALL, self._GAP)

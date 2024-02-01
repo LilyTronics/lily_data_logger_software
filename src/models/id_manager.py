@@ -38,6 +38,10 @@ class IdManager(object):
     ID_CONTINUOUS = 405
     ID_TOTAL_SAMPLES = 406
 
+    # View edit instrument
+    ID_CMB_INSTRUMENT = 500
+    ID_BTN_TEST = 501
+
     _RESERVED_WIDGET_IDS = sorted(list(map(lambda y: getattr(wx, y), filter(lambda x: x.startswith("ID_"), dir(wx)))))
     _WIDGET_START_ID = 100
     _WIDGET_END_ID = 32000
