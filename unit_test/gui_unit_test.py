@@ -82,6 +82,16 @@ class GuiUnitTest(object):
             wx.YieldIfNeeded()
             time.sleep(char_delay)
 
+    @staticmethod
+    def wait_for_dialog(frame, expect_dialog=True, timeout=2):
+        while timeout > 0:
+            if ((expect_dialog and frame.active_dialog is not None) or
+                    (not expect_dialog and frame.active_dialog is None)):
+                return True
+            time.sleep(0.1)
+            timeout -= 0.1
+        return False
+
     ###########
     # Private #
     ###########
@@ -211,16 +221,17 @@ if __name__ == "__main__":
 
             print("Click show dialog")
             GuiUnitTest.click_button(frame.ID_BUTTON_DIALOG)
-            timeout = 2
-            while timeout > 0:
-                if frame.active_dialog is not None:
-                    break
-                time.sleep(0.1)
-                timeout -= 0.1
-            print("Dialog:", frame.active_dialog)
-            time.sleep(1)
-            if frame.active_dialog is not None:
+            if GuiUnitTest.wait_for_dialog(frame):
+                print("Dialog:", frame.active_dialog)
+                time.sleep(1)
                 GuiUnitTest.send_key_press(GuiUnitTest.KEY_ENTER)
+                if GuiUnitTest.wait_for_dialog(frame, False):
+                    print("Dialog:", frame.active_dialog)
+                    print("Dialog closed")
+                else:
+                    print("ERROR: dialog did not close")
+            else:
+                print("ERROR: no dialog")
             time.sleep(1)
 
             print("Click the close button")
