@@ -6,7 +6,6 @@ import wx
 
 from src.models.id_manager import IdManager
 from src.views.view_dialogs import show_message
-from tests.test_suite import TestSuite
 
 
 class ViewEditInstrument(wx.Dialog):
@@ -138,71 +137,9 @@ class ViewEditInstrument(wx.Dialog):
         self._txt_console.AppendText("%s\n" % text)
 
 
-class TestViewEditInstrument(TestSuite):
-
-    _SHOW_VIEW = False
-
-    def setup(self):
-        self._app = wx.App(redirect=False)
-        self._dlg = ViewEditInstrument(None, "Test edit instrument")
-
-    def test_show_dialog(self):
-        button = {
-            wx.ID_OK: "OK button",
-            wx.ID_CANCEL: "Cancel button"
-        }
-        if self._SHOW_VIEW:
-            result = self._dlg.ShowModal()
-            self.log.info("Dialog exit with code: {} ({})".format(result, button[result]))
-
-    def test_instrument_name(self):
-        test_name = "Test Instrument"
-        self._dlg.set_name(test_name)
-        self.fail_if(self._dlg.get_name() != test_name,
-                     "The instrument name is not correct '{}'".format(self._dlg.get_name()))
-
-    def test_instrument_names(self):
-        test_instrument_names = ["Multimeter UDP", "Temperature Chamber"]
-        self._dlg.set_instrument_names(test_instrument_names.copy())
-        for name in test_instrument_names:
-            self._dlg.set_instrument_name(name)
-            self.fail_if(self._dlg.get_selected_instrument_name() != name,
-                         "The selected instrument name is not correct '{}'".format(
-                             self._dlg.get_selected_instrument_name()))
-        self._dlg.set_instrument_name("not existing instrument")
-        self.fail_if(self._dlg.get_selected_instrument_name() != "",
-                     "The selected instrument name is not correct '{}'".format(
-                         self._dlg.get_selected_instrument_name()))
-
-    def test_instrument_settings(self):
-        settings = {
-            "ip_address": (
-                wx.StaticText(self._dlg, wx.ID_ANY, "IP Address:"),
-                wx.TextCtrl(self._dlg, wx.ID_ANY, "")
-            ),
-            "port": (
-                wx.StaticText(self._dlg, wx.ID_ANY, "Port:"),
-                wx.TextCtrl(self._dlg, wx.ID_ANY, "")
-            )
-        }
-        self._dlg.update_instrument_settings_controls(settings)
-        settings["ip_address"][1].SetValue("1.2.3.4")
-        settings["port"][1].SetValue("17000")
-        self.fail_if(settings["ip_address"][1].GetValue() != "1.2.3.4",
-                     "Control IP address does not have the correct value")
-        self.fail_if(settings["port"][1].GetValue() != "17000",
-                     "Control port does not have the correct value")
-
-    def test_console(self):
-        self._dlg.clear_console()
-        self._dlg.write_to_console("This is a console message")
-        self.fail_if(self._dlg._txt_console.GetValue() != "This is a console message\n",
-                     "Console text is not correct")
-
-    def teardown(self):
-        self._dlg.Destroy()
-
-
 if __name__ == "__main__":
 
-    TestViewEditInstrument().run()
+    app = wx.App(redirect=False)
+    dlg = ViewEditInstrument(None, "Test ViewEditInstrument")
+    dlg.ShowModal()
+    dlg.Destroy()
