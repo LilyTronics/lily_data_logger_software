@@ -4,7 +4,7 @@ Interfaces package.
 
 from src.models.interfaces import get_interface_by_name
 from src.models.interfaces import get_interface_names
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestInterfaces(TestSuite):

@@ -11,7 +11,7 @@ import tests
 from src.app_data import AppData
 from src.models.instruments import get_instrument_by_name
 from src.models.instruments import get_instrument_names
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestInstruments(TestSuite):

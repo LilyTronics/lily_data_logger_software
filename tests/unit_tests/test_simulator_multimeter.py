@@ -3,7 +3,7 @@ Test the model for the multimeter simulator
 """
 
 from src.models.instruments.simulator_multimeter import simulator_multimeter
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestSimulatorMultimeter(TestSuite):

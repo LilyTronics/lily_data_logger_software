@@ -3,7 +3,7 @@ Test for the ID manager.
 """
 
 from src.models.id_manager import IdManager
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestIdManager(TestSuite):

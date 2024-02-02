@@ -6,7 +6,7 @@ The unit test requires a serial port, with a loopback connector connected (autom
 from src.models.list_serial_ports import get_available_serial_ports
 from src.models.interfaces.serial_port_interface import SerialPortInterface
 from tests.test_environment.check_serial_loopback import get_serial_loopback_port
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestSerialPortInterface(TestSuite):

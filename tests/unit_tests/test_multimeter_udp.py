@@ -7,7 +7,7 @@ import threading
 
 from src.simulators.multimeter_udp import MultimeterUdp
 from src.simulators.simulator_settings import SimulatorSettings
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestMultimeterUdp(TestSuite):

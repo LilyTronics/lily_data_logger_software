@@ -9,7 +9,7 @@ import wx
 from src.controllers.controller_configuration import ControllerConfiguration
 from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestControllerConfiguration(TestSuite):

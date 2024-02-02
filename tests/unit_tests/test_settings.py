@@ -5,7 +5,7 @@ Test for the settings model.
 import os
 
 from src.models.settings import Settings
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestSettings(TestSuite):

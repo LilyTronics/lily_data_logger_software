@@ -5,7 +5,7 @@ Test for the configuration model.
 import os
 
 from src.models.configuration import Configuration
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestConfiguration(TestSuite):

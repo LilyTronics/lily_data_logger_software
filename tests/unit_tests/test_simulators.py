@@ -5,7 +5,7 @@ Test the simulators package.
 from src.simulators import SIMULATORS
 from src.simulators import start_simulators
 from src.simulators import stop_simulators
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestStartStopSimulators(TestSuite):

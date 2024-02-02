@@ -7,7 +7,7 @@ import wx
 from src.controllers.controller_main import ControllerMain
 from src.models.id_manager import IdManager
 from tests.unit_tests.lib.controller_main_test_configuration import ControllerMainTestConfiguration
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestControllerMain(TestSuite):

@@ -10,7 +10,7 @@ from src.views.view_dialogs import show_confirm
 from src.views.view_dialogs import show_message
 from src.views.view_dialogs import show_open_file
 from src.views.view_dialogs import show_save_file
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestViewDialogs(TestSuite):

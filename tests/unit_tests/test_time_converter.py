@@ -4,7 +4,7 @@ Test time converter functions.
 
 from src.models.time_converter import convert_seconds_to_time_with_unit
 from src.models.time_converter import create_duration_time_string
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestTimeConverter(TestSuite):

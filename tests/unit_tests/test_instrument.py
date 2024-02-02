@@ -7,7 +7,7 @@ import tempfile
 
 from src.models.interfaces.interface import Interface
 from src.models.instrument import Instrument
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestInstrument(TestSuite):

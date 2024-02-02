@@ -7,7 +7,7 @@ from src.models.instruments.arduino_uno_daq import arduino_uno_daq
 from src.models.interfaces import get_interface_by_name
 from src.models.list_serial_ports import get_available_serial_ports
 from tests.test_environment.check_arduino_uno_daq import get_arduino_uno_daq_serial_port
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestArduinoUnoDAQ(TestSuite):

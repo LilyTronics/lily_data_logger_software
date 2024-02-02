@@ -3,7 +3,7 @@ Test the logger for the application.
 """
 
 from src.models.logger import Logger
-from tests.test_suite import TestSuite
+from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestLogger(TestSuite):
