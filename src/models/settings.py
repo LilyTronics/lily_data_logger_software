@@ -93,8 +93,6 @@ class Settings(object):
 class TestSettings(TestSuite):
 
     def setup(self):
-        if not os.path.isdir(AppData.USER_FOLDER):
-            os.makedirs(AppData.USER_FOLDER)
         self._settings = Settings()
         if os.path.isfile(self._settings._settings_file):
             os.remove(self._settings._settings_file)
