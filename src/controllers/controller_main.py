@@ -3,6 +3,7 @@ Main controller for the application.
 """
 
 import os
+import tempfile
 import wx
 
 from src.app_data import AppData
@@ -274,6 +275,44 @@ class TestControllerMain(TestSuite):
                     self._view_main.Close()
 
         self._show_view_main(_test_open_configuration)
+
+    def test_save_configuration(self):
+        def _test_save_configuration():
+            if self._wait_until_view_available():
+                if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
+                    self.log.debug("Change configuration before saving")
+                    self.gui.click_toolbar_item(self._view_main, IdManager.ID_TOOL_EDIT_CONFIGURATION)
+                    if self.gui.wait_until_window_available(IdManager.ID_END_TIME):
+                        self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME, "5")
+                        self.gui.set_value_in_control(IdManager.ID_END_TIME, "3")
+                        self.gui.click_button(wx.ID_OK)
+                        self._check_configuration_values("00:00:05", "00:03:00", "37")
+                        self.gui.click_toolbar_item(self._view_main, IdManager.ID_TOOL_SAVE_CONFIGURATION)
+                        self.log.debug("Check for save configuration dialog")
+                        if self.gui.wait_for_dialog(self._view_main):
+                            self.gui.send_text(self._filename)
+                            self.gui.send_key_press(self.gui.KEY_ENTER)
+                            # We need some time to save
+                            self.sleep(0.2)
+                        else:
+                            self.fail("No save configuration file dialog appeared")
+                        self._view_main.Close()
+
+        self._filename = tempfile.mktemp(suffix=".json")
+        self._show_view_main(_test_save_configuration)
+
+        self.log.debug("Check values in the saved configuration")
+        conf = Configuration()
+        conf.load_from_file(self._filename)
+        self.fail_if(conf.get_sample_time() != 5,
+                     "Sample time was not saved correct: {}, expected 5".format(conf.get_sample_time()))
+        self.fail_if(conf.get_end_time() != 180,
+                     "End time was not saved correct: {}, expected 180".format(conf.get_end_time()))
+        self.fail_if(conf.get_continuous_mode(),
+                     "Continuous mode was not saved correct: {}, expected False".format(conf.get_continuous_mode()))
+
+        if os.path.isfile(self._filename):
+            os.remove(self._filename)
 
 
 if __name__ == "__main__":
