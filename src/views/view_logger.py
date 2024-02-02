@@ -4,6 +4,7 @@ View for logger.
 
 import wx
 
+from src.models.id_manager import IdManager
 from src.models.image_data import ImageData
 from src.models.logger import Logger
 
@@ -25,13 +26,14 @@ class ViewLogger(wx.Frame):
 
     def __init__(self, title):
         self._filename = Logger.get_filename()
-        super(ViewLogger, self).__init__(None, -1, title)
+        super(ViewLogger, self).__init__(None, wx.ID_ANY, title)
         self.SetIcon(wx.Icon(ImageData.show_log.Bitmap))
 
-        self._txt_console = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY | wx.TE_RICH)
+        self._txt_console = wx.TextCtrl(self, IdManager.ID_LOG_MESSAGES,
+                                        style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY | wx.TE_RICH)
         self._txt_console.SetFont(wx.Font(9, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False))
 
-        self._update_timer = wx.Timer(self, -1)
+        self._update_timer = wx.Timer(self)
 
         self.Bind(wx.EVT_TIMER, self._on_update_timer, self._update_timer)
         self.Bind(wx.EVT_CLOSE, self._on_close)
