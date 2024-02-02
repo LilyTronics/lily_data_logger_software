@@ -34,15 +34,16 @@ class Logger(object):
         def flush(self):
             pass
 
-    def __init__(self, log_to_stdout=False):
+    def __init__(self, log_to_stdout=False, redirect_stdout=True):
         self._log_to_stdout = log_to_stdout
         open(self._FILENAME, "w").close()
         self._output = ""
 
         self._orgStdout = sys.stdout
         self._orgStderr = sys.stderr
-        sys.stdout = self._StdLogger(self, self.TYPE_STDOUT)
-        sys.stderr = self._StdLogger(self, self.TYPE_STDERR)
+        if redirect_stdout:
+            sys.stdout = self._StdLogger(self, self.TYPE_STDOUT)
+            sys.stderr = self._StdLogger(self, self.TYPE_STDERR)
 
     @classmethod
     def get_filename(cls):
