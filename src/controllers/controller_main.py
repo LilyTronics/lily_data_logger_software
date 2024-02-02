@@ -223,14 +223,14 @@ class TestControllerMain(TestSuite):
                         self.gui.click_button(wx.ID_OK)
                         self._check_configuration_values("00:00:05", "00:03:00", "37")
                     wx.PostEvent(self._view_main, wx.CommandEvent(wx.wxEVT_CLOSE_WINDOW))
-                    self.log.debug("Check for save configuration dialog")
+                    self.log.debug("Check for configuration changed dialog")
                     if self.gui.wait_for_dialog(self._view_main):
                         self.gui.send_key_press(self.gui.KEY_TAB)
                         self.gui.send_key_press(self.gui.KEY_ENTER)
                         if not self.gui.wait_for_dialog(self._view_main, False):
-                            self.fail("Save configuration dialog did not close")
+                            self.fail("Changed configuration dialog did not close")
                     else:
-                        self.fail("No save configuration dialog appeared")
+                        self.fail("No changed configuration dialog appeared")
 
         self._show_view_main(_test_edit_configuration_fixed_mode)
 
@@ -247,24 +247,33 @@ class TestControllerMain(TestSuite):
                         self.gui.click_button(wx.ID_OK)
                         self._check_configuration_values("00:00:05", "Continuous mode", None)
                     wx.PostEvent(self._view_main, wx.CommandEvent(wx.wxEVT_CLOSE_WINDOW))
-                    self.log.debug("Check for save configuration dialog")
+                    self.log.debug("Check for configuration changed dialog")
                     if self.gui.wait_for_dialog(self._view_main):
                         self.gui.send_key_press(self.gui.KEY_TAB)
                         self.gui.send_key_press(self.gui.KEY_ENTER)
                         if not self.gui.wait_for_dialog(self._view_main, False):
-                            self.fail("Save configuration dialog did not close")
+                            self.fail("Changed configuration dialog did not close")
                     else:
-                        self.fail("No save configuration dialog appeared")
+                        self.fail("No changed configuration dialog appeared")
 
         self._show_view_main(_test_edit_configuration_continuous_mode)
 
-    # def test_open_configuration(self):
-    #     def _test_open_configuration():
-    #         if self._wait_until_view_available():
-    #             if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
-    #                 self.log.debug("Open configuration from file")
-    #
-    #     self._show_view_main(_test_open_configuration)
+    def test_open_configuration(self):
+        def _test_open_configuration():
+            if self._wait_until_view_available():
+                if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
+                    self.log.debug("Open configuration from file: {}".format(self.configuration_test_filename))
+                    self.gui.click_toolbar_item(self._view_main, IdManager.ID_TOOL_OPEN_CONFIGURATION)
+                    self.log.debug("Check for open configuration dialog")
+                    if self.gui.wait_for_dialog(self._view_main):
+                        self.gui.send_text(self.configuration_test_filename)
+                        self.gui.send_key_press(self.gui.KEY_ENTER)
+                        self._check_configuration_values("00:00:04", "00:05:00", "76")
+                    else:
+                        self.fail("No open configuration file dialog appeared")
+                    self._view_main.Close()
+
+        self._show_view_main(_test_open_configuration)
 
 
 if __name__ == "__main__":

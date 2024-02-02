@@ -1,0 +1,10 @@
+{
+  "general": {
+    "sample_time": 4,
+    "end_time": 300,
+    "continuous_mode": false
+  },
+  "instruments": [],
+  "measurements": [],
+  "process_steps": []
+}
