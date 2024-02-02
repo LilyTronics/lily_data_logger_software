@@ -1,9 +1,8 @@
 """
-Instrument model for the multimeter simulator
+Model for the multimeter simulator
 """
 
 from src.models.instrument import Instrument
-from tests.test_suite import TestSuite
 
 
 simulator_multimeter = Instrument({
@@ -12,15 +11,8 @@ simulator_multimeter = Instrument({
 })
 
 
-class TestSimulatorMultimeter(TestSuite):
-
-    def test_properties(self):
-        self.fail_if(simulator_multimeter.get_name() != "Simulator multimeter",
-                     "The name is not correct '{}'".format(simulator_multimeter.get_name()))
-        self.fail_if(simulator_multimeter.get_info() == simulator_multimeter.DEFAULT_INFO,
-                     "The info has the default value")
-
-
 if __name__ == "__main__":
+
+    from tests.unit_tests.test_simulator_multimeter import TestSimulatorMultimeter
 
     TestSimulatorMultimeter().run()
