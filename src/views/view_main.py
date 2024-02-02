@@ -25,6 +25,7 @@ class ViewMain(wx.Frame):
     _MINIMUM_WINDOW_SIZE = (1100, 700)
 
     def __init__(self, title):
+        self.active_dialog = None
         self._title = title
         super().__init__(None, wx.ID_ANY, self._title)
         panel = wx.Panel(self)

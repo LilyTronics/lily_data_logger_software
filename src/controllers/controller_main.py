@@ -157,19 +157,21 @@ class TestControllerMain(TestSuite):
         self._view_main = None
 
     def _check_configuration_values(self, sample_time, end_time, total_samples):
+        wx.Yield()
+        self.sleep(0.2)
         value = self.gui.get_value_from_window(IdManager.ID_LABEL_SAMPLE_TIME)
         if value != sample_time:
-            self._error = ("The sample time does not have the correct value '{}', expected '{}'".
+            self._error = ("The sample time does not have the correct value: '{}', expected '{}'".
                            format(value, sample_time))
             return
         value = self.gui.get_value_from_window(IdManager.ID_LABEL_END_TIME)
         if value != end_time:
-            self._error = ("The end time does not have the correct value '{}', expected '{}'".
+            self._error = ("The end time does not have the correct value: '{}', expected '{}'".
                            format(value, end_time))
             return
         value = self.gui.get_value_from_window(IdManager.ID_LABEL_TOTAL_SAMPLES)
         if value != total_samples:
-            self._error = ("The total samples does not have the correct value '{}', expected '{}'".
+            self._error = ("The total samples does not have the correct value: '{}', expected '{}'".
                            format(value, total_samples))
             return
 
@@ -206,6 +208,29 @@ class TestControllerMain(TestSuite):
                     self._view_main.Close()
 
         self._show_view_main(_test_cancel_edit_configuration)
+
+    def test_edit_configuration(self):
+        def _test_edit_configuration():
+            if self._wait_until_view_available():
+                if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
+                    self.log.debug("Edit settings")
+                    self.gui.click_toolbar_item(self._view_main, IdManager.ID_TOOL_EDIT_CONFIGURATION)
+                    if self.gui.wait_until_window_available(IdManager.ID_END_TIME):
+                        self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME, "5")
+                        self.gui.set_value_in_control(IdManager.ID_END_TIME, "3")
+                        self.gui.click_button(wx.ID_OK)
+                        self._check_configuration_values("00:00:05", "00:03:00", "37")
+                    wx.PostEvent(self._view_main, wx.CommandEvent(wx.wxEVT_CLOSE_WINDOW))
+                    self.log.debug("Check for save configuration dialog")
+                    if self.gui.wait_for_dialog(self._view_main):
+                        self.gui.send_key_press(self.gui.KEY_TAB)
+                        self.gui.send_key_press(self.gui.KEY_ENTER)
+                        if not self.gui.wait_for_dialog(self._view_main, False):
+                            self.fail("Save configuration dialog did not close")
+                    else:
+                        self.fail("No save configuration dialog appeared")
+
+        self._show_view_main(_test_edit_configuration)
 
 
 if __name__ == "__main__":
