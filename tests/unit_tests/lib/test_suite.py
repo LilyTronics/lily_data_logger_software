@@ -14,7 +14,7 @@ class TestSuite(lily_unit_test.TestSuite):
     def __init__(self, *args):
         super().__init__(*args)
         self.gui = GuiUnitTest()
-        self.configuration_test_filename = os.path.abspath(os.path.join(os.path.dirname(__file__),
+        self.configuration_test_filename = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..",
                                                                         "test_files", "test_configuration.json"))
         if not os.path.isdir(AppData.USER_FOLDER):
             os.makedirs(AppData.USER_FOLDER)
