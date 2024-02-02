@@ -4,7 +4,7 @@ Manages ID for various purposes
 
 import wx
 
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 class IdManager(object):

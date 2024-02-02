@@ -6,7 +6,7 @@ import copy
 import json
 import os
 
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 class Configuration(object):

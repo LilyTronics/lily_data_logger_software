@@ -11,7 +11,7 @@ from src.models.id_manager import IdManager
 from src.models.settings import Settings
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 class ControllerMain(object):

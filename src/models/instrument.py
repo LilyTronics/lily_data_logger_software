@@ -8,7 +8,7 @@ import tempfile
 import time
 
 from src.models.interfaces.interface import Interface
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 class Instrument(object):

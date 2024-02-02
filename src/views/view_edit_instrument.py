@@ -6,7 +6,7 @@ import wx
 
 from src.models.id_manager import IdManager
 from src.views.view_dialogs import show_message
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 class ViewEditInstrument(wx.Dialog):

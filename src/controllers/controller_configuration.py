@@ -13,7 +13,7 @@ from src.views.view_dialogs import show_message
 from src.views.view_dialogs import show_open_file
 from src.views.view_dialogs import show_save_file
 from src.views.view_edit_configuration import ViewEditConfiguration
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 class ControllerConfiguration(object):

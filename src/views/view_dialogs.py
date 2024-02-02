@@ -6,7 +6,7 @@ import glob
 import os
 import wx
 
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 def show_message(parent, message, title, icon=wx.ICON_INFORMATION):

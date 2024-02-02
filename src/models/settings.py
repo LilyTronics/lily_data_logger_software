@@ -6,7 +6,7 @@ import json
 import os
 
 from src.app_data import AppData
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 class Settings(object):

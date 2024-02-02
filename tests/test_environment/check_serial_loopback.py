@@ -2,7 +2,7 @@
 Check if a loopback is available on a serial port.
 """
 
-from unit_test.test_environment.check_serial_port import check_serial_port
+from tests.test_environment.check_serial_port import check_serial_port
 
 
 def get_serial_loopback_port(serial_ports):

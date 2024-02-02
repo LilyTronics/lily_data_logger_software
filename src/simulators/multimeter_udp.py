@@ -7,7 +7,7 @@ import socket
 import threading
 
 from src.simulators.simulator_settings import SimulatorSettings
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 class MultimeterUdp(object):

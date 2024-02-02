@@ -3,7 +3,7 @@ Instrument model for the multimeter simulator
 """
 
 from src.models.instrument import Instrument
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 simulator_multimeter = Instrument({

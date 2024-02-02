@@ -6,7 +6,7 @@ import lily_unit_test
 import os
 
 from src.app_data import AppData
-from unit_test.gui_unit_test import GuiUnitTest
+from tests.gui_unit_test import GuiUnitTest
 
 
 class TestSuite(lily_unit_test.TestSuite):

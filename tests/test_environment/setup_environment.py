@@ -6,8 +6,8 @@ import os
 import shutil
 
 from src.models.list_serial_ports import get_available_serial_ports
-from unit_test.test_environment.check_arduino_uno_daq import get_arduino_uno_daq_serial_port
-from unit_test.test_environment.check_serial_loopback import get_serial_loopback_port
+from tests.test_environment.check_arduino_uno_daq import get_arduino_uno_daq_serial_port
+from tests.test_environment.check_serial_loopback import get_serial_loopback_port
 
 
 def clear_reports(report_path):

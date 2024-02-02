@@ -3,7 +3,7 @@ Detect the Arduino Uno DAQ.
 - 15200 baud, flow control none, EOL LF
 """
 
-from unit_test.test_environment.check_serial_port import check_serial_port
+from tests.test_environment.check_serial_port import check_serial_port
 
 
 def get_arduino_uno_daq_serial_port(serial_ports):

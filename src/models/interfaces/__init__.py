@@ -5,7 +5,7 @@ Interfaces package.
 from src.models.interfaces.serial_port_interface import SerialPortInterface
 from src.models.interfaces.tcp_client_interface import TcpClientInterface
 from src.models.interfaces.udp_client_interface import UdpClientInterface
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 _INTERFACES = [

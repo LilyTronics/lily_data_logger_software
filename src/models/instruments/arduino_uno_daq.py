@@ -6,8 +6,8 @@ For testing, loopback connectors should be installed on the Arduino Uno.
 from src.models.instrument import Instrument
 from src.models.interfaces import get_interface_by_name
 from src.models.list_serial_ports import get_available_serial_ports
-from unit_test.test_environment.check_arduino_uno_daq import get_arduino_uno_daq_serial_port
-from unit_test.test_suite import TestSuite
+from tests.test_environment.check_arduino_uno_daq import get_arduino_uno_daq_serial_port
+from tests.test_suite import TestSuite
 
 
 arduino_uno_daq = Instrument({

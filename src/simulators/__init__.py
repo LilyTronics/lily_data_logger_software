@@ -3,7 +3,7 @@ Running simulators.
 """
 
 from src.simulators.multimeter_udp import MultimeterUdp
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 _SIMULATORS = []

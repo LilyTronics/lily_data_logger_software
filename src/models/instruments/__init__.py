@@ -7,13 +7,13 @@ import json
 import os
 import re
 import shutil
-import unit_test
+import tests
 
 from src.app_data import AppData
 from src.models.instrument import Instrument
 from src.models.instruments.arduino_uno_daq import arduino_uno_daq
 from src.models.instruments.simulator_multimeter import simulator_multimeter
-from unit_test.test_suite import TestSuite
+from tests.test_suite import TestSuite
 
 
 _INSTRUMENTS = [
@@ -72,7 +72,7 @@ class TestInstruments(TestSuite):
                 n_found += 1
         self._n_instruments = n_found
         self.log.debug("Copy test instrument to user folder")
-        shutil.copy2(os.path.join(os.path.dirname(unit_test.__file__), "test_files", "test_instrument.json"),
+        shutil.copy2(os.path.join(os.path.dirname(tests.__file__), "test_files", "test_instrument.json"),
                      os.path.join(AppData.USER_FOLDER, "test_instrument.json"))
         self._n_instruments += 1
 
