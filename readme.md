@@ -7,20 +7,27 @@ Universal data logger software aiming to work with any kind of electronics measu
 The Lily Data Logger Studio has two editions:
 
 * CE: Community Edition.
-  * A simple tool that only logs data (measurements).
+  * Only for logging data (measurements).
+  * Provided as is and has no support.
   * Free and open source.
-  * Is provides as is and has no support.
 
 
 * XE: eXtended Edition.
   * All features of the CE.
-  * Extra support for the following instruments:
+  * Process control automation:
+    * Create and run processes to control your entire test setup (test automation).
+    * Processes can contain:
+      * setting values in instruments
+      * process flow control depending on values read from instruments
+      * loops for repeating process steps
+      * wait statements for adding delays in the process
+      * save and load processes from configuration files.
+  * Extra build-in drivers for the following instruments:
     * Tektronics TD220 (or similar: TDS200/TDS1000/TDS2000).
     * TTi PL303QMD-P power supply.
     * National Instruments USB-6009 DAQ (requires NI drivers, not included, installation manual available).
     * Protek 506 multimeter.
     * Temperature chamber simulator (for testing the process control feature). 
-  * Process control automation. Create and run processes to control your entire test setup (test automation).
   * Support from LilyTronics.
     * Help when using the application and creating processes.
     * Help for adding your instruments.
