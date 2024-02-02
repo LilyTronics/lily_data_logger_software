@@ -26,4 +26,4 @@ options = {
     "no_log_files": True,
     "exclude_test_suites": EXCLUDE_TESTS
 }
-TestRunner.run("../src", options)
+TestRunner.run("./unit_tests", options)
