@@ -169,11 +169,13 @@ class TestControllerMain(TestSuite):
             self._error = ("The end time does not have the correct value: '{}', expected '{}'".
                            format(value, end_time))
             return
-        value = self.gui.get_value_from_window(IdManager.ID_LABEL_TOTAL_SAMPLES)
-        if value != total_samples:
-            self._error = ("The total samples does not have the correct value: '{}', expected '{}'".
-                           format(value, total_samples))
-            return
+        # When continuous mode, total samples is not interesting
+        if total_samples is not None:
+            value = self.gui.get_value_from_window(IdManager.ID_LABEL_TOTAL_SAMPLES)
+            if value != total_samples:
+                self._error = ("The total samples does not have the correct value: '{}', expected '{}'".
+                               format(value, total_samples))
+                return
 
     def test_show_view_main(self):
         def _test_show_view_main():
@@ -188,7 +190,7 @@ class TestControllerMain(TestSuite):
         def _test_configuration_default_values():
             if self._wait_until_view_available():
                 if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
-                    self.log.debug("Check default settings")
+                    self.log.debug("Check default configuration")
                     self._check_configuration_values("00:00:03", "00:01:00", "21")
                     self._view_main.Close()
 
@@ -198,7 +200,7 @@ class TestControllerMain(TestSuite):
         def _test_cancel_edit_configuration():
             if self._wait_until_view_available():
                 if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
-                    self.log.debug("Edit settings")
+                    self.log.debug("Edit configuration")
                     self.gui.click_toolbar_item(self._view_main, IdManager.ID_TOOL_EDIT_CONFIGURATION)
                     if self.gui.wait_until_window_available(IdManager.ID_END_TIME):
                         self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME, "5")
@@ -209,11 +211,11 @@ class TestControllerMain(TestSuite):
 
         self._show_view_main(_test_cancel_edit_configuration)
 
-    def test_edit_configuration(self):
-        def _test_edit_configuration():
+    def test_edit_configuration_fixed_mode(self):
+        def _test_edit_configuration_fixed_mode():
             if self._wait_until_view_available():
                 if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
-                    self.log.debug("Edit settings")
+                    self.log.debug("Edit configuration")
                     self.gui.click_toolbar_item(self._view_main, IdManager.ID_TOOL_EDIT_CONFIGURATION)
                     if self.gui.wait_until_window_available(IdManager.ID_END_TIME):
                         self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME, "5")
@@ -230,7 +232,39 @@ class TestControllerMain(TestSuite):
                     else:
                         self.fail("No save configuration dialog appeared")
 
-        self._show_view_main(_test_edit_configuration)
+        self._show_view_main(_test_edit_configuration_fixed_mode)
+
+    def test_edit_configuration_continuous_mode(self):
+        def _test_edit_configuration_continuous_mode():
+            if self._wait_until_view_available():
+                if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
+                    self.log.debug("Edit configuration")
+                    self.gui.click_toolbar_item(self._view_main, IdManager.ID_TOOL_EDIT_CONFIGURATION)
+                    if self.gui.wait_until_window_available(IdManager.ID_END_TIME):
+                        self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME, "5")
+                        self.gui.set_value_in_control(IdManager.ID_END_TIME, "3")
+                        self.gui.select_radio_button(IdManager.ID_CONTINUOUS)
+                        self.gui.click_button(wx.ID_OK)
+                        self._check_configuration_values("00:00:05", "Continuous mode", None)
+                    wx.PostEvent(self._view_main, wx.CommandEvent(wx.wxEVT_CLOSE_WINDOW))
+                    self.log.debug("Check for save configuration dialog")
+                    if self.gui.wait_for_dialog(self._view_main):
+                        self.gui.send_key_press(self.gui.KEY_TAB)
+                        self.gui.send_key_press(self.gui.KEY_ENTER)
+                        if not self.gui.wait_for_dialog(self._view_main, False):
+                            self.fail("Save configuration dialog did not close")
+                    else:
+                        self.fail("No save configuration dialog appeared")
+
+        self._show_view_main(_test_edit_configuration_continuous_mode)
+
+    # def test_open_configuration(self):
+    #     def _test_open_configuration():
+    #         if self._wait_until_view_available():
+    #             if self.gui.is_window_available(IdManager.ID_LABEL_TOTAL_SAMPLES):
+    #                 self.log.debug("Open configuration from file")
+    #
+    #     self._show_view_main(_test_open_configuration)
 
 
 if __name__ == "__main__":
