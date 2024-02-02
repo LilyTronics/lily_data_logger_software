@@ -31,7 +31,7 @@ class TestSerialPortInterface(TestSuite):
 
     def test_no_response(self):
         response = self._serial.send_command(self._TEST_COMMAND, False)
-        self.fail_if(response is not None, "Invalid response received: {}".format(response))
+        self.fail_if(response != b"", "Invalid response received: {}".format(response))
 
     def teardown(self):
         if self._serial is not None:
