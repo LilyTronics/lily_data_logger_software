@@ -160,6 +160,6 @@ class ControllerMainTestConfiguration(object):
 
 if __name__ == "__main__":
 
-    from src.controllers.controller_main import TestControllerMain
+    from tests.unit_tests.test_controller_main import TestControllerMain
 
     TestControllerMain().run()
