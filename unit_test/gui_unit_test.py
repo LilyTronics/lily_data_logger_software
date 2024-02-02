@@ -46,22 +46,19 @@ class GuiUnitTest(object):
                 raise Exception("Could not get value from window with ID {} ({})".format(window_id, value))
         return value
 
-    @staticmethod
-    def click_button(button_id):
-        wx.PostEvent(wx.Window.FindWindowById(button_id), wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, button_id))
-        wx.YieldIfNeeded()
+    @classmethod
+    def click_button(cls, button_id):
+        cls.post_event(wx.Window.FindWindowById(button_id), wx.wxEVT_COMMAND_BUTTON_CLICKED, button_id)
 
-    @staticmethod
-    def click_toolbar_item(window, item_id):
-        wx.PostEvent(window, wx.CommandEvent(wx.wxEVT_COMMAND_TOOL_CLICKED, item_id))
-        wx.YieldIfNeeded()
+    @classmethod
+    def click_toolbar_item(cls, window, item_id):
+        cls.post_event(window, wx.wxEVT_COMMAND_TOOL_CLICKED, item_id)
 
-    @staticmethod
-    def select_radio_button(button_id):
+    @classmethod
+    def select_radio_button(cls, button_id):
         ctrl = wx.Window.FindWindowById(button_id)
         ctrl.SetValue(True)
-        wx.PostEvent(ctrl, wx.CommandEvent(wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, button_id))
-        wx.YieldIfNeeded()
+        cls.post_event(ctrl, wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, button_id)
 
     @staticmethod
     def set_value_in_control(control_id, value):
@@ -95,6 +92,11 @@ class GuiUnitTest(object):
             time.sleep(0.1)
             timeout -= 0.1
         return False
+
+    @staticmethod
+    def post_event(target, event_type, control_id):
+        wx.PostEvent(target, wx.CommandEvent(event_type, control_id))
+        wx.YieldIfNeeded()
 
     ###########
     # Private #

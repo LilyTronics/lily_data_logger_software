@@ -222,7 +222,7 @@ class TestControllerMain(TestSuite):
                         self.gui.set_value_in_control(IdManager.ID_END_TIME, "3")
                         self.gui.click_button(wx.ID_OK)
                         self._check_configuration_values("00:00:05", "00:03:00", "37")
-                    wx.PostEvent(self._view_main, wx.CommandEvent(wx.wxEVT_CLOSE_WINDOW))
+                    self.gui.post_event(self._view_main, wx.wxEVT_CLOSE_WINDOW, self._view_main.GetId())
                     self.log.debug("Check for configuration changed dialog")
                     if self.gui.wait_for_dialog(self._view_main):
                         self.gui.send_key_press(self.gui.KEY_TAB)
@@ -246,7 +246,7 @@ class TestControllerMain(TestSuite):
                         self.gui.select_radio_button(IdManager.ID_CONTINUOUS)
                         self.gui.click_button(wx.ID_OK)
                         self._check_configuration_values("00:00:05", "Continuous mode", None)
-                    wx.PostEvent(self._view_main, wx.CommandEvent(wx.wxEVT_CLOSE_WINDOW))
+                    self.gui.post_event(self._view_main, wx.wxEVT_CLOSE_WINDOW, self._view_main.GetId())
                     self.log.debug("Check for configuration changed dialog")
                     if self.gui.wait_for_dialog(self._view_main):
                         self.gui.send_key_press(self.gui.KEY_TAB)
