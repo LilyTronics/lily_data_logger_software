@@ -3,6 +3,7 @@ UDP client interface.
 """
 
 import socket
+import wx
 
 from src.models.interfaces.interface import Interface
 
@@ -32,6 +33,21 @@ class UdpClientInterface(Interface):
 
     def close(self):
         self._socket.close()
+
+    @classmethod
+    def get_settings_controls(cls):
+        return {
+            "ip_address": {
+                "label": "IP Address",
+                "control": wx.TextCtrl,
+                "default": ""
+            },
+            "ip_port": {
+                "label": "Port",
+                "control": wx.TextCtrl,
+                "default": ""
+            }
+        }
 
 
 if __name__ == "__main__":
