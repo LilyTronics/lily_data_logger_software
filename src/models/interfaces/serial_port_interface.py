@@ -35,15 +35,14 @@ class SerialPortInterface(Interface):
     _DATA_BITS = [serial.FIVEBITS, serial.SIXBITS, serial.SEVENBITS, serial.EIGHTBITS]
     _DEFAULT_DATA_BITS = serial.EIGHTBITS
 
-    def __init__(self, port_name, baud_rate=_DEFAULT_BAUD_RATE, parity=_PARITY_VALUES[_DEFAULT_PARITY],
-                 stop_bits=_DEFAULT_STOP_BITS, byte_size=_DEFAULT_DATA_BITS, rx_timeout=DEFAULT_TIMEOUT,
-                 terminator=DEFAULT_TERMINATOR, tx_timeout=0):
+    def __init__(self, serial_port, baud_rate=_DEFAULT_BAUD_RATE, parity=_DEFAULT_PARITY, stop_bits=_DEFAULT_STOP_BITS,
+                 data_bits=_DEFAULT_DATA_BITS, rx_timeout=DEFAULT_TIMEOUT, terminator=DEFAULT_TERMINATOR, tx_timeout=0):
         if tx_timeout == 0:
             tx_timeout = rx_timeout
         self._rx_time_out = rx_timeout
         self._terminator = terminator
-        self._serial = serial.Serial(port_name, baudrate=int(baud_rate), parity=parity, stopbits=stop_bits,
-                                     bytesize=byte_size, write_timeout=tx_timeout)
+        self._serial = serial.Serial(serial_port, baudrate=int(baud_rate), parity=self._PARITY_VALUES[parity],
+                                     stopbits=float(stop_bits), bytesize=int(data_bits), write_timeout=tx_timeout)
 
     def toggle_dtr(self):
         for value in (True, False, True):
