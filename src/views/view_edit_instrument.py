@@ -130,6 +130,8 @@ class ViewEditInstrument(wx.Dialog):
                         data = data()
                     ctrl.SetItems(data)
                     ctrl.SetValue(control["default"])
+                elif control["control"] is wx.TextCtrl:
+                    ctrl = control["control"](self, wx.ID_ANY, control["default"])
                 else:
                     raise Exception("Control '{}' is not supported".format(control["control"]))
                 self._settings_controls[key] = ctrl
