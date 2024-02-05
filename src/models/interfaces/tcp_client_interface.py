@@ -18,7 +18,7 @@ class TcpClientInterface(Interface):
         self._rx_buffer_size = rx_buffer_size
         self._socket = None
 
-    def send_command(self, command):
+    def send_command(self, command, expect_response=True):
         response = b""
         try:
             self._socket = socket.create_connection((self._server_ip_address, self._server_port), self._timeout)
@@ -26,10 +26,11 @@ class TcpClientInterface(Interface):
             self.raise_connection_exception(f"{self._server_ip_address}:{self._server_port}")
 
         self._socket.sendall(command)
-        try:
-            response = self._socket.recv(self._rx_buffer_size)
-        except TimeoutError:
-            self.raise_timeout_exception()
+        if expect_response:
+            try:
+                response = self._socket.recv(self._rx_buffer_size)
+            except TimeoutError:
+                self.raise_timeout_exception()
 
         return response
 

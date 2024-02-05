@@ -19,15 +19,16 @@ class UdpClientInterface(Interface):
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._socket.settimeout(float(rx_timeout))
 
-    def send_command(self, command):
+    def send_command(self, command, expect_response=True):
         response = b""
         self._socket.sendto(command, (self._server_ip_address, self._server_port))
-        try:
-            response = self._socket.recv(self._rx_buffer_size)
-        except ConnectionResetError:
-            self.raise_connection_exception(f"{self._server_ip_address}:{self._server_port}")
-        except TimeoutError:
-            self.raise_timeout_exception()
+        if expect_response:
+            try:
+                response = self._socket.recv(self._rx_buffer_size)
+            except ConnectionResetError:
+                self.raise_connection_exception(f"{self._server_ip_address}:{self._server_port}")
+            except TimeoutError:
+                self.raise_timeout_exception()
 
         return response
 
