@@ -4,8 +4,10 @@ Serial port interface.
 
 import serial
 import time
+import wx
 
 from src.models.interfaces.interface import Interface
+from src.models.list_serial_ports import get_available_serial_ports
 
 
 class SerialPortInterface(Interface):
@@ -13,17 +15,35 @@ class SerialPortInterface(Interface):
     NAME = "Serial port"
     DEFAULT_TERMINATOR = b"\n"
     DEFAULT_TIMEOUT = 5
-    DEFAULT_BAUD_RATE = 9600
 
     _TOGGLE_INTERVAL = 0.005
 
-    def __init__(self, port_name, baud_rate=DEFAULT_BAUD_RATE, rx_timeout=DEFAULT_TIMEOUT,
+    _BAUD_RATES = [1200, 1800, 2400, 4800, 9600, 14400, 19200, 28800, 31250, 38400, 57600,
+                   76800, 115200, 128000, 230400, 250000, 256000, 460800, 500000, 576000, 921600,
+                   1000000]
+    _DEFAULT_BAUD_RATE = 19200
+    _PARITY_VALUES = {
+        "None": serial.PARITY_NONE,
+        "Odd": serial.PARITY_ODD,
+        "Even": serial.PARITY_EVEN,
+        "Mark": serial.PARITY_MARK,
+        "Space": serial.PARITY_SPACE
+    }
+    _DEFAULT_PARITY = "None"
+    _STOP_BITS = [serial.STOPBITS_ONE, serial.STOPBITS_ONE_POINT_FIVE, serial.STOPBITS_TWO]
+    _DEFAULT_STOP_BITS = serial.STOPBITS_ONE
+    _DATA_BITS = [serial.FIVEBITS, serial.SIXBITS, serial.SEVENBITS, serial.EIGHTBITS]
+    _DEFAULT_DATA_BITS = serial.EIGHTBITS
+
+    def __init__(self, port_name, baud_rate=_DEFAULT_BAUD_RATE, parity=_PARITY_VALUES[_DEFAULT_PARITY],
+                 stop_bits=_DEFAULT_STOP_BITS, byte_size=_DEFAULT_DATA_BITS, rx_timeout=DEFAULT_TIMEOUT,
                  terminator=DEFAULT_TERMINATOR, tx_timeout=0):
         if tx_timeout == 0:
             tx_timeout = rx_timeout
         self._rx_time_out = rx_timeout
         self._terminator = terminator
-        self._serial = serial.Serial(port_name, baudrate=int(baud_rate), write_timeout=tx_timeout)
+        self._serial = serial.Serial(port_name, baudrate=int(baud_rate), parity=parity, stopbits=stop_bits,
+                                     bytesize=byte_size, write_timeout=tx_timeout)
 
     def toggle_dtr(self):
         for value in (True, False, True):
@@ -49,6 +69,41 @@ class SerialPortInterface(Interface):
 
     def close(self):
         self._serial.close()
+
+    @classmethod
+    def get_settings_controls(cls):
+        return {
+            "serial_port": {
+                "label": "Serial port",
+                "control": wx.ComboBox,
+                "data": get_available_serial_ports,
+                "default": ""
+            },
+            "baud_rate": {
+                "label": "Baud rate",
+                "control": wx.ComboBox,
+                "data": list(map(lambda x: str(x), cls._BAUD_RATES)),
+                "default": str(cls._DEFAULT_BAUD_RATE)
+            },
+            "parity": {
+                "label": "Parity",
+                "control": wx.ComboBox,
+                "data": list(cls._PARITY_VALUES.keys()),
+                "default": cls._DEFAULT_PARITY
+            },
+            "stop_bits": {
+                "label": "Stop bits",
+                "control": wx.ComboBox,
+                "data": list(map(lambda x: str(x), cls._STOP_BITS)),
+                "default": str(cls._DEFAULT_STOP_BITS)
+            },
+            "data_bits": {
+                "label": "Data bits",
+                "control": wx.ComboBox,
+                "data": list(map(lambda x: str(x), cls._DATA_BITS)),
+                "default": str(cls._DEFAULT_DATA_BITS)
+            }
+        }
 
 
 if __name__ == "__main__":
