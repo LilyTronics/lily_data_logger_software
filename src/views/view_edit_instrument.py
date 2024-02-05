@@ -127,9 +127,10 @@ class ViewEditInstrument(wx.Dialog):
 
     def update_instrument_settings_controls(self, settings_controls):
         self._settings_grid.Clear(True)
+        self._lbl_no_settings.Show()
         self._settings_controls = {}
         if len(settings_controls.keys()) > 0:
-            self._lbl_no_settings.Show(False)
+            self._lbl_no_settings.Hide()
             row = 0
             for key in settings_controls.keys():
                 control = settings_controls[key]
@@ -149,8 +150,6 @@ class ViewEditInstrument(wx.Dialog):
                 self._settings_grid.Add(lbl, (row, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
                 self._settings_grid.Add(ctrl, (row, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
                 row += 1
-        else:
-            self._lbl_no_settings.Show(True)
         self.SetInitialSize(self._WINDOW_SIZE)
         self.CenterOnParent()
 
