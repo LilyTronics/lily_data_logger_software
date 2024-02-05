@@ -26,15 +26,53 @@ class ControllerEditInstrument(object):
         instrument_name = cls._dlg.get_selected_instrument_name()
         if instrument_name != "":
             instrument = get_instrument_by_name(instrument_name)
-            cls._dlg.set_instrument_info(instrument.get_info())
+            if instrument is not None:
+                cls._dlg.set_instrument_info(instrument.get_info())
+                interface_type = instrument.get_interface_type()
+                if interface_type is not None:
+                    interface = get_interface_by_name(interface_type)
+                    if interface is not None:
+                        settings_controls = interface.get_settings_controls()
+                        instrument_defaults = instrument.get_interface_settings()
+                        for key in instrument_defaults.keys():
+                            settings_controls[key]["default"] = str(instrument_defaults[key])
+                        cls._dlg.update_instrument_settings_controls(settings_controls)
+        event.Skip()
+
+    @classmethod
+    def _on_settings_test(cls, event):
+        cls._dlg.clear_console()
+        name = cls._dlg.get_name()
+        cls._dlg.write_to_console("{:12}: '{}'".format("Name", name))
+        instrument_name = cls._dlg.get_selected_instrument_name()
+        cls._dlg.write_to_console("{:12}: '{}'".format("Instrument", instrument_name))
+        settings = cls._dlg.get_settings()
+        for key in settings.keys():
+            cls._dlg.write_to_console("{:12}: '{}'".format(key, settings[key]))
+        try:
+            assert instrument_name != "", "no instrument selected"
+            instrument = get_instrument_by_name(instrument_name)
+            assert instrument is not None, "instrument does not exist"
             interface_type = instrument.get_interface_type()
-            if interface_type is not None:
-                interface = get_interface_by_name(interface_type)
-                settings_controls = interface.get_settings_controls()
-                instrument_defaults = instrument.get_interface_settings()
-                for key in instrument_defaults.keys():
-                    settings_controls[key]["default"] = str(instrument_defaults[key])
-                cls._dlg.update_instrument_settings_controls(settings_controls)
+            assert interface_type is not None, "No interface defined"
+            interface = get_interface_by_name(interface_type)
+            assert interface is not None, "interface type '{}' does not exist".format(interface_type)
+            instrument_defaults = instrument.get_interface_settings()
+            for key in instrument_defaults.keys():
+                if key not in settings.keys():
+                    settings[key] = instrument_defaults[key]
+            instrument.set_interface_object(interface(**settings))
+            input_channels = instrument.get_input_channels()
+            assert len(input_channels) > 0, "no input channels available for testing"
+            cls._dlg.write_to_console("\nInitialize instrument...")
+            instrument.initialize()
+            cls._dlg.write_to_console("Get value from channel: '{}'".format(input_channels[0]["name"]))
+            value = instrument.get_value(input_channels[0]["name"])
+            cls._dlg.write_to_console("Received value: '{}'".format(value))
+            cls._dlg.write_to_console("\nTest finished, all seems fine")
+        except Exception as e:
+            cls._dlg.write_to_console("\nERROR: {}".format(e))
+
         event.Skip()
 
     @classmethod
@@ -42,6 +80,7 @@ class ControllerEditInstrument(object):
         cls._dlg = ViewEditInstrument(parent, "Add instrument")
         cls._dlg.set_instrument_names(get_instrument_names())
         cls._dlg.Bind(wx.EVT_COMBOBOX, cls._on_instrument_select, id=IdManager.ID_CMB_INSTRUMENT)
+        cls._dlg.Bind(wx.EVT_BUTTON, cls._on_settings_test, id=IdManager.ID_BTN_SETTINGS_TEST)
         cls._dlg.ShowModal()
         cls._dlg.Destroy()
         cls._dlg = None
@@ -49,6 +88,14 @@ class ControllerEditInstrument(object):
 
 if __name__ == "__main__":
 
-    app = wx.App(redirect=False)
+    from src.simulators import start_simulators
+    from src.simulators import stop_simulators
 
+    # Todo create unit test
+
+    start_simulators()
+
+    app = wx.App(redirect=False)
     ControllerEditInstrument.add_instrument(None)
+
+    stop_simulators()
