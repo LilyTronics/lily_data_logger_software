@@ -183,6 +183,9 @@ class Instrument(object):
     def set_interface_object(self, interface_object):
         self._interface_object = interface_object
 
+    def get_input_channels(self):
+        return list(filter(lambda x: x[self.KEY_TYPE] == self.TYPE_INPUT, self._channel_data))
+
     def initialize(self, debug=False):
         if debug:
             print("Initialize instrument")
@@ -216,4 +219,5 @@ if __name__ == "__main__":
 
     from tests.unit_tests.test_instrument import TestInstrument
 
+    # Todo: update unit test with get input channels
     TestInstrument().run()
