@@ -3,11 +3,19 @@ Model for the multimeter simulator
 """
 
 from src.models.instrument import Instrument
+from src.simulators.simulator_settings import SimulatorSettings
 
 
 simulator_multimeter = Instrument({
     "name": "Simulator multimeter",
-    "info": "Read random values for voltage (4.9...5.1V) and current (0.39...0.41)"
+    "info": "Read random values for voltage (4.9...5.1V) and current (0.39...0.41)",
+    "interface": {
+        "type": "Ethernet UDP",
+        "settings": {
+            "ip_address": SimulatorSettings.MultimeterUdp.IP,
+            "ip_port": SimulatorSettings.MultimeterUdp.PORT
+        }
+    }
 })
 
 
