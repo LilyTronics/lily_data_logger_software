@@ -59,7 +59,7 @@ class ViewEditInstrument(wx.Dialog):
                                         style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY | wx.TE_RICH)
         self._txt_console.SetFont(wx.Font(9, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False))
         btn_test = wx.Button(self, IdManager.ID_BTN_TEST, "Test Settings")
-        box = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, " Test driver: "), wx.VERTICAL)
+        box = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, " Test settings: "), wx.VERTICAL)
         box.Add(self._txt_console, 0, wx.EXPAND | wx.ALL, self._GAP)
         box.Add(btn_test, 0, wx.ALIGN_LEFT | wx.ALL, self._GAP)
         return box
@@ -86,7 +86,7 @@ class ViewEditInstrument(wx.Dialog):
             show_message(self, "Select an instrument", self.GetTitle())
             return
         for parameter_name in self._settings_controls.keys():
-            if self._settings_controls[parameter_name][1].GetValue().strip() == "":
+            if self._settings_controls[parameter_name].GetValue().strip() == "":
                 show_message(self, "One of the settings has no value.", self.GetTitle())
                 return
         event.Skip()
@@ -114,14 +114,25 @@ class ViewEditInstrument(wx.Dialog):
     def get_selected_instrument_name(self):
         return self._cmb_instrument.GetValue()
 
-    def update_instrument_settings_controls(self, driver_controls):
+    def update_instrument_settings_controls(self, settings_controls):
         self._settings_grid.Clear(True)
-        self._settings_controls = driver_controls
-        if len(self._settings_controls.keys()) > 0:
+        self._settings_controls = {}
+        if len(settings_controls.keys()) > 0:
             self._lbl_no_settings.Show(False)
             row = 0
-            for key in self._settings_controls.keys():
-                lbl, ctrl = self._settings_controls[key]
+            for key in settings_controls.keys():
+                control = settings_controls[key]
+                lbl = wx.StaticText(self, wx.ID_ANY, "{}:".format(control["label"]))
+                if control["control"] is wx.ComboBox:
+                    ctrl = control["control"](self, wx.ID_ANY, style=wx.CB_READONLY)
+                    data = control["data"]
+                    if callable(data):
+                        data = data()
+                    ctrl.SetItems(data)
+                    ctrl.SetValue(control["default"])
+                else:
+                    raise Exception("Control '{}' is not supported".format(control["control"]))
+                self._settings_controls[key] = ctrl
                 self._settings_grid.Add(lbl, (row, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
                 self._settings_grid.Add(ctrl, (row, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
                 row += 1
