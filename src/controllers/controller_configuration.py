@@ -47,8 +47,8 @@ class ControllerConfiguration(object):
                 logger.error(str(e))
                 show_message(parent_view, "Error when writing file {}:\n{}".format(filename, e), dlg_title)
 
-    @classmethod
-    def edit_configuration(cls, configuration, parent_view, logger):
+    @staticmethod
+    def edit_configuration(configuration, parent_view, logger):
         dlg = ViewEditConfiguration(parent_view)
         dlg.set_sample_time(configuration.get_sample_time())
         dlg.set_end_time(configuration.get_end_time())
