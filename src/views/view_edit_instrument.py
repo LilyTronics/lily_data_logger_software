@@ -61,7 +61,7 @@ class ViewEditInstrument(wx.Dialog):
         self._txt_console = wx.TextCtrl(self, -1, size=self._CONSOLE_SIZE,
                                         style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY | wx.TE_RICH)
         self._txt_console.SetFont(wx.Font(9, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False))
-        btn_test = wx.Button(self, IdManager.ID_BTN_TEST, "Test Settings")
+        btn_test = wx.Button(self, IdManager.ID_BTN_SETTINGS_TEST, "Test Settings")
         box = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, " Test settings: "), wx.VERTICAL)
         box.Add(self._txt_console, 0, wx.EXPAND | wx.ALL, self._GAP)
         box.Add(btn_test, 0, wx.ALIGN_LEFT | wx.ALL, self._GAP)
@@ -139,6 +139,7 @@ class ViewEditInstrument(wx.Dialog):
         return self._cmb_instrument.GetValue()
 
     def update_instrument_settings_controls(self, settings_controls):
+        self.clear_console()
         self._settings_grid.Clear(True)
         self._lbl_no_settings.Show()
         self._settings_controls = {}
@@ -170,6 +171,12 @@ class ViewEditInstrument(wx.Dialog):
 
         self.SetInitialSize(self._WINDOW_SIZE)
         self.CenterOnParent()
+
+    def get_settings(self):
+        settings = {}
+        for key in self._settings_controls.keys():
+            settings[key] = self._settings_controls[key].GetValue().strip()
+        return settings
 
     def clear_console(self):
         self._txt_console.Clear()

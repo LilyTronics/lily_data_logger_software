@@ -38,7 +38,7 @@ class IdManager(object):
 
     # View edit instrument
     ID_CMB_INSTRUMENT = 500
-    ID_BTN_TEST = 501
+    ID_BTN_SETTINGS_TEST = 501
 
     # View log
     ID_LOG_MESSAGES = 600
