@@ -13,7 +13,8 @@ simulator_multimeter = Instrument({
         "type": "Ethernet UDP",
         "settings": {
             "ip_address": SimulatorSettings.MultimeterUdp.IP,
-            "ip_port": SimulatorSettings.MultimeterUdp.PORT
+            "ip_port": SimulatorSettings.MultimeterUdp.PORT,
+            "rx_timeout": SimulatorSettings.MultimeterUdp.RX_TIME_OUT
         }
     }
 })
