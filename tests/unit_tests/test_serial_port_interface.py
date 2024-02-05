@@ -23,7 +23,7 @@ class TestSerialPortInterface(TestSuite):
         self.fail_if(len(ports) == 0, "No serial ports available")
         port = get_serial_loopback_port(ports)
         self.log.info("Loopback found on port: {}".format(port))
-        self._serial = SerialPortInterface(port, self._RX_TIMEOUT)
+        self._serial = SerialPortInterface(port, rx_timeout=self._RX_TIMEOUT)
 
     def test_send_command(self):
         response = self._serial.send_command(self._TEST_COMMAND)
