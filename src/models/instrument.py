@@ -219,5 +219,4 @@ if __name__ == "__main__":
 
     from tests.unit_tests.test_instrument import TestInstrument
 
-    # Todo: update unit test with get input channels
     TestInstrument().run()

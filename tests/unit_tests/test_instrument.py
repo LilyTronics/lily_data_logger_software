@@ -216,6 +216,11 @@ class TestInstrument(TestSuite):
         path = os.path.join(tempfile.gettempdir(), "test_instrument.json")
         instrument.export_to_file(path)
 
+    def test_get_inputs(self):
+        instrument = self._create_instrument()
+        channels = instrument.get_input_channels()
+        self.fail_if(len(channels) != 3, "Did get the correct number of input channels")
+
 
 class TestInterface(Interface):
 
