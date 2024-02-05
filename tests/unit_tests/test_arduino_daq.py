@@ -14,12 +14,12 @@ class TestArduinoDAQ(TestSuite):
 
     def _set_interface(self, port_name):
         self.log.debug("Get interface")
-        interface = get_interface_by_name(arduino_daq.get_interface_type())
-        self.fail_if(interface is None, "No interface found for: {}".format(arduino_daq.get_interface_type()))
+        interface_class = get_interface_by_name(arduino_daq.get_interface_type())
+        self.fail_if(interface_class is None, "No interface found for: {}".format(arduino_daq.get_interface_type()))
         self.log.debug("Initialize interface")
         settings = arduino_daq.get_interface_settings()
-        self.fail_if(arduino_daq.KEY_BAUD_RATE not in settings.keys(), "There is no setting for the baud rate")
-        arduino_daq.set_interface_object(interface(port_name, settings[arduino_daq.KEY_BAUD_RATE]))
+        self._interface = interface_class(**settings)
+        arduino_daq.set_interface_object(self._interface)
         arduino_daq.initialize()
 
     def setup(self):
@@ -62,6 +62,9 @@ class TestArduinoDAQ(TestSuite):
             self.log.debug("Expected: {:.3f} V".format(expected))
             self.fail_if(abs(value - expected) > 0.01,
                          "Voltage difference is too big {:.3f} V".format(abs(value - expected)))
+
+    def teardown(self):
+        self._interface.close()
 
 
 if __name__ == "__main__":
