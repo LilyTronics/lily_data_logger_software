@@ -18,6 +18,7 @@ class TestArduinoDAQ(TestSuite):
         self.fail_if(interface_class is None, "No interface found for: {}".format(arduino_daq.get_interface_type()))
         self.log.debug("Initialize interface")
         settings = arduino_daq.get_interface_settings()
+        settings["serial_port"] = port_name
         self._interface = interface_class(**settings)
         arduino_daq.set_interface_object(self._interface)
         arduino_daq.initialize()
@@ -31,7 +32,7 @@ class TestArduinoDAQ(TestSuite):
 
     def test_properties(self):
         self.log.debug("Check name")
-        self.fail_if(arduino_daq.get_name() != "Arduino Uno DAQ",
+        self.fail_if(arduino_daq.get_name() != "Arduino DAQ",
                      "The name is not correct {}".format(arduino_daq.get_name()))
         self.log.debug("Check info")
         self.fail_if(arduino_daq.get_info() == arduino_daq.DEFAULT_INFO,
