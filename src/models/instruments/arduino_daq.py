@@ -5,7 +5,7 @@ Model for the Arduino Uno DAQ.
 from src.models.instrument import Instrument
 
 
-arduino_uno_daq = Instrument({
+arduino_daq = Instrument({
     "name": "Arduino DAQ",
     "info": "Read and write digital IO and read analog values with an Arduino",
     "interface": {
@@ -330,6 +330,6 @@ arduino_uno_daq = Instrument({
 
 if __name__ == "__main__":
 
-    from tests.unit_tests.test_arduino_uno_daq import TestArduinoUnoDAQ
+    from tests.unit_tests.test_arduino_daq import TestArduinoUnoDAQ
 
     TestArduinoUnoDAQ().run()
