@@ -14,7 +14,7 @@ class SerialPortInterface(Interface):
 
     NAME = "Serial port"
     DEFAULT_TERMINATOR = b"\n"
-    DEFAULT_TIMEOUT = 5
+    DEFAULT_TIMEOUT = 3
 
     _TOGGLE_INTERVAL = 0.005
 
