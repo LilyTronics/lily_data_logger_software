@@ -75,6 +75,19 @@ class ViewEditInstrument(wx.Dialog):
         box.Add(btn_cancel, 0, wx.ALL, self._GAP)
         return box
 
+    def _process_callables(self, callables):
+        progress = wx.ProgressDialog("Update controls", "", maximum=len(callables), parent=None,
+                                     style=wx.PD_APP_MODAL | wx.PD_AUTO_HIDE)
+        i = 0
+        for label, ctrl, function, default in callables:
+            progress.Update(i, "Update {}".format(label.lower()))
+            progress.Fit()
+            ctrl.SetItems(function())
+            ctrl.SetValue(default)
+            i += 1
+        progress.Destroy()
+        self.Raise()
+
     ##################
     # Event handlers #
     ##################
@@ -129,6 +142,7 @@ class ViewEditInstrument(wx.Dialog):
         self._settings_grid.Clear(True)
         self._lbl_no_settings.Show()
         self._settings_controls = {}
+        callables = []
         if len(settings_controls.keys()) > 0:
             self._lbl_no_settings.Hide()
             row = 0
@@ -139,8 +153,9 @@ class ViewEditInstrument(wx.Dialog):
                     ctrl = control["control"](self, wx.ID_ANY, style=wx.CB_READONLY)
                     data = control["data"]
                     if callable(data):
-                        data = data()
-                    ctrl.SetItems(data)
+                        callables.append((control["label"], ctrl, data, control["default"]))
+                    else:
+                        ctrl.SetItems(data)
                     ctrl.SetValue(control["default"])
                 elif control["control"] is wx.TextCtrl:
                     ctrl = control["control"](self, wx.ID_ANY, control["default"])
@@ -150,6 +165,9 @@ class ViewEditInstrument(wx.Dialog):
                 self._settings_grid.Add(lbl, (row, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
                 self._settings_grid.Add(ctrl, (row, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
                 row += 1
+            if len(callables) > 0:
+                wx.CallAfter(self._process_callables, callables)
+
         self.SetInitialSize(self._WINDOW_SIZE)
         self.CenterOnParent()
 
