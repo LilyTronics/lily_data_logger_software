@@ -6,8 +6,8 @@ from src.models.instrument import Instrument
 
 
 arduino_uno_daq = Instrument({
-    "name": "Arduino Uno DAQ",
-    "info": "Read and write digital IO and read analog values with the Arduino Uno",
+    "name": "Arduino DAQ",
+    "info": "Read and write digital IO and read analog values with an Arduino",
     "interface": {
         "type": "Serial port",
         "settings": {

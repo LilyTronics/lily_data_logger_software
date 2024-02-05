@@ -8,7 +8,7 @@ import os
 
 from src.app_data import AppData
 from src.models.instrument import Instrument
-from src.models.instruments.arduino_uno_daq import arduino_uno_daq
+from src.models.instruments.arduino_daq import arduino_uno_daq
 from src.models.instruments.simulator_multimeter import simulator_multimeter
 
 
