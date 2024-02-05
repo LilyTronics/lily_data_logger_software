@@ -49,6 +49,7 @@ class ControllerEditInstrument(object):
         settings = cls._dlg.get_settings()
         for key in settings.keys():
             cls._dlg.write_to_console("{:12}: '{}'".format(key, settings[key]))
+        interface_object = None
         try:
             assert instrument_name != "", "no instrument selected"
             instrument = get_instrument_by_name(instrument_name)
@@ -61,7 +62,8 @@ class ControllerEditInstrument(object):
             for key in instrument_defaults.keys():
                 if key not in settings.keys():
                     settings[key] = instrument_defaults[key]
-            instrument.set_interface_object(interface(**settings))
+            interface_object = interface(**settings)
+            instrument.set_interface_object(interface_object)
             input_channels = instrument.get_input_channels()
             assert len(input_channels) > 0, "no input channels available for testing"
             cls._dlg.write_to_console("\nInitialize instrument...")
@@ -72,6 +74,9 @@ class ControllerEditInstrument(object):
             cls._dlg.write_to_console("\nTest finished, all seems fine")
         except Exception as e:
             cls._dlg.write_to_console("\nERROR: {}".format(e))
+        finally:
+            if interface_object is not None:
+                interface_object.close()
 
         event.Skip()
 
