@@ -16,7 +16,29 @@ simulator_multimeter = Instrument({
             "ip_port": SimulatorSettings.MultimeterUdp.PORT,
             "rx_timeout": SimulatorSettings.MultimeterUdp.RX_TIME_OUT
         }
-    }
+    },
+    "channels": [
+        {
+            "name": "Get DC voltage",
+            "type": "input",
+            "command_list": [
+                {
+                    "command": "VDC?\n",
+                    "response": "VDC={float}V\n"
+                }
+            ]
+        },
+        {
+            "name": "Get DC current",
+            "type": "input",
+            "command_list": [
+                {
+                    "command": "ADC?\n",
+                    "response": "ADC={float}V\n"
+                }
+            ]
+        },
+    ]
 })
 
 
@@ -24,4 +46,5 @@ if __name__ == "__main__":
 
     from tests.unit_tests.test_simulator_multimeter import TestSimulatorMultimeter
 
+    # Todo: update unit test for testing the input channels
     TestSimulatorMultimeter().run()
