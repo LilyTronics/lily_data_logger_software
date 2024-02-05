@@ -21,10 +21,12 @@ class ControllerEditInstrument(object):
 
     @classmethod
     def _on_instrument_select(cls, event):
+        cls._dlg.set_instrument_info("")
         cls._dlg.update_instrument_settings_controls({})
         instrument_name = cls._dlg.get_selected_instrument_name()
         if instrument_name != "":
             instrument = get_instrument_by_name(instrument_name)
+            cls._dlg.set_instrument_info(instrument.get_info())
             interface_type = instrument.get_interface_type()
             if interface_type is not None:
                 interface = get_interface_by_name(interface_type)

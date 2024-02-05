@@ -37,11 +37,14 @@ class ViewEditInstrument(wx.Dialog):
         self._txt_name = wx.TextCtrl(self, wx.ID_ANY)
         lbl_instrument = wx.StaticText(self, wx.ID_ANY, "Instrument:")
         self._cmb_instrument = wx.ComboBox(self, IdManager.ID_CMB_INSTRUMENT, style=wx.CB_READONLY)
+        self._lbl_info = wx.StaticText(self, wx.ID_ANY, "")
+        self._lbl_info.Hide()
         grid = wx.GridBagSizer(self._GAP, self._GAP)
         grid.Add(lbl_name, (0, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
         grid.Add(self._txt_name, (0, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
         grid.Add(lbl_instrument, (1, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
         grid.Add(self._cmb_instrument, (1, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
+        grid.Add(self._lbl_info, (2, 1), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
         grid.AddGrowableCol(1)
         box.Add(grid, 0, wx.EXPAND | wx.ALL, self._GAP)
         return box
@@ -110,6 +113,14 @@ class ViewEditInstrument(wx.Dialog):
         self._cmb_instrument.SetValue("")
         if name in self._cmb_instrument.GetItems():
             self._cmb_instrument.SetValue(name)
+
+    def set_instrument_info(self, info):
+        if info == "":
+            self._lbl_info.Hide()
+        else:
+            self._lbl_info.Show()
+            self._lbl_info.SetLabel(info)
+        self._lbl_info.GetParent().Layout()
 
     def get_selected_instrument_name(self):
         return self._cmb_instrument.GetValue()
