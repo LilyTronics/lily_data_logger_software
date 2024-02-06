@@ -60,9 +60,16 @@ class GuiUnitTest(object):
         ctrl.SetValue(True)
         cls.post_event(ctrl, wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, button_id)
 
-    @staticmethod
-    def set_value_in_control(control_id, value):
-        wx.Window.FindWindowById(control_id).SetValue(value)
+    @classmethod
+    def set_value_in_control(cls, control_id, value):
+        ctrl = wx.Window.FindWindowById(control_id)
+        ctrl.SetValue(value)
+        if isinstance(ctrl, wx.ComboBox):
+            cls.post_event(ctrl, wx.wxEVT_COMMAND_COMBOBOX_SELECTED, ctrl.GetId())
+        elif isinstance(ctrl, wx.TextCtrl):
+            cls.post_event(ctrl, wx.wxEVT_COMMAND_TEXT_ENTER, ctrl.GetId())
+        else:
+            raise Exception("No event post for control: {}".format(ctrl))
         wx.YieldIfNeeded()
 
     @staticmethod
