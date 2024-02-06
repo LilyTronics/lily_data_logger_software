@@ -90,7 +90,7 @@ class ControllerEditInstrument(object):
 
     @classmethod
     def add_instrument(cls, parent, configuration):
-        cls._dlg = ViewEditInstrument(parent, "Add instrument")
+        cls._dlg = ViewEditInstrument(parent, "Add instrument", configuration)
         cls._dlg.set_instrument_names(get_instrument_names())
         cls._dlg.Bind(wx.EVT_COMBOBOX, cls._on_instrument_select, id=IdManager.ID_CMB_INSTRUMENT)
         cls._dlg.Bind(wx.EVT_BUTTON, cls._on_settings_test, id=IdManager.ID_BTN_SETTINGS_TEST)

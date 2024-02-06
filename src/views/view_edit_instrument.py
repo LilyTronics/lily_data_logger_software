@@ -14,9 +14,11 @@ class ViewEditInstrument(wx.Dialog):
     _WINDOW_SIZE = (500, -1)
     _CONSOLE_SIZE = (-1, 150)
 
-    def __init__(self, parent, title):
+    def __init__(self, parent, title, configuration, old_name=None):
         super(ViewEditInstrument, self).__init__(parent, wx.ID_ANY, title)
         self.active_dialog = None
+        self._config = configuration
+        self._old_name = old_name
         self._settings_controls = {}
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(self._create_main_settings_box(), 0, wx.EXPAND | wx.ALL, self._GAP)
@@ -95,10 +97,15 @@ class ViewEditInstrument(wx.Dialog):
 
     def _on_ok_click(self, event):
         name = self._txt_name.GetValue().strip()
-        instrument = self._cmb_instrument.GetValue()
         if name == "":
             show_message(self, "Enter a name", self.GetTitle())
             return
+        if self._old_name != name:
+            instrument = self._config.get_instrument(name)
+            if instrument is not None:
+                show_message(self, "An instrument with the name '{}' already exist".format(name), self.GetTitle())
+                return
+        instrument = self._cmb_instrument.GetValue()
         if instrument == "":
             show_message(self, "Select an instrument", self.GetTitle())
             return
@@ -106,6 +113,7 @@ class ViewEditInstrument(wx.Dialog):
             if self._settings_controls[parameter_name].GetValue().strip() == "":
                 show_message(self, "One of the settings has no value.", self.GetTitle())
                 return
+
         event.Skip()
 
     ##########
