@@ -100,29 +100,18 @@ class ControllerEditInstrument(object):
         return cls._dlg
 
     @classmethod
-    def add_instrument(cls, parent, configuration):
-        cls._dlg = ViewEditInstrument(parent, "Add instrument", configuration, "")
-        cls._dlg.set_instrument_names(get_instrument_names())
-        cls._dlg.Bind(wx.EVT_COMBOBOX, cls._on_instrument_select, id=IdManager.ID_CMB_INSTRUMENT)
-        cls._dlg.Bind(wx.EVT_BUTTON, cls._on_settings_test, id=IdManager.ID_BTN_SETTINGS_TEST)
-        if cls._dlg.ShowModal() == wx.ID_OK:
-            name = cls._dlg.get_name()
-            settings = {
-                configuration.KEY_INSTRUMENT: cls._dlg.get_selected_instrument_name(),
-                configuration.KEY_INSTRUMENT_SETTINGS: cls._dlg.get_settings()
-            }
-            configuration.update_instrument(name, name, settings)
-        cls._dlg.Destroy()
-        cls._dlg = None
-
-    @classmethod
     def edit_instrument(cls, parent, configuration, name):
-        instrument = configuration.get_instrument(name)
-        instrument_name = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT]
-        instrument_settings = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT_SETTINGS]
-        cls._dlg = ViewEditInstrument(parent, "Edit instrument", configuration, name)
+        dialog_title = "Add instrument"
+        instrument_name = ""
+        instrument_settings = {}
+        if name != "":
+            dialog_title = "Edit instrument"
+            instrument = configuration.get_instrument(name)
+            instrument_name = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT]
+            instrument_settings = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT_SETTINGS]
+        cls._dlg = ViewEditInstrument(parent, dialog_title, configuration, name)
         cls._dlg.set_instrument_names(get_instrument_names())
-        cls._dlg.set_name(instrument[configuration.KEY_NAME])
+        cls._dlg.set_name(name)
         cls._dlg.set_instrument_name(instrument_name)
         cls._update_instrument_settings_controls(instrument_name, instrument_settings)
         cls._dlg.Bind(wx.EVT_COMBOBOX, cls._on_instrument_select, id=IdManager.ID_CMB_INSTRUMENT)

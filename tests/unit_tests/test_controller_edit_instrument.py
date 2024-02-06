@@ -48,7 +48,7 @@ class TestControllerEditInstrument(TestSuite):
         self._error = ""
         self.start_thread(_test_add_instrument)
         conf = Configuration()
-        ControllerEditInstrument.add_instrument(None, conf)
+        ControllerEditInstrument.edit_instrument(None, conf, "")
         self.fail_if(self._error != "", self._error)
         self.fail_if(len(conf.get_instruments()) == 0, "Instrument was not added")
         instrument = conf.get_instrument("Test instrument")
@@ -83,7 +83,7 @@ class TestControllerEditInstrument(TestSuite):
             }
         }
         conf.update_instrument(name, name, settings)
-        ControllerEditInstrument.add_instrument(None, conf)
+        ControllerEditInstrument.edit_instrument(None, conf, "")
         self.fail_if(self._error != "", self._error)
 
     def test_edit_instrument(self):
@@ -92,6 +92,7 @@ class TestControllerEditInstrument(TestSuite):
             self.log.debug("Change name")
             self.gui.set_value_in_control(IdManager.ID_INSTRUMENT_NAME, "Test instrument edit")
             settings_controls = ControllerEditInstrument.get_dialog().get_settings_controls()
+            self.log.debug("Change settings")
             settings_controls["ip_address"].SetValue("5.6.7.8")
             settings_controls["ip_port"].SetValue("19000")
             settings_controls["rx_timeout"].SetValue("1")
