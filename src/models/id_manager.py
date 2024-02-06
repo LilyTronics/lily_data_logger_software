@@ -37,8 +37,10 @@ class IdManager(object):
     ID_TOTAL_SAMPLES = 406
 
     # View edit instrument
-    ID_CMB_INSTRUMENT = 500
-    ID_BTN_SETTINGS_TEST = 501
+    ID_INSTRUMENT_NAME = 500
+    ID_CMB_INSTRUMENT = 501
+    ID_TEST_CONSOLE = 502
+    ID_BTN_SETTINGS_TEST = 503
 
     # View log
     ID_LOG_MESSAGES = 600
