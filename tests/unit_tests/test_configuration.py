@@ -89,6 +89,34 @@ class TestConfiguration(TestSuite):
             self.fail_if("Error reading file: {}".format(self._filename) not in str(e), "Error message is incorrect")
         self._check_default_values(conf)
 
+    def test_add_update_instrument(self):
+        conf = Configuration()
+        name = "Test instrument"
+        settings = {
+            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_SETTINGS: {
+                "ip_address": "localhost",
+                "ip_port": 17000,
+                "rx_timeout": 0.2
+            }
+        }
+        self.log.debug("Add instrument")
+        conf.update_instrument(name, name, settings)
+        self.fail_if(len(conf.get_instruments()) != 1, "Instrument was not added")
+        instrument = conf.get_instrument(name)
+        self.fail_if(instrument is None, "Instrument was not found")
+        self.log.debug("Update instrument")
+        new_name = "Test instrument new"
+        settings[conf.KEY_INSTRUMENT_SETTINGS]["ip_port"] = 18000
+        conf.update_instrument(name, new_name, settings)
+        self.fail_if(len(conf.get_instruments()) != 1, "The number of instruments is not 1")
+        instrument = conf.get_instrument(name)
+        self.fail_if(instrument is not None, "Instrument with the old name was found")
+        instrument = conf.get_instrument(new_name)
+        self.fail_if(instrument is None, "Instrument with the new name was not found")
+        self.fail_if(instrument[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT_SETTINGS]["ip_port"] != 18000,
+                     "The changed setting was not stored")
+
     def teardown(self):
         if os.path.isfile(self._filename):
             os.remove(self._filename)

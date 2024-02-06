@@ -11,10 +11,14 @@ class Configuration(object):
     KEY_CONTINUOUS_MODE = "continuous_mode"
     KEY_END_TIME = "end_time"
     KEY_GENERAL = "general"
+    KEY_INSTRUMENT = "instrument"
+    KEY_INSTRUMENT_SETTINGS = "instrument_settings"
     KEY_INSTRUMENTS = "instruments"
     KEY_MEASUREMENTS = "measurements"
+    KEY_NAME = "name"
     KEY_PROCESS_STEPS = "process_steps"
     KEY_SAMPLE_TIME = "sample_time"
+    KEY_SETTINGS = "settings"
 
     _DEFAULT_CONFIGURATION = {
         KEY_GENERAL: {
@@ -92,6 +96,25 @@ class Configuration(object):
     def get_instruments(self):
         return copy.deepcopy(self._configuration.get(self.KEY_INSTRUMENTS,
                                                      self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS]))
+
+    def get_instrument(self, name):
+        instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
+        matches = list(filter(lambda x: x[self.KEY_NAME] == name, instruments))
+        if len(matches) > 0:
+            return copy.deepcopy(matches[0])
+        return None
+
+    def update_instrument(self, old_name, new_name, settings):
+        instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
+        matches = list(filter(lambda x: x[self.KEY_NAME] == old_name, instruments))
+        if len(matches) == 0:
+            instruments.append({
+                self.KEY_NAME: new_name,
+                self.KEY_SETTINGS: settings
+            })
+        else:
+            matches[0][self.KEY_NAME] = new_name
+            matches[0][self.KEY_SETTINGS] = settings
 
     ################
     # Measurements #
