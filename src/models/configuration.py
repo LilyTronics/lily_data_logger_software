@@ -99,14 +99,14 @@ class Configuration(object):
 
     def get_instrument(self, name):
         instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
-        matches = list(filter(lambda x: x[self.KEY_NAME] == name, instruments))
+        matches = list(filter(lambda x: x[self.KEY_NAME].lower() == name.lower(), instruments))
         if len(matches) > 0:
             return copy.deepcopy(matches[0])
         return None
 
     def update_instrument(self, old_name, new_name, settings):
         instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
-        matches = list(filter(lambda x: x[self.KEY_NAME] == old_name, instruments))
+        matches = list(filter(lambda x: x[self.KEY_NAME].lower() == old_name.lower(), instruments))
         if len(matches) == 0:
             instruments.append({
                 self.KEY_NAME: new_name,
