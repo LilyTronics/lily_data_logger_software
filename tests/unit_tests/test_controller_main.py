@@ -7,7 +7,7 @@ import wx
 from src.controllers.controller_main import ControllerMain
 from src.models.id_manager import IdManager
 from src.models.logger import Logger
-from tests.unit_tests.lib.controller_main_test_configuration import ControllerMainTestConfiguration
+from tests.unit_tests.test_controller_main_configuration import TestControllerMainConfiguration
 from tests.unit_tests.lib.test_suite import TestSuite
 
 
@@ -62,22 +62,22 @@ class TestControllerMain(TestSuite):
     ######################
 
     def test_configuration_default_values(self):
-        self._show_view_main(ControllerMainTestConfiguration.test_configuration_default_values)
+        self._show_view_main(TestControllerMainConfiguration.test_configuration_default_values)
 
     def test_cancel_edit_configuration(self):
-        self._show_view_main(ControllerMainTestConfiguration.test_cancel_edit_configuration)
+        self._show_view_main(TestControllerMainConfiguration.test_cancel_edit_configuration)
 
     def test_edit_configuration_fixed_mode(self):
-        self._show_view_main(ControllerMainTestConfiguration.test_edit_configuration_fixed_mode)
+        self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_fixed_mode)
 
     def test_edit_configuration_continuous_mode(self):
-        self._show_view_main(ControllerMainTestConfiguration.test_edit_configuration_continuous_mode)
+        self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_continuous_mode)
 
     def test_open_configuration(self):
-        self._show_view_main(ControllerMainTestConfiguration.test_open_configuration)
+        self._show_view_main(TestControllerMainConfiguration.test_open_configuration)
 
     def test_save_configuration(self):
-        self._show_view_main(ControllerMainTestConfiguration.test_save_configuration)
+        self._show_view_main(TestControllerMainConfiguration.test_save_configuration)
 
     ###################
     # Test log viewer #

@@ -10,7 +10,7 @@ from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
 
 
-class ControllerMainTestConfiguration(object):
+class TestControllerMainConfiguration(object):
 
     @classmethod
     def _open_edit_configuration(cls, test_suite):
