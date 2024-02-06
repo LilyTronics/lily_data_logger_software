@@ -86,6 +86,38 @@ class TestControllerEditInstrument(TestSuite):
         ControllerEditInstrument.add_instrument(None, conf)
         self.fail_if(self._error != "", self._error)
 
+    def test_edit_instrument(self):
+        def _test_edit_instrument():
+            self.gui.wait_until_window_available(IdManager.ID_TEST_CONSOLE)
+            self.log.debug("Change name")
+            self.gui.set_value_in_control(IdManager.ID_INSTRUMENT_NAME, "Test instrument edit")
+            settings_controls = ControllerEditInstrument.get_dialog().get_settings_controls()
+            settings_controls["ip_address"].SetValue("5.6.7.8")
+            settings_controls["ip_port"].SetValue("19000")
+            settings_controls["rx_timeout"].SetValue("1")
+            self.gui.click_button(wx.ID_OK)
+
+        self._error = ""
+        self.start_thread(_test_edit_instrument)
+        conf = Configuration()
+        name = "Test instrument"
+        settings = {
+            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_SETTINGS: {
+                "ip_address": "1.2.3.4",
+                "ip_port": 18000,
+                "rx_timeout": 0.5
+            }
+        }
+        conf.update_instrument(name, name, settings)
+        ControllerEditInstrument.edit_instrument(None, conf, name)
+        instrument = conf.get_instrument("Test instrument edit")
+        self.fail_if(instrument is None, "The name did not change")
+        settings = instrument[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT_SETTINGS]
+        self.fail_if(settings["ip_address"] != "5.6.7.8", "The IP address did not change")
+        self.fail_if(settings["ip_port"] != "19000", "The port did not change")
+        self.fail_if(settings["rx_timeout"] != "1", "The RX timeout did not change")
+
     def teardown(self):
         self._app.MainLoop()
 
