@@ -16,6 +16,7 @@ class ViewEditInstrument(wx.Dialog):
 
     def __init__(self, parent, title):
         super(ViewEditInstrument, self).__init__(parent, wx.ID_ANY, title)
+        self.active_dialog = None
         self._settings_controls = {}
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(self._create_main_settings_box(), 0, wx.EXPAND | wx.ALL, self._GAP)
@@ -34,7 +35,7 @@ class ViewEditInstrument(wx.Dialog):
     def _create_main_settings_box(self):
         box = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, " Settings: "), wx.VERTICAL)
         lbl_name = wx.StaticText(self, wx.ID_ANY, "Name:")
-        self._txt_name = wx.TextCtrl(self, wx.ID_ANY)
+        self._txt_name = wx.TextCtrl(self, IdManager.ID_INSTRUMENT_NAME)
         lbl_instrument = wx.StaticText(self, wx.ID_ANY, "Instrument:")
         self._cmb_instrument = wx.ComboBox(self, IdManager.ID_CMB_INSTRUMENT, style=wx.CB_READONLY)
         self._lbl_info = wx.StaticText(self, wx.ID_ANY, "")
@@ -58,7 +59,7 @@ class ViewEditInstrument(wx.Dialog):
         return box
 
     def _create_test_box(self):
-        self._txt_console = wx.TextCtrl(self, -1, size=self._CONSOLE_SIZE,
+        self._txt_console = wx.TextCtrl(self, IdManager.ID_TEST_CONSOLE, size=self._CONSOLE_SIZE,
                                         style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY | wx.TE_RICH)
         self._txt_console.SetFont(wx.Font(9, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False))
         btn_test = wx.Button(self, IdManager.ID_BTN_SETTINGS_TEST, "Test Settings")
@@ -187,7 +188,6 @@ class ViewEditInstrument(wx.Dialog):
 
 if __name__ == "__main__":
 
-    app = wx.App(redirect=False)
-    dlg = ViewEditInstrument(None, "Test ViewEditInstrument")
-    dlg.ShowModal()
-    dlg.Destroy()
+    from tests.unit_tests.test_controller_edit_instrument import TestControllerEditInstrument
+
+    TestControllerEditInstrument().run()

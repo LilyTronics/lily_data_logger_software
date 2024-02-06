@@ -80,27 +80,33 @@ class ControllerEditInstrument(object):
 
         event.Skip()
 
+    ##########
+    # Public #
+    ##########
+
     @classmethod
-    def add_instrument(cls, parent):
+    def get_dialog(cls):
+        return cls._dlg
+
+    @classmethod
+    def add_instrument(cls, parent, configuration):
         cls._dlg = ViewEditInstrument(parent, "Add instrument")
         cls._dlg.set_instrument_names(get_instrument_names())
         cls._dlg.Bind(wx.EVT_COMBOBOX, cls._on_instrument_select, id=IdManager.ID_CMB_INSTRUMENT)
         cls._dlg.Bind(wx.EVT_BUTTON, cls._on_settings_test, id=IdManager.ID_BTN_SETTINGS_TEST)
-        cls._dlg.ShowModal()
+        if cls._dlg.ShowModal() == wx.ID_OK:
+            name = cls._dlg.get_name()
+            settings = {
+                configuration.KEY_INSTRUMENT: cls._dlg.get_selected_instrument_name(),
+                configuration.KEY_INSTRUMENT_SETTINGS: cls._dlg.get_settings()
+            }
+            configuration.update_instrument(name, name, settings)
         cls._dlg.Destroy()
         cls._dlg = None
 
 
 if __name__ == "__main__":
 
-    from src.simulators import start_simulators
-    from src.simulators import stop_simulators
+    from tests.unit_tests.test_controller_edit_instrument import TestControllerEditInstrument
 
-    # Todo create unit test
-
-    start_simulators()
-
-    app = wx.App(redirect=False)
-    ControllerEditInstrument.add_instrument(None)
-
-    stop_simulators()
+    TestControllerEditInstrument().run()
