@@ -125,6 +125,7 @@ class ControllerEditInstrument(object):
             configuration.update_instrument(name, new_name, settings)
         cls._dlg.Destroy()
         cls._dlg = None
+        wx.YieldIfNeeded()
 
 
 if __name__ == "__main__":
