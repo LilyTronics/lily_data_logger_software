@@ -5,6 +5,7 @@ Main controller for the application.
 import wx
 
 from src.controllers.controller_configuration import ControllerConfiguration
+from src.controllers.controller_edit_instrument import ControllerEditInstrument
 from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
 from src.models.settings import Settings
@@ -48,6 +49,7 @@ class ControllerMain(object):
         frame.Bind(wx.EVT_TOOL, self._on_save_configuration, id=IdManager.ID_TOOL_SAVE_CONFIGURATION)
         frame.Bind(wx.EVT_TOOL, self._on_edit_configuration, id=IdManager.ID_TOOL_EDIT_CONFIGURATION)
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
+        frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
         return frame
 
     def _initialize_log_view(self):
@@ -69,6 +71,8 @@ class ControllerMain(object):
                                                   self._configuration.get_end_time(),
                                                   self._configuration.get_continuous_mode())
         self._main_view.update_elapsed_time(self._elapsed_time)
+        self._main_view.update_instruments_list(map(lambda x: x[self._configuration.KEY_NAME],
+                                                    self._configuration.get_instruments()))
 
     ##################
     # Event handlers #
@@ -86,6 +90,11 @@ class ControllerMain(object):
 
     def _on_edit_configuration(self, event):
         ControllerConfiguration.edit_configuration(self._configuration, self._main_view, self._logger)
+        self._update_view_from_configuration()
+        event.Skip()
+
+    def _on_edit_instrument(self, event):
+        ControllerEditInstrument.edit_instrument(self._main_view, self._configuration, "")
         self._update_view_from_configuration()
         event.Skip()
 

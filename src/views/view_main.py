@@ -186,10 +186,20 @@ class ViewMain(wx.Frame):
         self._lbl_elapsed_time.SetLabel(create_duration_time_string(elapsed_time))
         self._lbl_elapsed_time.GetParent().Layout()
 
+    def update_instruments_list(self, instrument_names):
+        self._lst_instruments.DeleteAllItems()
+        for name in instrument_names:
+            item = wx.ListItem()
+            item.SetId(self._lst_instruments.GetItemCount())
+            item.SetText(name)
+            self._lst_instruments.InsertItem(item)
+        self._lst_instruments.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+        if self._lst_instruments.GetColumnWidth(0) < self._LIST_COL_NAME_SIZE:
+            self._lst_instruments.SetColumnWidth(0, self._LIST_COL_NAME_SIZE)
+
 
 if __name__ == "__main__":
 
-    app = wx.App(redirect=False)
-    frame = ViewMain("Test ViewMain")
-    frame.Show()
-    app.MainLoop()
+    from tests.unit_tests.test_controller_main import TestControllerMain
+
+    TestControllerMain().run()

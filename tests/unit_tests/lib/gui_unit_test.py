@@ -27,12 +27,16 @@ class GuiUnitTest(object):
         while timeout > 0:
             wx.YieldIfNeeded()
             if wx.Window.FindWindowById(window_id) is not None:
-                # Even though it is available, we need to wait a bit to have full access to all properties
+                # We need to wait a bit to have full access to all properties
                 time.sleep(0.1)
                 return True
             time.sleep(0.05)
             timeout -= 0.05
         return False
+
+    @staticmethod
+    def get_window(window_id):
+        return wx.Window.FindWindowById(window_id)
 
     @staticmethod
     def get_value_from_window(window_id):

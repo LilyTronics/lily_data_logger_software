@@ -115,6 +115,7 @@ class Configuration(object):
         else:
             matches[0][self.KEY_NAME] = new_name
             matches[0][self.KEY_SETTINGS] = settings
+        self._is_changed = True
 
     ################
     # Measurements #
