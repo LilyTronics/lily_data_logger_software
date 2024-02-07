@@ -21,7 +21,6 @@ class TestControllerMainConfiguration(object):
 
     @staticmethod
     def _check_configuration_values(test_suite, sample_time, end_time, total_samples):
-        wx.Yield()
         test_suite.sleep(0.2)
         value = test_suite.gui.get_value_from_window(IdManager.ID_LABEL_SAMPLE_TIME)
         if value != sample_time:
