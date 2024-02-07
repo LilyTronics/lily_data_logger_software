@@ -15,7 +15,7 @@ from tests.unit_tests.lib.test_suite import TestSuite
 class TestControllerMain(TestSuite):
 
     view_main = None
-
+    tests_to_run = "all"
     _thread_time_out = 30
 
     def _wait_until_view_main_available(self):
@@ -82,36 +82,48 @@ class TestControllerMain(TestSuite):
     def test_show_view_main(self):
         def _test_show_view_main(test_suite):
             return test_suite.close_view_main(False)
-        self._show_view_main(_test_show_view_main)
+        if self.tests_to_run == "all":
+            self._show_view_main(_test_show_view_main)
 
     ######################
     # Test configuration #
     ######################
 
     def test_configuration_default_values(self):
-        self._show_view_main(TestControllerMainConfiguration.test_configuration_default_values)
+        if self.tests_to_run in ("all", "config"):
+            self._show_view_main(TestControllerMainConfiguration.test_configuration_default_values)
 
     def test_cancel_edit_configuration(self):
-        self._show_view_main(TestControllerMainConfiguration.test_cancel_edit_configuration)
+        if self.tests_to_run in ("all", "config"):
+            self._show_view_main(TestControllerMainConfiguration.test_cancel_edit_configuration)
 
     def test_edit_configuration_fixed_mode(self):
-        self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_fixed_mode)
+        if self.tests_to_run in ("all", "config"):
+            self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_fixed_mode)
 
     def test_edit_configuration_continuous_mode(self):
-        self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_continuous_mode)
+        if self.tests_to_run in ("all", "config"):
+            self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_continuous_mode)
 
     def test_open_configuration(self):
-        self._show_view_main(TestControllerMainConfiguration.test_open_configuration)
+        if self.tests_to_run in ("all", "config"):
+            self._show_view_main(TestControllerMainConfiguration.test_open_configuration)
 
     def test_save_configuration(self):
-        self._show_view_main(TestControllerMainConfiguration.test_save_configuration)
+        if self.tests_to_run in ("all", "config"):
+            self._show_view_main(TestControllerMainConfiguration.test_save_configuration)
 
     ########################
     # Test edit instrument #
     ########################
 
     def test_add_instrument(self):
-        self._show_view_main(TestControllerMainEditInstrument.test_add_instrument)
+        if self.tests_to_run in ("all", "instrument"):
+            self._show_view_main(TestControllerMainEditInstrument.test_add_instrument)
+
+    def test_edit_instrument(self):
+        if self.tests_to_run in ("all", "instrument"):
+            self._show_view_main(TestControllerMainEditInstrument.test_edit_instrument)
 
     ###################
     # Test log viewer #
@@ -160,7 +172,8 @@ class TestControllerMain(TestSuite):
                 result = "The log window did not close"
             return result
 
-        self._show_view_main(_test_log_viewer)
+        if self.tests_to_run in ("all", "log_viewer"):
+            self._show_view_main(_test_log_viewer)
 
 
 if __name__ == "__main__":
