@@ -21,6 +21,7 @@ class ControllerConfiguration(object):
             btn = show_confirm(parent_view, "The configuration is changed. Save configuration?", "Save configuration")
             if btn == wx.ID_YES:
                 cls.save_to_file(configuration, parent_view, logger)
+            wx.YieldIfNeeded()
 
     @classmethod
     def load_from_file(cls, configuration, parent_view, logger):
@@ -34,6 +35,7 @@ class ControllerConfiguration(object):
             except Exception as e:
                 logger.error(str(e))
                 show_message(parent_view, "Error when reading file {}:\n{}".format(filename, e), dlg_title)
+        wx.YieldIfNeeded()
 
     @classmethod
     def save_to_file(cls, configuration, parent_view, logger):
@@ -46,6 +48,7 @@ class ControllerConfiguration(object):
             except Exception as e:
                 logger.error(str(e))
                 show_message(parent_view, "Error when writing file {}:\n{}".format(filename, e), dlg_title)
+        wx.YieldIfNeeded()
 
     @staticmethod
     def edit_configuration(configuration, parent_view, logger):
