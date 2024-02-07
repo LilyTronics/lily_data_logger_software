@@ -59,7 +59,7 @@ Requirements for running the software:
 * Upgrade pip: python -m pip install --upgrade pip
 * pip install -r requirements.txt
 
-In `unit_test` is a script for running the unit tests `run_unit_tests.py`
+In `tests` is a script for running the unit tests `run_unit_tests.py`
 Test reports are written to `unit_test/test_reports`.
 
 2023 - LilyTronics (https://lilytronics.nl)
