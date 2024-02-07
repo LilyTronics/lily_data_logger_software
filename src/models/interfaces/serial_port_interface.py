@@ -13,7 +13,6 @@ from src.models.list_serial_ports import get_available_serial_ports
 class SerialPortInterface(Interface):
 
     NAME = "Serial port"
-    DEFAULT_TERMINATOR = b"\n"
     DEFAULT_TIMEOUT = 3
 
     _TOGGLE_INTERVAL = 0.005
@@ -36,11 +35,10 @@ class SerialPortInterface(Interface):
     _DEFAULT_DATA_BITS = serial.EIGHTBITS
 
     def __init__(self, serial_port, baud_rate=_DEFAULT_BAUD_RATE, parity=_DEFAULT_PARITY, stop_bits=_DEFAULT_STOP_BITS,
-                 data_bits=_DEFAULT_DATA_BITS, rx_timeout=DEFAULT_TIMEOUT, terminator=DEFAULT_TERMINATOR, tx_timeout=0):
+                 data_bits=_DEFAULT_DATA_BITS, rx_timeout=DEFAULT_TIMEOUT, tx_timeout=0):
         if tx_timeout == 0:
             tx_timeout = rx_timeout
         self._rx_time_out = rx_timeout
-        self._terminator = terminator
         self._serial = serial.Serial(serial_port, baudrate=int(baud_rate), parity=self._PARITY_VALUES[parity],
                                      stopbits=float(stop_bits), bytesize=int(data_bits), write_timeout=tx_timeout)
 
@@ -49,16 +47,16 @@ class SerialPortInterface(Interface):
             self._serial.dtr = value
             time.sleep(self._TOGGLE_INTERVAL)
 
-    def send_command(self, command, expect_response=True):
+    def send_command(self, command, expect_response=True, pre_response=b"", post_response=b""):
         response = b""
-        self._serial.write(command + self._terminator)
+        self._serial.write(command)
         if expect_response:
             t = 0
             while t < self._rx_time_out:
                 if self._serial.in_waiting > 0:
                     t = 0
                     response += self._serial.read(self._serial.in_waiting)
-                if response.endswith(self._terminator):
+                if response.startswith(pre_response) and response.endswith(post_response):
                     break
                 time.sleep(0.1)
                 t += 0.1
