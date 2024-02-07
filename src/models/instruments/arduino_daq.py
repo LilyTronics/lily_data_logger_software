@@ -330,6 +330,6 @@ arduino_daq = Instrument({
 
 if __name__ == "__main__":
 
-    from tests.unit_tests.test_arduino_daq import TestArduinoUnoDAQ
+    from tests.unit_tests.test_arduino_daq import TestArduinoDAQ
 
-    TestArduinoUnoDAQ().run()
+    TestArduinoDAQ().run()
