@@ -72,6 +72,7 @@ class ControllerConfiguration(object):
                 logger.debug("Continuous mode changed from {} to {}".format(current_continuous_mode,
                                                                             new_continuous_mode))
         dlg.Destroy()
+        wx.YieldIfNeeded()
 
 
 if __name__ == "__main__":
