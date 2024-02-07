@@ -42,8 +42,7 @@ class ViewEditConfiguration(wx.Dialog):
         self._cmb_end_time = wx.ComboBox(parent, IdManager.ID_END_TIME_UNITS, style=wx.CB_READONLY,
                                          choices=self._TIME_UNITS)
         self._radio_continuous = wx.RadioButton(parent, IdManager.ID_CONTINUOUS, "Continuous mode:")
-        lbl_continuous = wx.StaticText(parent, wx.ID_ANY, "Process must be stopped manually or by\n"
-                                       "using the stop command in the process steps.")
+        lbl_continuous = wx.StaticText(parent, wx.ID_ANY, "Process must be stopped manually.")
         lbl_total_samples = wx.StaticText(parent, wx.ID_ANY, "Total samples:")
         self._lbl_total_samples = wx.StaticText(parent, IdManager.ID_TOTAL_SAMPLES, "-")
 
@@ -162,7 +161,6 @@ class ViewEditConfiguration(wx.Dialog):
 
 if __name__ == "__main__":
 
-    app = wx.App(redirect=False)
-    dlg = ViewEditConfiguration(None)
-    dlg.ShowModal()
-    dlg.Destroy()
+    from tests.unit_tests.test_controller_configuration import TestControllerConfiguration
+
+    TestControllerConfiguration().run()
