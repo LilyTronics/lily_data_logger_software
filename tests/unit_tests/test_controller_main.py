@@ -48,7 +48,6 @@ class TestControllerMain(TestSuite):
         app.MainLoop()
         self.wait_for(t.is_alive, False, self._thread_time_out, 0.1)
         self.fail_if(self._error != "", self._error.strip())
-
         self.view_main = None
 
     def close_view_main(self, expect_dialog):
