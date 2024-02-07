@@ -50,19 +50,27 @@ class TestControllerMain(TestSuite):
         self.view_main = None
 
     def close_view_main(self, expect_dialog):
+        def _close_dialog():
+            self.gui.send_key_press(self.gui.KEY_TAB)
+            self.gui.send_key_press(self.gui.KEY_ENTER)
+            if not self.gui.wait_for_dialog(self.view_main, False):
+                return "\nChanged configuration dialog did not close"
+            return ""
+
         result = ""
         self.gui.post_event(self.view_main, wx.wxEVT_CLOSE_WINDOW, self.view_main.GetId())
-        if self.gui.wait_for_dialog(self.view_main):
-            
-        # if :
-        #     if not expect_dialog:
-        #         result += "\nConfiguration changed dialog did appear while we did not expect it"
-        #     self.gui.send_key_press(self.gui.KEY_TAB)
-        #     self.gui.send_key_press(self.gui.KEY_ENTER)
-        #     if not self.gui.wait_for_dialog(self.view_main, False):
-        #         result += "\nChanged configuration dialog did not close"
-        # elif expect_dialog:
-        #     result += "\nConfiguration changed dialog did not appear"
+        self.log.debug("Check if there is a configuration changed dialog")
+        if self.gui.wait_for_dialog(self.view_main) == expect_dialog:
+            if expect_dialog:
+                result += _close_dialog()
+            else:
+                self.log.debug("No configuration changed dialog appeared as expected")
+        else:
+            if expect_dialog:
+                result += "\nConfiguration changed dialog did appear while we did not expect it"
+                result += _close_dialog()
+            else:
+                result += "\nConfiguration changed dialog did not appear while we expected one"
         return result
 
     #######################
@@ -71,30 +79,32 @@ class TestControllerMain(TestSuite):
 
     def test_show_view_main(self):
         def _test_show_view_main(test_suite):
+
+
             return test_suite.close_view_main(False)
         self._show_view_main(_test_show_view_main)
 
-    # ######################
-    # # Test configuration #
-    # ######################
-    #
-    # def test_configuration_default_values(self):
-    #     self._show_view_main(TestControllerMainConfiguration.test_configuration_default_values)
-    #
-    # def test_cancel_edit_configuration(self):
-    #     self._show_view_main(TestControllerMainConfiguration.test_cancel_edit_configuration)
-    #
-    # def test_edit_configuration_fixed_mode(self):
-    #     self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_fixed_mode)
-    #
-    # def test_edit_configuration_continuous_mode(self):
-    #     self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_continuous_mode)
-    #
-    # def test_open_configuration(self):
-    #     self._show_view_main(TestControllerMainConfiguration.test_open_configuration)
-    #
-    # def test_save_configuration(self):
-    #     self._show_view_main(TestControllerMainConfiguration.test_save_configuration)
+    ######################
+    # Test configuration #
+    ######################
+
+    def test_configuration_default_values(self):
+        self._show_view_main(TestControllerMainConfiguration.test_configuration_default_values)
+
+    def test_cancel_edit_configuration(self):
+        self._show_view_main(TestControllerMainConfiguration.test_cancel_edit_configuration)
+
+    def test_edit_configuration_fixed_mode(self):
+        self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_fixed_mode)
+
+    def test_edit_configuration_continuous_mode(self):
+        self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_continuous_mode)
+
+    def test_open_configuration(self):
+        self._show_view_main(TestControllerMainConfiguration.test_open_configuration)
+
+    def test_save_configuration(self):
+        self._show_view_main(TestControllerMainConfiguration.test_save_configuration)
     #
     # ###################
     # # Test log viewer #

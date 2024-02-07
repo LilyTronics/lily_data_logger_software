@@ -41,7 +41,7 @@ class TestControllerMainConfiguration(object):
     def test_configuration_default_values(cls, test_suite):
         test_suite.log.debug("Check default configuration")
         result = cls._check_configuration_values(test_suite, "00:00:03", "00:01:00", "21")
-        test_suite.view_main.Close()
+        result += test_suite.close_view_main(False)
         return result
 
     @classmethod
@@ -65,7 +65,7 @@ class TestControllerMainConfiguration(object):
             test_suite.gui.set_value_in_control(IdManager.ID_END_TIME, "3")
             test_suite.gui.click_button(wx.ID_OK)
             result = cls._check_configuration_values(test_suite, "00:00:05", "00:03:00", "37")
-            result += test_suite.close_view_main()
+            result += test_suite.close_view_main(True)
         return result.strip()
 
     @classmethod
@@ -78,7 +78,7 @@ class TestControllerMainConfiguration(object):
             test_suite.gui.select_radio_button(IdManager.ID_CONTINUOUS)
             test_suite.gui.click_button(wx.ID_OK)
             result = cls._check_configuration_values(test_suite, "00:00:05", "Continuous mode", None)
-            result += test_suite.close_view_main()
+            result += test_suite.close_view_main(True)
         return result
 
     @classmethod
@@ -95,7 +95,7 @@ class TestControllerMainConfiguration(object):
                 result = cls._check_configuration_values(test_suite, "00:00:04", "00:05:00", "76")
         else:
             result = "No open configuration file dialog appeared"
-        result += test_suite.close_view_main()
+        result += test_suite.close_view_main(False)
         return result.strip()
 
     @classmethod
@@ -138,7 +138,7 @@ class TestControllerMainConfiguration(object):
         if os.path.isfile(filename):
             os.remove(filename)
 
-        result += test_suite.close_view_main()
+        result += test_suite.close_view_main(False)
         return result.strip()
 
 
