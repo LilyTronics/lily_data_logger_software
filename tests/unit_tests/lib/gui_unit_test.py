@@ -25,7 +25,6 @@ class GuiUnitTest(object):
     @staticmethod
     def wait_until_window_available(window_id, timeout=_WAIT_TIMEOUT):
         while timeout > 0:
-            wx.YieldIfNeeded()
             if wx.Window.FindWindowById(window_id) is not None:
                 # We need to wait a bit to have full access to all properties
                 time.sleep(0.1)
@@ -74,20 +73,17 @@ class GuiUnitTest(object):
             cls.post_event(ctrl, wx.wxEVT_COMMAND_TEXT_ENTER, ctrl.GetId())
         else:
             raise Exception("No event post for control: {}".format(ctrl))
-        wx.YieldIfNeeded()
 
     @staticmethod
     def send_key_press(key_code, key_modifier=wx.MOD_NONE):
         ui = wx.UIActionSimulator()
         ui.Char(key_code, key_modifier)
-        wx.YieldIfNeeded()
 
     @classmethod
     def send_text(cls, text, char_delay=0.001):
         for c in text:
             key_modifier = cls._determine_modifier_for_char(c)
             cls.send_key_press(ord(c), key_modifier)
-            wx.YieldIfNeeded()
             time.sleep(char_delay)
 
     @staticmethod
@@ -107,7 +103,6 @@ class GuiUnitTest(object):
     @staticmethod
     def post_event(target, event_type, control_id):
         wx.PostEvent(target, wx.CommandEvent(event_type, control_id))
-        wx.YieldIfNeeded()
 
     ###########
     # Private #
