@@ -87,7 +87,7 @@ class GuiUnitTest(object):
             time.sleep(char_delay)
 
     @staticmethod
-    def wait_for_dialog(frame, expect_dialog=True, timeout=2):
+    def wait_for_dialog(frame, expect_dialog=True, timeout=1):
         while timeout > 0:
             if ((expect_dialog and frame.active_dialog is not None) or
                     (not expect_dialog and frame.active_dialog is None)):
