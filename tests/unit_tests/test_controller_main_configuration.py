@@ -93,6 +93,10 @@ class TestControllerMainConfiguration(object):
                 result = "Open configuration dialog did not close"
             else:
                 result = cls._check_configuration_values(test_suite, "00:00:04", "00:05:00", "76")
+                list_control = test_suite.gui.get_window(IdManager.ID_LIST_INSTRUMENTS)
+                test_suite.wait_for(list_control.GetItemCount, 1, 1, 0.1)
+                if list_control.GetItemCount() < 1:
+                    result += "The instrument is not in the list"
         else:
             result = "No open configuration file dialog appeared"
         result += test_suite.close_view_main(False)

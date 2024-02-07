@@ -4,7 +4,19 @@
     "end_time": 300,
     "continuous_mode": false
   },
-  "instruments": [],
+  "instruments": [
+    {
+      "name": "Multimeter",
+      "settings": {
+        "instrument": "Simulator multimeter",
+        "instrument_settings": {
+          "ip_address": "localhost",
+          "ip_port": "17000",
+          "rx_timeout": "0.2"
+        }
+      }
+    }
+  ],
   "measurements": [],
   "process_steps": []
 }
