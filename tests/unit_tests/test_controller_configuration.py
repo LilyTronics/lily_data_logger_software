@@ -97,7 +97,6 @@ class TestControllerConfiguration(TestSuite):
         conf = Configuration()
         ControllerConfiguration.edit_configuration(conf, None, self.log)
         self._check_values_from_gui(conf)
-        wx.Yield()
 
     def test_edit_time_values(self):
         def _test_edit_time_values(time_value):
@@ -119,7 +118,6 @@ class TestControllerConfiguration(TestSuite):
                          "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), test_value))
             self.fail_if(test_value != conf.get_end_time(),
                          "The end time is not correct, is {} expected {}".format(conf.get_end_time(), test_value))
-            wx.Yield()
 
     def test_edit_continuous_mode(self):
         def _test_edit_continuous_mode(test_mode):
@@ -152,7 +150,6 @@ class TestControllerConfiguration(TestSuite):
             else:
                 self.fail_if(self._total_samples == "-",
                              "Total samples should be a number, but got '{}'".format(self._total_samples))
-            wx.Yield()
 
     def test_configuration_is_changed(self):
         def _test_configuration_is_changed(test, frame):
@@ -204,7 +201,6 @@ class TestControllerConfiguration(TestSuite):
             while t.is_alive():
                 self.sleep(0.1)
             test_frame.Destroy()
-            wx.Yield()
             self.fail_if(self._error != "", self._error)
 
     def test_save_configuration(self):
@@ -225,7 +221,6 @@ class TestControllerConfiguration(TestSuite):
         self.start_thread(_test_save_configuration, (test_frame, ))
         ControllerConfiguration.save_to_file(conf, test_frame, self.log)
         test_frame.Destroy()
-        wx.Yield()
         self.fail_if(self._error != "", self._error)
 
     def test_load_configuration(self):
@@ -244,7 +239,6 @@ class TestControllerConfiguration(TestSuite):
         self.start_thread(_test_load_configuration, (test_frame,))
         ControllerConfiguration.load_from_file(conf, test_frame, self.log)
         test_frame.Destroy()
-        wx.Yield()
         self.fail_if(self._error != "", self._error)
         self.fail_if(conf.get_sample_time() != 2, "Sample time is not loaded from the file")
         self.fail_if(conf.get_end_time() != 120, "Sample time is not loaded from the file")
