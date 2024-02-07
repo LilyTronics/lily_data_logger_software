@@ -11,8 +11,7 @@ from tests.unit_tests.lib.test_suite import TestSuite
 
 class TestSerialPortInterface(TestSuite):
 
-    _CHECK_FOR_LOOPBACK_DATA = b"check_for_loopback"
-    _TEST_COMMAND = b"serial_port_test"
+    _TEST_COMMAND = b"serial_port_test\n"
     _RX_TIMEOUT = 1
 
     _serial = None
@@ -26,8 +25,8 @@ class TestSerialPortInterface(TestSuite):
         self._serial = SerialPortInterface(port, rx_timeout=self._RX_TIMEOUT)
 
     def test_send_command(self):
-        response = self._serial.send_command(self._TEST_COMMAND)
-        self.fail_if(self._TEST_COMMAND + b"\n" != response, "Invalid response received: {}".format(response))
+        response = self._serial.send_command(self._TEST_COMMAND, True, b"", b"\n")
+        self.fail_if(self._TEST_COMMAND != response, "Invalid response received: {}".format(response))
 
     def test_no_response(self):
         response = self._serial.send_command(self._TEST_COMMAND, False)
