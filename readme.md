@@ -1,6 +1,6 @@
 # Lily Data Logger Studio CE (Community Edition)
 
-Universal data logger software aiming to work with any kind of electronics measurement device.
+Universal data logger software aiming to work with any kind of electronics measurement device (mulitmeters, oscilloscopes, power suplies, etc.).
 
 ## Releases
 
@@ -31,7 +31,7 @@ The Lily Data Logger Studio has two editions:
       * wait statements for adding delays in the process
       * save and load processes from configuration files.
   * Extra build-in drivers for the following instruments:
-    * Tektronics TD220 (or similar: TDS200/TDS1000/TDS2000).
+    * Tektronics TD200 and TDS1000/2000 series.
     * TTi PL303QMD-P power supply.
     * National Instruments USB-6009 DAQ (requires NI drivers, not included, installation manual available).
     * Protek 506 multimeter.
