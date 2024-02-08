@@ -19,7 +19,7 @@ class TestStartStopSimulators(TestSuite):
     def test_start_simulators(self):
         self.log.debug("Start simulators")
         try:
-            start_simulators()
+            start_simulators(self.log)
         except Exception as e:
             self.log.error(e)
             self.fail("Could not start the simulators")
@@ -27,7 +27,7 @@ class TestStartStopSimulators(TestSuite):
 
         self.log.debug("Start simulators while already running")
         try:
-            start_simulators()
+            start_simulators(self.log)
         except Exception as e:
             self.log.error(e)
             self.fail("An error occurred when starting the simulators while already running")
@@ -38,23 +38,23 @@ class TestStartStopSimulators(TestSuite):
         SIMULATORS[0].stop()
         self.fail_if(SIMULATORS[0].is_running(), "Simulator is still running after stop command")
         self.log.debug("Start simulators")
-        start_simulators()
+        start_simulators(self.log)
         self._check_running_simulators(True)
 
     def test_stop_start_all_simulators(self):
         self.log.debug("Stop simulators")
-        stop_simulators()
+        stop_simulators(self.log)
         self._check_running_simulators(False)
         self.log.debug("Start simulators")
-        start_simulators()
+        start_simulators(self.log)
         self._check_running_simulators(True)
 
     def test_stop_simulators(self):
         self.log.debug("Stop simulators")
-        stop_simulators()
+        stop_simulators(self.log)
         self._check_running_simulators(False)
         self.log.debug("Stop simulators again")
-        stop_simulators()
+        stop_simulators(self.log)
         self._check_running_simulators(False)
 
     @staticmethod

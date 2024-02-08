@@ -11,6 +11,8 @@ from src.models.id_manager import IdManager
 from src.models.settings import Settings
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
+from src.simulators import start_simulators
+from src.simulators import stop_simulators
 
 
 class ControllerMain(object):
@@ -30,6 +32,7 @@ class ControllerMain(object):
         self._main_view.Show()
 
         wx.CallAfter(self._update_view_from_configuration)
+        wx.CallAfter(start_simulators, self._logger)
 
     ###########
     # Private #
@@ -139,6 +142,7 @@ class ControllerMain(object):
     # View main
 
     def _on_view_close(self, event):
+        stop_simulators(self._logger)
         ControllerConfiguration.check_configuration_is_changed(self._configuration, self._main_view, self._logger)
         if self._log_view is not None:
             self._log_view.Close()
