@@ -46,7 +46,7 @@ class TestTcpClientInterface(TestSuite):
     def test_no_server_running(self):
         result = False
         try:
-            self._client.send_command(self._TEST_DATA)
+            self._client.send_command(self._TEST_DATA, True, b"", b"")
         except Exception as e:
             self.log.debug("Error message: {}".format(e))
             if str(e).startswith("Could not connect to "):
@@ -57,14 +57,14 @@ class TestTcpClientInterface(TestSuite):
 
     def test_server_running(self):
         self._start_server()
-        response = self._client.send_command(self._TEST_DATA)
+        response = self._client.send_command(self._TEST_DATA, True, b"", b"")
         self.log.debug("Response: {}".format(response))
         self.fail_if(response != self._TEST_DATA, "Invalid response received, expected: '{}'".format(self._TEST_DATA))
 
     def test_timeout(self):
         result = False
         try:
-            self._client.send_command(self._TEST_TIMEOUT_DATA)
+            self._client.send_command(self._TEST_TIMEOUT_DATA, True, b"", b"")
         except Exception as e:
             self.log.debug("Error message: {}".format(e))
             if str(e) == "Error receiver timeout":

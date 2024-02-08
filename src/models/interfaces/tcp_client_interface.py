@@ -18,7 +18,7 @@ class TcpClientInterface(Interface):
         self._rx_buffer_size = rx_buffer_size
         self._socket = None
 
-    def send_command(self, command, expect_response=True):
+    def send_command(self, command, expect_response, pre_response, post_response):
         response = b""
         try:
             self._socket = socket.create_connection((self._server_ip_address, self._server_port), self._timeout)

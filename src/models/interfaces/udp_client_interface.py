@@ -19,7 +19,7 @@ class UdpClientInterface(Interface):
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._socket.settimeout(float(rx_timeout))
 
-    def send_command(self, command, expect_response=True):
+    def send_command(self, command, expect_response, pre_response, post_response):
         response = b""
         self._socket.sendto(command, (self._server_ip_address, self._server_port))
         if expect_response:
