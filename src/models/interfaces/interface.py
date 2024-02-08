@@ -17,7 +17,7 @@ class Interface(object):
     def raise_timeout_exception(self):
         raise Exception("Error receiver timeout")
 
-    def send_command(self, command, expect_response):
+    def send_command(self, command, expect_response, pre_response, post_response):
         raise NotImplementedError("This method must be implemented in the derived class")
 
     def close(self):

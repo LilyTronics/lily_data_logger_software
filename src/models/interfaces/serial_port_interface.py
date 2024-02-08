@@ -47,7 +47,7 @@ class SerialPortInterface(Interface):
             self._serial.dtr = value
             time.sleep(self._TOGGLE_INTERVAL)
 
-    def send_command(self, command, expect_response, pre_response=b"", post_response=b""):
+    def send_command(self, command, expect_response, pre_response, post_response):
         response = b""
         self._serial.write(command)
         if expect_response:
