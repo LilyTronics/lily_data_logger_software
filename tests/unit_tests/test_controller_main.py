@@ -125,6 +125,10 @@ class TestControllerMain(TestSuite):
         if self.tests_to_run in ("all", "instrument"):
             self._show_view_main(TestControllerMainEditInstrument.test_edit_instrument)
 
+    def test_delete_instrument(self):
+        if self.tests_to_run in ("all", "instrument"):
+            self._show_view_main(TestControllerMainEditInstrument.test_delete_instrument)
+
     ###################
     # Test log viewer #
     ###################

@@ -51,6 +51,7 @@ class ControllerMain(object):
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
         frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument, id=IdManager.ID_LIST_INSTRUMENTS)
+        frame.Bind(wx.EVT_BUTTON, self._on_delete_instrument, id=IdManager.ID_BTN_DELETE_INSTRUMENT)
         return frame
 
     def _initialize_log_view(self):
@@ -79,6 +80,10 @@ class ControllerMain(object):
     # Event handlers #
     ##################
 
+    #################
+    # Configuration #
+    #################
+
     def _on_open_configuration(self, event):
         ControllerConfiguration.load_from_file(self._configuration, self._main_view, self._logger)
         self._update_view_from_configuration()
@@ -94,6 +99,10 @@ class ControllerMain(object):
         self._update_view_from_configuration()
         event.Skip()
 
+    ##############
+    # Instrument #
+    ##############
+
     def _on_edit_instrument(self, event):
         name = ""
         if event.GetId() == IdManager.ID_LIST_INSTRUMENTS:
@@ -101,6 +110,15 @@ class ControllerMain(object):
         ControllerEditInstrument.edit_instrument(self._main_view, self._configuration, name)
         self._update_view_from_configuration()
         event.Skip()
+
+    def _on_delete_instrument(self, event):
+        ControllerEditInstrument.delete_instrument(self._main_view, self._configuration)
+        self._update_view_from_configuration()
+        event.Skip()
+
+    ##############
+    # Log viewer #
+    ##############
 
     def _on_show_log(self, event):
         if self._log_view is None:
@@ -117,6 +135,8 @@ class ControllerMain(object):
             self._settings.store_log_window_position(*self._log_view.GetPosition())
         self._log_view = None
         event.Skip()
+
+    # View main
 
     def _on_view_close(self, event):
         ControllerConfiguration.check_configuration_is_changed(self._configuration, self._main_view, self._logger)

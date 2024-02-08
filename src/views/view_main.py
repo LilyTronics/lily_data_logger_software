@@ -197,6 +197,13 @@ class ViewMain(wx.Frame):
         if self._lst_instruments.GetColumnWidth(0) < self._LIST_COL_NAME_SIZE:
             self._lst_instruments.SetColumnWidth(0, self._LIST_COL_NAME_SIZE)
 
+    def get_selected_instrument(self):
+        item_text = ""
+        index = self._lst_instruments.GetFirstSelected()
+        if index >= 0:
+            item_text = self._lst_instruments.GetItemText(index, 0)
+        return item_text
+
 
 if __name__ == "__main__":
 

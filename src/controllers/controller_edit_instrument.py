@@ -8,6 +8,8 @@ from src.models.id_manager import IdManager
 from src.models.instruments import get_instrument_names
 from src.models.instruments import get_instrument_by_name
 from src.models.interfaces import get_interface_by_name
+from src.views.view_dialogs import show_confirm
+from src.views.view_dialogs import show_message
 from src.views.view_edit_instrument import ViewEditInstrument
 
 
@@ -125,6 +127,17 @@ class ControllerEditInstrument(object):
             configuration.update_instrument(name, new_name, settings)
         cls._dlg.Destroy()
         cls._dlg = None
+        wx.YieldIfNeeded()
+
+    @classmethod
+    def delete_instrument(cls, parent, configuration):
+        dialog_title = "Delete instrument"
+        name = parent.get_selected_instrument()
+        if name == "":
+            show_message(parent, "Select an instrument first", dialog_title)
+        else:
+            if show_confirm(parent, "Do you want to delete '{}'?".format(name), dialog_title) == wx.ID_YES:
+                configuration.delete_instrument(name)
         wx.YieldIfNeeded()
 
 

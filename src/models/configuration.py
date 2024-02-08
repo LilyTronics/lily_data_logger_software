@@ -38,6 +38,21 @@ class Configuration(object):
 
     def __str__(self): return json.dumps(self._configuration, indent=2)
 
+    ###########
+    # Private #
+    ###########
+
+    def _find_instrument(self, name):
+        instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
+        matches = list(filter(lambda x: x[self.KEY_NAME].lower() == name.lower(), instruments))
+        if len(matches) > 0:
+            return matches[0]
+        return None
+
+    ##########
+    # Public #
+    ##########
+
     def load_from_file(self, filename):
         self._configuration = copy.deepcopy(self._DEFAULT_CONFIGURATION)
         try:
@@ -98,23 +113,31 @@ class Configuration(object):
                                                      self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS]))
 
     def get_instrument(self, name):
-        instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
-        matches = list(filter(lambda x: x[self.KEY_NAME].lower() == name.lower(), instruments))
-        if len(matches) > 0:
-            return copy.deepcopy(matches[0])
+        match = self._find_instrument(name)
+        if match is not None:
+            return copy.deepcopy(match)
         return None
 
     def update_instrument(self, old_name, new_name, settings):
-        instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
-        matches = list(filter(lambda x: x[self.KEY_NAME].lower() == old_name.lower(), instruments))
-        if len(matches) == 0:
+        match = self._find_instrument(old_name)
+        if match is None:
+            instruments = self._configuration.get(self.KEY_INSTRUMENTS,
+                                                  self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
             instruments.append({
                 self.KEY_NAME: new_name,
                 self.KEY_SETTINGS: settings
             })
         else:
-            matches[0][self.KEY_NAME] = new_name
-            matches[0][self.KEY_SETTINGS] = settings
+            match[self.KEY_NAME] = new_name
+            match[self.KEY_SETTINGS] = settings
+        self._is_changed = True
+
+    def delete_instrument(self, name):
+        match = self._find_instrument(name)
+        if match is not None:
+            instruments = self._configuration.get(self.KEY_INSTRUMENTS,
+                                                  self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
+            instruments.remove(match)
         self._is_changed = True
 
     ################

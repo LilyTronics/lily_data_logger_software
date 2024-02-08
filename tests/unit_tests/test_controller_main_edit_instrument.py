@@ -24,7 +24,7 @@ class TestControllerMainEditInstrument(object):
             list_control = test_suite.gui.get_window(IdManager.ID_LIST_INSTRUMENTS)
             test_suite.wait_for(list_control.GetItemCount, 1, 1, 0.1)
             if list_control.GetItemCount() < 1:
-                result += "The instrument is not in the list"
+                result += "\nThe instrument is not in the list"
         return result
 
     @classmethod
@@ -33,7 +33,7 @@ class TestControllerMainEditInstrument(object):
         if result == "":
             list_control = test_suite.gui.get_window(IdManager.ID_LIST_INSTRUMENTS)
             if list_control.GetItemText(0) != "Test instrument":
-                result += "Wrong instrument name in the list"
+                result += "\nWrong instrument name in the list"
         result += test_suite.close_view_main(True)
         return result
 
@@ -56,7 +56,25 @@ class TestControllerMainEditInstrument(object):
                 test_suite.gui.set_value_in_control(IdManager.ID_INSTRUMENT_NAME, "New instrument name")
                 test_suite.gui.click_button(wx.ID_OK)
                 if not test_suite.wait_for(_get_item_text, "New instrument name", 1, 0.1):
-                    result += "Wrong instrument name in the list"
+                    result += "\nWrong instrument name in the list"
+        result += test_suite.close_view_main(True)
+        return result
+
+    @classmethod
+    def test_delete_instrument(cls, test_suite):
+        result = cls._add_instrument(test_suite)
+        if result == "":
+            test_suite.log.debug("Delete instrument")
+            list_control = test_suite.gui.get_window(IdManager.ID_LIST_INSTRUMENTS)
+            list_control.Select(0)
+            list_control.Focus(0)
+            test_suite.gui.click_button(IdManager.ID_BTN_DELETE_INSTRUMENT)
+            if not test_suite.gui.wait_for_dialog(test_suite.view_main, True):
+                result += "\nThe dialog did not appear while we expected one"
+            else:
+                test_suite.gui.send_key_press(test_suite.gui.KEY_ENTER)
+                if not test_suite.wait_for(list_control.GetItemCount, 0, 1, 0.1):
+                    result += "\nThe instrument was not removed from the list"
         result += test_suite.close_view_main(True)
         return result
 

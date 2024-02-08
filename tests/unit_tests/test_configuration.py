@@ -117,6 +117,24 @@ class TestConfiguration(TestSuite):
         self.fail_if(instrument[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT_SETTINGS]["ip_port"] != 18000,
                      "The changed setting was not stored")
 
+    def test_delete_instrument(self):
+        conf = Configuration()
+        name = "Test instrument"
+        settings = {
+            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_SETTINGS: {
+                "ip_address": "localhost",
+                "ip_port": 17000,
+                "rx_timeout": 0.2
+            }
+        }
+        self.log.debug("Add instrument")
+        conf.update_instrument(name, name, settings)
+        self.fail_if(len(conf.get_instruments()) != 1, "Instrument was not added")
+        # Name should be case-insensitive
+        conf.delete_instrument("test Instrument")
+        self.fail_if(len(conf.get_instruments()) > 0, "Instrument was not deleted")
+
     def teardown(self):
         if os.path.isfile(self._filename):
             os.remove(self._filename)
