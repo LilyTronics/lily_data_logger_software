@@ -9,3 +9,6 @@
 
 # test reports
 **/test_reports/*
+
+# Deployment build output
+/deployment/build_output/*
