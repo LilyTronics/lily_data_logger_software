@@ -33,7 +33,7 @@ The Lily Data Logger Studio has two editions:
     * wait statements for adding delays in the process
     * save and load processes from configuration files.
 * Extra build-in drivers for the following instruments:
-  * Tektronix oscilloscopes.
+  * Tektronix oscilloscopes (using the serial port of the TDS2CM communications module).
     * TDS200 series: TDS210, TDS220, TDS224
     * TDS1000 series: TDS1001, TDS1002, TDS1012
     * TDS2000 series: TDS2002, TDS2004, TDS2012, TDS2014, TDS2022, TDS2024
