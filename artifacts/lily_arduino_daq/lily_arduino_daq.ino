@@ -1,5 +1,6 @@
 /*
- * Firmware for turing the Arduino into a data logger.
+ * Firmware for turning the Arduino into a data logger (DAQ).
+ * Open serial port at 115200 baud.
  * Serial commands:
  *   rdx    : read digital input: x = 2 - 13 (0 and 1 are reserved for the serial port)
  *   wdx 0/1: write 0/1 to digital output: x = 2 - 13
