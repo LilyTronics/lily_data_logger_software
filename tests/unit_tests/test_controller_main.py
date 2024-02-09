@@ -129,6 +129,23 @@ class TestControllerMain(TestSuite):
         if self.tests_to_run in ("all", "instrument"):
             self._show_view_main(TestControllerMainEditInstrument.test_delete_instrument)
 
+    def test_check_instruments(self):
+        def _test_check_instruments(test_suite):
+            result = ""
+            test_suite.log.debug("Open check instruments dialog")
+            test_suite.gui.click_toolbar_item(test_suite.view_main, IdManager.ID_TOOL_CHECK_INSTRUMENTS)
+            if not self.gui.wait_until_window_available(IdManager.ID_BTN_CHECK):
+                self._error = "The view check instruments did not appear"
+            else:
+                test_suite.log.debug("Close check instruments dialog")
+                view = self.gui.get_window(IdManager.ID_BTN_CHECK).GetParent()
+                view.Close()
+            test_suite.view_main.Close()
+            return result
+
+        if self.tests_to_run == "all":
+            self._show_view_main(_test_check_instruments)
+
     ###################
     # Test log viewer #
     ###################

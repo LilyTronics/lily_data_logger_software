@@ -42,8 +42,11 @@ class IdManager(object):
     ID_TEST_CONSOLE = 502
     ID_BTN_SETTINGS_TEST = 503
 
+    # View check instruments
+    ID_BTN_CHECK = 600
+
     # View log
-    ID_LOG_MESSAGES = 600
+    ID_LOG_MESSAGES = 700
 
     _RESERVED_WIDGET_IDS = sorted(list(map(lambda y: getattr(wx, y), filter(lambda x: x.startswith("ID_"), dir(wx)))))
     _WIDGET_START_ID = 100
