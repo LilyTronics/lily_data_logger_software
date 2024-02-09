@@ -79,7 +79,7 @@ class ViewEditInstrument(wx.Dialog):
         return box
 
     def _process_callables(self, callables):
-        progress = wx.ProgressDialog("Update controls", "", maximum=len(callables), parent=None,
+        progress = wx.ProgressDialog("Update controls", "", maximum=len(callables), parent=self,
                                      style=wx.PD_APP_MODAL | wx.PD_AUTO_HIDE)
         i = 0
         for label, ctrl, function, default in callables:
