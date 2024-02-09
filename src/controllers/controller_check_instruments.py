@@ -79,10 +79,13 @@ class ControllerCheckInstruments(object):
             interface_object = interface_class(**instrument_settings)
             instrument_object.set_interface_object(interface_object)
             instrument_object.initialize()
+            result = "Connection OK"
             input_channels = instrument_object.get_input_channels()
             if len(input_channels) > 0:
-                instrument_object.get_value(input_channels[0][instrument_object.KEY_NAME])
-            self._update_status(instrument_name, True, "Connection OK")
+                channel_name = input_channels[0][instrument_object.KEY_NAME]
+                value = instrument_object.get_value(channel_name)
+                result += " ({} = {})".format(channel_name, value)
+            self._update_status(instrument_name, True, result)
         except Exception as e:
             self._update_status(instrument_name, False, str(e))
         finally:
