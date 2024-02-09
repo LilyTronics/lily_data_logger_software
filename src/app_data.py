@@ -8,7 +8,7 @@ import sys
 
 class AppData(object):
     APP_NAME = "Lily Data Logger Studio CE"
-    VERSION = "0.1"
+    VERSION = "0.2"
     EXE_NAME = "LilyDataLoggerStudioCE"
     COMPANY = "LilyTronics"
     USER_FOLDER = os.path.join(os.path.join(os.path.expanduser("~")), EXE_NAME)
