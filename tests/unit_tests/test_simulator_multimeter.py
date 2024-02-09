@@ -12,7 +12,7 @@ from tests.unit_tests.lib.test_suite import TestSuite
 class TestSimulatorMultimeter(TestSuite):
 
     def setup(self):
-        start_simulators()
+        start_simulators(self.log)
         self.log.debug("Get interface")
         interface_class = get_interface_by_name(simulator_multimeter.get_interface_type())
         self.fail_if(interface_class is None, "No interface found for: {}".format(
@@ -42,7 +42,7 @@ class TestSimulatorMultimeter(TestSuite):
         self.fail_if(type(value) is not float, "Float expected, but got {}".format(type(value)))
 
     def teardown(self):
-        stop_simulators()
+        stop_simulators(self.log)
         self._interface.close()
 
 
