@@ -81,7 +81,7 @@ class ControllerEditInstrument(object):
             assert len(input_channels) > 0, "no input channels available for testing"
             cls._dlg.write_to_console("\nInitialize instrument...")
             instrument.initialize()
-            cls._dlg.write_to_console("Get value from channel: '{}'".format(input_channels[0]["name"]))
+            cls._dlg.write_to_console("Get value from channel: '{}'".format(input_channels[0][instrument.KEY_NAME]))
             value = instrument.get_value(input_channels[0]["name"])
             cls._dlg.write_to_console("Received value: '{}'".format(value))
             cls._dlg.write_to_console("\nTest finished, all seems fine")
