@@ -59,6 +59,6 @@ def _start_simulator(simulator_class, logger):
 
 if __name__ == "__main__":
 
-    from tests.unit_tests.test_simulators import TestStartStopSimulators
+    from tests.unit_tests.test_start_stop_simulators import TestStartStopSimulators
 
     TestStartStopSimulators().run()
