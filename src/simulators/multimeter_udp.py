@@ -23,33 +23,33 @@ class MultimeterUdp(object):
     def __init__(self):
         self._thread = None
         self._stop_event = threading.Event()
-        self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self._socket.settimeout(SimulatorSettings.MultimeterUdp.RX_TIME_OUT)
-        self._socket.bind((SimulatorSettings.MultimeterUdp.IP, SimulatorSettings.MultimeterUdp.PORT))
 
     def __del__(self):
         self.stop()
-        self._socket.close()
 
     ###########
     # Private #
     ###########
 
     def _handle_messages(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.settimeout(SimulatorSettings.MultimeterUdp.RX_TIME_OUT)
+        sock.bind((SimulatorSettings.MultimeterUdp.IP, SimulatorSettings.MultimeterUdp.PORT))
         while not self._stop_event.is_set():
             try:
                 response = "UNKNOWN COMMAND"
-                data, client_address = self._socket.recvfrom(self._RX_BUFFER_SIZE)
+                data, client_address = sock.recvfrom(self._RX_BUFFER_SIZE)
                 if data.endswith(self._TERMINATOR):
                     data = data[:-1]
                     if data == self._CMD_VOLTAGE_DC == data:
                         response = "VDC={:.3f}V".format(random.uniform(*self._VDC_RANGE))
                     elif data == self._CMD_CURRENT_DC:
                         response = "ADC={:.3f}A".format(random.uniform(*self._ADC_RANGE))
-                self._socket.sendto(response.encode() + self._TERMINATOR, client_address)
+                sock.sendto(response.encode() + self._TERMINATOR, client_address)
             except TimeoutError:
                 pass
+        sock.close()
 
     ##########
     # Public #
