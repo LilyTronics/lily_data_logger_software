@@ -46,7 +46,11 @@ class IdManager(object):
     ID_BTN_CHECK = 600
 
     # View edit measurement
-    ID_CMB_MEASUREMENT_INSTRUMENT = 700
+    ID_MEASUREMENT_NAME = 700
+    ID_CMB_MEASUREMENT_INSTRUMENT = 701
+    ID_CMB_MEASUREMENT = 702
+    ID_GAIN = 703
+    ID_OFFSET = 704
 
     # View log
     ID_LOG_MESSAGES = 800
