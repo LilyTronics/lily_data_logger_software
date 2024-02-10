@@ -4,6 +4,7 @@ Configuration model.
 
 import copy
 import json
+import uuid
 
 
 class Configuration(object):
@@ -12,7 +13,9 @@ class Configuration(object):
     KEY_END_TIME = "end_time"
     KEY_GAIN = "gain"
     KEY_GENERAL = "general"
-    KEY_INSTRUMENT = "instrument"
+    KEY_ID = "id"
+    KEY_INSTRUMENT_ID = "instrument_id"
+    KEY_INSTRUMENT_NAME = "instrument_name"
     KEY_INSTRUMENT_SETTINGS = "instrument_settings"
     KEY_INSTRUMENTS = "instruments"
     KEY_MEASUREMENT = "measurement"
@@ -52,13 +55,12 @@ class Configuration(object):
             return matches[0]
         return None
 
-    def _get_index_for_instrument(self, name):
+    def _get_id_for_instrument(self, name):
+        instrument_id = ""
         instrument = self._find_instrument(name)
-        try:
-            return self._configuration.get(self.KEY_INSTRUMENTS,
-                                           self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS]).index(instrument)
-        except ValueError:
-            return -1
+        if instrument is not None:
+            instrument_id = instrument[self.KEY_ID]
+        return instrument_id
 
     def _find_measurement(self, name):
         measurements = self._configuration.get(self.KEY_MEASUREMENTS,
@@ -143,6 +145,7 @@ class Configuration(object):
             instruments = self._configuration.get(self.KEY_INSTRUMENTS,
                                                   self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
             instruments.append({
+                self.KEY_ID: str(uuid.uuid4()),
                 self.KEY_NAME: new_name,
                 self.KEY_SETTINGS: settings
             })
@@ -175,8 +178,7 @@ class Configuration(object):
 
     def update_measurement(self, old_name, new_name, settings):
         match = self._find_measurement(old_name)
-        if type(settings[self.KEY_INSTRUMENT]) is not int:
-            settings[self.KEY_INSTRUMENT] = self._get_index_for_instrument(settings[self.KEY_INSTRUMENT])
+        settings[self.KEY_INSTRUMENT_ID] = self._get_id_for_instrument(settings[self.KEY_INSTRUMENT_ID])
         if match is None:
             measurements = self._configuration.get(self.KEY_MEASUREMENTS,
                                                    self._DEFAULT_CONFIGURATION[self.KEY_MEASUREMENTS])

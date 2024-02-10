@@ -93,7 +93,7 @@ class TestConfiguration(TestSuite):
         conf = Configuration()
         name = "Test instrument"
         settings = {
-            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_NAME: "Simulator multimeter",
             conf.KEY_INSTRUMENT_SETTINGS: {
                 "ip_address": "localhost",
                 "ip_port": 17000,
@@ -105,6 +105,9 @@ class TestConfiguration(TestSuite):
         self.fail_if(len(conf.get_instruments()) != 1, "Instrument was not added")
         instrument = conf.get_instrument(name)
         self.fail_if(instrument is None, "Instrument was not found")
+        self.fail_if(conf.KEY_ID not in instrument.keys(), "Instrument has no ID")
+        instrument_id = instrument[conf.KEY_ID]
+        self.log.debug("Instrument has ID: {}".format(instrument_id))
         self.log.debug("Update instrument")
         new_name = "Test instrument new"
         settings[conf.KEY_INSTRUMENT_SETTINGS]["ip_port"] = 18000
@@ -114,6 +117,7 @@ class TestConfiguration(TestSuite):
         self.fail_if(instrument is not None, "Instrument with the old name was found")
         instrument = conf.get_instrument(new_name)
         self.fail_if(instrument is None, "Instrument with the new name was not found")
+        self.fail_if(instrument[conf.KEY_ID] != instrument_id, "Instrument ID is not the same")
         self.fail_if(instrument[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT_SETTINGS]["ip_port"] != 18000,
                      "The changed setting was not stored")
 
@@ -121,7 +125,7 @@ class TestConfiguration(TestSuite):
         conf = Configuration()
         name = "Test instrument"
         settings = {
-            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_NAME: "Simulator multimeter",
             conf.KEY_INSTRUMENT_SETTINGS: {
                 "ip_address": "localhost",
                 "ip_port": 17000,
@@ -139,7 +143,7 @@ class TestConfiguration(TestSuite):
         conf = Configuration()
         instrument_name = "Test instrument"
         instrument_settings = {
-            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_NAME: "Simulator multimeter",
             conf.KEY_INSTRUMENT_SETTINGS: {
                 "ip_address": "localhost",
                 "ip_port": 17000,
@@ -152,7 +156,7 @@ class TestConfiguration(TestSuite):
         self.log.debug("Add measurement")
         measurement_name = "Test measurement"
         measurement_settings = {
-            conf.KEY_INSTRUMENT: "Test instrument",
+            conf.KEY_INSTRUMENT_ID: "Test instrument",
             conf.KEY_MEASUREMENT: "Get DC voltage",
             conf.KEY_GAIN: 1.0,
             conf.KEY_OFFSET: 0.0
@@ -161,7 +165,8 @@ class TestConfiguration(TestSuite):
         self.fail_if(len(conf.get_measurements()) != 1, "Measurement was not added")
         measurement = conf.get_measurement(measurement_name)
         self.fail_if(measurement is None, "Measurement was not found")
-        self.fail_if(measurement[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT] != 0, "Instrument does not have value 0")
+        self.fail_if(measurement[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT_ID] == instrument_name,
+                     "Instrument name was not replaced")
         self.log.debug("Update measurement")
         new_measurement_name = "Test instrument new"
         measurement_settings[conf.KEY_GAIN] = 2.0
