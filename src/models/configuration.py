@@ -48,9 +48,14 @@ class Configuration(object):
     # Private #
     ###########
 
-    def _find_instrument(self, name):
+    def _find_instrument(self, query):
+        # Query can be a name or an ID
         instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
-        matches = list(filter(lambda x: x[self.KEY_NAME].lower() == name.lower(), instruments))
+        # Try ID first
+        matches = list(filter(lambda x: x[self.KEY_ID] == query, instruments))
+        if len(matches) == 0:
+            # Try name
+            matches = list(filter(lambda x: x[self.KEY_NAME].lower() == query.lower(), instruments))
         if len(matches) > 0:
             return matches[0]
         return None
@@ -133,8 +138,8 @@ class Configuration(object):
         return copy.deepcopy(self._configuration.get(self.KEY_INSTRUMENTS,
                                                      self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS]))
 
-    def get_instrument(self, name):
-        match = self._find_instrument(name)
+    def get_instrument(self, query):
+        match = self._find_instrument(query)
         if match is not None:
             return copy.deepcopy(match)
         return None

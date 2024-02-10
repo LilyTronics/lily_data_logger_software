@@ -104,10 +104,12 @@ class TestConfiguration(TestSuite):
         conf.update_instrument(name, name, settings)
         self.fail_if(len(conf.get_instruments()) != 1, "Instrument was not added")
         instrument = conf.get_instrument(name)
-        self.fail_if(instrument is None, "Instrument was not found")
+        self.fail_if(instrument is None, "Instrument was not found, using the name")
         self.fail_if(conf.KEY_ID not in instrument.keys(), "Instrument has no ID")
         instrument_id = instrument[conf.KEY_ID]
         self.log.debug("Instrument has ID: {}".format(instrument_id))
+        instrument = conf.get_instrument(instrument_id)
+        self.fail_if(instrument is None, "Instrument was not found, using the ID")
         self.log.debug("Update instrument")
         new_name = "Test instrument new"
         settings[conf.KEY_INSTRUMENT_SETTINGS]["ip_port"] = 18000
