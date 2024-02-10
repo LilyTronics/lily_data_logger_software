@@ -14,6 +14,8 @@ from tests.unit_tests.lib.test_suite import TestSuite
 
 class TestControllerConfiguration(TestSuite):
 
+    _tread_timeout = 10
+
     def setup(self):
         self._filename = os.path.join(tempfile.gettempdir(), "test_config.json")
         self._app = wx.App(redirect=False)
@@ -93,9 +95,10 @@ class TestControllerConfiguration(TestSuite):
                 self.gui.click_button(wx.ID_CANCEL)
 
         self._values = None
-        self.start_thread(_test_show_edit_configuration)
+        t = self.start_thread(_test_show_edit_configuration)
         conf = Configuration()
         ControllerConfiguration.edit_configuration(None, conf, self.log)
+        self.wait_for(t.is_alive, False, self._tread_timeout, 0.1)
         self._check_values_from_gui(conf)
 
     def test_edit_time_values(self):
@@ -110,10 +113,11 @@ class TestControllerConfiguration(TestSuite):
                 self.gui.click_button(wx.ID_OK)
 
         for test_value in (23, 120, 14400, 172800):
-            self.start_thread(_test_edit_time_values, (test_value, ))
+            t = self.start_thread(_test_edit_time_values, (test_value, ))
             # Always start with default values
             conf = Configuration()
             ControllerConfiguration.edit_configuration(None, conf, self.log)
+            self.wait_for(t.is_alive, False, self._tread_timeout, 0.1)
             self.fail_if(test_value != conf.get_sample_time(),
                          "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), test_value))
             self.fail_if(test_value != conf.get_end_time(),
@@ -140,8 +144,9 @@ class TestControllerConfiguration(TestSuite):
         self._total_samples = None
         conf = Configuration()
         for mode in (True, False):
-            self.start_thread(_test_edit_continuous_mode, (mode,))
+            t = self.start_thread(_test_edit_continuous_mode, (mode,))
             ControllerConfiguration.edit_configuration(None, conf, self.log)
+            self.wait_for(t.is_alive, False, self._tread_timeout, 0.1)
             self.fail_if(conf.get_continuous_mode() != mode,
                          "Continuous mode is not correct, is {} should be {}".format(conf.get_continuous_mode(), mode))
             if mode:
@@ -198,8 +203,7 @@ class TestControllerConfiguration(TestSuite):
                 conf.set_sample_time(conf.get_sample_time() + 1)
             t = self.start_thread(_test_configuration_is_changed, (test_id, test_frame))
             ControllerConfiguration.check_configuration_is_changed(test_frame, conf, self.log)
-            while t.is_alive():
-                self.sleep(0.1)
+            self.wait_for(t.is_alive, False, self._tread_timeout, 0.1)
             test_frame.Destroy()
             self.fail_if(self._error != "", self._error)
 
@@ -218,8 +222,9 @@ class TestControllerConfiguration(TestSuite):
         conf = Configuration()
         conf.set_sample_time(2)
         conf.set_end_time(120)
-        self.start_thread(_test_save_configuration, (test_frame, ))
+        t = self.start_thread(_test_save_configuration, (test_frame, ))
         ControllerConfiguration.save_to_file(test_frame, conf, self.log)
+        self.wait_for(t.is_alive, False, self._tread_timeout, 0.1)
         test_frame.Destroy()
         self.fail_if(self._error != "", self._error)
 
@@ -236,8 +241,9 @@ class TestControllerConfiguration(TestSuite):
         test_frame = wx.Frame(None)
         test_frame.active_dialog = None
         conf = Configuration()
-        self.start_thread(_test_load_configuration, (test_frame,))
+        t = self.start_thread(_test_load_configuration, (test_frame,))
         ControllerConfiguration.load_from_file(test_frame, conf, self.log)
+        self.wait_for(t.is_alive, False, self._tread_timeout, 0.1)
         test_frame.Destroy()
         self.fail_if(self._error != "", self._error)
         self.fail_if(conf.get_sample_time() != 2, "Sample time is not loaded from the file")
