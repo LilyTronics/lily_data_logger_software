@@ -135,6 +135,45 @@ class TestConfiguration(TestSuite):
         conf.delete_instrument("test Instrument")
         self.fail_if(len(conf.get_instruments()) > 0, "Instrument was not deleted")
 
+    def test_add_update_measurement(self):
+        conf = Configuration()
+        instrument_name = "Test instrument"
+        instrument_settings = {
+            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_SETTINGS: {
+                "ip_address": "localhost",
+                "ip_port": 17000,
+                "rx_timeout": 0.2
+            }
+        }
+        self.log.debug("Add instrument")
+        conf.update_instrument(instrument_name, instrument_name, instrument_settings)
+        self.fail_if(len(conf.get_instruments()) != 1, "Instrument was not added")
+        self.log.debug("Add measurement")
+        measurement_name = "Test measurement"
+        measurement_settings = {
+            conf.KEY_INSTRUMENT: "Test instrument",
+            conf.KEY_MEASUREMENT: "Get DC voltage",
+            conf.KEY_GAIN: 1.0,
+            conf.KEY_OFFSET: 0.0
+        }
+        conf.update_measurement(measurement_name, measurement_name, measurement_settings)
+        self.fail_if(len(conf.get_measurements()) != 1, "Measurement was not added")
+        measurement = conf.get_measurement(measurement_name)
+        self.fail_if(measurement is None, "Measurement was not found")
+        self.fail_if(measurement[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT] != 0, "Instrument does not have value 0")
+        self.log.debug("Update measurement")
+        new_measurement_name = "Test instrument new"
+        measurement_settings[conf.KEY_GAIN] = 2.0
+        conf.update_measurement(measurement_name, new_measurement_name, measurement_settings)
+        self.fail_if(len(conf.get_measurements()) != 1, "The number of measurements is not 1")
+        measurement = conf.get_measurement(measurement_name)
+        self.fail_if(measurement is not None, "Measurement with the old name was found")
+        measurement = conf.get_measurement(new_measurement_name)
+        self.fail_if(measurement is None, "Measurement with the new name was not found")
+        self.fail_if(measurement[conf.KEY_SETTINGS][conf.KEY_GAIN] != 2.0,
+                     "The changed setting was not stored")
+
     def teardown(self):
         if os.path.isfile(self._filename):
             os.remove(self._filename)

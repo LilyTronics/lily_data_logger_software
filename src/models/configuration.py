@@ -10,12 +10,15 @@ class Configuration(object):
 
     KEY_CONTINUOUS_MODE = "continuous_mode"
     KEY_END_TIME = "end_time"
+    KEY_GAIN = "gain"
     KEY_GENERAL = "general"
     KEY_INSTRUMENT = "instrument"
     KEY_INSTRUMENT_SETTINGS = "instrument_settings"
     KEY_INSTRUMENTS = "instruments"
+    KEY_MEASUREMENT = "measurement"
     KEY_MEASUREMENTS = "measurements"
     KEY_NAME = "name"
+    KEY_OFFSET = "offset"
     KEY_PROCESS_STEPS = "process_steps"
     KEY_SAMPLE_TIME = "sample_time"
     KEY_SETTINGS = "settings"
@@ -45,6 +48,22 @@ class Configuration(object):
     def _find_instrument(self, name):
         instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
         matches = list(filter(lambda x: x[self.KEY_NAME].lower() == name.lower(), instruments))
+        if len(matches) > 0:
+            return matches[0]
+        return None
+
+    def _get_index_for_instrument(self, name):
+        instrument = self._find_instrument(name)
+        try:
+            return self._configuration.get(self.KEY_INSTRUMENTS,
+                                           self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS]).index(instrument)
+        except ValueError:
+            return -1
+
+    def _find_measurement(self, name):
+        measurements = self._configuration.get(self.KEY_MEASUREMENTS,
+                                               self._DEFAULT_CONFIGURATION[self.KEY_MEASUREMENTS])
+        matches = list(filter(lambda x: x[self.KEY_NAME].lower() == name.lower(), measurements))
         if len(matches) > 0:
             return matches[0]
         return None
@@ -147,6 +166,28 @@ class Configuration(object):
     def get_measurements(self):
         return copy.deepcopy(self._configuration.get(self.KEY_MEASUREMENTS,
                                                      self._DEFAULT_CONFIGURATION[self.KEY_MEASUREMENTS]))
+
+    def get_measurement(self, name):
+        match = self._find_measurement(name)
+        if match is not None:
+            return copy.deepcopy(match)
+        return None
+
+    def update_measurement(self, old_name, new_name, settings):
+        match = self._find_measurement(old_name)
+        if type(settings[self.KEY_INSTRUMENT]) is not int:
+            settings[self.KEY_INSTRUMENT] = self._get_index_for_instrument(settings[self.KEY_INSTRUMENT])
+        if match is None:
+            measurements = self._configuration.get(self.KEY_MEASUREMENTS,
+                                                   self._DEFAULT_CONFIGURATION[self.KEY_MEASUREMENTS])
+            measurements.append({
+                self.KEY_NAME: new_name,
+                self.KEY_SETTINGS: settings
+            })
+        else:
+            match[self.KEY_NAME] = new_name
+            match[self.KEY_SETTINGS] = settings
+        self._is_changed = True
 
     #################
     # Process steps #
