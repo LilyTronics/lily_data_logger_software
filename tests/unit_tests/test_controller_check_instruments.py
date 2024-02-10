@@ -33,7 +33,7 @@ class TestControllerCheckInstrument(TestSuite):
         conf = Configuration()
         name = "Test instrument"
         settings = {
-            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_NAME: "Simulator multimeter",
             conf.KEY_INSTRUMENT_SETTINGS: {
                 "ip_address": "localhost",
                 "ip_port": 17000,
