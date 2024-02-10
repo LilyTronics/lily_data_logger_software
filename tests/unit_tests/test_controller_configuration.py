@@ -95,7 +95,7 @@ class TestControllerConfiguration(TestSuite):
         self._values = None
         self.start_thread(_test_show_edit_configuration)
         conf = Configuration()
-        ControllerConfiguration.edit_configuration(conf, None, self.log)
+        ControllerConfiguration.edit_configuration(None, conf, self.log)
         self._check_values_from_gui(conf)
 
     def test_edit_time_values(self):
@@ -113,7 +113,7 @@ class TestControllerConfiguration(TestSuite):
             self.start_thread(_test_edit_time_values, (test_value, ))
             # Always start with default values
             conf = Configuration()
-            ControllerConfiguration.edit_configuration(conf, None, self.log)
+            ControllerConfiguration.edit_configuration(None, conf, self.log)
             self.fail_if(test_value != conf.get_sample_time(),
                          "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), test_value))
             self.fail_if(test_value != conf.get_end_time(),
@@ -141,7 +141,7 @@ class TestControllerConfiguration(TestSuite):
         conf = Configuration()
         for mode in (True, False):
             self.start_thread(_test_edit_continuous_mode, (mode,))
-            ControllerConfiguration.edit_configuration(conf, None, self.log)
+            ControllerConfiguration.edit_configuration(None, conf, self.log)
             self.fail_if(conf.get_continuous_mode() != mode,
                          "Continuous mode is not correct, is {} should be {}".format(conf.get_continuous_mode(), mode))
             if mode:
@@ -197,7 +197,7 @@ class TestControllerConfiguration(TestSuite):
                 self.log.debug("Test when configuration is changed (expecting dialogs)")
                 conf.set_sample_time(conf.get_sample_time() + 1)
             t = self.start_thread(_test_configuration_is_changed, (test_id, test_frame))
-            ControllerConfiguration.check_configuration_is_changed(conf, test_frame, self.log)
+            ControllerConfiguration.check_configuration_is_changed(test_frame, conf, self.log)
             while t.is_alive():
                 self.sleep(0.1)
             test_frame.Destroy()
@@ -219,7 +219,7 @@ class TestControllerConfiguration(TestSuite):
         conf.set_sample_time(2)
         conf.set_end_time(120)
         self.start_thread(_test_save_configuration, (test_frame, ))
-        ControllerConfiguration.save_to_file(conf, test_frame, self.log)
+        ControllerConfiguration.save_to_file(test_frame, conf, self.log)
         test_frame.Destroy()
         self.fail_if(self._error != "", self._error)
 
@@ -237,7 +237,7 @@ class TestControllerConfiguration(TestSuite):
         test_frame.active_dialog = None
         conf = Configuration()
         self.start_thread(_test_load_configuration, (test_frame,))
-        ControllerConfiguration.load_from_file(conf, test_frame, self.log)
+        ControllerConfiguration.load_from_file(test_frame, conf, self.log)
         test_frame.Destroy()
         self.fail_if(self._error != "", self._error)
         self.fail_if(conf.get_sample_time() != 2, "Sample time is not loaded from the file")
@@ -251,4 +251,4 @@ class TestControllerConfiguration(TestSuite):
 
 if __name__ == "__main__":
 
-    TestControllerConfiguration().run()
+    TestControllerConfiguration().run(True)

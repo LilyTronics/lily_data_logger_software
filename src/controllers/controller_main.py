@@ -90,17 +90,17 @@ class ControllerMain(object):
     #################
 
     def _on_open_configuration(self, event):
-        ControllerConfiguration.load_from_file(self._configuration, self._main_view, self._logger)
+        ControllerConfiguration.load_from_file(self._main_view, self._configuration, self._logger)
         self._update_view_from_configuration()
         event.Skip()
 
     def _on_save_configuration(self, event):
-        ControllerConfiguration.save_to_file(self._configuration, self._main_view, self._logger)
+        ControllerConfiguration.save_to_file(self._main_view, self._configuration, self._logger)
         self._update_view_from_configuration()
         event.Skip()
 
     def _on_edit_configuration(self, event):
-        ControllerConfiguration.edit_configuration(self._configuration, self._main_view, self._logger)
+        ControllerConfiguration.edit_configuration(self._main_view, self._configuration, self._logger)
         self._update_view_from_configuration()
         event.Skip()
 
@@ -149,7 +149,7 @@ class ControllerMain(object):
 
     def _on_view_close(self, event):
         stop_simulators(self._logger)
-        ControllerConfiguration.check_configuration_is_changed(self._configuration, self._main_view, self._logger)
+        ControllerConfiguration.check_configuration_is_changed(self._main_view, self._configuration, self._logger)
         if self._log_view is not None:
             self._log_view.Close()
         self._settings.store_main_window_maximized(self._main_view.IsMaximized())
@@ -170,4 +170,4 @@ if __name__ == "__main__":
 
     from tests.unit_tests.test_controller_main import TestControllerMain
 
-    TestControllerMain().run()
+    TestControllerMain().run(True)
