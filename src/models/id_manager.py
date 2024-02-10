@@ -45,8 +45,11 @@ class IdManager(object):
     # View check instruments
     ID_BTN_CHECK = 600
 
+    # View edit measurement
+    ID_CMB_MEASUREMENT_INSTRUMENT = 700
+
     # View log
-    ID_LOG_MESSAGES = 700
+    ID_LOG_MESSAGES = 800
 
     _RESERVED_WIDGET_IDS = sorted(list(map(lambda y: getattr(wx, y), filter(lambda x: x.startswith("ID_"), dir(wx)))))
     _WIDGET_START_ID = 100
