@@ -110,7 +110,7 @@ class ControllerEditInstrument(object):
         if name != "":
             dialog_title = "Edit instrument"
             instrument = configuration.get_instrument(name)
-            instrument_name = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT]
+            instrument_name = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT_NAME]
             instrument_settings = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT_SETTINGS]
         cls._dlg = ViewEditInstrument(parent, dialog_title, configuration, name)
         cls._dlg.set_instrument_names(get_instrument_names())
@@ -122,7 +122,7 @@ class ControllerEditInstrument(object):
         if cls._dlg.ShowModal() == wx.ID_OK:
             new_name = cls._dlg.get_name()
             settings = {
-                configuration.KEY_INSTRUMENT: cls._dlg.get_selected_instrument_name(),
+                configuration.KEY_INSTRUMENT_NAME: cls._dlg.get_selected_instrument_name(),
                 configuration.KEY_INSTRUMENT_SETTINGS: cls._dlg.get_settings()
             }
             configuration.update_instrument(name, new_name, settings)
@@ -146,4 +146,4 @@ if __name__ == "__main__":
 
     from tests.unit_tests.test_controller_edit_instrument import TestControllerEditInstrument
 
-    TestControllerEditInstrument().run()
+    TestControllerEditInstrument().run(True)

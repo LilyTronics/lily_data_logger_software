@@ -75,7 +75,7 @@ class TestControllerEditInstrument(TestSuite):
         conf = Configuration()
         name = "Test instrument"
         settings = {
-            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_NAME: "Simulator multimeter",
             conf.KEY_INSTRUMENT_SETTINGS: {
                 "ip_address": "localhost",
                 "ip_port": 17000,
@@ -103,7 +103,7 @@ class TestControllerEditInstrument(TestSuite):
         conf = Configuration()
         name = "Test instrument"
         settings = {
-            conf.KEY_INSTRUMENT: "Simulator multimeter",
+            conf.KEY_INSTRUMENT_NAME: "Simulator multimeter",
             conf.KEY_INSTRUMENT_SETTINGS: {
                 "ip_address": "1.2.3.4",
                 "ip_port": 18000,
@@ -125,4 +125,4 @@ class TestControllerEditInstrument(TestSuite):
 
 if __name__ == "__main__":
 
-    TestControllerEditInstrument().run()
+    TestControllerEditInstrument().run(True)
