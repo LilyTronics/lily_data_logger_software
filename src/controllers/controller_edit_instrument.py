@@ -20,6 +20,7 @@ class ControllerEditInstrument(object):
     ###########
     # Private #
     ###########
+
     @classmethod
     def _update_instrument_settings_controls(cls, instrument_name, instrument_settings=None):
         if instrument_settings is None:
