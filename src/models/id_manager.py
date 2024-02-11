@@ -27,33 +27,35 @@ class IdManager(object):
     ID_BTN_ADD_INSTRUMENT = 301
     ID_BTN_DELETE_INSTRUMENT = 302
 
+    ID_BTN_ADD_MEASUREMENT = 400
+
     # View edit configuration
-    ID_SAMPLE_TIME = 400
-    ID_SAMPLE_TIME_UNITS = 401
-    ID_END_TIME = 402
-    ID_END_TIME_UNITS = 403
-    ID_FIXED = 404
-    ID_CONTINUOUS = 405
-    ID_TOTAL_SAMPLES = 406
+    ID_SAMPLE_TIME = 500
+    ID_SAMPLE_TIME_UNITS = 501
+    ID_END_TIME = 502
+    ID_END_TIME_UNITS = 503
+    ID_FIXED = 504
+    ID_CONTINUOUS = 505
+    ID_TOTAL_SAMPLES = 506
 
     # View edit instrument
-    ID_INSTRUMENT_NAME = 500
-    ID_CMB_INSTRUMENT = 501
-    ID_TEST_CONSOLE = 502
-    ID_BTN_SETTINGS_TEST = 503
+    ID_INSTRUMENT_NAME = 600
+    ID_CMB_INSTRUMENT = 601
+    ID_TEST_CONSOLE = 602
+    ID_BTN_SETTINGS_TEST = 603
 
     # View check instruments
-    ID_BTN_CHECK = 600
+    ID_BTN_CHECK = 700
 
     # View edit measurement
-    ID_MEASUREMENT_NAME = 700
-    ID_CMB_MEASUREMENT_INSTRUMENT = 701
-    ID_CMB_MEASUREMENT = 702
-    ID_GAIN = 703
-    ID_OFFSET = 704
+    ID_MEASUREMENT_NAME = 800
+    ID_CMB_MEASUREMENT_INSTRUMENT = 801
+    ID_CMB_MEASUREMENT = 802
+    ID_GAIN = 803
+    ID_OFFSET = 804
 
     # View log
-    ID_LOG_MESSAGES = 800
+    ID_LOG_MESSAGES = 900
 
     _RESERVED_WIDGET_IDS = sorted(list(map(lambda y: getattr(wx, y), filter(lambda x: x.startswith("ID_"), dir(wx)))))
     _WIDGET_START_ID = 100
