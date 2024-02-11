@@ -98,7 +98,7 @@ class TestControllerMainConfiguration(TestControllerMain):
                 if not self.gui.wait_for_dialog(self.view_main, False):
                     result = "Open configuration dialog did not close"
                 else:
-                    result = self._check_configuration_values("00:00:04", "00:05:00", "76")
+                    result = self._check_configuration_values("00:00:05", "00:03:00", "37")
                     list_control = self.gui.get_window(IdManager.ID_LIST_INSTRUMENTS)
                     self.wait_for(list_control.GetItemCount, 1, 1, 0.1)
                     if list_control.GetItemCount() < 1:
