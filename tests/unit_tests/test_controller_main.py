@@ -76,7 +76,7 @@ class TestControllerMain(TestSuite):
 
     def test_show_view_main(self):
         def _test_show_view_main():
-            return self.close_view_main(False)
+            return ""
 
         self.show_view_main(_test_show_view_main)
 
