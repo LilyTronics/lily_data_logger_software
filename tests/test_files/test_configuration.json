@@ -1,14 +1,15 @@
 {
   "general": {
-    "sample_time": 4,
-    "end_time": 300,
+    "sample_time": 5,
+    "end_time": 180,
     "continuous_mode": false
   },
   "instruments": [
     {
+      "id": "9148e52b-b57a-4786-b577-d973c16927b6",
       "name": "Multimeter",
       "settings": {
-        "instrument": "Simulator multimeter",
+        "instrument_name": "Simulator multimeter",
         "instrument_settings": {
           "ip_address": "localhost",
           "ip_port": "17000",
@@ -17,6 +18,16 @@
       }
     }
   ],
-  "measurements": [],
+  "measurements": [
+    {
+      "name": "Voltage",
+      "settings": {
+        "instrument_id": "9148e52b-b57a-4786-b577-d973c16927b6",
+        "measurement": "Get DC voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    }
+  ],
   "process_steps": []
 }
