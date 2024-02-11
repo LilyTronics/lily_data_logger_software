@@ -26,7 +26,7 @@ class TestControllerMainLogViewer(TestControllerMain):
             self.log.debug("Open log view")
             self.gui.click_toolbar_item(self.view_main, IdManager.ID_TOOL_SHOW_LOG)
             if self.gui.wait_until_window_available(IdManager.ID_LOG_MESSAGES):
-                self.test_logger.debug("This is a test message")
+                self.logger.debug("This is a test message")
                 # The log view has a 300ms update rate
                 self.log.debug("Check log messages")
                 self.wait_for(self._has_log_messages, True, 1, 0.2)
