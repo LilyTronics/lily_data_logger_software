@@ -1,5 +1,5 @@
 """
-Test for the main controller for the application.
+Base class for all main controller tests.
 """
 
 import wx
@@ -7,15 +7,14 @@ import wx
 from src.controllers.controller_main import ControllerMain
 from src.models.id_manager import IdManager
 from src.models.logger import Logger
-from tests.unit_tests.test_controller_main_configuration import TestControllerMainConfiguration
-from tests.unit_tests.test_controller_main_edit_instrument import TestControllerMainEditInstrument
 from tests.unit_tests.lib.test_suite import TestSuite
 
 
 class TestControllerMain(TestSuite):
 
     view_main = None
-    tests_to_run = "all"
+    logger = None
+    _error = ""
     _thread_time_out = 30
 
     def _wait_until_view_main_available(self):
@@ -29,11 +28,11 @@ class TestControllerMain(TestSuite):
         self._error = "View main did not load"
         return False
 
-    def _show_view_main(self, test_function_to_run):
+    def show_view_main(self, test_function_to_run):
         def _test_thread(test_function):
             if self._wait_until_view_main_available():
                 if self.gui.is_window_available(IdManager.ID_LABEL_ELAPSED_TIME):
-                    self._error = test_function(self)
+                    self._error = test_function()
                 else:
                     self._error = "The main view did not appear"
             else:
@@ -41,9 +40,9 @@ class TestControllerMain(TestSuite):
 
         self._error = ""
         t = self.start_thread(_test_thread, (test_function_to_run, ))
-        self.test_logger = Logger(redirect_stdout=False)
+        self.logger = Logger(redirect_stdout=False)
         app = wx.App(redirect=False)
-        controller = ControllerMain("ControllerMain Test", self.test_logger)
+        controller = ControllerMain("ControllerMain Test", self.logger)
         self.view_main = controller.get_view_main()
         app.MainLoop()
         self.wait_for(t.is_alive, False, self._thread_time_out, 0.1)
@@ -75,128 +74,13 @@ class TestControllerMain(TestSuite):
 
         return result
 
-    #######################
-    # Test show view main #
-    #######################
-
     def test_show_view_main(self):
-        def _test_show_view_main(test_suite):
-            return test_suite.close_view_main(False)
-        if self.tests_to_run == "all":
-            self._show_view_main(_test_show_view_main)
+        def _test_show_view_main():
+            return self.close_view_main(False)
 
-    ######################
-    # Test configuration #
-    ######################
-
-    def test_configuration_default_values(self):
-        if self.tests_to_run in ("all", "config"):
-            self._show_view_main(TestControllerMainConfiguration.test_configuration_default_values)
-
-    def test_cancel_edit_configuration(self):
-        if self.tests_to_run in ("all", "config"):
-            self._show_view_main(TestControllerMainConfiguration.test_cancel_edit_configuration)
-
-    def test_edit_configuration_fixed_mode(self):
-        if self.tests_to_run in ("all", "config"):
-            self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_fixed_mode)
-
-    def test_edit_configuration_continuous_mode(self):
-        if self.tests_to_run in ("all", "config"):
-            self._show_view_main(TestControllerMainConfiguration.test_edit_configuration_continuous_mode)
-
-    def test_open_configuration(self):
-        if self.tests_to_run in ("all", "config"):
-            self._show_view_main(TestControllerMainConfiguration.test_open_configuration)
-
-    def test_save_configuration(self):
-        if self.tests_to_run in ("all", "config"):
-            self._show_view_main(TestControllerMainConfiguration.test_save_configuration)
-
-    ########################
-    # Test edit instrument #
-    ########################
-
-    def test_add_instrument(self):
-        if self.tests_to_run in ("all", "instrument"):
-            self._show_view_main(TestControllerMainEditInstrument.test_add_instrument)
-
-    def test_edit_instrument(self):
-        if self.tests_to_run in ("all", "instrument"):
-            self._show_view_main(TestControllerMainEditInstrument.test_edit_instrument)
-
-    def test_delete_instrument(self):
-        if self.tests_to_run in ("all", "instrument"):
-            self._show_view_main(TestControllerMainEditInstrument.test_delete_instrument)
-
-    def test_check_instruments(self):
-        def _test_check_instruments(test_suite):
-            result = ""
-            test_suite.log.debug("Open check instruments dialog")
-            test_suite.gui.click_toolbar_item(test_suite.view_main, IdManager.ID_TOOL_CHECK_INSTRUMENTS)
-            if not self.gui.wait_until_window_available(IdManager.ID_BTN_CHECK):
-                self._error = "The view check instruments did not appear"
-            else:
-                test_suite.log.debug("Close check instruments dialog")
-                view = self.gui.get_window(IdManager.ID_BTN_CHECK).GetParent()
-                view.Close()
-            test_suite.view_main.Close()
-            return result
-
-        if self.tests_to_run == "all":
-            self._show_view_main(_test_check_instruments)
-
-    ###################
-    # Test log viewer #
-    ###################
-
-    def test_log_viewer(self):
-        def _has_log_messages():
-            return self.gui.get_value_from_window(IdManager.ID_LOG_MESSAGES) != ""
-
-        def _get_log_view_object():
-            matches = list(filter(lambda x: x.__class__.__name__ == "ViewLogger", wx.GetTopLevelWindows()))
-            if len(matches) == 1:
-                return matches[0]
-            return None
-
-        def _test_log_viewer(test_suite):
-            result = ""
-            test_suite.log.debug("Open log view")
-            test_suite.gui.click_toolbar_item(test_suite.view_main, IdManager.ID_TOOL_SHOW_LOG)
-            if test_suite.gui.wait_until_window_available(IdManager.ID_LOG_MESSAGES):
-                test_suite.test_logger.debug("This is a test message")
-                # The log view has a 300ms update rate
-                test_suite.log.debug("Check log messages")
-                test_suite.wait_for(_has_log_messages, True, 1, 0.2)
-                messages = test_suite.gui.get_value_from_window(IdManager.ID_LOG_MESSAGES)
-                if " | DEBUG  | This is a test message" not in messages:
-                    result = "The log message was not shown in the log window"
-                log_view = _get_log_view_object()
-                if log_view is None:
-                    result = "Log window object not found"
-                else:
-                    test_suite.log.debug("Close log view")
-                    log_view.Close()
-                    if not test_suite.wait_for(_get_log_view_object, None, 1, 0.1):
-                        result = "The log window did not close"
-                    else:
-                        test_suite.log.debug("Open log view again")
-                        test_suite.gui.click_toolbar_item(test_suite.view_main, IdManager.ID_TOOL_SHOW_LOG)
-                        if not test_suite.gui.wait_until_window_available(IdManager.ID_LOG_MESSAGES):
-                            result = "The log window did not appear"
-            else:
-                result = "The log window did not appear"
-            test_suite.log.debug("Close log view by closing the main view")
-            test_suite.view_main.Close()
-            if not test_suite.wait_for(_get_log_view_object, None, 1, 0.1):
-                result = "The log window did not close"
-            return result
-
-        if self.tests_to_run in ("all", "log_viewer"):
-            self._show_view_main(_test_log_viewer)
+        self.show_view_main(_test_show_view_main)
 
 
 if __name__ == "__main__":
 
-    TestControllerMain().run()
+    TestControllerMain().run(True)
