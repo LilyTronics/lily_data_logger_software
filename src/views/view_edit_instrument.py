@@ -14,11 +14,11 @@ class ViewEditInstrument(wx.Dialog):
     _WINDOW_SIZE = (500, -1)
     _CONSOLE_SIZE = (-1, 150)
 
-    def __init__(self, parent, title, configuration, old_name):
+    def __init__(self, parent, title, configuration, name):
         super(ViewEditInstrument, self).__init__(parent, wx.ID_ANY, title)
         self.active_dialog = None
         self._config = configuration
-        self._old_name = old_name
+        self._old_name = name
         self._settings_controls = {}
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(self._create_main_settings_box(), 0, wx.EXPAND | wx.ALL, self._GAP)
