@@ -7,6 +7,7 @@ import wx
 from src.controllers.controller_check_instruments import ControllerCheckInstruments
 from src.controllers.controller_configuration import ControllerConfiguration
 from src.controllers.controller_edit_instrument import ControllerEditInstrument
+from src.controllers.controller_edit_measurement import ControllerEditMeasurement
 from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
 from src.models.settings import Settings
@@ -57,6 +58,8 @@ class ControllerMain(object):
         frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
         frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument, id=IdManager.ID_LIST_INSTRUMENTS)
         frame.Bind(wx.EVT_BUTTON, self._on_delete_instrument, id=IdManager.ID_BTN_DELETE_INSTRUMENT)
+        frame.Bind(wx.EVT_BUTTON, self._on_edit_measurement, id=IdManager.ID_BTN_ADD_MEASUREMENT)
+
         return frame
 
     def _initialize_log_view(self):
@@ -80,6 +83,8 @@ class ControllerMain(object):
         self._main_view.update_elapsed_time(self._elapsed_time)
         self._main_view.update_instruments_list(map(lambda x: x[self._configuration.KEY_NAME],
                                                     self._configuration.get_instruments()))
+        self._main_view.update_measurements(map(lambda x: x[self._configuration.KEY_NAME],
+                                                self._configuration.get_measurements()))
 
     ##################
     # Event handlers #
@@ -123,6 +128,15 @@ class ControllerMain(object):
 
     def _on_check_instruments(self, event):
         ControllerCheckInstruments(self._main_view, self._configuration)
+        event.Skip()
+
+    ################
+    # Measurements #
+    ################
+
+    def _on_edit_measurement(self, event):
+        ControllerEditMeasurement.edit_measurement(self._main_view, self._configuration, "")
+        self._update_view_from_configuration()
         event.Skip()
 
     ##############

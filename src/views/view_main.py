@@ -134,7 +134,7 @@ class ViewMain(wx.Frame):
         self._grid_measurements.EnableDragColMove(False)
         self._grid_measurements.EnableDragColSize(False)
 
-        btn_add_measurement = wx.Button(parent, wx.ID_ANY, "Add")
+        btn_add_measurement = wx.Button(parent, IdManager.ID_BTN_ADD_MEASUREMENT, "Add")
         btn_delete_measurement = wx.Button(parent, wx.ID_ANY, "Delete")
 
         buttons = wx.BoxSizer(wx.HORIZONTAL)
@@ -204,9 +204,19 @@ class ViewMain(wx.Frame):
             item_text = self._lst_instruments.GetItemText(index, 0)
         return item_text
 
+    def update_measurements(self, measurement_names):
+        if self._grid_measurements.GetNumberCols() > 1:
+            self._grid_measurements.DeleteCols(1, self._grid_measurements.GetNumberCols() - 1)
+        if self._grid_measurements.GetNumberRows() > 0:
+            self._grid_measurements.DeleteRows(0, self._grid_measurements.GetNumberRows())
+        for i, name in enumerate(measurement_names):
+            self._grid_measurements.AppendCols(1)
+            self._grid_measurements.SetColLabelValue(i + 1, name)
+            self._grid_measurements.AutoSizeColLabelSize(i + 1)
+
 
 if __name__ == "__main__":
 
     from tests.unit_tests.test_controller_main import TestControllerMain
 
-    TestControllerMain().run()
+    TestControllerMain().run(True)
