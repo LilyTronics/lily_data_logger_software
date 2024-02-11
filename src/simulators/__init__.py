@@ -19,7 +19,7 @@ def stop_simulators(logger):
     logger.debug("Stopping simulators")
     for simulator in SIMULATORS:
         name = simulator.__class__.__name__
-        logger.error("Stop simulator '{}'".format(name))
+        logger.debug("Stop simulator '{}'".format(name))
         try:
             simulator.stop()
         except Exception as e:
