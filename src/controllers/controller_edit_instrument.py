@@ -137,7 +137,7 @@ class ControllerEditInstrument(object):
         if name == "":
             show_message(parent, "Select an instrument first", dialog_title)
         else:
-            if show_confirm(parent, "Do you want to delete '{}'?".format(name), dialog_title) == wx.ID_YES:
+            if show_confirm(parent, "Do you want to delete instrument '{}'?".format(name), dialog_title) == wx.ID_YES:
                 configuration.delete_instrument(name)
         wx.YieldIfNeeded()
 
