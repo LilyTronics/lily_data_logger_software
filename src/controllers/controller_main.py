@@ -166,7 +166,9 @@ class ControllerMain(object):
         self._log_view = None
         event.Skip()
 
-    # View main
+    #############
+    # View main #
+    #############
 
     def _on_view_close(self, event):
         stop_simulators(self._logger)
