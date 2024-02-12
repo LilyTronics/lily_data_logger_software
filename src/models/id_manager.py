@@ -27,7 +27,8 @@ class IdManager(object):
     ID_BTN_ADD_INSTRUMENT = 301
     ID_BTN_DELETE_INSTRUMENT = 302
 
-    ID_BTN_ADD_MEASUREMENT = 400
+    ID_GRID_MEASUREMENTS = 400
+    ID_BTN_ADD_MEASUREMENT = 401
 
     # View edit configuration
     ID_SAMPLE_TIME = 500

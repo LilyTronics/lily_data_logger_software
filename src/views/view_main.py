@@ -124,7 +124,7 @@ class ViewMain(wx.Frame):
         grid_panel = wx.Panel(parent, wx.ID_ANY)
         grid_panel.SetBackgroundColour("#abadb3")
 
-        self._grid_measurements = wx.grid.Grid(grid_panel, wx.ID_ANY)
+        self._grid_measurements = wx.grid.Grid(grid_panel, IdManager.ID_GRID_MEASUREMENTS)
         self._grid_measurements.CreateGrid(0, 1)
         self._grid_measurements.SetColLabelValue(0, "Time")
         self._grid_measurements.SetColMinimalWidth(0, self._TABLE_MIN_COL_WIDTH)
@@ -213,6 +213,13 @@ class ViewMain(wx.Frame):
             self._grid_measurements.AppendCols(1)
             self._grid_measurements.SetColLabelValue(i + 1, name)
             self._grid_measurements.AutoSizeColLabelSize(i + 1)
+        self._grid_measurements.AppendRows(1)
+
+    def get_selected_measurement(self):
+        cols = self._grid_measurements.GetSelectedCols()
+        if len(cols) == 1 and cols[0] > 0:
+            return self._grid_measurements.GetColLabelValue(cols[0])
+        return None
 
 
 if __name__ == "__main__":

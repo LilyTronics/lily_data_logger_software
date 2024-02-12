@@ -2,7 +2,7 @@
 Main controller for the application.
 """
 
-import wx
+import wx.grid
 
 from src.controllers.controller_check_instruments import ControllerCheckInstruments
 from src.controllers.controller_configuration import ControllerConfiguration
@@ -59,6 +59,7 @@ class ControllerMain(object):
         frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument, id=IdManager.ID_LIST_INSTRUMENTS)
         frame.Bind(wx.EVT_BUTTON, self._on_delete_instrument, id=IdManager.ID_BTN_DELETE_INSTRUMENT)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_measurement, id=IdManager.ID_BTN_ADD_MEASUREMENT)
+        frame.Bind(wx.grid.EVT_GRID_LABEL_LEFT_DCLICK, self._on_edit_measurement, id=IdManager.ID_GRID_MEASUREMENTS)
 
         return frame
 
@@ -135,8 +136,14 @@ class ControllerMain(object):
     ################
 
     def _on_edit_measurement(self, event):
-        ControllerEditMeasurement.edit_measurement(self._main_view, self._configuration, "")
-        self._update_view_from_configuration()
+        name = None
+        if event.GetId() == IdManager.ID_BTN_ADD_MEASUREMENT:
+            name = ""
+        if event.GetId() == IdManager.ID_GRID_MEASUREMENTS:
+            name = self._main_view.get_selected_measurement()
+        if name is not None:
+            ControllerEditMeasurement.edit_measurement(self._main_view, self._configuration, name)
+            self._update_view_from_configuration()
         event.Skip()
 
     ##############
