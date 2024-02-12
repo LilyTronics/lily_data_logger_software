@@ -167,6 +167,13 @@ class Configuration(object):
             instruments.remove(match)
         self._is_changed = True
 
+    def get_used_items_for_instrument(self, name):
+        used_items = []
+        instrument_id = self._get_id_for_instrument(name)
+        used_items.extend(list(filter(lambda x: x[self.KEY_SETTINGS][self.KEY_INSTRUMENT_ID] == instrument_id,
+                               self.get_measurements())))
+        return used_items
+
     ################
     # Measurements #
     ################

@@ -137,8 +137,24 @@ class ControllerEditInstrument(object):
         if name == "":
             show_message(parent, "Select an instrument first", dialog_title)
         else:
-            if show_confirm(parent, "Do you want to delete instrument '{}'?".format(name), dialog_title) == wx.ID_YES:
+            buttons = wx.YES_NO
+            message = "Do you want to delete instrument '{}'?".format(name)
+            used_items = configuration.get_used_items_for_instrument(name)
+            if len(used_items) > 0:
+                measurements = ", ".join(map(lambda x: "'{}'".format(x[configuration.KEY_NAME]), used_items))
+                buttons |= wx.CANCEL
+                message = ("The instrument '{}' is used in one or more measurements.\n"
+                           "Do you want to delete the following measurements also?\n"
+                           "Measurements: {}\n\n"
+                           "Click Yes to delete the instrument and the measurements.\n"
+                           "Click No to delete only the instrument.\n"
+                           "Click Cancel to abort.").format(name, measurements)
+            button = show_confirm(parent, message, dialog_title, buttons)
+            if button in (wx.ID_YES, wx.ID_NO):
                 configuration.delete_instrument(name)
+                if button == wx.ID_YES:
+                    for measurement in used_items:
+                        configuration.delete_measurement(measurement[configuration.KEY_NAME])
         wx.YieldIfNeeded()
 
 
