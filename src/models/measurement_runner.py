@@ -17,7 +17,7 @@ class MeasurementRunner(object):
     def _run_measurements(self):
         self._callback(0, "Process starting")
         measurements = self._configuration.get_measurements()
-        interval = self._configuration.get_sample_time()
+        sample_time = self._configuration.get_sample_time()
         end_time = self._configuration.get_end_time()
         do_sample = True
         start_time = time.time()
@@ -29,8 +29,8 @@ class MeasurementRunner(object):
                         measurement[self._configuration.KEY_NAME]))
                 do_sample = False
             time.sleep(0.05)
-            sample_time = time.time() - sample_start
-            if sample_time >= interval:
+            interval = time.time() - sample_start
+            if interval >= sample_time:
                 sample_start = time.time()
                 do_sample = True
             duration = time.time() - start_time
