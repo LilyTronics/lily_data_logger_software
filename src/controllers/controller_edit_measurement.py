@@ -6,6 +6,8 @@ import wx
 
 from src.models.id_manager import IdManager
 from src.models.instruments import get_instrument_by_name
+from src.views.view_dialogs import show_confirm
+from src.views.view_dialogs import show_message
 from src.views.view_edit_measurement import ViewEditMeasurement
 
 
@@ -83,6 +85,17 @@ class ControllerEditMeasurement(object):
             configuration.update_measurement(name, new_name, settings)
         cls._dlg.Destroy()
         cls._dlg = None
+        wx.YieldIfNeeded()
+
+    @classmethod
+    def delete_measurement(cls, parent, configuration):
+        dialog_title = "Delete measurement"
+        name = parent.get_selected_measurement()
+        if name is None:
+            show_message(parent, "Select a measurement first", dialog_title)
+        else:
+            if show_confirm(parent, "Do you want to delete measurement '{}'?".format(name), dialog_title) == wx.ID_YES:
+                configuration.delete_measurement(name)
         wx.YieldIfNeeded()
 
 

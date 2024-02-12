@@ -60,6 +60,7 @@ class ControllerMain(object):
         frame.Bind(wx.EVT_BUTTON, self._on_delete_instrument, id=IdManager.ID_BTN_DELETE_INSTRUMENT)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_measurement, id=IdManager.ID_BTN_ADD_MEASUREMENT)
         frame.Bind(wx.grid.EVT_GRID_LABEL_LEFT_DCLICK, self._on_edit_measurement, id=IdManager.ID_GRID_MEASUREMENTS)
+        frame.Bind(wx.EVT_BUTTON, self._on_delete_measurement, id=IdManager.ID_BTN_DELETE_MEASUREMENT)
 
         return frame
 
@@ -144,6 +145,11 @@ class ControllerMain(object):
         if name is not None:
             ControllerEditMeasurement.edit_measurement(self._main_view, self._configuration, name)
             self._update_view_from_configuration()
+        event.Skip()
+
+    def _on_delete_measurement(self, event):
+        ControllerEditMeasurement.delete_measurement(self._main_view, self._configuration)
+        self._update_view_from_configuration()
         event.Skip()
 
     ##############

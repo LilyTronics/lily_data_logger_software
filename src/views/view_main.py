@@ -135,7 +135,7 @@ class ViewMain(wx.Frame):
         self._grid_measurements.EnableDragColSize(False)
 
         btn_add_measurement = wx.Button(parent, IdManager.ID_BTN_ADD_MEASUREMENT, "Add")
-        btn_delete_measurement = wx.Button(parent, wx.ID_ANY, "Delete")
+        btn_delete_measurement = wx.Button(parent, IdManager.ID_BTN_DELETE_MEASUREMENT, "Delete")
 
         buttons = wx.BoxSizer(wx.HORIZONTAL)
         buttons.Add(btn_add_measurement, 0)

@@ -196,6 +196,14 @@ class Configuration(object):
             match[self.KEY_SETTINGS] = settings
         self._is_changed = True
 
+    def delete_measurement(self, name):
+        match = self._find_measurement(name)
+        if match is not None:
+            measurements = self._configuration.get(self.KEY_MEASUREMENTS,
+                                                   self._DEFAULT_CONFIGURATION[self.KEY_MEASUREMENTS])
+            measurements.remove(match)
+        self._is_changed = True
+
     #################
     # Process steps #
     #################
