@@ -238,6 +238,9 @@ class TestInterface(Interface):
         b"test init no response\n": b""
     }
 
+    def __init__(self):
+        super().__init__({})
+
     def send_command(self, command, expect_response=True, pre_response=b"", post_response=b""):
         assert command in self._COMMAND_TO_RESPONSE.keys(), "Unknown command '{}'".format(command)
         if expect_response and (pre_response != b"" or post_response != b""):
