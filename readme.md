@@ -19,7 +19,7 @@ The Lily Data Logger Studio has two editions:
 * Free and open source.
 * Build in driver for the following instruments:
   * Arduino DAQ: reading analog voltages, reading and writing digital IO, sketch for the Arduino is included in this repo and in the distribution package.
-  * Multimeter giving random values for voltage and current, for testing measurements.
+  * Multimeter simulator giving random values for voltage and current, for testing measurements.
 
 ### XE: eXtended Edition.
 
