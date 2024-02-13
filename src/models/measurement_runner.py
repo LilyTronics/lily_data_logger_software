@@ -65,7 +65,7 @@ if __name__ == "__main__":
     conf = Configuration()
     conf.load_from_file("..\\..\\tests\\test_files\\test_configuration.json")
     conf.set_sample_time(2)
-    conf.set_end_time(8)
+    conf.set_end_time(7)
 
     mr = MeasurementRunner(conf, _callback)
 
