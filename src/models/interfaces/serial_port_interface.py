@@ -36,6 +36,10 @@ class SerialPortInterface(Interface):
 
     def __init__(self, serial_port, baud_rate=_DEFAULT_BAUD_RATE, parity=_DEFAULT_PARITY, stop_bits=_DEFAULT_STOP_BITS,
                  data_bits=_DEFAULT_DATA_BITS, rx_timeout=DEFAULT_TIMEOUT, tx_timeout=0):
+        params_to_match = {
+            "serial_port": serial_port
+        }
+        super().__init__(params_to_match)
         if tx_timeout == 0:
             tx_timeout = rx_timeout
         self._rx_time_out = rx_timeout

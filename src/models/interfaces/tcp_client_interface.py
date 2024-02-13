@@ -10,18 +10,24 @@ from src.models.interfaces.interface import Interface
 class TcpClientInterface(Interface):
 
     NAME = "Ethernet TCP"
+    DEFAULT_TIMEOUT = 3
 
-    def __init__(self, server_ip_address, server_port, timeout, rx_buffer_size=1500):
-        self._server_ip_address = server_ip_address
-        self._server_port = server_port
-        self._timeout = timeout
+    def __init__(self, ip_address, ip_port, rx_timeout=DEFAULT_TIMEOUT, rx_buffer_size=1500):
+        params_to_match = {
+            "ip_address": ip_address,
+            "ip_port": ip_port
+        }
+        super().__init__(params_to_match)
+        self._server_ip_address = ip_address
+        self._server_port = ip_port
+        self._rx_timeout = rx_timeout
         self._rx_buffer_size = rx_buffer_size
         self._socket = None
 
     def send_command(self, command, expect_response, pre_response, post_response):
         response = b""
         try:
-            self._socket = socket.create_connection((self._server_ip_address, self._server_port), self._timeout)
+            self._socket = socket.create_connection((self._server_ip_address, self._server_port), self._rx_timeout)
         except (Exception, ):
             self.raise_connection_exception(f"{self._server_ip_address}:{self._server_port}")
 

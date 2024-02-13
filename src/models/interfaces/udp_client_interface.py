@@ -11,8 +11,14 @@ from src.models.interfaces.interface import Interface
 class UdpClientInterface(Interface):
 
     NAME = "Ethernet UDP"
+    DEFAULT_TIMEOUT = 3
 
-    def __init__(self, ip_address, ip_port, rx_timeout, rx_buffer_size=1500):
+    def __init__(self, ip_address, ip_port, rx_timeout=DEFAULT_TIMEOUT, rx_buffer_size=1500):
+        params_to_match = {
+            "ip_address": ip_address,
+            "ip_port": ip_port
+        }
+        super().__init__(params_to_match)
         self._server_ip_address = ip_address
         self._server_port = int(ip_port)
         self._rx_buffer_size = rx_buffer_size
