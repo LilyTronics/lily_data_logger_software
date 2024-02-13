@@ -1,6 +1,6 @@
 # Lily Data Logger Studio CE (Community Edition)
 
-Universal data logger software aiming to work with any kind of electronics measurement device (mulitmeters, oscilloscopes, power suplies, etc.).
+Universal data logger software aiming to work with any kind of electronics measurement device (mulitmeters, oscilloscopes, power supplies, etc.).
 
 ## Releases
 
