@@ -2,8 +2,7 @@
 Test time converter functions.
 """
 
-from src.models.time_converter import convert_seconds_to_time_with_unit
-from src.models.time_converter import create_duration_time_string
+from src.models.time_converter import TimeConverter
 from tests.unit_tests.lib.test_suite import TestSuite
 
 
@@ -17,7 +16,7 @@ class TestTimeConverter(TestSuite):
             (200000, "2 days, 07:33:20"),
         ]
         for test_value in test_values:
-            self.fail_if(create_duration_time_string(test_value[0]) != test_value[1],
+            self.fail_if(TimeConverter.create_duration_time_string(test_value[0]) != test_value[1],
                          "Time string is incorrect")
 
     def test_convert_seconds_to_time_with_unit(self):
@@ -28,10 +27,10 @@ class TestTimeConverter(TestSuite):
             (345600, (4, "days")),
         ]
         for test_value in test_values:
-            self.fail_if(convert_seconds_to_time_with_unit(test_value[0]) != test_value[1],
+            self.fail_if(TimeConverter.convert_seconds_to_time_with_unit(test_value[0]) != test_value[1],
                          "Time string is incorrect")
 
 
 if __name__ == "__main__":
 
-    TestTimeConverter().run()
+    TestTimeConverter().run(True)

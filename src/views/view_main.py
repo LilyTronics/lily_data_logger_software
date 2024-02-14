@@ -6,7 +6,7 @@ import wx.grid
 
 from src.models.id_manager import IdManager
 from src.models.image_data import ImageData
-from src.models.time_converter import create_duration_time_string
+from src.models.time_converter import TimeConverter
 
 
 class ViewMain(wx.Frame):
@@ -164,7 +164,7 @@ class ViewMain(wx.Frame):
         self.SetTitle(title)
 
     def update_configuration_info(self, sample_time, end_time, continuous_mode):
-        self._lbl_sample_time.SetLabel(create_duration_time_string(sample_time))
+        self._lbl_sample_time.SetLabel(TimeConverter.create_duration_time_string(sample_time))
         if continuous_mode:
             self._value_end_time.SetLabel("Continuous mode")
             self._lbl_end_time.Hide()
@@ -174,7 +174,7 @@ class ViewMain(wx.Frame):
             self._lbl_end_time.Show()
             self._lbl_total_samples.Show()
             self._value_total_samples.Show()
-            self._value_end_time.SetLabel(create_duration_time_string(end_time))
+            self._value_end_time.SetLabel(TimeConverter.create_duration_time_string(end_time))
             total_samples = "-"
             if sample_time > 0 and end_time > 0:
                 total_samples = int(end_time / sample_time) + 1
@@ -183,7 +183,7 @@ class ViewMain(wx.Frame):
         self._lbl_sample_time.GetParent().Layout()
 
     def update_elapsed_time(self, elapsed_time):
-        self._lbl_elapsed_time.SetLabel(create_duration_time_string(elapsed_time))
+        self._lbl_elapsed_time.SetLabel(TimeConverter.create_duration_time_string(elapsed_time))
         self._lbl_elapsed_time.GetParent().Layout()
 
     def update_instruments_list(self, instrument_names):
