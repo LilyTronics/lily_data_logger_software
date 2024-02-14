@@ -7,7 +7,6 @@ import os
 
 from lily_unit_test import TestRunner
 from tests.test_environment.setup_environment import clear_reports
-
 from tests.test_environment.setup_environment import check_for_instruments
 
 
