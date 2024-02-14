@@ -129,16 +129,6 @@ class ImageData(object):
 
 if __name__ == "__main__":
 
-    import wx
+    from tests.unit_tests.test_image_data import TestImageData
 
-    _app = wx.App(redirect=False)
-
-    print(ImageData.check_instruments.Bitmap)
-    print(ImageData.export_csv.Bitmap)
-    print(ImageData.export_instrument.Bitmap)
-    print(ImageData.open_config.Bitmap)
-    print(ImageData.save_config.Bitmap)
-    print(ImageData.settings.Bitmap)
-    print(ImageData.show_log.Bitmap)
-    print(ImageData.start.Bitmap)
-    print(ImageData.stop.Bitmap)
+    TestImageData().run(True)

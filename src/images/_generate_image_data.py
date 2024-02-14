@@ -43,10 +43,8 @@ def generate_image_data():
                 fp_model.write("{})\n".format(' ' * indent))
 
         fp_model.write('\n\nif __name__ == "__main__":\n\n')
-        fp_model.write("    import wx\n\n")
-        fp_model.write("    _app = wx.App(redirect=False)\n\n")
-        for name in names:
-            fp_model.write("    print(ImageData.{}.Bitmap)\n".format(name))
+        fp_model.write("    from tests.unit_tests.test_image_data import TestImageData\n\n")
+        fp_model.write("    TestImageData().run(True)\n")
 
 
 if __name__ == "__main__":
