@@ -5,12 +5,12 @@ View for editing the configuration.
 import wx
 
 from src.models.id_manager import IdManager
+from src.models.time_converter import TimeConverter
 
 
 class ViewEditConfiguration(wx.Dialog):
 
     _GAP = 5
-    _TIME_UNITS = ["seconds", "minutes", "hours", "days"]
 
     def __init__(self, parent):
         super(ViewEditConfiguration, self).__init__(parent, wx.ID_ANY, "Edit Configuration")
@@ -36,11 +36,11 @@ class ViewEditConfiguration(wx.Dialog):
         lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, "Sample time:")
         self._txt_sample_time = wx.TextCtrl(parent, IdManager.ID_SAMPLE_TIME, size=(50, -1))
         self._cmb_sample_time = wx.ComboBox(parent, IdManager.ID_SAMPLE_TIME_UNITS, style=wx.CB_READONLY,
-                                            choices=self._TIME_UNITS)
+                                            choices=TimeConverter.TIME_UNITS)
         self._radio_end_time = wx.RadioButton(parent, IdManager.ID_FIXED, "Fixed end time:")
         self._txt_end_time = wx.TextCtrl(parent, IdManager.ID_END_TIME, size=(50, -1))
         self._cmb_end_time = wx.ComboBox(parent, IdManager.ID_END_TIME_UNITS, style=wx.CB_READONLY,
-                                         choices=self._TIME_UNITS)
+                                         choices=TimeConverter.TIME_UNITS)
         self._radio_continuous = wx.RadioButton(parent, IdManager.ID_CONTINUOUS, "Continuous mode:")
         lbl_continuous = wx.StaticText(parent, wx.ID_ANY, "Process must be stopped manually.")
         lbl_total_samples = wx.StaticText(parent, wx.ID_ANY, "Total samples:")
@@ -85,38 +85,14 @@ class ViewEditConfiguration(wx.Dialog):
     ###########
 
     @staticmethod
-    def _convert_seconds_to_time(value):
-        units = "seconds"
-        if value % 86400 == 0:
-            units = "days"
-            value = int(value / 86400)
-        elif value % 3600 == 0:
-            units = "hours"
-            value = int(value / 3600)
-        elif value % 60 == 0:
-            units = "minutes"
-            value = int(value / 60)
-
-        return value, units
-
-    @staticmethod
     def _get_time(value_control, units_control):
         value = 0
         try:
             value = int(value_control.GetValue().strip())
         except ValueError:
             pass
-
-        if value > 0:
-            units = units_control.GetValue()
-            if units == "days":
-                value *= 86400
-            elif units == "hours":
-                value *= 3600
-            elif units == "minutes":
-                value *= 60
-
-        return value
+        unit = units_control.GetValue()
+        return TimeConverter.convert_time_with_unit_to_seconds(value, unit)
 
     def _update_total_samples(self):
         total_samples = "-"
@@ -136,7 +112,7 @@ class ViewEditConfiguration(wx.Dialog):
         return self._get_time(self._txt_sample_time, self._cmb_sample_time)
 
     def set_sample_time(self, value):
-        value, units = self._convert_seconds_to_time(value)
+        value, units = TimeConverter.convert_seconds_to_time_with_unit(value)
         self._txt_sample_time.SetValue(str(value))
         self._cmb_sample_time.SetValue(units)
         self._update_total_samples()
@@ -145,7 +121,7 @@ class ViewEditConfiguration(wx.Dialog):
         return self._get_time(self._txt_end_time, self._cmb_end_time)
 
     def set_end_time(self, value):
-        value, units = self._convert_seconds_to_time(value)
+        value, units = TimeConverter.convert_seconds_to_time_with_unit(value)
         self._txt_end_time.SetValue(str(value))
         self._cmb_end_time.SetValue(units)
         self._update_total_samples()
@@ -163,4 +139,4 @@ if __name__ == "__main__":
 
     from tests.unit_tests.test_controller_configuration import TestControllerConfiguration
 
-    TestControllerConfiguration().run()
+    TestControllerConfiguration().run(True)

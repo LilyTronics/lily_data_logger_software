@@ -28,7 +28,20 @@ class TestTimeConverter(TestSuite):
         ]
         for test_value in test_values:
             self.fail_if(TimeConverter.convert_seconds_to_time_with_unit(test_value[0]) != test_value[1],
-                         "Time string is incorrect")
+                         "Time value is incorrect")
+
+    def test_convert_time_with_unit_to_seconds(self):
+        test_values = [
+            ((0, ""), 0),
+            ((1, ""), 1),
+            ((5, "seconds"), 5),
+            ((4, "minutes"), 240),
+            ((3, "hours"), 10800),
+            ((2, "days"), 172800),
+        ]
+        for test_value in test_values:
+            self.fail_if(TimeConverter.convert_time_with_unit_to_seconds(*test_value[0]) != test_value[1],
+                         "Time value is incorrect")
 
 
 if __name__ == "__main__":
