@@ -6,7 +6,7 @@ import time
 import threading
 
 
-class MeasurementRunner(object):
+class MeasurementRunner:
 
     def __init__(self, configuration, callback):
         self._configuration = configuration
@@ -25,8 +25,10 @@ class MeasurementRunner(object):
         while not self._stop_event.is_set():
             if do_sample:
                 for measurement in measurements:
-                    self._callback(time.time() - start_time, "Process  measurement: {}".format(
-                        measurement[self._configuration.KEY_NAME]))
+                    self._callback(
+                        time.time() - start_time,
+                        f"Process  measurement: {measurement[self._configuration.KEY_NAME]}"
+                    )
                 do_sample = False
             time.sleep(0.05)
             interval = time.time() - sample_start
@@ -57,27 +59,9 @@ class MeasurementRunner(object):
 
 if __name__ == "__main__":
 
-    from src.models.configuration import Configuration
+    import pylint
 
-    def _callback(*args):
-        print(args)
+    from tests.unit_tests.test_measurement_runner import TestMeasurementRunner
 
-    conf = Configuration()
-    conf.load_from_file("..\\..\\tests\\test_files\\test_configuration.json")
-    conf.set_sample_time(2)
-    conf.set_end_time(7)
-
-    mr = MeasurementRunner(conf, _callback)
-
-    mr.start()
-    print(mr.is_running())
-    time.sleep(5)
-    # Abort
-    mr.stop()
-    print(mr.is_running())
-
-    mr.start()
-    print(mr.is_running())
-    # Let it run until finished
-    while mr.is_running():
-        time.sleep(1)
+    TestMeasurementRunner().run()
+    pylint.run_pylint([__file__])
