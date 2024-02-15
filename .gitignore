@@ -12,3 +12,6 @@
 
 # Deployment build output
 /deployment/build_output/*
+
+# Documentation output
+/docs/_build/*

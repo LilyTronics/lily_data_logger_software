@@ -6,3 +6,5 @@ Lily Data Logger Studio CE (Community Edition)
    :caption: Contents:
 
     Home                <self>
+    Introduction        <introduction.rst>
+    Installation        <installation.rst>
