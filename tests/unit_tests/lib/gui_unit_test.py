@@ -6,7 +6,7 @@ import time
 import wx
 
 
-class GuiUnitTest(object):
+class GuiUnitTest:
 
     KEY_TAB = 9
     KEY_ENTER = 13
@@ -46,12 +46,13 @@ class GuiUnitTest(object):
             elif hasattr(value, "GetLabel"):
                 value = value.GetLabel()
             else:
-                raise Exception("Could not get value from window with ID {} ({})".format(window_id, value))
+                raise Exception(f"Could not get value from window with ID {window_id} ({value})")
         return value
 
     @classmethod
     def click_button(cls, button_id):
-        cls.post_event(wx.Window.FindWindowById(button_id), wx.wxEVT_COMMAND_BUTTON_CLICKED, button_id)
+        cls.post_event(wx.Window.FindWindowById(button_id),
+                       wx.wxEVT_COMMAND_BUTTON_CLICKED, button_id)
 
     @classmethod
     def click_toolbar_item(cls, window, item_id):
@@ -72,7 +73,7 @@ class GuiUnitTest(object):
         elif isinstance(ctrl, wx.TextCtrl):
             cls.post_event(ctrl, wx.wxEVT_COMMAND_TEXT_ENTER, ctrl.GetId())
         else:
-            raise Exception("No event post for control: {}".format(ctrl))
+            raise Exception(f"No event post for control: {ctrl}")
 
     @staticmethod
     def send_key_press(key_code, key_modifier=wx.MOD_NONE):
@@ -138,7 +139,8 @@ if __name__ == "__main__":
             self.active_dialog = None
 
             self.toolbar = wx.ToolBar(panel, style=wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_NODIVIDER)
-            self.toolbar.AddTool(self.ID_TOOL, "", wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_TOOLBAR),
+            self.toolbar.AddTool(self.ID_TOOL, "",
+                                 wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_TOOLBAR),
                                  "Click me!")
             self.toolbar.Realize()
             self.Bind(wx.EVT_TOOL, self._on_tool_click, id=self.ID_TOOL)
@@ -169,11 +171,11 @@ if __name__ == "__main__":
             self.SetInitialSize((400, 300))
 
         def _on_tool_click(self, event):
-            self._text.SetValue("Tool ID: {}".format(event.GetId()))
+            self._text.SetValue(f"Tool ID: {event.GetId()}")
             event.Skip()
 
         def _on_radio_button(self, event):
-            self._text.SetValue("Radio ID: {}".format(event.GetId()))
+            self._text.SetValue(f"Radio ID: {event.GetId()}")
             event.Skip()
 
         def _on_show_dialog_button(self, event):
@@ -208,7 +210,8 @@ if __name__ == "__main__":
             time.sleep(1)
 
             print("Change text")
-            GuiUnitTest.set_value_in_control(frame.ID_TEXT, "And now for something completely different!")
+            GuiUnitTest.set_value_in_control(frame.ID_TEXT,
+                                             "And now for something completely different!")
             text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
             print("New text:", text)
             time.sleep(1)

@@ -15,6 +15,12 @@ from tests.unit_tests.lib.test_suite import TestSuite
 
 class TestViewDialogs(TestSuite):
 
+    _app = None
+    _test_frame = None
+    _title = ""
+    _error = ""
+    _test_filename = ""
+
     class TestFrame(wx.Frame):
 
         def __init__(self):
