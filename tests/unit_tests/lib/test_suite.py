@@ -10,7 +10,7 @@ from tests.unit_tests.lib.gui_unit_test import GuiUnitTest
 
 
 class TestSuite(lily_unit_test.TestSuite):
-    
+
     def __init__(self, *args):
         super().__init__(*args)
         self.gui = GuiUnitTest()
