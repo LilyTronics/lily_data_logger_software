@@ -1,4 +1,6 @@
 [MESSAGES CONTROL]
 disable=
     no-member,
-    cyclic-import
+    cyclic-import,
+    missing-class-docstring,
+    missing-function-docstring
