@@ -1,6 +1,9 @@
 [MESSAGES CONTROL]
 disable=
+    duplicate-code,
     no-member,
     cyclic-import,
+    broad-exception-raised,
+    too-few-public-methods,
     missing-class-docstring,
     missing-function-docstring
