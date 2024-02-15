@@ -13,7 +13,7 @@ class ViewEditConfiguration(wx.Dialog):
     _GAP = 5
 
     def __init__(self, parent):
-        super(ViewEditConfiguration, self).__init__(parent, wx.ID_ANY, "Edit Configuration")
+        super().__init__(parent, wx.ID_ANY, "Edit Configuration")
 
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(self._create_time_settings_box(self), 0, wx.EXPAND | wx.ALL, self._GAP)
@@ -35,8 +35,8 @@ class ViewEditConfiguration(wx.Dialog):
 
         lbl_sample_time = wx.StaticText(parent, wx.ID_ANY, "Sample time:")
         self._txt_sample_time = wx.TextCtrl(parent, IdManager.ID_SAMPLE_TIME, size=(50, -1))
-        self._cmb_sample_time = wx.ComboBox(parent, IdManager.ID_SAMPLE_TIME_UNITS, style=wx.CB_READONLY,
-                                            choices=TimeConverter.TIME_UNITS)
+        self._cmb_sample_time = wx.ComboBox(parent, IdManager.ID_SAMPLE_TIME_UNITS,
+                                            style=wx.CB_READONLY, choices=TimeConverter.TIME_UNITS)
         self._radio_end_time = wx.RadioButton(parent, IdManager.ID_FIXED, "Fixed end time:")
         self._txt_end_time = wx.TextCtrl(parent, IdManager.ID_END_TIME, size=(50, -1))
         self._cmb_end_time = wx.ComboBox(parent, IdManager.ID_END_TIME_UNITS, style=wx.CB_READONLY,
@@ -137,6 +137,8 @@ class ViewEditConfiguration(wx.Dialog):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_controller_configuration import TestControllerConfiguration
 
     TestControllerConfiguration().run(True)
+    pylint.run_pylint([__file__])
