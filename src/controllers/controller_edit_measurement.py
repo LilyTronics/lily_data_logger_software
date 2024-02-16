@@ -5,7 +5,7 @@ Controller for editing a measurement.
 import wx
 
 from src.models.id_manager import IdManager
-from src.models.instruments import get_instrument_by_name
+from src.models.instruments import Instruments
 from src.views.view_dialogs import show_confirm
 from src.views.view_dialogs import show_message
 from src.views.view_edit_measurement import ViewEditMeasurement
@@ -26,7 +26,7 @@ class ControllerEditMeasurement(object):
         instrument_data = cls._config.get_instrument(cls._dlg.get_instrument())
         if instrument_data is not None:
             instrument_name = instrument_data.get(cls._config.KEY_SETTINGS, {}).get(cls._config.KEY_INSTRUMENT_NAME)
-            instrument_object = get_instrument_by_name(instrument_name)
+            instrument_object = Instruments.get_instrument_by_name(instrument_name)
             cls._dlg.set_list_of_measurements(sorted(list(map(lambda x: x[cls._config.KEY_NAME],
                                                               instrument_object.get_input_channels()))))
 

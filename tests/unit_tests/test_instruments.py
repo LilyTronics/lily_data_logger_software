@@ -9,8 +9,7 @@ import shutil
 import tests
 
 from src.app_data import AppData
-from src.models.instruments import get_instrument_by_name
-from src.models.instruments import get_instrument_names
+from src.models.instruments import Instruments
 from tests.unit_tests.lib.test_suite import TestSuite
 
 
@@ -21,37 +20,42 @@ class TestInstruments(TestSuite):
 
     def setup(self):
         n_found = 0
-        path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "src", "models", "instruments"))
-        self.log.debug("Looking for instruments in: {}".format(path))
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                            "..", "..", "src", "models", "instruments"))
+        self.log.debug(f"Looking for instruments in: {path}")
         for item in glob.glob(os.path.join(path, "*.py")):
-            content = open(item, 'r').read()
+            with open(item, "r", encoding="utf-8") as fp:
+                content = fp.read()
             matches = re.findall(self._instrument_def, content)
             if len(matches) == 1:
                 n_found += 1
         self._n_instruments = n_found
         self.log.debug("Copy test instrument to user folder")
-        shutil.copy2(os.path.join(os.path.dirname(tests.__file__), "test_files", "test_instrument.json"),
+        shutil.copy2(os.path.join(os.path.dirname(tests.__file__),
+                                  "test_files", "test_instrument.json"),
                      os.path.join(AppData.USER_FOLDER, "test_instrument.json"))
         self._n_instruments += 1
 
     def test_instruments(self):
         count = 0
-        for name in get_instrument_names():
-            instrument = get_instrument_by_name(name)
-            self.log.debug("{:30}: {}".format(name, instrument))
+        for name in Instruments.get_instrument_names():
+            instrument = Instruments.get_instrument_by_name(name)
+            self.log.debug(f"{name:30}: {instrument}")
             self.fail_if(instrument is None, "Instrument not found")
             count += 1
-        self.fail_if(count != self._n_instruments, "The number of instruments is not correct, expecting {}".format(
-            self._n_instruments))
-        instrument = get_instrument_by_name("Unknown instrument name")
+        self.fail_if(count != self._n_instruments,
+                     f"The number of instruments is not correct, expecting {self._n_instruments}")
+        instrument = Instruments.get_instrument_by_name("Unknown instrument name")
         self.fail_if(instrument is not None, "Unknown instrument name did not return None")
 
-    @staticmethod
-    def teardown():
+    def teardown(self):
         if os.path.isfile(os.path.join(AppData.USER_FOLDER, "test_instrument.json")):
             os.remove(os.path.join(AppData.USER_FOLDER, "test_instrument.json"))
 
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestInstruments().run()
+    pylint.run_pylint([__file__])

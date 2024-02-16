@@ -5,8 +5,7 @@ Controller for editing instruments.
 import wx
 
 from src.models.id_manager import IdManager
-from src.models.instruments import get_instrument_names
-from src.models.instruments import get_instrument_by_name
+from src.models.instruments import Instruments
 from src.models.interfaces import Interfaces
 from src.views.view_dialogs import show_confirm
 from src.views.view_dialogs import show_message
@@ -25,7 +24,7 @@ class ControllerEditInstrument:
     def _update_instrument_settings_controls(cls, instrument_name, instrument_settings=None):
         if instrument_settings is None:
             instrument_settings = {}
-        instrument = get_instrument_by_name(instrument_name)
+        instrument = Instruments.get_instrument_by_name(instrument_name)
         if instrument is not None:
             cls._dlg.set_instrument_info(instrument.get_info())
             interface_type = instrument.get_interface_type()
@@ -66,7 +65,7 @@ class ControllerEditInstrument:
         interface_object = None
         try:
             assert instrument_name != "", "no instrument selected"
-            instrument = get_instrument_by_name(instrument_name)
+            instrument = Instruments.get_instrument_by_name(instrument_name)
             assert instrument is not None, "instrument does not exist"
             interface_type = instrument.get_interface_type()
             assert interface_type is not None, "No interface defined"
@@ -116,7 +115,7 @@ class ControllerEditInstrument:
             instrument_settings = instrument[configuration.KEY_SETTINGS][
                 configuration.KEY_INSTRUMENT_SETTINGS]
         cls._dlg = ViewEditInstrument(parent, dialog_title, configuration, name)
-        cls._dlg.set_instrument_names(get_instrument_names())
+        cls._dlg.set_instrument_names(Instruments.get_instrument_names())
         cls._dlg.set_name(name)
         cls._dlg.set_instrument_name(instrument_name)
         cls._update_instrument_settings_controls(instrument_name, instrument_settings)

@@ -6,7 +6,7 @@ import threading
 import wx
 
 from src.models.id_manager import IdManager
-from src.models.instruments import get_instrument_by_name
+from src.models.instruments import Instruments
 from src.models.interfaces import Interfaces
 from src.views.view_check_instruments import ViewCheckInstruments
 
@@ -63,7 +63,7 @@ class ControllerCheckInstruments:
         instrument_definition = settings.get(self._config.KEY_INSTRUMENT, None)
         assert instrument_definition is not None, (
             f"Instrument '{instrument_name}' has no instrument definition defined")
-        instrument_object = get_instrument_by_name(instrument_definition)
+        instrument_object = Instruments.get_instrument_by_name(instrument_definition)
         assert instrument_object is not None, (
             f"Instrument definition '{instrument_definition}' does not exist")
         return instrument_object
