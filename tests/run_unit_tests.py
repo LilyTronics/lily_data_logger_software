@@ -12,7 +12,7 @@ from tests.test_environment.setup_environment import check_for_instruments
 
 REPORT_FOLDER = os.path.join(os.path.dirname(__file__), "test_reports")
 EXCLUDE_TESTS = ["TestSuite", "TestControllerMain"]
-EXCLUDE_TESTS.extend(check_for_instruments())
+EXCLUDE_TESTS.extend(check_for_instruments(True))
 
 
 if not os.path.isdir(REPORT_FOLDER):

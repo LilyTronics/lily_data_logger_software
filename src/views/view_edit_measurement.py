@@ -5,7 +5,7 @@ View for editing a measurement.
 import wx
 
 from src.models.id_manager import IdManager
-from src.views.view_dialogs import show_message
+from src.views.view_dialogs import ViewDialogs
 
 
 class ViewEditMeasurement(wx.Dialog):
@@ -13,7 +13,7 @@ class ViewEditMeasurement(wx.Dialog):
     _GAP = 5
 
     def __init__(self, parent, title, configuration, name):
-        super(ViewEditMeasurement, self).__init__(parent, wx.ID_ANY, title)
+        super().__init__(parent, wx.ID_ANY, title)
         self.active_dialog = None
         self._config = configuration
         self._old_name = name
@@ -32,14 +32,17 @@ class ViewEditMeasurement(wx.Dialog):
         lbl_name = wx.StaticText(self, wx.ID_ANY, "Name:")
         self._txt_name = wx.TextCtrl(self, IdManager.ID_MEASUREMENT_NAME)
         lbl_instrument = wx.StaticText(self, wx.ID_ANY, "Instrument:")
-        self._cmb_instrument = wx.ComboBox(self, IdManager.ID_CMB_MEASUREMENT_INSTRUMENT, style=wx.CB_READONLY)
+        self._cmb_instrument = wx.ComboBox(self, IdManager.ID_CMB_MEASUREMENT_INSTRUMENT,
+                                           style=wx.CB_READONLY)
         lbl_measurement = wx.StaticText(self, wx.ID_ANY, "Measurement:")
-        self._cmb_measurement = wx.ComboBox(self, IdManager.ID_CMB_MEASUREMENT, style=wx.CB_READONLY)
+        self._cmb_measurement = wx.ComboBox(self, IdManager.ID_CMB_MEASUREMENT,
+                                            style=wx.CB_READONLY)
         lbl_gain = wx.StaticText(self, wx.ID_ANY, "Gain:")
         self._txt_gain = wx.TextCtrl(self, IdManager.ID_GAIN, size=(80, -1))
         lbl_offset = wx.StaticText(self, wx.ID_ANY, "Offset:")
         self._txt_offset = wx.TextCtrl(self, IdManager.ID_OFFSET, size=(80, -1))
-        lbl_info = wx.StaticText(self, wx.ID_ANY, "measurement value = value from instrument * gain + offset")
+        lbl_info = wx.StaticText(self, wx.ID_ANY,
+                                 "measurement value = value from instrument * gain + offset")
 
         grid = wx.GridBagSizer(self._GAP, self._GAP)
         grid.Add(lbl_name, (0, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
@@ -76,20 +79,21 @@ class ViewEditMeasurement(wx.Dialog):
     def _on_ok_click(self, event):
         name = self._txt_name.GetValue().strip()
         if name == "":
-            show_message(self, "Enter a name.", "Edit measurement")
+            ViewDialogs.show_message(self, "Enter a name.", "Edit measurement")
             return
         if self._old_name != name:
             measurement = self._config.get_measurement(name)
             if measurement is not None:
-                show_message(self, "A measurement with the name '{}' already exist".format(name), self.GetTitle())
+                ViewDialogs.show_message(self, "A measurement with the name '{name}' already exist",
+                                         self.GetTitle())
                 return
 
         if self._cmb_instrument.GetValue() == "":
-            show_message(self, "Select an instrument.", "Edit measurement")
+            ViewDialogs.show_message(self, "Select an instrument.", "Edit measurement")
             return
 
         if self._cmb_measurement.GetValue() == "":
-            show_message(self, "Select a measurement.", "Edit measurement")
+            ViewDialogs.show_message(self, "Select a measurement.", "Edit measurement")
             return
 
         value = ""
@@ -99,7 +103,8 @@ class ViewEditMeasurement(wx.Dialog):
             value = "offset"
             float(self._txt_offset.GetValue().strip())
         except ValueError:
-            show_message(self, "Enter a numeric value for the %s." % value, "Edit measurement")
+            ViewDialogs.show_message(self, f"Enter a numeric value for the {value}.",
+                                     "Edit measurement")
             return
 
         event.Skip()
@@ -149,6 +154,8 @@ class ViewEditMeasurement(wx.Dialog):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_controller_edit_measurement import TestControllerEditInstrument
 
     TestControllerEditInstrument().run(True)
+    pylint.run_pylint([__file__])

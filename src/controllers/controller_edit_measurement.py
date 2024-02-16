@@ -6,12 +6,11 @@ import wx
 
 from src.models.id_manager import IdManager
 from src.models.instruments import Instruments
-from src.views.view_dialogs import show_confirm
-from src.views.view_dialogs import show_message
+from src.views.view_dialogs import ViewDialogs
 from src.views.view_edit_measurement import ViewEditMeasurement
 
 
-class ControllerEditMeasurement(object):
+class ControllerEditMeasurement:
 
     _dlg = None
     _config = None
@@ -25,10 +24,11 @@ class ControllerEditMeasurement(object):
         cls._dlg.get_instrument()
         instrument_data = cls._config.get_instrument(cls._dlg.get_instrument())
         if instrument_data is not None:
-            instrument_name = instrument_data.get(cls._config.KEY_SETTINGS, {}).get(cls._config.KEY_INSTRUMENT_NAME)
+            instrument_name = instrument_data.get(cls._config.KEY_SETTINGS, {}).get(
+                cls._config.KEY_INSTRUMENT_NAME)
             instrument_object = Instruments.get_instrument_by_name(instrument_name)
-            cls._dlg.set_list_of_measurements(sorted(list(map(lambda x: x[cls._config.KEY_NAME],
-                                                              instrument_object.get_input_channels()))))
+            cls._dlg.set_list_of_measurements(sorted(list(
+                map(lambda x: x[cls._config.KEY_NAME], instrument_object.get_input_channels()))))
 
     ##################
     # Event handlers #
@@ -56,8 +56,10 @@ class ControllerEditMeasurement(object):
         offset = 0.0
         if name != "":
             measurement_data = configuration.get_measurement(name)
-            measurement_name = measurement_data[configuration.KEY_SETTINGS][configuration.KEY_MEASUREMENT]
-            instrument_id = measurement_data[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT_ID]
+            measurement_name = measurement_data[configuration.KEY_SETTINGS][
+                configuration.KEY_MEASUREMENT]
+            instrument_id = measurement_data[configuration.KEY_SETTINGS][
+                configuration.KEY_INSTRUMENT_ID]
             instrument = configuration.get_instrument(instrument_id)
             if instrument is not None:
                 instrument_name = instrument[configuration.KEY_NAME]
@@ -73,7 +75,8 @@ class ControllerEditMeasurement(object):
         cls._dlg.set_measurement(measurement_name)
         cls._dlg.set_gain(gain)
         cls._dlg.set_offset(offset)
-        cls._dlg.Bind(wx.EVT_COMBOBOX, cls._on_instrument_select, id=IdManager.ID_CMB_MEASUREMENT_INSTRUMENT)
+        cls._dlg.Bind(wx.EVT_COMBOBOX, cls._on_instrument_select,
+                      id=IdManager.ID_CMB_MEASUREMENT_INSTRUMENT)
         if cls._dlg.ShowModal() == wx.ID_OK:
             new_name = cls._dlg.get_name()
             settings = {
@@ -92,16 +95,18 @@ class ControllerEditMeasurement(object):
         dialog_title = "Delete measurement"
         name = parent.get_selected_measurement()
         if name is None:
-            show_message(parent, "Select a measurement first", dialog_title)
+            ViewDialogs.show_message(parent, "Select a measurement first", dialog_title)
         else:
-            if show_confirm(parent, "Do you want to delete measurement '{}'?".format(name), dialog_title) == wx.ID_YES:
+            if ViewDialogs.show_confirm(parent, f"Do you want to delete measurement '{name}'?",
+                                        dialog_title) == wx.ID_YES:
                 configuration.delete_measurement(name)
         wx.YieldIfNeeded()
 
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_controller_edit_measurement import TestControllerEditInstrument
 
     TestControllerEditInstrument().run(True)
-
+    pylint.run_pylint([__file__])

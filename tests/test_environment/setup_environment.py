@@ -22,18 +22,21 @@ def clear_reports(report_path):
             raise Exception("ERROR: could not remove item '{}'".format(item))
 
 
-def check_for_instruments():
-    exclude_tests = []
-
-    print("Detect available serial ports")
-    serial_ports = get_available_serial_ports()
-    print("Available ports: {}".format(serial_ports))
-
-    if get_serial_loopback_port(serial_ports) is None:
-        exclude_tests.append("TestSerialPortInterface")
-
-    if get_arduino_daq_serial_port(serial_ports) is None:
-        exclude_tests.append("TestArduinoDAQ")
+def check_for_instruments(skip_instruments=False):
+    if skip_instruments:
+        exclude_tests = [
+            "TestSerialPortInterface",
+            "TestArduinoDAQ"
+        ]
+    else:
+        exclude_tests = []
+        print("Detect available serial ports")
+        serial_ports = get_available_serial_ports()
+        print("Available ports: {}".format(serial_ports))
+        if get_serial_loopback_port(serial_ports) is None:
+            exclude_tests.append("TestSerialPortInterface")
+        if get_arduino_daq_serial_port(serial_ports) is None:
+            exclude_tests.append("TestArduinoDAQ")
 
     return exclude_tests
 

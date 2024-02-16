@@ -7,8 +7,7 @@ import wx
 from src.models.id_manager import IdManager
 from src.models.instruments import Instruments
 from src.models.interfaces import Interfaces
-from src.views.view_dialogs import show_confirm
-from src.views.view_dialogs import show_message
+from src.views.view_dialogs import ViewDialogs
 from src.views.view_edit_instrument import ViewEditInstrument
 
 
@@ -137,7 +136,7 @@ class ControllerEditInstrument:
         dialog_title = "Delete instrument"
         name = parent.get_selected_instrument()
         if name == "":
-            show_message(parent, "Select an instrument first", dialog_title)
+            ViewDialogs.show_message(parent, "Select an instrument first", dialog_title)
         else:
             buttons = wx.YES_NO
             message = f"Do you want to delete instrument '{name}'?"
@@ -152,7 +151,7 @@ class ControllerEditInstrument:
                            "Click Yes to delete the instrument and the measurements.\n"
                            "Click No to delete only the instrument.\n"
                            "Click Cancel to abort.")
-            button = show_confirm(parent, message, dialog_title, buttons)
+            button = ViewDialogs.show_confirm(parent, message, dialog_title, buttons)
             if button in (wx.ID_YES, wx.ID_NO):
                 configuration.delete_instrument(name)
                 if button == wx.ID_YES:

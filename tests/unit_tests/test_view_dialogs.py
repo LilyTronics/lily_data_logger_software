@@ -6,10 +6,7 @@ import glob
 import os
 import wx
 
-from src.views.view_dialogs import show_confirm
-from src.views.view_dialogs import show_message
-from src.views.view_dialogs import show_open_file
-from src.views.view_dialogs import show_save_file
+from src.views.view_dialogs import ViewDialogs
 from tests.unit_tests.lib.test_suite import TestSuite
 
 
@@ -44,16 +41,16 @@ class TestViewDialogs(TestSuite):
             if test_id == 0:
                 # We expect a message dialog
                 self.gui.send_key_press(self.gui.KEY_ENTER)
-            elif test_id == 1 or test_id == 2:
+            elif test_id in (1, 2):
                 # We expect a confirm dialog that should be close with 'Yes' or 'No'
                 if test_id == 2:
                     # Close with 'No'
                     self.gui.send_key_press(self.gui.KEY_TAB)
                 self.gui.send_key_press(self.gui.KEY_ENTER)
-            elif test_id == 3 or test_id == 5:
+            elif test_id in (3, 5):
                 # We expect an open/save file dialog close with cancel
                 self.gui.send_key_press(self.gui.KEY_ESCAPE)
-            elif test_id == 4 or test_id == 6:
+            elif test_id in (4, 6):
                 # We expect an open/save file dialog close with selecting a file
                 # We need a sleep to make sure the dialog has the focus
                 self.sleep(0.3)
@@ -63,7 +60,7 @@ class TestViewDialogs(TestSuite):
     def test_show_message(self):
         self.start_thread(self._check_dialog, args=(0, ))
         self.log.debug("Show message")
-        show_message(self._test_frame, "This is a message dialog.", self._title)
+        ViewDialogs.show_message(self._test_frame, "This is a message dialog.", self._title)
         self.fail_if(self._error != "", self._error)
 
     def test_show_confirm(self):
@@ -72,12 +69,13 @@ class TestViewDialogs(TestSuite):
         for i in range(1, 3):
             self.start_thread(self._check_dialog, args=(i, ))
             self.log.debug("Show confirm")
-            button = show_confirm(self._test_frame, "This is a confirm dialog.", self._title)
+            button = ViewDialogs.show_confirm(self._test_frame, "This is a confirm dialog.",
+                                              self._title)
             self.fail_if(self._error != "", self._error)
             self.fail_if(i == 1 and button != wx.ID_YES,
-                         "Expected return value {}, but got {}".format(wx.ID_YES, button))
+                         f"Expected return value {wx.ID_YES}, but got {button}")
             self.fail_if(i == 2 and button != wx.ID_NO,
-                         "Expected return value {}, but got {}".format(wx.ID_NO, button))
+                         f"Expected return value {wx.ID_NO}, but got {button}")
 
     def test_show_open_save_file(self):
         # Test 3: open file dialog close with 'Cancel
@@ -88,15 +86,17 @@ class TestViewDialogs(TestSuite):
             self.start_thread(self._check_dialog, args=(i,))
             if i < 5:
                 self.log.debug("Show open file")
-                filename = show_open_file(self._test_frame, "This is a open file dialog.")
+                filename = ViewDialogs.show_open_file(self._test_frame,
+                                                      "This is a open file dialog.")
             else:
                 self.log.debug("Show save file")
-                filename = show_save_file(self._test_frame, "This is a save file dialog.")
+                filename = ViewDialogs.show_save_file(self._test_frame,
+                                                      "This is a save file dialog.")
             self.fail_if(self._error != "", self._error)
-            self.fail_if(i in [3, 5] and filename is not None,
-                         "Expected return value None, but got {}".format(filename))
-            self.fail_if(i in [4, 6] and filename != self._test_filename,
-                         "Expected return value {}, but got {}".format(self._test_filename, filename))
+            self.fail_if(i in (3, 5) and filename is not None,
+                         f"Expected return value None, but got {filename}")
+            self.fail_if(i in (4, 6) and filename != self._test_filename,
+                         f"Expected return value {self._test_filename}, but got {filename}")
 
     def teardown(self):
         self._test_frame.Destroy()
@@ -105,4 +105,7 @@ class TestViewDialogs(TestSuite):
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestViewDialogs().run()
+    pylint.run_pylint([__file__])
