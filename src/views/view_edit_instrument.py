@@ -2,6 +2,7 @@
 Edit instrument view.
 """
 
+import threading
 import wx
 
 from src.models.id_manager import IdManager
@@ -81,17 +82,16 @@ class ViewEditInstrument(wx.Dialog):
         return box
 
     def _process_callables(self, callables):
-        progress = wx.ProgressDialog("Update controls", "", maximum=len(callables), parent=self,
-                                     style=wx.PD_APP_MODAL | wx.PD_AUTO_HIDE)
         i = 0
         for label, ctrl, function, default in callables:
-            progress.Update(i, f"Update {label.lower()}")
-            progress.Fit()
+            self.active_dialog.Update(i, f"Update {label.lower()}")
+            self.active_dialog.Fit()
             ctrl.SetItems(function())
             ctrl.SetValue(default)
             i += 1
-        progress.Destroy()
-        self.Raise()
+            self.active_dialog.Update(i)
+        self.active_dialog.Destroy()
+        self.active_dialog = None
 
     ##################
     # Event handlers #
@@ -184,7 +184,12 @@ class ViewEditInstrument(wx.Dialog):
                                         wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
                 row += 1
             if len(callables) > 0:
-                wx.CallAfter(self._process_callables, callables)
+                self.active_dialog = wx.ProgressDialog("Update controls", " ",
+                                                       maximum=len(callables), parent=self,
+                                                       style=wx.PD_APP_MODAL | wx.PD_AUTO_HIDE)
+                t = threading.Thread(target=self._process_callables, args=(callables, ))
+                t.daemon = True
+                t.start()
 
         self.SetInitialSize(self._WINDOW_SIZE)
         self.CenterOnParent()
