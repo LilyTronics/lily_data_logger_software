@@ -4,8 +4,7 @@ Test the model for the multimeter simulator
 
 from src.models.instruments.simulator_multimeter import simulator_multimeter
 from src.models.interfaces import Interfaces
-from src.simulators import start_simulators
-from src.simulators import stop_simulators
+from src.simulators import Simulators
 from tests.unit_tests.lib.test_suite import TestSuite
 
 
@@ -14,7 +13,7 @@ class TestSimulatorMultimeter(TestSuite):
     _interface = None
 
     def setup(self):
-        start_simulators(self.log)
+        Simulators.start_simulators(self.log)
         self.log.debug("Get interface")
         interface_class = Interfaces.get_interface_by_name(
             simulator_multimeter.get_interface_type())
@@ -45,7 +44,7 @@ class TestSimulatorMultimeter(TestSuite):
         self.fail_if(not isinstance(value, float), f"Float expected, but got {type(value)}")
 
     def teardown(self):
-        stop_simulators(self.log)
+        Simulators.stop_simulators(self.log)
         if self._interface is not None:
             self._interface.close()
 

@@ -13,11 +13,10 @@ from src.models.id_manager import IdManager
 from src.models.settings import Settings
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
-from src.simulators import start_simulators
-from src.simulators import stop_simulators
+from src.simulators import Simulators
 
 
-class ControllerMain(object):
+class ControllerMain:
 
     def __init__(self, view_title, logger):
         self._logger = logger
@@ -34,7 +33,7 @@ class ControllerMain(object):
         self._main_view.Show()
 
         wx.CallAfter(self._update_view_from_configuration)
-        wx.CallAfter(start_simulators, self._logger)
+        wx.CallAfter(Simulators.start_simulators, self._logger)
 
     ###########
     # Private #
@@ -50,17 +49,24 @@ class ControllerMain(object):
             frame.SetPosition(pos)
         frame.Maximize(self._settings.get_main_window_maximized())
         frame.Bind(wx.EVT_CLOSE, self._on_view_close)
-        frame.Bind(wx.EVT_TOOL, self._on_open_configuration, id=IdManager.ID_TOOL_OPEN_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_save_configuration, id=IdManager.ID_TOOL_SAVE_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_edit_configuration, id=IdManager.ID_TOOL_EDIT_CONFIGURATION)
-        frame.Bind(wx.EVT_TOOL, self._on_check_instruments, id=IdManager.ID_TOOL_CHECK_INSTRUMENTS)
+        frame.Bind(wx.EVT_TOOL, self._on_open_configuration,
+                   id=IdManager.ID_TOOL_OPEN_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_save_configuration,
+                   id=IdManager.ID_TOOL_SAVE_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_edit_configuration,
+                   id=IdManager.ID_TOOL_EDIT_CONFIGURATION)
+        frame.Bind(wx.EVT_TOOL, self._on_check_instruments,
+                   id=IdManager.ID_TOOL_CHECK_INSTRUMENTS)
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
-        frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument, id=IdManager.ID_LIST_INSTRUMENTS)
+        frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument,
+                   id=IdManager.ID_LIST_INSTRUMENTS)
         frame.Bind(wx.EVT_BUTTON, self._on_delete_instrument, id=IdManager.ID_BTN_DELETE_INSTRUMENT)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_measurement, id=IdManager.ID_BTN_ADD_MEASUREMENT)
-        frame.Bind(wx.grid.EVT_GRID_LABEL_LEFT_DCLICK, self._on_edit_measurement, id=IdManager.ID_GRID_MEASUREMENTS)
-        frame.Bind(wx.EVT_BUTTON, self._on_delete_measurement, id=IdManager.ID_BTN_DELETE_MEASUREMENT)
+        frame.Bind(wx.grid.EVT_GRID_LABEL_LEFT_DCLICK, self._on_edit_measurement,
+                   id=IdManager.ID_GRID_MEASUREMENTS)
+        frame.Bind(wx.EVT_BUTTON, self._on_delete_measurement,
+                   id=IdManager.ID_BTN_DELETE_MEASUREMENT)
 
         return frame
 
@@ -107,7 +113,8 @@ class ControllerMain(object):
         event.Skip()
 
     def _on_edit_configuration(self, event):
-        ControllerConfiguration.edit_configuration(self._main_view, self._configuration, self._logger)
+        ControllerConfiguration.edit_configuration(self._main_view, self._configuration,
+                                                   self._logger)
         self._update_view_from_configuration()
         event.Skip()
 
@@ -177,8 +184,9 @@ class ControllerMain(object):
     #############
 
     def _on_view_close(self, event):
-        stop_simulators(self._logger)
-        ControllerConfiguration.check_configuration_is_changed(self._main_view, self._configuration, self._logger)
+        Simulators.stop_simulators(self._logger)
+        ControllerConfiguration.check_configuration_is_changed(self._main_view, self._configuration,
+                                                               self._logger)
         if self._log_view is not None:
             self._log_view.Close()
         self._settings.store_main_window_maximized(self._main_view.IsMaximized())
@@ -197,6 +205,8 @@ class ControllerMain(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_controller_main import TestControllerMain
 
     TestControllerMain().run(True)
+    pylint.run_pylint([__file__])
