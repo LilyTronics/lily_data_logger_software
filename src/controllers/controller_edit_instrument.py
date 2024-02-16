@@ -7,13 +7,13 @@ import wx
 from src.models.id_manager import IdManager
 from src.models.instruments import get_instrument_names
 from src.models.instruments import get_instrument_by_name
-from src.models.interfaces import get_interface_by_name
+from src.models.interfaces import Interfaces
 from src.views.view_dialogs import show_confirm
 from src.views.view_dialogs import show_message
 from src.views.view_edit_instrument import ViewEditInstrument
 
 
-class ControllerEditInstrument(object):
+class ControllerEditInstrument:
 
     _dlg = None
 
@@ -30,7 +30,7 @@ class ControllerEditInstrument(object):
             cls._dlg.set_instrument_info(instrument.get_info())
             interface_type = instrument.get_interface_type()
             if interface_type is not None:
-                interface = get_interface_by_name(interface_type)
+                interface = Interfaces.get_interface_by_name(interface_type)
                 if interface is not None:
                     settings_controls = interface.get_settings_controls()
                     instrument_defaults = instrument.get_interface_settings()
@@ -57,12 +57,12 @@ class ControllerEditInstrument(object):
     def _on_settings_test(cls, event):
         cls._dlg.clear_console()
         name = cls._dlg.get_name()
-        cls._dlg.write_to_console("{:12}: '{}'".format("Name", name))
+        cls._dlg.write_to_console(f"{"Name":12}: '{name}'")
         instrument_name = cls._dlg.get_selected_instrument_name()
-        cls._dlg.write_to_console("{:12}: '{}'".format("Instrument", instrument_name))
+        cls._dlg.write_to_console(f"{"Instrument":12}: '{instrument_name}'")
         settings = cls._dlg.get_settings()
         for key in settings.keys():
-            cls._dlg.write_to_console("{:12}: '{}'".format(key, settings[key]))
+            cls._dlg.write_to_console(f"{key:12}: '{settings[key]}'")
         interface_object = None
         try:
             assert instrument_name != "", "no instrument selected"
@@ -70,8 +70,8 @@ class ControllerEditInstrument(object):
             assert instrument is not None, "instrument does not exist"
             interface_type = instrument.get_interface_type()
             assert interface_type is not None, "No interface defined"
-            interface = get_interface_by_name(interface_type)
-            assert interface is not None, "interface type '{}' does not exist".format(interface_type)
+            interface = Interfaces.get_interface_by_name(interface_type)
+            assert interface is not None, f"interface type '{interface_type}' does not exist"
             instrument_defaults = instrument.get_interface_settings()
             for key in instrument_defaults.keys():
                 if key not in settings.keys():
@@ -82,12 +82,13 @@ class ControllerEditInstrument(object):
             assert len(input_channels) > 0, "no input channels available for testing"
             cls._dlg.write_to_console("\nInitialize instrument...")
             instrument.initialize()
-            cls._dlg.write_to_console("Get value from channel: '{}'".format(input_channels[0][instrument.KEY_NAME]))
+            cls._dlg.write_to_console(
+                f"Get value from channel: '{input_channels[0][instrument.KEY_NAME]}'")
             value = instrument.get_value(input_channels[0]["name"])
-            cls._dlg.write_to_console("Received value: '{}'".format(value))
+            cls._dlg.write_to_console(f"Received value: '{value}'")
             cls._dlg.write_to_console("\nTest finished, all seems fine")
         except Exception as e:
-            cls._dlg.write_to_console("\nERROR: {}".format(e))
+            cls._dlg.write_to_console(f"\nERROR: {e}")
         finally:
             if interface_object is not None:
                 interface_object.close()
@@ -110,8 +111,10 @@ class ControllerEditInstrument(object):
         if name != "":
             dialog_title = "Edit instrument"
             instrument = configuration.get_instrument(name)
-            instrument_name = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT_NAME]
-            instrument_settings = instrument[configuration.KEY_SETTINGS][configuration.KEY_INSTRUMENT_SETTINGS]
+            instrument_name = instrument[configuration.KEY_SETTINGS][
+                configuration.KEY_INSTRUMENT_NAME]
+            instrument_settings = instrument[configuration.KEY_SETTINGS][
+                configuration.KEY_INSTRUMENT_SETTINGS]
         cls._dlg = ViewEditInstrument(parent, dialog_title, configuration, name)
         cls._dlg.set_instrument_names(get_instrument_names())
         cls._dlg.set_name(name)
@@ -138,17 +141,18 @@ class ControllerEditInstrument(object):
             show_message(parent, "Select an instrument first", dialog_title)
         else:
             buttons = wx.YES_NO
-            message = "Do you want to delete instrument '{}'?".format(name)
+            message = f"Do you want to delete instrument '{name}'?"
             used_items = configuration.get_used_items_for_instrument(name)
             if len(used_items) > 0:
-                measurements = ", ".join(map(lambda x: "'{}'".format(x[configuration.KEY_NAME]), used_items))
+                measurements = ", ".join(map(lambda x: f"'{x[configuration.KEY_NAME]}'",
+                                             used_items))
                 buttons |= wx.CANCEL
-                message = ("The instrument '{}' is used in one or more measurements.\n"
+                message = (f"The instrument '{name}' is used in one or more measurements.\n"
                            "Do you want to delete the following measurements also?\n"
-                           "Measurements: {}\n\n"
+                           f"Measurements: {measurements}\n\n"
                            "Click Yes to delete the instrument and the measurements.\n"
                            "Click No to delete only the instrument.\n"
-                           "Click Cancel to abort.").format(name, measurements)
+                           "Click Cancel to abort.")
             button = show_confirm(parent, message, dialog_title, buttons)
             if button in (wx.ID_YES, wx.ID_NO):
                 configuration.delete_instrument(name)
@@ -160,6 +164,8 @@ class ControllerEditInstrument(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_controller_edit_instrument import TestControllerEditInstrument
 
     TestControllerEditInstrument().run(True)
+    pylint.run_pylint([__file__])

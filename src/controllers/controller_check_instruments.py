@@ -7,16 +7,17 @@ import wx
 
 from src.models.id_manager import IdManager
 from src.models.instruments import get_instrument_by_name
-from src.models.interfaces import get_interface_by_name
+from src.models.interfaces import Interfaces
 from src.views.view_check_instruments import ViewCheckInstruments
 
 
-class ControllerCheckInstruments(object):
+class ControllerCheckInstruments:
 
     def __init__(self, parent, configuration):
         self._config = configuration
         self._view = ViewCheckInstruments(parent)
-        self._view.add_instruments(map(lambda x: x[self._config.KEY_NAME], self._config.get_instruments()))
+        self._view.add_instruments(map(lambda x: x[self._config.KEY_NAME],
+                                       self._config.get_instruments()))
         self._view.Bind(wx.EVT_BUTTON, self._on_check_click, id=IdManager.ID_BTN_CHECK)
         self._view.ShowModal()
         self._view.Destroy()
@@ -35,8 +36,8 @@ class ControllerCheckInstruments(object):
         t = None
         while i < len(instruments):
             instrument_name = instruments[i][self._config.KEY_NAME]
-            do_continue, can_skip = self._view.active_dialog.Update(i, "Checking instrument: '{}' . . .".format(
-                instrument_name))
+            message = f"Checking instrument: '{instrument_name}' . . ."
+            do_continue, _ = self._view.active_dialog.Update(i, message)
             if not do_continue:
                 break
             wx.MilliSleep(100)
@@ -52,30 +53,48 @@ class ControllerCheckInstruments(object):
         self._view.active_dialog = None
         wx.YieldIfNeeded()
 
+    def _get_instrument_object(self, instrument_name):
+        instrument_data = self._config.get_instrument(instrument_name)
+        assert instrument_data is not None, (
+            f"Instrument '{instrument_name}' not in the configuration")
+        settings = instrument_data.get(self._config.KEY_SETTINGS, None)
+        assert settings is not None, (
+            f"Instrument '{instrument_name}' has no settings")
+        instrument_definition = settings.get(self._config.KEY_INSTRUMENT, None)
+        assert instrument_definition is not None, (
+            f"Instrument '{instrument_name}' has no instrument definition defined")
+        instrument_object = get_instrument_by_name(instrument_definition)
+        assert instrument_object is not None, (
+            f"Instrument definition '{instrument_definition}' does not exist")
+        return instrument_object
+
+    @staticmethod
+    def _get_interface_class(instrument_name, instrument_object):
+        interface_type = instrument_object.get_interface_type()
+        assert interface_type is not None, (
+            f"No interface defined for instrument '{instrument_name}'")
+        interface_class = Interfaces.get_interface_by_name(interface_type)
+        assert interface_class is not None, (
+            f"Interface type '{interface_type}' does not exist")
+        return interface_class
+
+    def _get_instrument_settings(self, instrument_name, instrument_object):
+        instrument_data = self._config.get_instrument(instrument_name)
+        settings = instrument_data[self._config.KEY_SETTINGS]
+        instrument_defaults = instrument_object.get_interface_settings()
+        instrument_settings = settings.get(self._config.KEY_INSTRUMENT_SETTINGS, {})
+        for key in instrument_defaults.keys():
+            if key not in instrument_settings.keys():
+                instrument_settings[key] = instrument_defaults[key]
+        return instrument_settings
+
     def _check_instrument(self, instrument_name):
         self._update_status(instrument_name, None, "")
         interface_object = None
         try:
-            instrument_data = self._config.get_instrument(instrument_name)
-            assert instrument_data is not None, "Instrument '{}' not in the configuration".format(instrument_name)
-            settings = instrument_data.get(self._config.KEY_SETTINGS, None)
-            assert settings is not None, "Instrument '{}' has no settings".format(instrument_name)
-            instrument_definition = settings.get(self._config.KEY_INSTRUMENT, None)
-            assert instrument_definition is not None, "Instrument '{}' has no instrument defined".format(
-                instrument_definition)
-            instrument_object = get_instrument_by_name(instrument_definition)
-            assert instrument_object is not None, "Instrument definition '{}' does not exist".format(
-                instrument_definition)
-            interface_type = instrument_object.get_interface_type()
-            assert interface_type is not None, "No interface defined in instrument definition '{}'".format(
-                instrument_definition)
-            interface_class = get_interface_by_name(interface_type)
-            assert interface_class is not None, "Interface type '{}' does not exist".format(interface_type)
-            instrument_defaults = instrument_object.get_interface_settings()
-            instrument_settings = settings.get(self._config.KEY_INSTRUMENT_SETTINGS, {})
-            for key in instrument_defaults.keys():
-                if key not in instrument_settings.keys():
-                    instrument_settings[key] = instrument_defaults[key]
+            instrument_object = self._get_instrument_object(instrument_name)
+            interface_class = self._get_interface_class(instrument_name, instrument_object)
+            instrument_settings = self._get_instrument_settings(instrument_name, instrument_object)
             interface_object = interface_class(**instrument_settings)
             instrument_object.set_interface_object(interface_object)
             instrument_object.initialize()
@@ -84,7 +103,7 @@ class ControllerCheckInstruments(object):
             if len(input_channels) > 0:
                 channel_name = input_channels[0][instrument_object.KEY_NAME]
                 value = instrument_object.get_value(channel_name)
-                result += " ({} = {})".format(channel_name, value)
+                result += f" ({channel_name} = {value})"
             self._update_status(instrument_name, True, result)
         except Exception as e:
             self._update_status(instrument_name, False, str(e))
@@ -106,6 +125,8 @@ class ControllerCheckInstruments(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_controller_check_instruments import TestControllerCheckInstrument
 
     TestControllerCheckInstrument().run()
+    pylint.run_pylint([__file__])
