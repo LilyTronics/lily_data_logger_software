@@ -58,9 +58,8 @@ class ControllerCheckInstruments:
         assert instrument_data is not None, (
             f"Instrument '{instrument_name}' not in the configuration")
         settings = instrument_data.get(self._config.KEY_SETTINGS, None)
-        assert settings is not None, (
-            f"Instrument '{instrument_name}' has no settings")
-        instrument_definition = settings.get(self._config.KEY_INSTRUMENT, None)
+        assert settings is not None, f"Instrument '{instrument_name}' has no settings"
+        instrument_definition = settings.get(self._config.KEY_INSTRUMENT_NAME, None)
         assert instrument_definition is not None, (
             f"Instrument '{instrument_name}' has no instrument definition defined")
         instrument_object = Instruments.get_instrument_by_name(instrument_definition)
@@ -128,5 +127,5 @@ if __name__ == "__main__":
     import pylint
     from tests.unit_tests.test_controller_check_instruments import TestControllerCheckInstrument
 
-    TestControllerCheckInstrument().run()
+    TestControllerCheckInstrument().run(True)
     pylint.run_pylint([__file__])
