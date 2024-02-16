@@ -23,9 +23,11 @@ class ViewDialogs:
         return button
 
     @staticmethod
-    def show_open_file(parent, message, default_folder="", default_file="", file_filter="All files|*.*"):
+    def show_open_file(parent, message, default_folder="", default_file="",
+                       file_filter="All files|*.*"):
         selected_file = None
-        parent.active_dialog = wx.FileDialog(parent, message, default_folder, default_file, file_filter, wx.FD_OPEN)
+        parent.active_dialog = wx.FileDialog(parent, message, default_folder, default_file,
+                                             file_filter, wx.FD_OPEN)
         if parent.active_dialog.ShowModal() == wx.ID_OK:
             selected_file = parent.active_dialog.GetPath()
         parent.active_dialog.Destroy()
@@ -33,9 +35,11 @@ class ViewDialogs:
         return selected_file
 
     @staticmethod
-    def show_save_file(parent, message, default_folder="", default_file="", file_filter="All files|*.*"):
+    def show_save_file(parent, message, default_folder="", default_file="",
+                       file_filter="All files|*.*"):
         selected_file = None
-        parent.active_dialog = wx.FileDialog(parent, message, default_folder, default_file, file_filter, wx.FD_SAVE)
+        parent.active_dialog = wx.FileDialog(parent, message, default_folder, default_file,
+                                             file_filter, wx.FD_SAVE)
         if parent.active_dialog.ShowModal() == wx.ID_OK:
             selected_file = parent.active_dialog.GetPath()
         parent.active_dialog.Destroy()
