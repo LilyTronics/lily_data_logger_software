@@ -6,4 +6,5 @@ disable=
     broad-exception-caught,
     too-few-public-methods,
     missing-class-docstring,
-    missing-function-docstring
+    missing-function-docstring,
+    too-many-instance-attributes
