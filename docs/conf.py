@@ -9,9 +9,6 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 # because we must comply to the sphinx naming convention
 # pylint: disable-msg=invalid-name
 
-import os
-import sys
-
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 project = 'lily-data-logger-studio-ce'
