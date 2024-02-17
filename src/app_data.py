@@ -6,7 +6,7 @@ import os
 import sys
 
 
-class AppData(object):
+class AppData:
     APP_NAME = "Lily Data Logger Studio CE"
     VERSION = "0.2"
     EXE_NAME = "LilyDataLoggerStudioCE"
