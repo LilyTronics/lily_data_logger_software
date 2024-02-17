@@ -5,7 +5,7 @@ Manages ID for various purposes
 import wx
 
 
-class IdManager(object):
+class IdManager:
 
     # View main
     ID_TOOL_OPEN_CONFIGURATION = 100
@@ -59,7 +59,8 @@ class IdManager(object):
     # View log
     ID_LOG_MESSAGES = 900
 
-    _RESERVED_WIDGET_IDS = sorted(list(map(lambda y: getattr(wx, y), filter(lambda x: x.startswith("ID_"), dir(wx)))))
+    _RESERVED_WIDGET_IDS = sorted(list(map(lambda y: getattr(wx, y),
+                                           filter(lambda x: x.startswith("ID_"), dir(wx)))))
     _WIDGET_START_ID = 100
     _WIDGET_END_ID = 32000
 
@@ -74,6 +75,8 @@ class IdManager(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_id_manager import TestIdManager
 
-    TestIdManager().run()
+    TestIdManager().run(True)
+    pylint.run_pylint([__file__])
