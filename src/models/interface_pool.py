@@ -9,7 +9,7 @@ This pool prevents creating multiple interfaces to the same port.
 import threading
 
 
-class InterfacePool(object):
+class InterfacePool:
 
     _INTERFACES = []
     _LOCK = threading.RLock()
@@ -20,8 +20,7 @@ class InterfacePool(object):
 
     @classmethod
     def create_interface(cls, interface_class, parameters):
-        try:
-            cls._LOCK.acquire()
+        with cls._LOCK:
             interface_object = None
             matches = list(filter(lambda x: isinstance(x, interface_class), cls._INTERFACES))
             if len(matches) > 0:
@@ -32,13 +31,13 @@ class InterfacePool(object):
             if interface_object is None:
                 interface_object = interface_class(**parameters)
                 cls._INTERFACES.append(interface_object)
-        finally:
-            cls._LOCK.release()
         return interface_object
 
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_interface_pool import TestInterfacePool
 
     TestInterfacePool().run(True)
+    pylint.run_pylint([__file__])
