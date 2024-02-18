@@ -7,7 +7,7 @@ import json
 import uuid
 
 
-class Configuration(object):
+class Configuration:
 
     KEY_CONTINUOUS_MODE = "continuous_mode"
     KEY_END_TIME = "end_time"
@@ -42,7 +42,8 @@ class Configuration(object):
         self._filename = "<new configuration>"
         self._is_changed = False
 
-    def __str__(self): return json.dumps(self._configuration, indent=2)
+    def __str__(self):
+        return json.dumps(self._configuration, indent=2)
 
     ###########
     # Private #
@@ -50,7 +51,8 @@ class Configuration(object):
 
     def _find_instrument(self, query):
         # Query can be a name or an ID
-        instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS])
+        instruments = self._configuration.get(self.KEY_INSTRUMENTS, self._DEFAULT_CONFIGURATION[
+            self.KEY_INSTRUMENTS])
         # Try ID first
         matches = list(filter(lambda x: x[self.KEY_ID] == query, instruments))
         if len(matches) == 0:
@@ -82,16 +84,15 @@ class Configuration(object):
     def load_from_file(self, filename):
         self._configuration = copy.deepcopy(self._DEFAULT_CONFIGURATION)
         try:
-            with open(filename, "r") as fp:
+            with open(filename, "r", encoding="utf-8") as fp:
                 self._configuration = json.load(fp)
         except json.decoder.JSONDecodeError as e:
-            raise Exception("Error reading file: {}:\n{}".format(filename, e))
-
+            raise Exception(f"Error reading file: {filename}:\n{e}") from e
         self._filename = filename
         self._is_changed = False
 
     def save_to_file(self, filename):
-        with open(filename, "w") as fp:
+        with open(filename, "w", encoding="utf-8") as fp:
             json.dump(self._configuration, fp, indent=2)
         self._filename = filename
         self._is_changed = False
@@ -108,7 +109,8 @@ class Configuration(object):
 
     def get_sample_time(self):
         return self._configuration.get(self.KEY_GENERAL, {}).get(
-            self.KEY_SAMPLE_TIME, self._DEFAULT_CONFIGURATION[self.KEY_GENERAL][self.KEY_SAMPLE_TIME])
+            self.KEY_SAMPLE_TIME, self._DEFAULT_CONFIGURATION[self.KEY_GENERAL][
+                self.KEY_SAMPLE_TIME])
 
     def set_sample_time(self, value):
         self._configuration[self.KEY_GENERAL][self.KEY_SAMPLE_TIME] = value
@@ -124,7 +126,8 @@ class Configuration(object):
 
     def get_continuous_mode(self):
         return self._configuration.get(self.KEY_GENERAL, {}).get(
-            self.KEY_CONTINUOUS_MODE, self._DEFAULT_CONFIGURATION[self.KEY_GENERAL][self.KEY_CONTINUOUS_MODE])
+            self.KEY_CONTINUOUS_MODE, self._DEFAULT_CONFIGURATION[self.KEY_GENERAL][
+                self.KEY_CONTINUOUS_MODE])
 
     def set_continuous_mode(self, value):
         self._configuration[self.KEY_GENERAL][self.KEY_CONTINUOUS_MODE] = value
@@ -136,7 +139,8 @@ class Configuration(object):
 
     def get_instruments(self):
         return copy.deepcopy(self._configuration.get(self.KEY_INSTRUMENTS,
-                                                     self._DEFAULT_CONFIGURATION[self.KEY_INSTRUMENTS]))
+                                                     self._DEFAULT_CONFIGURATION[
+                                                         self.KEY_INSTRUMENTS]))
 
     def get_instrument(self, query):
         match = self._find_instrument(query)
@@ -170,7 +174,8 @@ class Configuration(object):
     def get_used_items_for_instrument(self, name):
         used_items = []
         instrument_id = self._get_id_for_instrument(name)
-        used_items.extend(list(filter(lambda x: x[self.KEY_SETTINGS][self.KEY_INSTRUMENT_ID] == instrument_id,
+        used_items.extend(list(filter(lambda x: x[self.KEY_SETTINGS][
+                                                    self.KEY_INSTRUMENT_ID] == instrument_id,
                                self.get_measurements())))
         return used_items
 
@@ -180,7 +185,8 @@ class Configuration(object):
 
     def get_measurements(self):
         return copy.deepcopy(self._configuration.get(self.KEY_MEASUREMENTS,
-                                                     self._DEFAULT_CONFIGURATION[self.KEY_MEASUREMENTS]))
+                                                     self._DEFAULT_CONFIGURATION[
+                                                         self.KEY_MEASUREMENTS]))
 
     def get_measurement(self, name):
         match = self._find_measurement(name)
@@ -190,10 +196,12 @@ class Configuration(object):
 
     def update_measurement(self, old_name, new_name, settings):
         match = self._find_measurement(old_name)
-        settings[self.KEY_INSTRUMENT_ID] = self._get_id_for_instrument(settings[self.KEY_INSTRUMENT_ID])
+        settings[self.KEY_INSTRUMENT_ID] = self._get_id_for_instrument(settings[
+                                                                           self.KEY_INSTRUMENT_ID])
         if match is None:
             measurements = self._configuration.get(self.KEY_MEASUREMENTS,
-                                                   self._DEFAULT_CONFIGURATION[self.KEY_MEASUREMENTS])
+                                                   self._DEFAULT_CONFIGURATION[
+                                                       self.KEY_MEASUREMENTS])
             measurements.append({
                 self.KEY_NAME: new_name,
                 self.KEY_SETTINGS: settings
@@ -207,7 +215,8 @@ class Configuration(object):
         match = self._find_measurement(name)
         if match is not None:
             measurements = self._configuration.get(self.KEY_MEASUREMENTS,
-                                                   self._DEFAULT_CONFIGURATION[self.KEY_MEASUREMENTS])
+                                                   self._DEFAULT_CONFIGURATION[
+                                                       self.KEY_MEASUREMENTS])
             measurements.remove(match)
         self._is_changed = True
 
@@ -217,11 +226,14 @@ class Configuration(object):
 
     def get_process_steps(self):
         return copy.deepcopy(self._configuration.get(self.KEY_PROCESS_STEPS,
-                                                     self._DEFAULT_CONFIGURATION[self.KEY_PROCESS_STEPS]))
+                                                     self._DEFAULT_CONFIGURATION[
+                                                         self.KEY_PROCESS_STEPS]))
 
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_configuration import TestConfiguration
 
     TestConfiguration().run(True)
+    pylint.run_pylint([__file__])
