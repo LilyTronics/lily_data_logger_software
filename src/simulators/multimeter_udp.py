@@ -9,7 +9,7 @@ import threading
 from src.simulators.simulator_settings import SimulatorSettings
 
 
-class MultimeterUdp(object):
+class MultimeterUdp:
 
     _CMD_VOLTAGE_DC = b"VDC?"
     _CMD_CURRENT_DC = b"ADC?"
@@ -43,9 +43,9 @@ class MultimeterUdp(object):
                 if data.endswith(self._TERMINATOR):
                     data = data[:-1]
                     if data == self._CMD_VOLTAGE_DC == data:
-                        response = "VDC={:.3f}V".format(random.uniform(*self._VDC_RANGE))
+                        response = f"VDC={random.uniform(*self._VDC_RANGE):.3f}V"
                     elif data == self._CMD_CURRENT_DC:
-                        response = "ADC={:.3f}A".format(random.uniform(*self._ADC_RANGE))
+                        response = f"ADC={random.uniform(*self._ADC_RANGE):.3f}A"
                 sock.sendto(response.encode() + self._TERMINATOR, client_address)
             except TimeoutError:
                 pass
@@ -73,6 +73,8 @@ class MultimeterUdp(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_multimeter_udp import TestMultimeterUdp
 
     TestMultimeterUdp().run(True)
+    pylint.run_pylint([__file__])
