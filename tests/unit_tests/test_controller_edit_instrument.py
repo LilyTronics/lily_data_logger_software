@@ -12,6 +12,9 @@ from tests.unit_tests.lib.test_suite import TestSuite
 
 class TestControllerEditInstrument(TestSuite):
 
+    _app = None
+    _error = ""
+
     def setup(self):
         self._app = wx.App(redirect=False)
 
@@ -125,4 +128,7 @@ class TestControllerEditInstrument(TestSuite):
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestControllerEditInstrument().run(True)
+    pylint.run_pylint([__file__])
