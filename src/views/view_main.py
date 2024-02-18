@@ -32,7 +32,8 @@ class ViewMain(wx.Frame):
 
         lab_box = wx.BoxSizer(wx.HORIZONTAL)
         lab_box.Add(self._create_instruments_controls(panel), 20, wx.EXPAND | wx.ALL, self._GAP)
-        lab_box.Add(self._create_measurement_box(panel), 80, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, self._GAP)
+        lab_box.Add(self._create_measurement_box(panel), 80,
+                    wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, self._GAP)
 
         main_box = wx.BoxSizer(wx.VERTICAL)
         main_box.Add(self._create_toolbar(panel), 0, wx.EXPAND | wx.ALL, self._GAP)
@@ -49,18 +50,24 @@ class ViewMain(wx.Frame):
 
     def _create_toolbar(self, parent):
         tools = [
-            (IdManager.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap, "Open configuration"),
-            (IdManager.ID_TOOL_SAVE_CONFIGURATION, ImageData.save_config.Bitmap, "Save configuration"),
+            (IdManager.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap,
+             "Open configuration"),
+            (IdManager.ID_TOOL_SAVE_CONFIGURATION, ImageData.save_config.Bitmap,
+             "Save configuration"),
             (0,),
-            (IdManager.ID_TOOL_EDIT_CONFIGURATION, ImageData.settings.Bitmap, "Configuration settings"),
+            (IdManager.ID_TOOL_EDIT_CONFIGURATION, ImageData.settings.Bitmap,
+             "Configuration settings"),
             (0,),
-            (IdManager.ID_TOOL_CHECK_INSTRUMENTS, ImageData.check_instruments.Bitmap, "Check instruments"),
+            (IdManager.ID_TOOL_CHECK_INSTRUMENTS, ImageData.check_instruments.Bitmap,
+             "Check instruments"),
             (0,),
             (IdManager.ID_TOOL_START_PROCESS, ImageData.start.Bitmap, "Start"),
             (IdManager.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, "Stop"),
             (0,),
-            (IdManager.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap, "Export measurement data to CSV"),
-            (IdManager.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap, "Export instrument"),
+            (IdManager.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap,
+             "Export measurement data to CSV"),
+            (IdManager.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap,
+             "Export instrument"),
             (0,),
             (IdManager.ID_TOOL_SHOW_LOG, ImageData.show_log.Bitmap, "Show log"),
         ]
@@ -84,7 +91,8 @@ class ViewMain(wx.Frame):
         self._value_total_samples = wx.StaticText(parent, IdManager.ID_LABEL_TOTAL_SAMPLES, "-")
         lbl_elapsed_time = wx.StaticText(parent, wx.ID_ANY, "Elapsed time:")
         self._lbl_elapsed_time = wx.StaticText(parent, IdManager.ID_LABEL_ELAPSED_TIME, "-")
-        self._activity_led = wx.Panel(parent, wx.ID_ANY, size=self._LED_SIZE, style=wx.BORDER_SIMPLE)
+        self._activity_led = wx.Panel(parent, wx.ID_ANY, size=self._LED_SIZE,
+                                      style=wx.BORDER_SIMPLE)
         self._activity_led.SetBackgroundColour(self._COLOR_LED_OFF)
 
         box.Add(lbl_sample_time, 0, wx.ALL, self._GAP)
@@ -102,8 +110,9 @@ class ViewMain(wx.Frame):
     def _create_instruments_controls(self, parent):
         box = wx.StaticBoxSizer(wx.StaticBox(parent, wx.ID_ANY, " Instruments: "), wx.VERTICAL)
 
-        self._lst_instruments = wx.ListCtrl(parent, IdManager.ID_LIST_INSTRUMENTS, style=wx.LC_REPORT |
-                                            wx.LC_SORT_ASCENDING | wx.LC_SINGLE_SEL)
+        self._lst_instruments = wx.ListCtrl(parent, IdManager.ID_LIST_INSTRUMENTS,
+                                            style=wx.LC_REPORT | wx.LC_SORT_ASCENDING |
+                                                  wx.LC_SINGLE_SEL)
         self._lst_instruments.InsertColumn(0, "Name", width=self._LIST_COL_NAME_SIZE)
 
         btn_add_instrument = wx.Button(parent, IdManager.ID_BTN_ADD_INSTRUMENT, "Add")
@@ -158,7 +167,7 @@ class ViewMain(wx.Frame):
         return self._toolbar
 
     def update_configuration_filename(self, filename, is_changed):
-        title = "%s - %s" % (self._title, filename)
+        title = f"{self._title} - {filename}"
         if is_changed:
             title += " *"
         self.SetTitle(title)
@@ -224,6 +233,8 @@ class ViewMain(wx.Frame):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_controller_main import TestControllerMain
 
     TestControllerMain().run(True)
+    pylint.run_pylint([__file__])
