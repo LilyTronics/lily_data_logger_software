@@ -2,8 +2,8 @@
 Serial port interface.
 """
 
-import serial
 import time
+import serial
 import wx
 
 from src.models.interfaces.interface import Interface
@@ -34,8 +34,10 @@ class SerialPortInterface(Interface):
     _DATA_BITS = [serial.FIVEBITS, serial.SIXBITS, serial.SEVENBITS, serial.EIGHTBITS]
     _DEFAULT_DATA_BITS = serial.EIGHTBITS
 
-    def __init__(self, serial_port, baud_rate=_DEFAULT_BAUD_RATE, parity=_DEFAULT_PARITY, stop_bits=_DEFAULT_STOP_BITS,
-                 data_bits=_DEFAULT_DATA_BITS, rx_timeout=DEFAULT_TIMEOUT, tx_timeout=0):
+    # pylint: disable=too-many-arguments
+    def __init__(self, serial_port, baud_rate=_DEFAULT_BAUD_RATE, parity=_DEFAULT_PARITY,
+                 stop_bits=_DEFAULT_STOP_BITS, data_bits=_DEFAULT_DATA_BITS,
+                 rx_timeout=DEFAULT_TIMEOUT, tx_timeout=0):
         params_to_match = {
             "serial_port": serial_port
         }
@@ -43,8 +45,9 @@ class SerialPortInterface(Interface):
         if tx_timeout == 0:
             tx_timeout = rx_timeout
         self._rx_time_out = rx_timeout
-        self._serial = serial.Serial(serial_port, baudrate=int(baud_rate), parity=self._PARITY_VALUES[parity],
-                                     stopbits=float(stop_bits), bytesize=int(data_bits), write_timeout=tx_timeout)
+        self._serial = serial.Serial(serial_port, baudrate=int(baud_rate),
+                                     parity=self._PARITY_VALUES[parity], stopbits=float(stop_bits),
+                                     bytesize=int(data_bits), write_timeout=tx_timeout)
 
     def toggle_dtr(self):
         for value in (True, False, True):
@@ -83,7 +86,7 @@ class SerialPortInterface(Interface):
             "baud_rate": {
                 "label": "Baud rate",
                 "control": wx.ComboBox,
-                "data": list(map(lambda x: str(x), cls._BAUD_RATES)),
+                "data": list(map(str, cls._BAUD_RATES)),
                 "default": str(cls._DEFAULT_BAUD_RATE)
             },
             "parity": {
@@ -95,13 +98,13 @@ class SerialPortInterface(Interface):
             "stop_bits": {
                 "label": "Stop bits",
                 "control": wx.ComboBox,
-                "data": list(map(lambda x: str(x), cls._STOP_BITS)),
+                "data": list(map(str, cls._STOP_BITS)),
                 "default": str(cls._DEFAULT_STOP_BITS)
             },
             "data_bits": {
                 "label": "Data bits",
                 "control": wx.ComboBox,
-                "data": list(map(lambda x: str(x), cls._DATA_BITS)),
+                "data": list(map(str, cls._DATA_BITS)),
                 "default": str(cls._DEFAULT_DATA_BITS)
             }
         }
@@ -109,6 +112,8 @@ class SerialPortInterface(Interface):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_serial_port_interface import TestSerialPortInterface
 
-    TestSerialPortInterface().run()
+    TestSerialPortInterface().run(True)
+    pylint.run_pylint([__file__])
