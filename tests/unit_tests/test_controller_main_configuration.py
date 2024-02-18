@@ -17,16 +17,18 @@ class TestControllerMainConfiguration(TestControllerMain):
         self.sleep(0.2)
         value = self.gui.get_value_from_window(IdManager.ID_LABEL_SAMPLE_TIME)
         if value != sample_time:
-            return "The sample time does not have the correct value: '{}', expected '{}'".format(value, sample_time)
+            return ("The sample time does not have the correct value: "
+                    f"'{value}', expected '{sample_time}'")
         value = self.gui.get_value_from_window(IdManager.ID_LABEL_END_TIME)
         if value != end_time:
-            return "The end time does not have the correct value: '{}', expected '{}'".format(value, end_time)
+            return ("The end time does not have the correct value: "
+                    f"'{value}', expected '{end_time}'")
         # When continuous mode, total samples is not interesting
         if total_samples is not None:
             value = self.gui.get_value_from_window(IdManager.ID_LABEL_TOTAL_SAMPLES)
             if value != total_samples:
-                return "The total samples does not have the correct value: '{}', expected '{}'".format(
-                    value, total_samples)
+                return ("The total samples does not have the correct value: "
+                        f"'{value}', expected '{total_samples}'")
         return ""
 
     def _open_edit_configuration(self):
@@ -89,7 +91,7 @@ class TestControllerMainConfiguration(TestControllerMain):
 
     def test_open_configuration(self):
         def _test_open_configuration():
-            self.log.debug("Open configuration from file: {}".format(self.configuration_test_filename))
+            self.log.debug(f"Open configuration from file: {self.configuration_test_filename}")
             self.gui.click_toolbar_item(self.view_main, IdManager.ID_TOOL_OPEN_CONFIGURATION)
             self.log.debug("Check for open configuration dialog")
             if self.gui.wait_for_dialog(self.view_main):
@@ -121,7 +123,7 @@ class TestControllerMainConfiguration(TestControllerMain):
                 self.gui.click_button(wx.ID_OK)
                 result = self._check_configuration_values("00:00:05", "00:03:00", "37")
             if result == "":
-                self.log.debug("Save configuration to file: {}".format(filename))
+                self.log.debug(f"Save configuration to file: {filename}")
                 self.gui.click_toolbar_item(self.view_main, IdManager.ID_TOOL_SAVE_CONFIGURATION)
                 if self.gui.wait_for_dialog(self.view_main):
                     self.gui.send_text(filename)
@@ -138,12 +140,14 @@ class TestControllerMainConfiguration(TestControllerMain):
                     conf = Configuration()
                     conf.load_from_file(filename)
                     if conf.get_sample_time() != 5:
-                        result = "Sample time was not saved correct: {}, expected 5".format(conf.get_sample_time())
+                        result = (f"Sample time was not saved correct: {conf.get_sample_time()}, "
+                                  "expected 5")
                     if result == "" and conf.get_end_time() != 180:
-                        result = "End time was not saved correct: {}, expected 180".format(conf.get_end_time())
+                        result = (f"End time was not saved correct: {conf.get_end_time()}, "
+                                  "expected 180")
                     if result == "" and conf.get_continuous_mode():
-                        result = "Continuous mode was not saved correct: {}, expected False".format(
-                            conf.get_continuous_mode())
+                        result = ("Continuous mode was not saved correct: "
+                                  f"{conf.get_continuous_mode()}, expected False")
             if os.path.isfile(filename):
                 os.remove(filename)
             result += self.close_view_main(False)
@@ -154,4 +158,7 @@ class TestControllerMainConfiguration(TestControllerMain):
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestControllerMainConfiguration().run(True)
+    pylint.run_pylint([__file__])
