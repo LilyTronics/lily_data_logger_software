@@ -8,15 +8,15 @@ import os
 from src.app_data import AppData
 
 
-class Settings(object):
+class Settings:
 
     def __init__(self):
-        self._settings_file = os.path.join(AppData.USER_FOLDER,  "%s.json" % AppData.EXE_NAME)
+        self._settings_file = os.path.join(AppData.USER_FOLDER,  f"{AppData.EXE_NAME}.json")
 
     def _read_settings(self):
         d = {}
         try:
-            with open(self._settings_file, "r") as fp:
+            with open(self._settings_file, "r", encoding="utf-8") as fp:
                 d = json.load(fp)
         except FileNotFoundError:
             pass
@@ -26,7 +26,7 @@ class Settings(object):
         return d
 
     def _write_settings(self, settings):
-        with open(self._settings_file, "w") as fp:
+        with open(self._settings_file, "w", encoding="utf-8") as fp:
             json.dump(settings, fp, indent=2)
 
     def _get_property(self, main_key, sub_key, default=None):
@@ -45,14 +45,16 @@ class Settings(object):
     ########################
 
     def get_main_window_size(self):
-        return self._get_property("main_window", "width", -1), self._get_property("main_window", "height", -1)
+        return (self._get_property("main_window", "width", -1),
+                self._get_property("main_window", "height", -1))
 
     def store_main_window_size(self, width, height):
         self._store_property("main_window", "width", width)
         self._store_property("main_window", "height", height)
 
     def get_main_window_position(self):
-        return self._get_property("main_window", "left", -1), self._get_property("main_window", "top", -1)
+        return (self._get_property("main_window", "left", -1),
+                self._get_property("main_window", "top", -1))
 
     def store_main_window_position(self, left, top):
         self._store_property("main_window", "left", left)
@@ -69,14 +71,16 @@ class Settings(object):
     #######################
 
     def get_log_window_size(self):
-        return self._get_property("log_window", "width", -1), self._get_property("log_window", "height", -1)
+        return (self._get_property("log_window", "width", -1),
+                self._get_property("log_window", "height", -1))
 
     def store_log_window_size(self, width, height):
         self._store_property("log_window", "width", width)
         self._store_property("log_window", "height", height)
 
     def get_log_window_position(self):
-        return self._get_property("log_window", "left", -1), self._get_property("log_window", "top", -1)
+        return (self._get_property("log_window", "left", -1),
+                self._get_property("log_window", "top", -1))
 
     def store_log_window_position(self, left, top):
         self._store_property("log_window", "left", left)
@@ -91,6 +95,8 @@ class Settings(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_settings import TestSettings
 
-    TestSettings().run()
+    TestSettings().run(True)
+    pylint.run_pylint([__file__])
