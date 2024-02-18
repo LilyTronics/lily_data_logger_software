@@ -3,6 +3,7 @@ TCP client interface.
 """
 
 import socket
+import wx
 
 from src.models.interfaces.interface import Interface
 
@@ -27,7 +28,8 @@ class TcpClientInterface(Interface):
     def send_command(self, command, expect_response, pre_response, post_response):
         response = b""
         try:
-            self._socket = socket.create_connection((self._server_ip_address, self._server_port), self._rx_timeout)
+            self._socket = socket.create_connection((self._server_ip_address, self._server_port),
+                                                    self._rx_timeout)
         except (Exception, ):
             self.raise_connection_exception(f"{self._server_ip_address}:{self._server_port}")
 
@@ -44,9 +46,31 @@ class TcpClientInterface(Interface):
         if self._socket is not None:
             self._socket.close()
 
+    @classmethod
+    def get_settings_controls(cls):
+        return {
+            "ip_address": {
+                "label": "IP Address",
+                "control": wx.TextCtrl,
+                "default": ""
+            },
+            "ip_port": {
+                "label": "Port",
+                "control": wx.TextCtrl,
+                "default": ""
+            },
+            "rx_timeout": {
+                "label": "RX timeout",
+                "control": wx.TextCtrl,
+                "default": ""
+            }
+        }
+
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_tcp_client_interface import TestTcpClientInterface
 
     TestTcpClientInterface().run(True)
+    pylint.run_pylint([__file__])

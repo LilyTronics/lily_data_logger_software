@@ -3,7 +3,7 @@ Base class for all the interfaces.
 """
 
 
-class Interface(object):
+class Interface:
 
     def __init__(self, params_to_match):
         self._params_to_match = params_to_match
@@ -41,6 +41,8 @@ class Interface(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_interface import TestInterface
 
     TestInterface().run(True)
+    pylint.run_pylint([__file__])
