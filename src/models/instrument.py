@@ -6,7 +6,7 @@ import json
 import time
 
 
-class Instrument(object):
+class Instrument:
 
     KEY_BAUD_RATE = "baud_rate"
     KEY_CHANNELS = "channels"
@@ -49,9 +49,9 @@ class Instrument(object):
     ###########
 
     def _get_channel(self, channel_type, channel_name):
-        matches = list(filter(lambda x: x[self.KEY_TYPE] == channel_type and x[self.KEY_NAME] == channel_name,
-                              self._channel_data))
-        assert len(matches) == 1, "Channel '{}' of type {} not found".format(channel_name, channel_type)
+        matches = list(filter(lambda x: x[self.KEY_TYPE] == channel_type and
+                                        x[self.KEY_NAME] == channel_name, self._channel_data))
+        assert len(matches) == 1, f"Channel '{channel_name}' of type {channel_type} not found"
         return matches[0]
 
     def _parse_mask(self, mask, debug):
@@ -90,8 +90,8 @@ class Instrument(object):
         else:
             value = response.decode(self.BYTE_ENCODING)
         if debug:
-            print(self._DEBUG_FORMAT.format("Value", "({}) {}".format(
-                type(value), str(value).encode(self.BYTE_ENCODING))))
+            print(self._DEBUG_FORMAT.format("Value", f"({type(value)}) "
+                                                     f"{str(value).encode(self.BYTE_ENCODING)}"))
         return value
 
     def _insert_value_in_command(self, command_mask, value, debug):
@@ -101,11 +101,12 @@ class Instrument(object):
             parts = command_data[3].split(b":")
             value_type = parts[0]
             if value_type == b"float" and len(parts) > 1:
-                format_string = "{{:0.{}f}}".format(int(parts[1]))
+                format_string = f"{{:0.{int(parts[1])}f}}"
             if debug:
                 print(self._DEBUG_FORMAT.format("Format string", format_string))
             command = command_data[1]
-            command += format_string.format(self._TYPE_NAME_TO_TYPE[value_type](value)).encode(self.BYTE_ENCODING)
+            command += format_string.format(self._TYPE_NAME_TO_TYPE[value_type](value)).encode(
+                self.BYTE_ENCODING)
             command += command_data[2]
         else:
             command = command_mask
@@ -122,7 +123,7 @@ class Instrument(object):
                 print(self._DEBUG_FORMAT.format("Delay (s)", delay))
             time.sleep(delay)
             return True
-        elif command.startswith(b"interface:"):
+        if command.startswith(b"interface:"):
             parts = command.split(b":")
             command = parts[1]
             param = None
@@ -130,7 +131,7 @@ class Instrument(object):
                 param = parts[2]
             if debug:
                 print(command_output)
-                print(self._DEBUG_FORMAT.format("Interface command", "{}, {}".format(command, param)))
+                print(self._DEBUG_FORMAT.format("Interface command", f"{command}, {param}"))
             if param is None:
                 getattr(self._interface_object, command.decode(self.BYTE_ENCODING))()
             else:
@@ -165,7 +166,8 @@ class Instrument(object):
             print(self._DEBUG_FORMAT.format("Expect response", expect_response))
             print(self._DEBUG_FORMAT.format("Pre response", pre_response))
             print(self._DEBUG_FORMAT.format("Post response", post_response))
-        response = self._interface_object.send_command(command, expect_response, pre_response, post_response)
+        response = self._interface_object.send_command(command, expect_response, pre_response,
+                                                       post_response)
         if expect_response:
             response = self._parse_response(expected_response, response, debug)
         return response
@@ -191,7 +193,8 @@ class Instrument(object):
             self.KEY_INITIALIZE: self._initialize_data,
             self.KEY_CHANNELS: self._channel_data
         }
-        json.dump(output, open(filename, "w"), indent=4)
+        with open(filename, "w", encoding="utf-8") as fp:
+            json.dump(output, fp, indent=4)
 
     def get_name(self):
         return self._name
@@ -219,7 +222,7 @@ class Instrument(object):
 
     def get_value(self, channel_name, debug=False):
         if debug:
-            print("<{}>.get_value( '{}' )".format(self.get_name(), channel_name))
+            print(f"<{self.get_name()}>.get_value( '{channel_name}' )")
         channel = self._get_channel(self.TYPE_INPUT, channel_name)
         if debug:
             print(self._DEBUG_FORMAT.format("Channel", channel))
@@ -230,7 +233,7 @@ class Instrument(object):
 
     def set_value(self, channel_name, value, debug=False):
         if debug:
-            print("DEBUG: <{}>.set_value( '{}', {} )".format(self.get_name(), channel_name, value))
+            print(f"DEBUG: <{self.get_name()}>.set_value( '{channel_name}', {value} )")
         channel = self._get_channel(self.TYPE_OUTPUT, channel_name)
         if debug:
             print(self._DEBUG_FORMAT.format("Channel", channel))
@@ -242,6 +245,8 @@ class Instrument(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_instrument import TestInstrument
 
-    TestInstrument().run()
+    TestInstrument().run(True)
+    pylint.run_pylint([__file__])
