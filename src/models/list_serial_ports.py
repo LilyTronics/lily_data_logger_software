@@ -2,9 +2,9 @@
 Lists all the available serial ports on the system.
 """
 
-import serial
 import threading
 import time
+import serial
 
 from serial.tools.list_ports import comports
 
@@ -43,7 +43,10 @@ def _check_serial_port(lock_object, port_name, port_list):
 
 if __name__ == "__main__":
 
+    import pylint
+
     start = time.perf_counter()
     print(get_available_serial_ports())
     stop = time.perf_counter()
-    print("Ports detected in: {:.3f} seconds".format(stop - start))
+    print(f"Ports detected in: {(stop - start):.3f} seconds")
+    pylint.run_pylint([__file__])
