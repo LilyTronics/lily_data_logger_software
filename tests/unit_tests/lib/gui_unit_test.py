@@ -118,6 +118,7 @@ class GuiUnitTest:
 
 if __name__ == "__main__":
 
+    import pylint
     import threading
 
 
@@ -189,6 +190,7 @@ if __name__ == "__main__":
             self.Close()
             event.Skip()
 
+    # pylint: disable=too-many-statements
     def test_thread(frame):
         print("Wait for GUI to be available")
         print("Is GUI available:", GuiUnitTest.is_window_available(frame.ID_BUTTON_CLOSE))
@@ -263,3 +265,5 @@ if __name__ == "__main__":
 
     test_frame.Show()
     app.MainLoop()
+
+    pylint.run_pylint([__file__])
