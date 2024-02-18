@@ -13,6 +13,8 @@ from tests.unit_tests.lib.test_suite import TestSuite
 class TestControllerEditInstrument(TestSuite):
 
     _thread_timeout = 10
+    _app = None
+    _error = ""
 
     @staticmethod
     def _create_config(add_measurement=False):
@@ -42,6 +44,7 @@ class TestControllerEditInstrument(TestSuite):
     def setup(self):
         self._app = wx.App(redirect=False)
 
+    # pylint: disable=too-many-statements
     def test_add_measurement(self):
         def _check_for_dialog():
             if not self.gui.wait_for_dialog(ControllerEditMeasurement.get_dialog(), True):
@@ -68,7 +71,8 @@ class TestControllerEditInstrument(TestSuite):
                     _check_for_dialog()
                 if self._error == "":
                     self.log.debug("Test no measurement")
-                    self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT_INSTRUMENT, "Test instrument")
+                    self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT_INSTRUMENT,
+                                                  "Test instrument")
                     self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT, "")
                     self.gui.click_button(wx.ID_OK)
                     _check_for_dialog()
@@ -107,7 +111,8 @@ class TestControllerEditInstrument(TestSuite):
                 self.log.debug("Add measurement with same name")
                 # Use different case, should be case-insensitive
                 self.gui.set_value_in_control(IdManager.ID_MEASUREMENT_NAME, "cUrrEnT")
-                self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT_INSTRUMENT, "Test instrument")
+                self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT_INSTRUMENT,
+                                              "Test instrument")
                 self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT, "Get DC current")
                 self.gui.click_button(wx.ID_OK)
                 if not self.gui.wait_for_dialog(ControllerEditMeasurement.get_dialog(), True):
@@ -133,7 +138,8 @@ class TestControllerEditInstrument(TestSuite):
                 self.log.debug("Edit measurement")
                 if self.gui.get_value_from_window(IdManager.ID_MEASUREMENT_NAME) != "Current":
                     self._error = "the measurement name is not correct"
-                if self.gui.get_value_from_window(IdManager.ID_CMB_MEASUREMENT_INSTRUMENT) != "Test instrument":
+                if (self.gui.get_value_from_window(IdManager.ID_CMB_MEASUREMENT_INSTRUMENT) !=
+                        "Test instrument"):
                     self._error += "\nthe instrument name is not correct"
                 if self.gui.get_value_from_window(IdManager.ID_CMB_MEASUREMENT) != "Get DC current":
                     self._error += "\nthe measurement is not correct"
@@ -170,11 +176,13 @@ class TestControllerEditInstrument(TestSuite):
         self.fail_if(measurement[conf.KEY_SETTINGS][conf.KEY_OFFSET] != 2.0,
                      "the offset is not correct")
 
-
     def teardown(self):
         self._app.MainLoop()
 
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestControllerEditInstrument().run(True)
+    pylint.run_pylint([__file__])
