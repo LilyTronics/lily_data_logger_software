@@ -26,12 +26,14 @@ class ViewLogger(wx.Frame):
 
     def __init__(self, title):
         self._filename = Logger.get_filename()
-        super(ViewLogger, self).__init__(None, wx.ID_ANY, title)
+        super().__init__(None, wx.ID_ANY, title)
         self.SetIcon(wx.Icon(ImageData.show_log.Bitmap))
 
         self._txt_console = wx.TextCtrl(self, IdManager.ID_LOG_MESSAGES,
-                                        style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY | wx.TE_RICH)
-        self._txt_console.SetFont(wx.Font(9, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False))
+                                        style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY |
+                                              wx.TE_RICH)
+        self._txt_console.SetFont(wx.Font(9, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL,
+                                          wx.FONTWEIGHT_NORMAL, False))
 
         self._update_timer = wx.Timer(self)
 
@@ -41,14 +43,14 @@ class ViewLogger(wx.Frame):
         self.SetInitialSize(self._WINDOW_MIN_SIZE)
 
     def _on_update_timer(self, event):
-        with open(self._filename, "r") as fp:
+        with open(self._filename, "r", encoding="utf-8") as fp:
             lines = fp.readlines()
 
         content = self._txt_console.GetValue()
         for line in filter(lambda x: x not in content, lines):
-            for key in self._TEXT_COLORS:
-                if " | {:6} | ".format(key) in line:
-                    self._txt_console.SetDefaultStyle(wx.TextAttr(self._TEXT_COLORS[key]))
+            for key, value in self._TEXT_COLORS.items():
+                if f" | {key:6} | " in line:
+                    self._txt_console.SetDefaultStyle(wx.TextAttr(value))
                     break
             else:
                 self._txt_console.SetDefaultStyle(wx.TextAttr(self._COLOR_DEFAULT))
@@ -69,13 +71,14 @@ class ViewLogger(wx.Frame):
 
 if __name__ == "__main__":
 
+    import pylint
     import random
     import threading
     import time
 
 
     def _generate_exception():
-        _dummy = 1 / 0
+        _ = 1 / 0
 
     def _generate_messages(logger):
         logger_types = [
@@ -89,7 +92,7 @@ if __name__ == "__main__":
         while True:
             log_type = random.randint(0, len(logger_types))
             if log_type < len(logger_types):
-                logger_types[log_type]("Log message number {}".format(log_nr))
+                logger_types[log_type](f"Log message number {log_nr}")
             else:
                 et = threading.Thread(target=_generate_exception)
                 et.start()
@@ -104,10 +107,9 @@ if __name__ == "__main__":
     mt.start()
 
     app = wx.App(redirect=False)
-
     frame = ViewLogger("Test log messages")
     frame.show()
-
     app.MainLoop()
 
     log.shut_down()
+    pylint.run_pylint([__file__])
