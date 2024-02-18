@@ -15,9 +15,13 @@ from tests.unit_tests.lib.test_suite import TestSuite
 class TestControllerConfiguration(TestSuite):
 
     _tread_timeout = 10
+    _filename = os.path.join(tempfile.gettempdir(), "test_config.json")
+    _app = None
+    _error = ""
+    _total_samples = None
+    _values = None
 
     def setup(self):
-        self._filename = os.path.join(tempfile.gettempdir(), "test_config.json")
         self._app = wx.App(redirect=False)
 
     @staticmethod
@@ -42,7 +46,7 @@ class TestControllerConfiguration(TestSuite):
         elif units == "minutes":
             value *= 60
         elif units != "seconds":
-            self.fail("The units are not correct: '{}'".format(units))
+            self.fail(f"The units are not correct: '{units}'")
         return value
 
     def _get_values_from_view(self):
@@ -60,32 +64,33 @@ class TestControllerConfiguration(TestSuite):
         self.fail_if(self._values is None, 'No values from the GUI available')
         # Check the values from the GUI to the configuration values
         # Sample time with sample time units
-        sample_time = self._get_time(float(self._values["sample_time"]), self._values["sample_time_units"])
+        sample_time = self._get_time(float(self._values["sample_time"]),
+                                     self._values["sample_time_units"])
         self.fail_if(sample_time != conf.get_sample_time(),
-                     "Sample time does not have the correct value, is {} expected {}".format(
-                        sample_time, conf.get_sample_time()))
+                     "Sample time does not have the correct value, "
+                     f"is {sample_time} expected {conf.get_sample_time()}")
         # End time with end time units
         end_time = self._get_time(float(self._values["end_time"]), self._values["end_time_units"])
         self.fail_if(end_time != conf.get_end_time(),
-                     "End time does not have the correct value, is {} expected {}".format(
-                         end_time, conf.get_end_time()))
+                     "End time does not have the correct value, "
+                     f"is {end_time} expected {conf.get_end_time()}")
         # Continuous mode
         self.fail_if(self._values["is_continuous"] != conf.get_continuous_mode(),
-                     "Continuous mode does not have the correct value, is {} expected {}".format(
-                         self._values["is_continuous"], conf.get_continuous_mode()))
+                     "Continuous mode does not have the correct value, "
+                     f"is {self._values["is_continuous"]} expected {conf.get_continuous_mode()}")
         # Fixed mode
         self.fail_if(self._values["is_fixed"] == conf.get_continuous_mode(),
-                     "Fixed edn time mode does not have the correct value, is {} expected {}".format(
-                         self._values["is_fixed"], not conf.get_continuous_mode()))
+                     "Fixed edn time mode does not have the correct value, "
+                     f"is {self._values["is_fixed"]} expected {not conf.get_continuous_mode()}")
         # Total samples, only with fixed end time
         if self._values["is_fixed"]:
             total_samples = int(end_time / sample_time) + 1
             self.fail_if(int(self._values["total_samples"]) != total_samples,
-                         "Total samples does not have the correct value, is {} expected {}".format(
-                             self._values["total_samples"], total_samples))
+                         "Total samples does not have the correct value, "
+                         f"is {self._values["total_samples"]} expected {total_samples}")
         else:
             self.fail_if(self._values["total_samples"] != "-",
-                         "Total samples should be '-', but is {}".format(self._values["total_samples"]))
+                         f"Total samples should be '-', but is {self._values["total_samples"]}")
 
     def test_show_edit_configuration(self):
         def _test_show_edit_configuration():
@@ -105,7 +110,7 @@ class TestControllerConfiguration(TestSuite):
         def _test_edit_time_values(time_value):
             if self.gui.wait_until_window_available(IdManager.ID_SAMPLE_TIME):
                 time_value, units = self._convert_seconds_to_time(time_value)
-                self.log.debug("Set time values to {} {}".format(time_value, units))
+                self.log.debug(f"Set time values to {time_value} {units}")
                 self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME, str(time_value))
                 self.gui.set_value_in_control(IdManager.ID_SAMPLE_TIME_UNITS, units)
                 self.gui.set_value_in_control(IdManager.ID_END_TIME, str(time_value))
@@ -119,13 +124,15 @@ class TestControllerConfiguration(TestSuite):
             ControllerConfiguration.edit_configuration(None, conf, self.log)
             self.wait_for(t.is_alive, False, self._tread_timeout, 0.1)
             self.fail_if(test_value != conf.get_sample_time(),
-                         "The sample time is not correct, is {} expected {}".format(conf.get_sample_time(), test_value))
+                         "The sample time is not correct, "
+                         f"is {conf.get_sample_time()} expected {test_value}")
             self.fail_if(test_value != conf.get_end_time(),
-                         "The end time is not correct, is {} expected {}".format(conf.get_end_time(), test_value))
+                         "The end time is not correct, "
+                         f"is {conf.get_end_time()} expected {test_value}")
 
     def test_edit_continuous_mode(self):
         def _test_edit_continuous_mode(test_mode):
-            self.log.debug("Set continuous mode to {}".format(test_mode))
+            self.log.debug(f"Set continuous mode to {test_mode}")
             if self.gui.wait_until_window_available(IdManager.ID_CONTINUOUS):
                 if test_mode:
                     self.gui.select_radio_button(IdManager.ID_CONTINUOUS)
@@ -135,7 +142,8 @@ class TestControllerConfiguration(TestSuite):
                 t = 1
                 while t > 0:
                     self._total_samples = self.gui.get_value_from_window(IdManager.ID_TOTAL_SAMPLES)
-                    if test_mode and self._total_samples == '-' or not test_mode and self._total_samples != '-':
+                    if (test_mode and self._total_samples == '-' or not test_mode and
+                            self._total_samples != '-'):
                         break
                     self.sleep(0.1)
                     t -= 0.1
@@ -148,13 +156,14 @@ class TestControllerConfiguration(TestSuite):
             ControllerConfiguration.edit_configuration(None, conf, self.log)
             self.wait_for(t.is_alive, False, self._tread_timeout, 0.1)
             self.fail_if(conf.get_continuous_mode() != mode,
-                         "Continuous mode is not correct, is {} should be {}".format(conf.get_continuous_mode(), mode))
+                         "Continuous mode is not correct, "
+                         f"is {conf.get_continuous_mode()} should be {mode}")
             if mode:
                 self.fail_if(self._total_samples != "-",
-                             "Total samples should be '-', but got '{}'".format(self._total_samples))
+                             f"Total samples should be '-', but got '{self._total_samples}'")
             else:
                 self.fail_if(self._total_samples == "-",
-                             "Total samples should be a number, but got '{}'".format(self._total_samples))
+                             "Total samples should be a number, but got '{self._total_samples}'")
 
     def test_configuration_is_changed(self):
         def _test_configuration_is_changed(test, frame):
@@ -212,7 +221,7 @@ class TestControllerConfiguration(TestSuite):
             if not self.gui.wait_for_dialog(frame):
                 self._error = "No dialog was shown when expected"
                 return
-            self.log.debug("Save configuration to {}".format(self._filename))
+            self.log.debug(f"Save configuration to {self._filename}")
             self.gui.send_text(self._filename)
             self.gui.send_key_press(self.gui.KEY_ENTER)
 
@@ -233,7 +242,7 @@ class TestControllerConfiguration(TestSuite):
             if not self.gui.wait_for_dialog(frame):
                 self._error = "No dialog was shown when expected"
                 return
-            self.log.debug("Load configuration from {}".format(self._filename))
+            self.log.debug(f"Load configuration from {self._filename}")
             self.gui.send_text(self._filename)
             self.gui.send_key_press(self.gui.KEY_ENTER)
 
@@ -257,4 +266,7 @@ class TestControllerConfiguration(TestSuite):
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestControllerConfiguration().run(True)
+    pylint.run_pylint([__file__])
