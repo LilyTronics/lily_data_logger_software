@@ -3,7 +3,7 @@ Module with time converter functions.
 """
 
 
-class TimeConverter(object):
+class TimeConverter:
 
     TIME_UNIT_TO_FACTOR = {"seconds": 1, "minutes": 60, "hours": 3600, "days": 86400}
     TIME_UNITS = list(TIME_UNIT_TO_FACTOR.keys())
@@ -15,8 +15,8 @@ class TimeConverter(object):
         h, m = divmod(m, 60)
         output = ""
         if d > 0:
-            output = "{} days, ".format(d)
-        output += "{:02}:{:02}:{:02}".format(h, m, s)
+            output = f"{d} days, "
+        output += f"{h:02}:{m:02}:{s:02}"
         return output
 
     @classmethod
@@ -25,7 +25,8 @@ class TimeConverter(object):
         for factor in sorted(cls.TIME_UNIT_TO_FACTOR.values(), reverse=True):
             if seconds % factor == 0:
                 break
-        unit = list(cls.TIME_UNIT_TO_FACTOR.keys())[list(cls.TIME_UNIT_TO_FACTOR.values()).index(factor)]
+        unit = list(cls.TIME_UNIT_TO_FACTOR.keys())[list(
+            cls.TIME_UNIT_TO_FACTOR.values()).index(factor)]
         return int(seconds / factor), unit
 
     @classmethod
@@ -39,6 +40,8 @@ class TimeConverter(object):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_time_converter import TestTimeConverter
 
     TestTimeConverter().run(True)
+    pylint.run_pylint([__file__])
