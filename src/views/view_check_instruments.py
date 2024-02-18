@@ -19,10 +19,11 @@ class ViewCheckInstruments(wx.Dialog):
     }
 
     def __init__(self, parent):
-        super(ViewCheckInstruments, self).__init__(parent, wx.ID_ANY, "Check instruments")
+        super().__init__(parent, wx.ID_ANY, "Check instruments")
         self.active_dialog = None
 
-        self._lst_instruments = wx.ListCtrl(self, wx.ID_ANY, style=wx.LC_REPORT | wx.LC_SORT_ASCENDING |
+        self._lst_instruments = wx.ListCtrl(self, wx.ID_ANY,
+                                            style=wx.LC_REPORT |wx.LC_SORT_ASCENDING |
                                             wx.LC_VRULES | wx.LC_HRULES)
         self._lst_instruments.InsertColumn(0, "Name", width=self._LIST_COL_NAME_SIZE)
         self._lst_instruments.InsertColumn(1, "Status", width=self._LIST_COL_STATUS_SIZE)
@@ -68,6 +69,8 @@ class ViewCheckInstruments(wx.Dialog):
 
 if __name__ == "__main__":
 
+    import pylint
     from tests.unit_tests.test_controller_check_instruments import TestControllerCheckInstrument
 
-    TestControllerCheckInstrument().run()
+    TestControllerCheckInstrument().run(True)
+    pylint.run_pylint([__file__])
