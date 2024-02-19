@@ -8,6 +8,7 @@ from src.models.id_manager import IdManager
 from src.views.view_dialogs import ViewDialogs
 
 
+# pylint: disable=too-many-instance-attributes
 class ViewEditMeasurement(wx.Dialog):
 
     _GAP = 5

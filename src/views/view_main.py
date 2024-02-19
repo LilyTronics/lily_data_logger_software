@@ -9,6 +9,7 @@ from src.models.image_data import ImageData
 from src.models.time_converter import TimeConverter
 
 
+# pylint: disable=too-many-instance-attributes
 class ViewMain(wx.Frame):
 
     _GAP = 5
