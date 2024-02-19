@@ -21,16 +21,16 @@ class TestSerialPortInterface(TestSuite):
         ports = get_available_serial_ports()
         self.fail_if(len(ports) == 0, "No serial ports available")
         port = get_serial_loopback_port(ports)
-        self.log.info("Loopback found on port: {}".format(port))
+        self.log.info(f"Loopback found on port: {port}")
         self._serial = SerialPortInterface(port, rx_timeout=self._RX_TIMEOUT)
 
     def test_send_command(self):
         response = self._serial.send_command(self._TEST_COMMAND, True, b"", b"\n")
-        self.fail_if(self._TEST_COMMAND != response, "Invalid response received: {}".format(response))
+        self.fail_if(self._TEST_COMMAND != response, f"Invalid response received: {response}")
 
     def test_no_response(self):
         response = self._serial.send_command(self._TEST_COMMAND, False, b"", b"")
-        self.fail_if(response != b"", "Invalid response received: {}".format(response))
+        self.fail_if(response != b"", f"Invalid response received: {response}")
 
     def teardown(self):
         if self._serial is not None:
@@ -39,4 +39,7 @@ class TestSerialPortInterface(TestSuite):
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestSerialPortInterface().run()
+    pylint.run_pylint([__file__])
