@@ -15,7 +15,8 @@ class TestControllerMainLogViewer(TestControllerMain):
 
     @staticmethod
     def _get_log_view_object():
-        matches = list(filter(lambda x: x.__class__.__name__ == "ViewLogger", wx.GetTopLevelWindows()))
+        matches = list(filter(lambda x: x.__class__.__name__ == "ViewLogger",
+                              wx.GetTopLevelWindows()))
         if len(matches) == 1:
             return matches[0]
         return None
@@ -59,4 +60,7 @@ class TestControllerMainLogViewer(TestControllerMain):
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestControllerMainLogViewer().run(True)
+    pylint.run_pylint([__file__])
