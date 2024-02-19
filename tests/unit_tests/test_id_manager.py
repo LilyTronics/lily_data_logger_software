@@ -19,12 +19,17 @@ class TestIdManager(TestSuite):
     def test_ids(self):
         values = []
         self.log.debug("Test if IDs are valid")
-        for value in map(lambda x: getattr(IdManager, x), filter(lambda x: x.startswith("ID_"), dir(IdManager))):
-            self.fail_if(value in IdManager.get_reserved_widgets_ids(), "The value is used in the reserved widgets")
-            self.fail_if(value in values, "The value {} is already used".format(value))
+        for value in map(lambda x: getattr(IdManager, x), filter(lambda x: x.startswith("ID_"),
+                                                                 dir(IdManager))):
+            self.fail_if(value in IdManager.get_reserved_widgets_ids(),
+                         "The value is used in the reserved widgets")
+            self.fail_if(value in values, f"The value {value} is already used")
             values.append(value)
 
 
 if __name__ == "__main__":
 
-    TestIdManager().run()
+    import pylint
+
+    TestIdManager().run(True)
+    pylint.run_pylint([__file__])
