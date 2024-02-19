@@ -51,7 +51,8 @@ class TestControllerMainEditInstrument(TestControllerMain):
                     result += "\nThe edit instrument dialog did not appear"
                 else:
                     self.log.debug("Change name")
-                    self.gui.set_value_in_control(IdManager.ID_INSTRUMENT_NAME, "New instrument name")
+                    self.gui.set_value_in_control(IdManager.ID_INSTRUMENT_NAME,
+                                                  "New instrument name")
                     self.gui.click_button(wx.ID_OK)
                     if not self.wait_for(_get_item_text, "New instrument name", 1, 0.1):
                         result += "\nWrong instrument name in the list"
@@ -99,4 +100,7 @@ class TestControllerMainEditInstrument(TestControllerMain):
 
 if __name__ == "__main__":
 
-    TestControllerMainEditInstrument().run()
+    import pylint
+
+    TestControllerMainEditInstrument().run(True)
+    pylint.run_pylint([__file__])
