@@ -136,48 +136,50 @@ class TestInstrument(TestSuite):
         instrument = Instrument({})
         self.log.debug("Check default name")
         self.fail_if(instrument.get_name() != instrument.DEFAULT_NAME,
-                     "The default name is not correct '{}'".format(instrument.get_name()))
+                     f"The default name is not correct '{instrument.get_name()}'")
         self.log.debug("Check default info")
         self.fail_if(instrument.get_info() != instrument.DEFAULT_INFO,
-                     "The default info is not correct '{}'".format(instrument.get_info()))
+                     f"The default info is not correct '{instrument.get_info()}'")
         self.log.debug("Check default interface type")
         self.fail_if(instrument.get_interface_type() is not None,
-                     "The default interface type is not correct '{}'".format(instrument.get_interface_type()))
+                     "The default interface type is not correct "
+                     f"'{instrument.get_interface_type()}'")
         self.log.debug("Check default interface settings")
         self.fail_if(instrument.get_interface_settings() != {},
-                     "The default interface settings is not correct '{}'".format(instrument.get_interface_settings()))
+                     "The default interface settings is not correct "
+                     f"'{instrument.get_interface_settings()}'")
 
     def test_instrument_data(self):
         instrument = Instrument(self.instrument_data)
         self.log.debug("Check name")
         self.fail_if(instrument.get_name() != "Test instrument",
-                     "The name is not correct '{}'".format(instrument.get_name()))
+                     f"The name is not correct '{instrument.get_name()}'")
         self.log.debug("Check info")
         self.fail_if(instrument.get_info() != "Instrument for testing the model",
-                     "The info is not correct '{}'".format(instrument.get_name()))
+                     f"The info is not correct '{instrument.get_name()}'")
         self.log.debug("Check interface")
         self.fail_if(instrument.get_interface_type() != "test interface",
-                     "The interface type is not correct '{}'".format(instrument.get_interface_type()))
+                     f"The interface type is not correct '{instrument.get_interface_type()}'")
 
     def test_float_input(self):
         instrument = self._create_instrument()
         self.log.debug("Test float input")
         value = instrument.get_value("get float")
-        self.fail_if(type(value) is not float, "Value is not type float")
+        self.fail_if(not isinstance(value, float), "Value is not type float")
         self.fail_if(value != 5.03, "Value is not correct")
 
     def test_int_input(self):
         instrument = self._create_instrument()
         self.log.debug("Test int input")
         value = instrument.get_value("get int")
-        self.fail_if(type(value) is not int, "Value is not type int")
+        self.fail_if(not isinstance(value, int), "Value is not type int")
         self.fail_if(value != 12, "Value is not correct")
 
     def test_str_input(self):
         instrument = self._create_instrument()
         self.log.debug("Test str input")
         value = instrument.get_value("get str")
-        self.fail_if(type(value) is not str, "Value is not type str")
+        self.fail_if(not isinstance(value, str), "Value is not type str")
         self.fail_if(value != "test instrument", "Value is not correct")
 
     def test_float_output(self):
@@ -242,7 +244,7 @@ class TestInterface(Interface):
         super().__init__({})
 
     def send_command(self, command, expect_response=True, pre_response=b"", post_response=b""):
-        assert command in self._COMMAND_TO_RESPONSE.keys(), "Unknown command '{}'".format(command)
+        assert command in self._COMMAND_TO_RESPONSE, f"Unknown command '{command}'"
         if expect_response and (pre_response != b"" or post_response != b""):
             response = self._COMMAND_TO_RESPONSE[command]
             if response.startswith(pre_response) and response.endswith(post_response):
@@ -251,9 +253,19 @@ class TestInterface(Interface):
 
     @staticmethod
     def custom_command(param):
-        print("Custom command with param {}".format(param))
+        print(f"Custom command with param {param}")
+
+    def close(self):
+        pass
+
+    @classmethod
+    def get_settings_controls(cls):
+        pass
 
 
 if __name__ == "__main__":
 
-    TestInstrument().run()
+    import pylint
+
+    TestInstrument().run(True)
+    pylint.run_pylint([__file__])
