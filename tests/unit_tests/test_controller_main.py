@@ -28,7 +28,7 @@ class TestControllerMain(TestSuite):
         self._error = "View main did not load"
         return False
 
-    def show_view_main(self, test_function_to_run):
+    def show_view_main(self, test_function_to_run, load_test_configuration=False):
         def _test_thread(test_function):
             if self._wait_until_view_main_available():
                 if self.gui.is_window_available(IdManager.ID_LABEL_ELAPSED_TIME):
@@ -42,7 +42,7 @@ class TestControllerMain(TestSuite):
         t = self.start_thread(_test_thread, (test_function_to_run, ))
         self.logger = Logger(redirect_stdout=False)
         app = wx.App(redirect=False)
-        controller = ControllerMain("ControllerMain Test", self.logger, True)
+        controller = ControllerMain("ControllerMain Test", self.logger, load_test_configuration)
         self.view_main = controller.get_view_main()
         app.MainLoop()
         self.wait_for(t.is_alive, False, self._thread_time_out, 0.1)
@@ -78,7 +78,7 @@ class TestControllerMain(TestSuite):
         def _test_show_view_main():
             return ""
 
-        self.show_view_main(_test_show_view_main)
+        self.show_view_main(_test_show_view_main, True)
 
 
 if __name__ == "__main__":
