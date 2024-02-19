@@ -1,10 +1,13 @@
 [MESSAGES CONTROL]
 disable=
-    no-member,
-    cyclic-import,
     broad-exception-raised,
     broad-exception-caught,
     too-few-public-methods,
     missing-class-docstring,
     missing-function-docstring,
-    too-many-instance-attributes
+
+    # pylint does not understand the test code construction is not a cyclic import
+    cyclic-import,
+
+    # Something to fix later
+    duplicate-code
