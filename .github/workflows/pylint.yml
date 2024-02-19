@@ -23,4 +23,4 @@ jobs:
         pip install pyserial
     - name: Analysing the code with pylint
       run: |
-        pylint --ignore-modules=wx $(git ls-files '*.py')
+        pylint --ignored-modules=wx $(git ls-files '*.py')
