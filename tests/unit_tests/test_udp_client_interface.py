@@ -22,6 +22,7 @@ class TestUdpClientInterface(TestSuite):
     _socket = None
     _stop_event = None
     _thread = None
+    _client = None
 
     def _start_server(self):
         def _process_data():
@@ -48,25 +49,27 @@ class TestUdpClientInterface(TestSuite):
         try:
             self._client.send_command(self._TEST_DATA, True, b"", b"")
         except Exception as e:
-            self.log.debug("Error message: {}".format(e))
+            self.log.debug(f"Error message: {e}")
             if str(e).startswith("Could not connect to "):
                 result = True
             else:
-                self.log.error("Invalid error message, expect to start with: 'Could not connect to'")
+                self.log.error("Invalid error message, expect to start with: "
+                               "'Could not connect to'")
         return result
 
     def test_server_running(self):
         self._start_server()
         response = self._client.send_command(self._TEST_DATA, True, b"", b"")
-        self.log.debug("Response: {}".format(response))
-        self.fail_if(response != self._TEST_DATA, "Invalid response received, expected: '{}'".format(self._TEST_DATA))
+        self.log.debug(f"Response: {response}")
+        self.fail_if(response != self._TEST_DATA,
+                     f"Invalid response received, expected: '{self._TEST_DATA}'")
 
     def test_timeout(self):
         result = False
         try:
             self._client.send_command(self._TEST_TIMEOUT_DATA, True, b"", b"")
         except Exception as e:
-            self.log.debug("Error message: {}".format(e))
+            self.log.debug(f"Error message: {e}")
             if str(e) == "Error receiver timeout":
                 result = True
             else:
@@ -74,13 +77,19 @@ class TestUdpClientInterface(TestSuite):
         return result
 
     def teardown(self):
-        if None not in (self._socket, self._stop_event, self._thread):
+        if self._stop_event is not None:
             self._stop_event.set()
+        if self._thread is not None:
             self._thread.join()
+        if self._socket is not None:
             self._socket.close()
-        self._client.close()
+        if self._client is not None:
+            self._client.close()
 
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestUdpClientInterface().run()
+    pylint.run_pylint([__file__])
