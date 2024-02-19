@@ -36,7 +36,8 @@ class TestControllerMainEditMeasurement(TestControllerMain):
             else:
                 self.log.debug("Add measurement")
                 self.gui.set_value_in_control(IdManager.ID_MEASUREMENT_NAME, "Voltage")
-                self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT_INSTRUMENT, "Test instrument")
+                self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT_INSTRUMENT,
+                                              "Test instrument")
                 combo = self.gui.get_window(IdManager.ID_CMB_MEASUREMENT)
                 self.wait_for(combo.GetCount, 2, 1, 0.1)
                 self.gui.set_value_in_control(IdManager.ID_CMB_MEASUREMENT, "Get DC voltage")
@@ -67,7 +68,8 @@ class TestControllerMainEditMeasurement(TestControllerMain):
                 self.log.debug("Edit measurement")
                 grid_control = self.gui.get_window(IdManager.ID_GRID_MEASUREMENTS)
                 grid_control.SelectCol(1)
-                self.gui.post_event(grid_control, wx.grid.wxEVT_GRID_LABEL_LEFT_DCLICK, grid_control.GetId())
+                self.gui.post_event(grid_control, wx.grid.wxEVT_GRID_LABEL_LEFT_DCLICK,
+                                    grid_control.GetId())
                 if not self.gui.wait_until_window_available(IdManager.ID_OFFSET):
                     result += "\nThe edit measurement dialog did not appear"
                 else:
@@ -105,4 +107,7 @@ class TestControllerMainEditMeasurement(TestControllerMain):
 
 if __name__ == "__main__":
 
-    TestControllerMainEditMeasurement().run()
+    import pylint
+
+    TestControllerMainEditMeasurement().run(True)
+    pylint.run_pylint([__file__])
