@@ -27,8 +27,8 @@ class TestTimeConverter(TestSuite):
             (345600, (4, "days")),
         ]
         for test_value in test_values:
-            self.fail_if(TimeConverter.convert_seconds_to_time_with_unit(test_value[0]) != test_value[1],
-                         "Time value is incorrect")
+            self.fail_if(TimeConverter.convert_seconds_to_time_with_unit(test_value[0]) !=
+                         test_value[1], "Time value is incorrect")
 
     def test_convert_time_with_unit_to_seconds(self):
         test_values = [
@@ -40,10 +40,13 @@ class TestTimeConverter(TestSuite):
             ((2, "days"), 172800),
         ]
         for test_value in test_values:
-            self.fail_if(TimeConverter.convert_time_with_unit_to_seconds(*test_value[0]) != test_value[1],
-                         "Time value is incorrect")
+            self.fail_if(TimeConverter.convert_time_with_unit_to_seconds(*test_value[0]) !=
+                         test_value[1], "Time value is incorrect")
 
 
 if __name__ == "__main__":
 
+    import pylint
+
     TestTimeConverter().run(True)
+    pylint.run_pylint([__file__])
