@@ -14,16 +14,20 @@ from src.models.settings import Settings
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
 from src.simulators import Simulators
+from tests.test_environment.test_configuration import TestConfiguration
 
 
 class ControllerMain:
 
-    def __init__(self, view_title, logger):
+    def __init__(self, view_title, logger, load_test_configuration=False):
         self._logger = logger
         self._logger.info("Load main controller")
 
         self._settings = Settings()
-        self._configuration = Configuration()
+        if load_test_configuration:
+            self._configuration = TestConfiguration(True, True)
+        else:
+            self._configuration = Configuration()
         self._elapsed_time = 0
 
         self._main_view = self._initialize_main_view(view_title)
