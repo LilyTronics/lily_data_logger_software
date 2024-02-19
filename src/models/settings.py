@@ -11,12 +11,16 @@ from src.app_data import AppData
 class Settings:
 
     def __init__(self):
-        self._settings_file = os.path.join(AppData.USER_FOLDER,  f"{AppData.EXE_NAME}.json")
+        self._filename = os.path.join(AppData.USER_FOLDER,  f"{AppData.EXE_NAME}.json")
+
+    ###########
+    # Private #
+    ###########
 
     def _read_settings(self):
         d = {}
         try:
-            with open(self._settings_file, "r", encoding="utf-8") as fp:
+            with open(self._filename, "r", encoding="utf-8") as fp:
                 d = json.load(fp)
         except FileNotFoundError:
             pass
@@ -26,7 +30,7 @@ class Settings:
         return d
 
     def _write_settings(self, settings):
-        with open(self._settings_file, "w", encoding="utf-8") as fp:
+        with open(self._filename, "w", encoding="utf-8") as fp:
             json.dump(settings, fp, indent=2)
 
     def _get_property(self, main_key, sub_key, default=None):
@@ -39,6 +43,13 @@ class Settings:
             d[main_key] = {}
         d[main_key][sub_key] = value
         self._write_settings(d)
+
+    ##########
+    # Public #
+    ##########
+
+    def get_filename(self):
+        return self._filename
 
     ########################
     # Main window settings #
