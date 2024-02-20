@@ -79,6 +79,22 @@ class TestInterfacePool(TestSuite):
                 self.fail_if(interface_object1 is not interface_object2,
                              "A new interface object is created for the same address")
 
+    def test_clear_interfaces(self):
+        ip_address = "1.2.3.4"
+        ip_port = 17000
+        self.log.debug("Create UDP interface")
+        interface_object1 = InterfacePool.create_interface(UdpClientInterface.NAME,
+                                                           {"ip_address": ip_address,
+                                                            "ip_port": ip_port})
+        self.log.debug("Clear interfaces")
+        InterfacePool.clear_interfaces()
+        self.log.debug("Create new UDP interface")
+        interface_object2 = InterfacePool.create_interface(UdpClientInterface.NAME,
+                                                           {"ip_address": ip_address,
+                                                            "ip_port": ip_port})
+        self.fail_if(interface_object1 is interface_object2,
+                     "There was not a new interface created")
+
 
 if __name__ == "__main__":
 

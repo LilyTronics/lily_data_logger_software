@@ -36,6 +36,10 @@ class InterfacePool:
                 cls._INTERFACES.append(interface_object)
         return interface_object
 
+    @classmethod
+    def clear_interfaces(cls):
+        cls._INTERFACES.clear()
+
 
 if __name__ == "__main__":
 
