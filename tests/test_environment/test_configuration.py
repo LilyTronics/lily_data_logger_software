@@ -38,7 +38,7 @@ class TestConfiguration(Configuration):
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_test_configuration import TestTestConfiguration
+    from tests.unit_tests.test_models.test_test_configuration import TestTestConfiguration
 
     TestTestConfiguration().run(True)
     pylint.run_pylint([__file__])

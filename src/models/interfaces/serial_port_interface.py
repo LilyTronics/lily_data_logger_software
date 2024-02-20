@@ -113,7 +113,7 @@ class SerialPortInterface(Interface):
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_serial_port_interface import TestSerialPortInterface
+    from tests.unit_tests.test_instruments.test_serial_port_interface import TestSerialPortInterface
 
     TestSerialPortInterface().run(True)
     pylint.run_pylint([__file__])

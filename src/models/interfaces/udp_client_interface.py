@@ -65,7 +65,7 @@ class UdpClientInterface(Interface):
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_udp_client_interface import TestUdpClientInterface
+    from tests.unit_tests.test_models.test_udp_client_interface import TestUdpClientInterface
 
     TestUdpClientInterface().run(True)
     pylint.run_pylint([__file__])

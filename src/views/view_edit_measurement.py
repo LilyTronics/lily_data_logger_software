@@ -156,7 +156,7 @@ class ViewEditMeasurement(wx.Dialog):
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_controller_edit_measurement import TestControllerEditInstrument
+    from tests.unit_tests.test_gui.test_controller_edit_measurement import TestControllerEditInstrument
 
     TestControllerEditInstrument().run(True)
     pylint.run_pylint([__file__])

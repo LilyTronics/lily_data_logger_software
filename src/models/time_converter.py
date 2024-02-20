@@ -41,7 +41,7 @@ class TimeConverter:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_time_converter import TestTimeConverter
+    from tests.unit_tests.test_models.test_time_converter import TestTimeConverter
 
     TestTimeConverter().run(True)
     pylint.run_pylint([__file__])

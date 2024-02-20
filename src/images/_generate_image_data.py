@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     # We must import after generating the model.
     # If the model contains errors, we can always generate a new one.
-    from tests.unit_tests.test_image_data import TestImageData
+    from tests.unit_tests.test_models.test_image_data import TestImageData
 
     TestImageData().run(True)
     pylint.run_pylint([__file__])

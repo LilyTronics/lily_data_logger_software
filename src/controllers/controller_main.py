@@ -210,7 +210,7 @@ class ControllerMain:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_controller_main import TestControllerMain
+    from tests.unit_tests.test_gui.test_controller_main import TestControllerMain
 
     TestControllerMain().run(True)
     pylint.run_pylint([__file__])

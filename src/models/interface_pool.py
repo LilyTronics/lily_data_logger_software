@@ -44,7 +44,7 @@ class InterfacePool:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_interface_pool import TestInterfacePool
+    from tests.unit_tests.test_models.test_interface_pool import TestInterfacePool
 
     TestInterfacePool().run(True)
     pylint.run_pylint([__file__])

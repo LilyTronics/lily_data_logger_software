@@ -331,7 +331,7 @@ arduino_daq = Instrument({
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_arduino_daq import TestArduinoDAQ
+    from tests.unit_tests.test_instruments.test_arduino_daq import TestArduinoDAQ
 
     TestArduinoDAQ().run(True)
     pylint.run_pylint([__file__])

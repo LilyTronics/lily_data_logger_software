@@ -41,7 +41,7 @@ class InstrumentPool:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_instrument_pool import TestInstrumentPool
+    from tests.unit_tests.test_models.test_instrument_pool import TestInstrumentPool
 
     TestInstrumentPool().run(True)
     pylint.run_pylint([__file__])

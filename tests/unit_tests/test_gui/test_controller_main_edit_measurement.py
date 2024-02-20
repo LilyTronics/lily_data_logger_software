@@ -5,7 +5,7 @@ Test edit instrument for the main controller.
 import wx.grid
 
 from src.models.id_manager import IdManager
-from tests.unit_tests.test_controller_main import TestControllerMain
+from tests.unit_tests.test_gui.test_controller_main import TestControllerMain
 
 
 class TestControllerMainEditMeasurement(TestControllerMain):

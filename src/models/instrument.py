@@ -246,7 +246,7 @@ class Instrument:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_instrument import TestInstrument
+    from tests.unit_tests.test_models.test_instrument import TestInstrument
 
     TestInstrument().run(True)
     pylint.run_pylint([__file__])

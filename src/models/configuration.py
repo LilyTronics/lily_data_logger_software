@@ -233,7 +233,7 @@ class Configuration:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_configuration import TestConfiguration
+    from tests.unit_tests.test_models.test_configuration import TestConfiguration
 
     TestConfiguration().run(True)
     pylint.run_pylint([__file__])

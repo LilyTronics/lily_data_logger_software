@@ -76,7 +76,7 @@ class IdManager:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_id_manager import TestIdManager
+    from tests.unit_tests.test_models.test_id_manager import TestIdManager
 
     TestIdManager().run(True)
     pylint.run_pylint([__file__])

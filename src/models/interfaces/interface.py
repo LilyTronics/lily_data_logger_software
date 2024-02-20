@@ -42,7 +42,7 @@ class Interface:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_interface import TestInterface
+    from tests.unit_tests.test_models.test_interface import TestInterface
 
     TestInterface().run(True)
     pylint.run_pylint([__file__])

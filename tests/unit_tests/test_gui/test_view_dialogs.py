@@ -29,7 +29,7 @@ class TestViewDialogs(TestSuite):
         self._test_frame = self.TestFrame()
         self._title = "Test dialogs"
         self._error = ""
-        self._test_filename = os.path.abspath(glob.glob(os.path.join(".", "*.py"))[0])
+        self._test_filename = os.path.abspath(glob.glob(os.path.join("..", "*.py"))[0])
         print(self._test_filename)
 
     def _check_dialog(self, test_id):
