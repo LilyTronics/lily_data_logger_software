@@ -31,24 +31,25 @@ class ControllerCheckInstruments:
         if len(instruments) == 0:
             return
         self._view.active_dialog = wx.ProgressDialog("Checking instruments", " ", len(instruments),
-                                                     self._view, wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+                                                     self._view, wx.PD_CAN_ABORT | wx.PD_APP_MODAL |
+                                                     wx.PD_AUTO_HIDE)
         i = 0
         t = None
         while i < len(instruments):
-            instrument_name = instruments[i][self._config.KEY_NAME]
-            message = f"Checking instrument: '{instrument_name}' . . ."
-            do_continue, _ = self._view.active_dialog.Update(i, message)
-            if not do_continue:
-                break
-            wx.MilliSleep(100)
             if t is None:
+                instrument_name = instruments[i][self._config.KEY_NAME]
+                message = f"Checking instrument: '{instrument_name}' . . ."
+                self._view.active_dialog.Update(i, message)
                 t = threading.Thread(target=self._check_instrument, args=(instrument_name, ))
                 t.daemon = True
                 t.start()
-            else:
-                if not t.is_alive():
-                    t = None
-                    i += 1
+            elif not t.is_alive():
+                t = None
+                i += 1
+            wx.MilliSleep(100)
+            do_continue, _ = self._view.active_dialog.Update(i)
+            if not do_continue:
+                break
         self._view.active_dialog.Destroy()
         self._view.active_dialog = None
         wx.YieldIfNeeded()
