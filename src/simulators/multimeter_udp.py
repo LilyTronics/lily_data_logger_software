@@ -74,7 +74,7 @@ class MultimeterUdp:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_models.test_multimeter_udp import TestMultimeterUdp
+    from tests.unit_tests.test_models.test_simulator_multimeter import TestSimulatorMultimeter
 
-    TestMultimeterUdp().run(True)
+    TestSimulatorMultimeter().run(True)
     pylint.run_pylint([__file__])

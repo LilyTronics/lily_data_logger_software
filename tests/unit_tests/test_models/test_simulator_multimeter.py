@@ -10,6 +10,7 @@ from tests.unit_tests.lib.test_suite import TestSuite
 
 class TestSimulatorMultimeter(TestSuite):
 
+    _N_SAMPLES = 10
     _interface = None
 
     def setup(self):
@@ -32,16 +33,26 @@ class TestSimulatorMultimeter(TestSuite):
                      "The info has the default value")
 
     def test_dc_voltage(self):
-        self.log.debug("Test DC voltage")
-        value = simulator_multimeter.get_value("Get DC voltage")
-        self.log.debug(f"Value: {value}")
-        self.fail_if(not isinstance(value, float), f"Float expected, but got {type(value)}")
+        voltages = []
+        self.log.debug(f"Get {self._N_SAMPLES} voltages")
+        for _ in range(self._N_SAMPLES):
+            response = simulator_multimeter.get_value("Get DC voltage")
+            self.fail_if(not isinstance(response, float), "response should be float")
+            voltages.append(response)
+        self.log.debug(f"Voltages: {voltages}")
+        self.fail_if(min(voltages) < 4.9, f"Voltage < 4.9 found: {min(voltages)}")
+        self.fail_if(max(voltages) > 5.1, f"Voltage > 5.1 found: {max(voltages)}")
 
     def test_dc_current(self):
-        self.log.debug("Test DC current")
-        value = simulator_multimeter.get_value("Get DC current")
-        self.log.debug(f"Value: {value}")
-        self.fail_if(not isinstance(value, float), f"Float expected, but got {type(value)}")
+        currents = []
+        self.log.debug(f"Get {self._N_SAMPLES} currents")
+        for _ in range(self._N_SAMPLES):
+            response = simulator_multimeter.get_value("Get DC current")
+            self.fail_if(not isinstance(response, float), "response should be float")
+            currents.append(response)
+        self.log.debug(f"Currents: {currents}")
+        self.fail_if(min(currents) < 0.39, f"Current < 0.39 found: {min(currents)}")
+        self.fail_if(max(currents) > 0.41, f"Current > 0.41 found: {max(currents)}")
 
     def teardown(self):
         Simulators.stop_simulators(self.log)
