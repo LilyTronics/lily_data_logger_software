@@ -229,8 +229,13 @@ class ViewMain(wx.Frame):
         for i, name in enumerate(measurement_names):
             self._grid_measurements.AppendCols(1)
             self._grid_measurements.SetColLabelValue(i + 1, name)
+            self._grid_measurements.SetColMinimalWidth(i + 1, self._TABLE_MIN_COL_WIDTH)
             self._grid_measurements.AutoSizeColLabelSize(i + 1)
         self._grid_measurements.AppendRows(1)
+        for i in range(self._grid_measurements.GetNumberCols()):
+            size = self._grid_measurements.GetColSize(i)
+            if size > self._TABLE_MIN_COL_WIDTH:
+                self._grid_measurements.SetColSize(i, size + self._GAP)
 
     def get_selected_measurement(self):
         cols = self._grid_measurements.GetSelectedCols()
