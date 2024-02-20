@@ -100,7 +100,7 @@ class TestViewDialogs(TestSuite):
 
     def teardown(self):
         self._test_frame.Destroy()
-        self._app.MainLoop()
+        del self._app
 
 
 if __name__ == "__main__":
