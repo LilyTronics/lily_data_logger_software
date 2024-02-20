@@ -50,7 +50,7 @@ class Instrument:
 
     def _get_channel(self, channel_type, channel_name):
         matches = list(filter(lambda x: x[self.KEY_TYPE] == channel_type and
-                                        x[self.KEY_NAME] == channel_name, self._channel_data))
+                              x[self.KEY_NAME] == channel_name, self._channel_data))
         assert len(matches) == 1, f"Channel '{channel_name}' of type {channel_type} not found"
         return matches[0]
 
