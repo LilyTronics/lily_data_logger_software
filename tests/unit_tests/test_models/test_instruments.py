@@ -9,6 +9,7 @@ import shutil
 import tests
 
 from src.app_data import AppData
+from src.models import instruments
 from src.models.instruments import Instruments
 from tests.unit_tests.lib.test_suite import TestSuite
 
@@ -20,8 +21,7 @@ class TestInstruments(TestSuite):
 
     def setup(self):
         n_found = 0
-        path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                            "..", "..", "src", "models", "instruments"))
+        path = os.path.dirname(instruments.__file__)
         self.log.debug(f"Looking for instruments in: {path}")
         for item in glob.glob(os.path.join(path, "*.py")):
             with open(item, "r", encoding="utf-8") as fp:
