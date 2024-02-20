@@ -3,12 +3,14 @@ Running simulators.
 """
 
 from src.simulators.multimeter_udp import MultimeterUdp
+from src.simulators.temperature_meter_tcp import TemperatureMeterTcp
 
 
 class Simulators:
 
     _SIMULATOR_CLASSES = [
-        MultimeterUdp
+        MultimeterUdp,
+        TemperatureMeterTcp
     ]
 
     _SIMULATORS = []
