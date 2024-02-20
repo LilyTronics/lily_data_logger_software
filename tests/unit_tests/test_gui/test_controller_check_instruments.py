@@ -12,11 +12,7 @@ from tests.unit_tests.lib.test_suite import TestSuite
 
 class TestControllerCheckInstrument(TestSuite):
 
-    _app = None
     _error = ""
-
-    def setup(self):
-        self._app = wx.App(redirect=False)
 
     def test_check_instruments(self):
         def _test_check_instruments():
@@ -32,6 +28,7 @@ class TestControllerCheckInstrument(TestSuite):
                 view.Close()
 
         self._error = ""
+        _ = wx.App(redirect=False)
         t = self.start_thread(_test_check_instruments)
         conf = Configuration()
         name = "Test instrument"
@@ -48,8 +45,8 @@ class TestControllerCheckInstrument(TestSuite):
         self.wait_for(t.is_alive, False, 10, 0.1)
         self.fail_if(self._error != "", self._error)
 
-    def teardown(self):
-        self._app.MainLoop()
+    # def teardown(self):
+    #     self._app.MainLoop()
 
 
 if __name__ == "__main__":
