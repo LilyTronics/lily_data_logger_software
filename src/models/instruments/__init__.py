@@ -10,6 +10,7 @@ from src.app_data import AppData
 from src.models.instrument import Instrument
 from src.models.instruments.arduino_daq import arduino_daq
 from src.models.instruments.simulator_multimeter import simulator_multimeter
+from src.models.instruments.simulator_temperature_meter import simulator_temperature_meter
 
 
 class Instruments:
@@ -19,7 +20,8 @@ class Instruments:
     ]
 
     _SIMULATORS = [
-        simulator_multimeter
+        simulator_multimeter,
+        simulator_temperature_meter
     ]
 
     ##########
@@ -67,7 +69,7 @@ class Instruments:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_instruments import TestInstruments
+    from tests.unit_tests.test_models.test_instruments import TestInstruments
 
     TestInstruments().run()
     pylint.run_pylint([__file__])
