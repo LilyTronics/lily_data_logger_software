@@ -262,6 +262,7 @@ class TestControllerConfiguration(TestSuite):
         self._app.MainLoop()
         if os.path.isfile(self._filename):
             os.remove(self._filename)
+        del self._app
 
 
 if __name__ == "__main__":
