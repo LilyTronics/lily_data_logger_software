@@ -123,7 +123,7 @@ class TestControllerEditInstrument(TestSuite):
         self.fail_if(settings["rx_timeout"] != "1", "The RX timeout did not change")
 
     def teardown(self):
-        self._app.MainLoop()
+        del self._app
 
 
 if __name__ == "__main__":
