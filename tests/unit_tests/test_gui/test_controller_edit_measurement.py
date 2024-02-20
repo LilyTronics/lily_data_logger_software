@@ -177,7 +177,7 @@ class TestControllerEditInstrument(TestSuite):
                      "the offset is not correct")
 
     def teardown(self):
-        self._app.MainLoop()
+        del self._app
 
 
 if __name__ == "__main__":
