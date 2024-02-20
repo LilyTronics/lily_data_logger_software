@@ -259,7 +259,6 @@ class TestControllerConfiguration(TestSuite):
         self.fail_if(conf.get_end_time() != 120, "Sample time is not loaded from the file")
 
     def teardown(self):
-        self._app.MainLoop()
         if os.path.isfile(self._filename):
             os.remove(self._filename)
         del self._app
