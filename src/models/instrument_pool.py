@@ -33,6 +33,10 @@ class InstrumentPool:
             cls._INSTRUMENTS[instrument_data[Configuration.KEY_ID]] = instrument
         return cls._INSTRUMENTS[instrument_data[Configuration.KEY_ID]]
 
+    @classmethod
+    def clear_instruments(cls):
+        cls._INSTRUMENTS.clear()
+
 
 if __name__ == "__main__":
 
