@@ -15,10 +15,10 @@ if not os.path.isdir(AppData.USER_FOLDER):
 
 logger = Logger()
 logger.info("Start application")
-logger.debug("Application path     : {}".format(AppData.APP_PATH))
-logger.debug("User instruments path: {}".format(AppData.USER_FOLDER))
+logger.debug(f"Application path     : {AppData.APP_PATH}")
+logger.debug(f"User instruments path: {AppData.USER_FOLDER}")
 app = wx.App(redirect=False)
-ControllerMain("{} V{}".format(AppData.APP_NAME, AppData.VERSION), logger)
+ControllerMain(f"{AppData.APP_NAME} V{AppData.VERSION}", logger)
 app.MainLoop()
 logger.info("Application stopped")
 logger.shut_down()
