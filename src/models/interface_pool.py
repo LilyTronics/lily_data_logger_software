@@ -8,6 +8,8 @@ This pool prevents creating multiple interfaces to the same port.
 
 import threading
 
+from src.models.interfaces import Interfaces
+
 
 class InterfacePool:
 
@@ -19,9 +21,10 @@ class InterfacePool:
         raise RuntimeError("Creating an instance of this class is not permitted")
 
     @classmethod
-    def create_interface(cls, interface_class, parameters):
+    def create_interface(cls, interface_name, parameters):
         with cls._LOCK:
             interface_object = None
+            interface_class = Interfaces.get_interface_by_name(interface_name)
             matches = list(filter(lambda x: isinstance(x, interface_class), cls._INTERFACES))
             if len(matches) > 0:
                 for instance in matches:

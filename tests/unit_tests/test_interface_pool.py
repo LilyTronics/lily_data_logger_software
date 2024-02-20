@@ -27,12 +27,12 @@ class TestInterfacePool(TestSuite):
         interface_object2 = None
         for port_name in ports:
             self.log.debug(f"Create serial interface for port: {port_name}")
-            interface_object1 = InterfacePool.create_interface(SerialPortInterface,
+            interface_object1 = InterfacePool.create_interface(SerialPortInterface.NAME,
                                                                {"serial_port": port_name})
             self.fail_if(interface_object1 is interface_object2,
                          f"Same interface for port {port_name}, while we expect a new interface")
             self.log.debug("Try create a serial interface with the same port")
-            interface_object2 = InterfacePool.create_interface(SerialPortInterface,
+            interface_object2 = InterfacePool.create_interface(SerialPortInterface.NAME,
                                                                {"serial_port": port_name})
             self.fail_if(interface_object1 is not interface_object2,
                          "A new interface object is created for the same port")
@@ -45,14 +45,14 @@ class TestInterfacePool(TestSuite):
         for ip_address in ip_addresses:
             for ip_port in ip_ports:
                 self.log.debug(f"Create UDP interface with address: {ip_address}:{ip_port}")
-                interface_object1 = InterfacePool.create_interface(UdpClientInterface,
+                interface_object1 = InterfacePool.create_interface(UdpClientInterface.NAME,
                                                                    {"ip_address": ip_address,
                                                                     "ip_port": ip_port})
                 self.fail_if(interface_object1 is interface_object2,
                              f"Same interface for address {ip_address}:{ip_port}, "
                              "while we expect a new interface")
                 self.log.debug("Try create a UDP interface with the same address")
-                interface_object2 = InterfacePool.create_interface(UdpClientInterface,
+                interface_object2 = InterfacePool.create_interface(UdpClientInterface.NAME,
                                                                    {"ip_address": ip_address,
                                                                     "ip_port": ip_port})
                 self.fail_if(interface_object1 is not interface_object2,
@@ -66,14 +66,14 @@ class TestInterfacePool(TestSuite):
         for ip_address in ip_addresses:
             for ip_port in ip_ports:
                 self.log.debug(f"Create TCP interface with address: {ip_address}:{ip_port}")
-                interface_object1 = InterfacePool.create_interface(TcpClientInterface,
+                interface_object1 = InterfacePool.create_interface(TcpClientInterface.NAME,
                                                                    {"ip_address": ip_address,
                                                                     "ip_port": ip_port})
                 self.fail_if(interface_object1 is interface_object2,
                              f"Same interface for address {ip_address}:{ip_port}, "
                              "while we expect a new interface")
                 self.log.debug("Try create a TCP interface with the same address")
-                interface_object2 = InterfacePool.create_interface(TcpClientInterface,
+                interface_object2 = InterfacePool.create_interface(TcpClientInterface.NAME,
                                                                    {"ip_address": ip_address,
                                                                     "ip_port": ip_port})
                 self.fail_if(interface_object1 is not interface_object2,
