@@ -7,6 +7,7 @@ import wx.grid
 from src.models.id_manager import IdManager
 from src.models.image_data import ImageData
 from src.models.time_converter import TimeConverter
+from tests.test_environment.test_configurations import TestConfigurations
 
 
 # pylint: disable=too-many-instance-attributes
@@ -25,7 +26,7 @@ class ViewMain(wx.Frame):
 
     _MINIMUM_WINDOW_SIZE = (1100, 700)
 
-    def __init__(self, title):
+    def __init__(self, title, show_test_configurations=False):
         self.active_dialog = None
         self._title = title
         super().__init__(None, wx.ID_ANY, self._title)
@@ -37,7 +38,8 @@ class ViewMain(wx.Frame):
                     wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, self._GAP)
 
         main_box = wx.BoxSizer(wx.VERTICAL)
-        main_box.Add(self._create_toolbar(panel), 0, wx.EXPAND | wx.ALL, self._GAP)
+        main_box.Add(self._create_toolbar(panel, show_test_configurations), 0,
+                     wx.EXPAND | wx.ALL, self._GAP)
         main_box.Add(self._create_config_info(panel), 0, wx.EXPAND | wx.ALL, self._GAP)
         main_box.Add(lab_box, 1, wx.EXPAND)
 
@@ -49,7 +51,7 @@ class ViewMain(wx.Frame):
     # Private #
     ###########
 
-    def _create_toolbar(self, parent):
+    def _create_toolbar(self, parent, show_test_configurations):
         tools = [
             (IdManager.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap,
              "Open configuration"),
@@ -78,6 +80,11 @@ class ViewMain(wx.Frame):
                 self._toolbar.AddSeparator()
             else:
                 self._toolbar.AddTool(tool[0], "", tool[1], tool[2])
+        if show_test_configurations:
+            cmb_config = wx.ComboBox(self._toolbar, IdManager.ID_TOOL_TEST_CONFIG)
+            cmb_config.SetItems(TestConfigurations.get_configuration_names())
+            self._toolbar.AddStretchableSpace()
+            self._toolbar.AddControl(cmb_config)
         self._toolbar.Realize()
         return self._toolbar
 
@@ -113,7 +120,7 @@ class ViewMain(wx.Frame):
 
         self._lst_instruments = wx.ListCtrl(parent, IdManager.ID_LIST_INSTRUMENTS,
                                             style=wx.LC_REPORT | wx.LC_SORT_ASCENDING |
-                                                  wx.LC_SINGLE_SEL)
+                                            wx.LC_SINGLE_SEL)
         self._lst_instruments.InsertColumn(0, "Name", width=self._LIST_COL_NAME_SIZE)
 
         btn_add_instrument = wx.Button(parent, IdManager.ID_BTN_ADD_INSTRUMENT, "Add")

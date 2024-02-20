@@ -14,23 +14,20 @@ from src.models.settings import Settings
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
 from src.simulators import Simulators
-from tests.test_environment.test_configuration import TestConfiguration
+from tests.test_environment.test_configurations import TestConfigurations
 
 
 class ControllerMain:
 
-    def __init__(self, view_title, logger, load_test_configuration=False):
+    def __init__(self, view_title, logger, show_test_configurations=False):
         self._logger = logger
         self._logger.info("Load main controller")
 
         self._settings = Settings()
-        if load_test_configuration:
-            self._configuration = TestConfiguration(True, True)
-        else:
-            self._configuration = Configuration()
+        self._configuration = Configuration()
         self._elapsed_time = 0
 
-        self._main_view = self._initialize_main_view(view_title)
+        self._main_view = self._initialize_main_view(view_title, show_test_configurations)
         self._log_view = None
 
         self._logger.info("Show main view")
@@ -43,8 +40,8 @@ class ControllerMain:
     # Private #
     ###########
 
-    def _initialize_main_view(self, view_title):
-        frame = ViewMain(view_title)
+    def _initialize_main_view(self, view_title, show_test_configurations):
+        frame = ViewMain(view_title, show_test_configurations)
         size = self._settings.get_main_window_size()
         if -1 not in size:
             frame.SetSize(size)
@@ -62,6 +59,7 @@ class ControllerMain:
         frame.Bind(wx.EVT_TOOL, self._on_check_instruments,
                    id=IdManager.ID_TOOL_CHECK_INSTRUMENTS)
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
+        frame.Bind(wx.EVT_COMBOBOX, self._on_test_config, id=IdManager.ID_TOOL_TEST_CONFIG)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
         frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument,
                    id=IdManager.ID_LIST_INSTRUMENTS)
@@ -119,6 +117,11 @@ class ControllerMain:
     def _on_edit_configuration(self, event):
         ControllerConfiguration.edit_configuration(self._main_view, self._configuration,
                                                    self._logger)
+        self._update_view_from_configuration()
+        event.Skip()
+
+    def _on_test_config(self, event):
+        self._configuration = TestConfigurations.get_configuration(event.GetString())
         self._update_view_from_configuration()
         event.Skip()
 
