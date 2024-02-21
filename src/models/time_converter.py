@@ -2,11 +2,14 @@
 Module with time converter functions.
 """
 
+from datetime import datetime
+
 
 class TimeConverter:
 
     TIME_UNIT_TO_FACTOR = {"seconds": 1, "minutes": 60, "hours": 3600, "days": 86400}
     TIME_UNITS = list(TIME_UNIT_TO_FACTOR.keys())
+    _TIME_STAMP_FORMAT = "%Y%m%d %H:%M:%S"
 
     @staticmethod
     def create_duration_time_string(seconds):
@@ -36,6 +39,10 @@ class TimeConverter:
             if len(matches) == 1:
                 value *= cls.TIME_UNIT_TO_FACTOR[matches[0]]
         return value
+
+    @classmethod
+    def get_timestamp(cls):
+        return datetime.now().strftime(cls._TIME_STAMP_FORMAT)
 
 
 if __name__ == "__main__":
