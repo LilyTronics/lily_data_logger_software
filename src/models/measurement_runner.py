@@ -5,6 +5,9 @@ Do all the measurements according to configuration.
 import time
 import threading
 
+from src.models.instrument_pool import InstrumentPool
+from src.models.time_converter import TimeConverter
+
 
 class MeasurementRunner:
 
@@ -14,31 +17,43 @@ class MeasurementRunner:
         self._measurement_thread = None
         self._stop_event = threading.Event()
 
-    def _run_measurements(self):
-        self._callback(0, "Process starting")
+    def _create_instruments(self):
+        self._callback(TimeConverter.get_timestamp(), "Create instruments")
+        for measurement in self._configuration.get_measurements():
+            settings = measurement[self._configuration.KEY_SETTINGS]
+            instrument_data = self._configuration.get_instrument(
+                settings[self._configuration.KEY_INSTRUMENT_ID])
+            self._callback(
+                TimeConverter.get_timestamp(),
+                f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}")
+            instrument = InstrumentPool.create_instrument(instrument_data)
+            instrument.initialize()
+
+    def _requests_measurements(self):
         measurements = self._configuration.get_measurements()
+        timestamp = TimeConverter.get_timestamp()
+        for measurement in measurements:
+            self._callback(
+                timestamp,
+                f"Request  measurement: {measurement[self._configuration.KEY_NAME]}"
+            )
+
+    def _run_measurements(self):
         sample_time = self._configuration.get_sample_time()
         end_time = self._configuration.get_end_time()
-        do_sample = True
+        InstrumentPool.clear_instruments()
+        self._create_instruments()
+        self._callback(TimeConverter.get_timestamp(), "Start measurements")
         start_time = time.time()
-        sample_start = time.time()
         while not self._stop_event.is_set():
-            if do_sample:
-                for measurement in measurements:
-                    self._callback(
-                        time.time() - start_time,
-                        f"Process  measurement: {measurement[self._configuration.KEY_NAME]}"
-                    )
-                do_sample = False
-            time.sleep(0.05)
-            interval = time.time() - sample_start
-            if interval >= sample_time:
-                sample_start = time.time()
-                do_sample = True
-            duration = time.time() - start_time
-            if duration >= end_time:
-                break
-        self._callback(time.time() - start_time, "Process finished")
+            sample_start = time.time()
+            self._requests_measurements()
+            while not self._stop_event.is_set():
+                if time.time() - sample_start >= sample_time:
+                    break
+                if time.time() - start_time >= end_time:
+                    self._stop_event.set()
+        self._callback(TimeConverter.get_timestamp(), "Process finished")
 
     def start(self):
         if not self.is_running():
