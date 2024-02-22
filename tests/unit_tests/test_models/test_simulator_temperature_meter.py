@@ -37,7 +37,7 @@ class TestSimulatorTemperatureMeter(TestSuite):
         temperatures = []
         self.log.debug(f"Get {self._N_SAMPLES} temperatures")
         for _ in range(self._N_SAMPLES):
-            response = simulator_temperature_meter.get_value("Get temperature")
+            response = simulator_temperature_meter.process_channel("Get temperature")
             self.fail_if(not isinstance(response, float), "response should be float")
             temperatures.append(response)
         self.log.debug(f"Temperatures: {temperatures}")
@@ -54,5 +54,5 @@ if __name__ == "__main__":
 
     import pylint
 
-    TestSimulatorTemperatureMeter().run()
+    TestSimulatorTemperatureMeter().run(True)
     pylint.run_pylint([__file__])

@@ -36,7 +36,7 @@ class TestSimulatorMultimeter(TestSuite):
         voltages = []
         self.log.debug(f"Get {self._N_SAMPLES} voltages")
         for _ in range(self._N_SAMPLES):
-            response = simulator_multimeter.get_value("Get DC voltage")
+            response = simulator_multimeter.process_channel("Get DC voltage")
             self.fail_if(not isinstance(response, float), "response should be float")
             voltages.append(response)
         self.log.debug(f"Voltages: {voltages}")
@@ -47,7 +47,7 @@ class TestSimulatorMultimeter(TestSuite):
         currents = []
         self.log.debug(f"Get {self._N_SAMPLES} currents")
         for _ in range(self._N_SAMPLES):
-            response = simulator_multimeter.get_value("Get DC current")
+            response = simulator_multimeter.process_channel("Get DC current")
             self.fail_if(not isinstance(response, float), "response should be float")
             currents.append(response)
         self.log.debug(f"Currents: {currents}")
@@ -64,5 +64,5 @@ if __name__ == "__main__":
 
     import pylint
 
-    TestSimulatorMultimeter().run()
+    TestSimulatorMultimeter().run(True)
     pylint.run_pylint([__file__])
