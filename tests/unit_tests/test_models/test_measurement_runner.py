@@ -17,6 +17,7 @@ class TestMeasurementRunner(TestSuite):
 
     def _callback(self, *args):
         self._messages.append(args)
+        self.log.debug(f"Callback message: ({", ".join(args)})")
 
     def setup(self):
         conf = Configuration()
