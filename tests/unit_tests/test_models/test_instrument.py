@@ -12,6 +12,9 @@ from tests.unit_tests.lib.test_suite import TestSuite
 
 class TestInstrument(TestSuite):
 
+    _instrument = None
+    _callback_received = [False]
+
     instrument_data = {
         "name": "Test instrument",
         "info": "Instrument for testing the model",
@@ -126,11 +129,11 @@ class TestInstrument(TestSuite):
         ]
     }
 
-    def _create_instrument(self):
-        instrument = Instrument(self.instrument_data)
+    def setup(self):
+        self._instrument = Instrument(self.instrument_data)
         interface = TestInterface()
-        instrument.set_interface_object(interface)
-        return instrument
+        self._instrument.set_interface_object(interface)
+        self._instrument.start()
 
     def test_default_values(self):
         instrument = Instrument({})
@@ -143,85 +146,91 @@ class TestInstrument(TestSuite):
         self.log.debug("Check default interface type")
         self.fail_if(instrument.get_interface_type() is not None,
                      "The default interface type is not correct "
-                     f"'{instrument.get_interface_type()}'")
+                     f"'{self._instrument.get_interface_type()}'")
         self.log.debug("Check default interface settings")
         self.fail_if(instrument.get_interface_settings() != {},
                      "The default interface settings is not correct "
-                     f"'{instrument.get_interface_settings()}'")
+                     f"'{self._instrument.get_interface_settings()}'")
 
     def test_instrument_data(self):
-        instrument = Instrument(self.instrument_data)
         self.log.debug("Check name")
-        self.fail_if(instrument.get_name() != "Test instrument",
-                     f"The name is not correct '{instrument.get_name()}'")
+        self.fail_if(self._instrument.get_name() != "Test instrument",
+                     f"The name is not correct '{self._instrument.get_name()}'")
         self.log.debug("Check info")
-        self.fail_if(instrument.get_info() != "Instrument for testing the model",
-                     f"The info is not correct '{instrument.get_name()}'")
+        self.fail_if(self._instrument.get_info() != "Instrument for testing the model",
+                     f"The info is not correct '{self._instrument.get_name()}'")
         self.log.debug("Check interface")
-        self.fail_if(instrument.get_interface_type() != "test interface",
-                     f"The interface type is not correct '{instrument.get_interface_type()}'")
+        self.fail_if(self._instrument.get_interface_type() != "test interface",
+                     f"The interface type is not correct '{self._instrument.get_interface_type()}'")
 
     def test_float_input(self):
-        instrument = self._create_instrument()
         self.log.debug("Test float input")
-        value = instrument.get_value("get float")
+        value = self._instrument.process_channel("get float")
         self.fail_if(not isinstance(value, float), "Value is not type float")
         self.fail_if(value != 5.03, "Value is not correct")
 
     def test_int_input(self):
-        instrument = self._create_instrument()
         self.log.debug("Test int input")
-        value = instrument.get_value("get int")
+        value = self._instrument.process_channel("get int")
         self.fail_if(not isinstance(value, int), "Value is not type int")
         self.fail_if(value != 12, "Value is not correct")
 
     def test_str_input(self):
-        instrument = self._create_instrument()
         self.log.debug("Test str input")
-        value = instrument.get_value("get str")
+        value = self._instrument.process_channel("get str")
         self.fail_if(not isinstance(value, str), "Value is not type str")
         self.fail_if(value != "test instrument", "Value is not correct")
 
     def test_float_output(self):
-        instrument = self._create_instrument()
         self.log.debug("Test float 1 output")
-        response = instrument.set_value("set float 1", "5")
+        response = self._instrument.process_channel("set float 1", "5")
         self.fail_if(response != "OK\n", "The response is not correct")
         self.log.debug("Test float 2 output")
-        response = instrument.set_value("set float 2", "8")
+        response = self._instrument.process_channel("set float 2", "8")
         self.fail_if(response != "OK\n", "The response is not correct")
 
     def test_int_output(self):
-        instrument = self._create_instrument()
         self.log.debug("Test int output")
-        response = instrument.set_value("set int", "7")
+        response = self._instrument.process_channel("set int", "7")
         self.fail_if(response != "OK\n", "The response is not correct")
 
     def test_str_output(self):
-        instrument = self._create_instrument()
         self.log.debug("Test str output")
-        response = instrument.set_value("set str", "test output")
+        response = self._instrument.process_channel("set str", "test output")
         self.fail_if(response != "OK\n", "The response is not correct")
 
     def test_no_response(self):
-        instrument = self._create_instrument()
         self.log.debug("Test command with no response")
-        response = instrument.set_value("set no response", "no response")
+        response = self._instrument.process_channel("set no response", "no response")
         self.fail_if(response != b"", "The response is not correct")
 
     def test_initialize(self):
-        instrument = self._create_instrument()
-        instrument.initialize()
+        self._instrument.initialize()
 
     def test_export_to_file(self):
-        instrument = self._create_instrument()
         path = os.path.join(tempfile.gettempdir(), "test_instrument.json")
-        instrument.export_to_file(path)
+        self._instrument.export_to_file(path)
 
     def test_get_inputs(self):
-        instrument = self._create_instrument()
-        channels = instrument.get_input_channels()
+        channels = self._instrument.get_input_channels()
         self.fail_if(len(channels) != 3, "Did get the correct number of input channels")
+
+    def test_request_queue(self):
+        def _callback(*args):
+            self._callback_received[0] = True
+            self._callback_received.append(args)
+
+        self._callback_received[0] = False
+        self.log.debug("Test str input by using the request queue")
+        self._instrument.process_channel("get str", None, _callback, 1)
+        if not self.wait_for(self._callback_received, True, 2, 0.1):
+            self.fail("No callback received")
+        callback_id, response = self._callback_received[1]
+        self.fail_if(callback_id != 1, f"Wrong callback ID: {callback_id}")
+        self.fail_if(response != "test instrument", f"Wrong response: '{response}'")
+
+    def teardown(self):
+        self._instrument.stop()
 
 
 class TestInterface(Interface):

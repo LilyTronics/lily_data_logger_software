@@ -3,6 +3,8 @@ Instrument model.
 """
 
 import json
+import queue
+import threading
 import time
 
 
@@ -34,23 +36,43 @@ class Instrument:
         b"str": str
     }
 
-    _DEBUG_FORMAT = "{:18}: {}"
+    _DEBUG_FORMAT = "{:20}: {}"
 
     def __init__(self, instrument_definition):
-        self._name = instrument_definition.get(self.KEY_NAME, self.DEFAULT_NAME)
-        self._info = instrument_definition.get(self.KEY_INFO, self.DEFAULT_INFO)
-        self._interface_data = instrument_definition.get(self.KEY_INTERFACE, {})
-        self._initialize_data = instrument_definition.get(self.KEY_INITIALIZE, [])
-        self._channel_data = instrument_definition.get(self.KEY_CHANNELS, [])
+        self._instrument_definition = instrument_definition
         self._interface_object = None
+        self._queue = queue.Queue()
+        self._stop_event = threading.Event()
+        self._queue_handler = None
+
+    def __del__(self):
+        self.stop()
 
     ###########
     # Private #
     ###########
 
+    def _process_queue(self):
+        while not self._stop_event.is_set():
+            try:
+                channel, value, callback, callback_id, debug = self._queue.get(True, 0.05)
+                if self._interface_object is not None:
+                    if debug:
+                        print("Process request")
+                        print(self._DEBUG_FORMAT.format("Channel data", channel))
+                        print(self._DEBUG_FORMAT.format("Value", value))
+                        print(self._DEBUG_FORMAT.format("Callback", callback))
+                        print(self._DEBUG_FORMAT.format("Callback ID", callback_id))
+                    response = self._process_commands(channel[self.KEY_COMMAND_LIST], value, debug)
+                    callback(callback_id, response)
+
+            except queue.Empty:
+                pass
+
     def _get_channel(self, channel_type, channel_name):
+        channel_data = self._instrument_definition.get(self.KEY_CHANNELS, [])
         matches = list(filter(lambda x: x[self.KEY_TYPE] == channel_type and
-                              x[self.KEY_NAME] == channel_name, self._channel_data))
+                              x[self.KEY_NAME] == channel_name, channel_data))
         assert len(matches) == 1, f"Channel '{channel_name}' of type {channel_type} not found"
         return matches[0]
 
@@ -172,74 +194,91 @@ class Instrument:
             response = self._parse_response(expected_response, response, debug)
         return response
 
-    def _process_command(self, command_data, debug, value=None):
-        if debug:
-            print("Process command:")
-            print(self._DEBUG_FORMAT.format("Command data", command_data))
+    def _process_commands(self, command_list, value, debug):
         response = b""
-        if not self._execute_internal_command(command_data, debug):
-            response = self._execute_interface_command(command_data, value, debug)
+        self._interface_object.acquire_lock()
+        try:
+            for command_data in command_list:
+                if debug:
+                    print("Process command:")
+                    print(self._DEBUG_FORMAT.format("Command data", command_data))
+                if not self._execute_internal_command(command_data, debug):
+                    response = self._execute_interface_command(command_data, value, debug)
+        finally:
+            self._interface_object.release_lock()
         return response
 
     ##########
     # Public #
     ##########
 
+    def start(self):
+        if self._queue_handler is None or not self._queue_handler.is_alive():
+            self._queue_handler = threading.Thread(target=self._process_queue)
+            self._queue_handler.daemon = True
+            self._stop_event.clear()
+            self._queue_handler.start()
+
+    def stop(self):
+        if self._queue_handler is not None and self._queue_handler.is_alive():
+            self._stop_event.set()
+            self._queue_handler.join()
+        self._queue_handler = None
+
     def export_to_file(self, filename):
         output = {
-            self.KEY_NAME: self._name,
-            self.KEY_INFO: self._info,
-            self.KEY_INTERFACE: self._interface_data,
-            self.KEY_INITIALIZE: self._initialize_data,
-            self.KEY_CHANNELS: self._channel_data
+            self.KEY_NAME: self.get_name(),
+            self.KEY_INFO: self.get_info(),
+            self.KEY_INTERFACE: self._instrument_definition.get(self.KEY_INTERFACE, {}),
+            self.KEY_INITIALIZE: self._instrument_definition.get(self.KEY_INITIALIZE, []),
+            self.KEY_CHANNELS: self._instrument_definition.get(self.KEY_CHANNELS, [])
         }
         with open(filename, "w", encoding="utf-8") as fp:
             json.dump(output, fp, indent=4)
 
     def get_name(self):
-        return self._name
+        return self._instrument_definition.get(self.KEY_NAME, self.DEFAULT_NAME)
 
     def get_info(self):
-        return self._info
+        return self._instrument_definition.get(self.KEY_INFO, self.DEFAULT_INFO)
 
     def get_interface_type(self):
-        return self._interface_data.get(self.KEY_TYPE, None)
+        return self._instrument_definition.get(self.KEY_INTERFACE, {}).get(self.KEY_TYPE, None)
 
     def get_interface_settings(self):
-        return self._interface_data.get(self.KEY_SETTINGS, {})
+        return self._instrument_definition.get(self.KEY_INTERFACE, {}).get(self.KEY_SETTINGS, {})
 
     def set_interface_object(self, interface_object):
         self._interface_object = interface_object
 
     def get_input_channels(self):
-        return list(filter(lambda x: x[self.KEY_TYPE] == self.TYPE_INPUT, self._channel_data))
+        channel_data = self._instrument_definition.get(self.KEY_CHANNELS, [])
+        return list(filter(lambda x: x[self.KEY_TYPE] == self.TYPE_INPUT, channel_data))
 
     def initialize(self, debug=False):
         if debug:
             print("Initialize instrument")
-        for command_data in self._initialize_data:
-            self._process_command(command_data, debug)
+        command_list = self._instrument_definition.get(self.KEY_INITIALIZE, [])
+        if len(command_list) > 0:
+            self._process_commands(command_list, None, debug)
 
-    def get_value(self, channel_name, debug=False):
-        if debug:
-            print(f"<{self.get_name()}>.get_value( '{channel_name}' )")
-        channel = self._get_channel(self.TYPE_INPUT, channel_name)
-        if debug:
-            print(self._DEBUG_FORMAT.format("Channel", channel))
+    # pylint: disable=too-many-arguments
+    def process_channel(self, channel_name, value=None, callback=None, callback_id=None,
+                        debug=False):
+        if value is None:
+            channel = self._get_channel(self.TYPE_INPUT, channel_name)
+        else:
+            channel = self._get_channel(self.TYPE_OUTPUT, channel_name)
         response = None
-        for command_data in channel[self.KEY_COMMAND_LIST]:
-            response = self._process_command(command_data, debug)
-        return response
-
-    def set_value(self, channel_name, value, debug=False):
-        if debug:
-            print(f"DEBUG: <{self.get_name()}>.set_value( '{channel_name}', {value} )")
-        channel = self._get_channel(self.TYPE_OUTPUT, channel_name)
-        if debug:
-            print(self._DEBUG_FORMAT.format("Channel", channel))
-        response = None
-        for command_data in channel[self.KEY_COMMAND_LIST]:
-            response = self._process_command(command_data, debug, value)
+        if callback is None or callback_id is None:
+            if debug:
+                print(self._DEBUG_FORMAT.format("Process channel", channel_name))
+                print(self._DEBUG_FORMAT.format("Channel", channel))
+            response = self._process_commands(channel[self.KEY_COMMAND_LIST], value, debug)
+        else:
+            if debug:
+                print(self._DEBUG_FORMAT.format("Put request", channel_name))
+            self._queue.put((channel, value, callback, callback_id, debug))
         return response
 
 
