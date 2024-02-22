@@ -2,11 +2,14 @@
 Base class for all the interfaces.
 """
 
+import threading
+
 
 class Interface:
 
     def __init__(self, params_to_match):
         self._params_to_match = params_to_match
+        self._lock = threading.RLock()
 
     def __del__(self):
         try:
@@ -38,6 +41,12 @@ class Interface:
     def get_settings_controls(cls):
         raise NotImplementedError("This method must be implemented in the derived class")
 
+    def acquire_lock(self):
+        self._lock.acquire()
+
+    def release_lock(self):
+        self._lock.release()
+        
 
 if __name__ == "__main__":
 
