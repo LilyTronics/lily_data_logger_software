@@ -25,7 +25,7 @@ class MeasurementRunner:
                 settings[self._configuration.KEY_INSTRUMENT_ID])
             self._callback(
                 TimeConverter.get_timestamp(),
-                f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}")
+                f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}'")
             instrument = InstrumentPool.create_instrument(instrument_data)
             instrument.initialize()
 
@@ -35,7 +35,7 @@ class MeasurementRunner:
         for measurement in measurements:
             self._callback(
                 timestamp,
-                f"Request  measurement: {measurement[self._configuration.KEY_NAME]}"
+                f"Request  measurement: '{measurement[self._configuration.KEY_NAME]}'"
             )
 
     def _run_measurements(self):
