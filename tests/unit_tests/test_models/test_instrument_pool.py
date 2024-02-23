@@ -35,6 +35,18 @@ class TestInstrumentPool(TestSuite):
         self.fail_if(instrument1 is not instrument2,
                      "The instruments are not the same")
 
+    def test_clear_instruments(self):
+        conf = TestConfiguration(True)
+        instrument1 = InstrumentPool.create_instrument(conf.get_instruments()[0])
+        self.fail_if(not isinstance(instrument1, Instrument),
+                     "The first created instrument has the wrong class")
+        InstrumentPool.clear_instruments()
+        instrument2 = InstrumentPool.create_instrument(conf.get_instruments()[0])
+        self.fail_if(not isinstance(instrument1, Instrument),
+                     "The second created instrument has the wrong class")
+        self.fail_if(instrument1 is not instrument2,
+                     "The instruments are not the same")
+
 
 if __name__ == "__main__":
 
