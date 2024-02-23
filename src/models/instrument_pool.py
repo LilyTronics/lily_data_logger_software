@@ -35,6 +35,8 @@ class InstrumentPool:
 
     @classmethod
     def clear_instruments(cls):
+        for _, instrument in cls._INSTRUMENTS.items():
+            instrument.stop()
         cls._INSTRUMENTS.clear()
 
 
