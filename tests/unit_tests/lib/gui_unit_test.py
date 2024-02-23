@@ -12,7 +12,8 @@ class GuiUnitTest:
     KEY_ENTER = 13
     KEY_ESCAPE = 27
 
-    _WAIT_TIMEOUT = 5
+    _WINDOW_WAIT_TIMEOUT = 5
+    _DIALOG_WAIT_TIMEOUT = 2
 
     ##########
     # Public #
@@ -23,7 +24,7 @@ class GuiUnitTest:
         return wx.Window.FindWindowById(window_id) is not None
 
     @staticmethod
-    def wait_until_window_available(window_id, timeout=_WAIT_TIMEOUT):
+    def wait_until_window_available(window_id, timeout=_WINDOW_WAIT_TIMEOUT):
         while timeout > 0:
             if wx.Window.FindWindowById(window_id) is not None:
                 # We need to wait a bit to have full access to all properties
@@ -88,8 +89,10 @@ class GuiUnitTest:
             time.sleep(char_delay)
 
     @staticmethod
-    def wait_for_dialog(frame, expect_dialog=True, timeout=1):
+    def wait_for_dialog(frame, expect_dialog=True, timeout=_DIALOG_WAIT_TIMEOUT, debug=False):
         while timeout > 0:
+            if debug:
+                print(f"Expected: {expect_dialog}, Dialog: {frame.active_dialog}")
             if ((expect_dialog and frame.active_dialog is not None) or
                     (not expect_dialog and frame.active_dialog is None)):
                 if frame.active_dialog is not None:
