@@ -42,7 +42,7 @@ class MultimeterUdp:
                 data, client_address = sock.recvfrom(self._RX_BUFFER_SIZE)
                 if data.endswith(self._TERMINATOR):
                     data = data[:-1]
-                    if data == self._CMD_VOLTAGE_DC == data:
+                    if data == self._CMD_VOLTAGE_DC:
                         response = f"VDC={random.uniform(*self._VDC_RANGE):.3f}V"
                     elif data == self._CMD_CURRENT_DC:
                         response = f"ADC={random.uniform(*self._ADC_RANGE):.3f}A"
