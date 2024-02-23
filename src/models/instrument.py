@@ -224,6 +224,12 @@ class Instrument:
             self._stop_event.set()
             self._queue_handler.join()
         self._queue_handler = None
+        # Discard pending requests
+        while True:
+            try:
+                self._queue.get_nowait()
+            except queue.Empty:
+                break
 
     def export_to_file(self, filename):
         output = {
