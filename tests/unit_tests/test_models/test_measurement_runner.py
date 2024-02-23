@@ -6,6 +6,7 @@ import os
 
 from src.models.configuration import Configuration
 from src.models.measurement_runner import MeasurementRunner
+from src.simulators import Simulators
 from tests import test_files
 from tests.unit_tests.lib.test_suite import TestSuite
 
@@ -17,9 +18,10 @@ class TestMeasurementRunner(TestSuite):
 
     def _callback(self, *args):
         self._messages.append(args)
-        self.log.debug(f"Callback message: ({", ".join(args)})")
+        self.log.debug(f"Callback message: ({args})")
 
     def setup(self):
+        Simulators.start_simulators(self.log)
         conf = Configuration()
         conf.load_from_file(os.path.join(os.path.dirname(test_files.__file__),
                                          "test_configuration.json"))
@@ -49,6 +51,9 @@ class TestMeasurementRunner(TestSuite):
             self.fail("Measurement runner did not finish by itself")
         self.fail_if(self._runner.is_running(), "Measurement runner is not stopped")
         self.fail_if(len(self._messages) < 6, "Not enough messages received")
+
+    def teardown(self):
+        Simulators.stop_simulators(self.log)
 
 
 if __name__ == "__main__":
