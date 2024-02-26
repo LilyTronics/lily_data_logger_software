@@ -10,7 +10,9 @@ from src.controllers.controller_edit_instrument import ControllerEditInstrument
 from src.controllers.controller_edit_measurement import ControllerEditMeasurement
 from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
+from src.models.measurement_runner import MeasurementRunner
 from src.models.settings import Settings
+from src.views.view_dialogs import ViewDialogs
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
 from src.simulators import Simulators
@@ -32,6 +34,9 @@ class ControllerMain:
 
         self._logger.info("Show main view")
         self._main_view.Show()
+
+        self._measurement_runner = MeasurementRunner(self._configuration,
+                                                     self._measurement_callback)
 
         wx.CallAfter(self._update_view_from_configuration)
         wx.CallAfter(Simulators.start_simulators, self._logger)
@@ -58,6 +63,8 @@ class ControllerMain:
                    id=IdManager.ID_TOOL_EDIT_CONFIGURATION)
         frame.Bind(wx.EVT_TOOL, self._on_check_instruments,
                    id=IdManager.ID_TOOL_CHECK_INSTRUMENTS)
+        frame.Bind(wx.EVT_TOOL, self._on_start_stop_process, id=IdManager.ID_TOOL_START_PROCESS)
+        frame.Bind(wx.EVT_TOOL, self._on_start_stop_process, id=IdManager.ID_TOOL_STOP_PROCESS)
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
         frame.Bind(wx.EVT_COMBOBOX, self._on_test_config, id=IdManager.ID_TOOL_TEST_CONFIG)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
@@ -95,6 +102,9 @@ class ControllerMain:
                                                     self._configuration.get_instruments()))
         self._main_view.update_measurements(map(lambda x: x[self._configuration.KEY_NAME],
                                                 self._configuration.get_measurements()))
+
+    def _measurement_callback(self, timestamp, message_type, identifier, value):
+        print(timestamp, message_type, identifier, value)
 
     ##################
     # Event handlers #
@@ -164,6 +174,28 @@ class ControllerMain:
     def _on_delete_measurement(self, event):
         ControllerEditMeasurement.delete_measurement(self._main_view, self._configuration)
         self._update_view_from_configuration()
+        event.Skip()
+
+    ###########
+    # Process #
+    ###########
+
+    def _on_start_stop_process(self, event):
+        if event.GetId() == IdManager.ID_TOOL_START_PROCESS:
+            dialog_title = "Start Process"
+            if len(self._configuration.get_measurements()) == 0:
+                ViewDialogs.show_message(self._main_view, "Create one or more measurements first.",
+                                         dialog_title)
+            elif self._measurement_runner.is_running():
+                ViewDialogs.show_message(self._main_view, "The process is already running.",
+                                         dialog_title)
+            else:
+                # Make sure we run the latest configuration
+                self._measurement_runner.update_configuration(self._configuration)
+                self._measurement_runner.start()
+        elif event.GetId() == IdManager.ID_TOOL_STOP_PROCESS:
+            self._measurement_runner.stop()
+
         event.Skip()
 
     ##############
