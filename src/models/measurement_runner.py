@@ -10,8 +10,8 @@ from src.models.instrument_pool import InstrumentPool
 
 class MeasurementRunner:
 
-    _MESSAGE_TYPE_STATUS = 'status'
-    _MESSAGE_TYPE_VALUE = 'value'
+    MESSAGE_TYPE_STATUS = 'status'
+    MESSAGE_TYPE_VALUE = 'value'
 
     def __init__(self, configuration, callback):
         self._configuration = configuration
@@ -25,7 +25,7 @@ class MeasurementRunner:
 
     def _create_instruments(self):
         instruments = self._configuration.get_measurements()
-        self._send_callback(int(time.time()), self._MESSAGE_TYPE_STATUS, "Create instruments",
+        self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS, "Create instruments",
                             len(instruments))
         for i, measurement in enumerate(instruments):
             settings = measurement[self._configuration.KEY_SETTINGS]
@@ -33,7 +33,7 @@ class MeasurementRunner:
                 settings[self._configuration.KEY_INSTRUMENT_ID])
             self._send_callback(
                 int(time.time()),
-                self._MESSAGE_TYPE_STATUS,
+                self.MESSAGE_TYPE_STATUS,
                 f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}'",
                 i
             )
@@ -51,10 +51,10 @@ class MeasurementRunner:
         # If the response is too late, we send an error value for the original request time
         # and the measurement value to the next valid request time
         while request_time + sample_time < response_time:
-            self._send_callback(request_time, self._MESSAGE_TYPE_VALUE, measurement_name,
+            self._send_callback(request_time, self.MESSAGE_TYPE_VALUE, measurement_name,
                                 "time error")
             request_time += sample_time
-        self._send_callback(request_time, self._MESSAGE_TYPE_VALUE, measurement_name, response)
+        self._send_callback(request_time, self.MESSAGE_TYPE_VALUE, measurement_name, response)
 
     def _requests_measurements(self, timestamp):
         measurements = self._configuration.get_measurements()
@@ -74,7 +74,7 @@ class MeasurementRunner:
         InstrumentPool.clear_instruments()
         self._create_instruments()
         start_time = int(time.time())
-        self._send_callback(start_time, self._MESSAGE_TYPE_STATUS, "Start measurements", 0)
+        self._send_callback(start_time, self.MESSAGE_TYPE_STATUS, "Start measurements", 0)
         sample_start = start_time
         while not self._stop_event.is_set():
             self._requests_measurements(sample_start)
@@ -85,7 +85,7 @@ class MeasurementRunner:
                     self._stop_event.set()
                 time.sleep(0.01)
             sample_start = int(time.time())
-        self._send_callback(int(time.time()), self._MESSAGE_TYPE_STATUS, "Process finished", 0)
+        self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS, "Process finished", 0)
 
     ##########
     # Public #
