@@ -24,8 +24,10 @@ class MeasurementRunner:
         self._callback(timestamp, message_type, identifier, value)
 
     def _create_instruments(self):
-        self._send_callback(int(time.time()), self._MESSAGE_TYPE_STATUS, "Create instruments", 0)
-        for i, measurement in enumerate(self._configuration.get_measurements()):
+        instruments = self._configuration.get_measurements()
+        self._send_callback(int(time.time()), self._MESSAGE_TYPE_STATUS, "Create instruments",
+                            len(instruments))
+        for i, measurement in enumerate(instruments):
             settings = measurement[self._configuration.KEY_SETTINGS]
             instrument_data = self._configuration.get_instrument(
                 settings[self._configuration.KEY_INSTRUMENT_ID])
@@ -85,8 +87,16 @@ class MeasurementRunner:
             sample_start = int(time.time())
         self._send_callback(int(time.time()), self._MESSAGE_TYPE_STATUS, "Process finished", 0)
 
-    def start(self):
+    ##########
+    # Public #
+    ##########
+
+    def update_configuration(self, configuration):
         if not self.is_running():
+            self._configuration = configuration
+
+    def start(self):
+        if not self.is_running() and len(self._configuration.get_measurements()) > 0:
             self._measurement_thread = threading.Thread(target=self._run_measurements)
             self._measurement_thread.daemon = True
             self._stop_event.clear()
