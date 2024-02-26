@@ -52,7 +52,7 @@ class TestConfigurations:
         }
         conf.update_instrument(name, name, settings)
         if len(conf.get_instruments()) > 0:
-            for measurement in (("Voltage", "Get DC voltage"), ("Current", "Get DC current")):
+            for measurement in (("Volt", "Get DC voltage"), ("Curr", "Get DC current")):
                 instrument = conf.get_instrument("Multimeter")
                 settings = {
                     conf.KEY_INSTRUMENT_ID: instrument[conf.KEY_ID],
