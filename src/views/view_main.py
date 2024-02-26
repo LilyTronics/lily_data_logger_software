@@ -19,7 +19,7 @@ class ViewMain(wx.Frame):
     _LIST_COL_INDEX_SIZE = 30
     _LIST_COL_NAME_SIZE = 160
     _LIST_COL_STEP_SIZE = 120
-    _TABLE_MIN_COL_WIDTH = 100
+    _TABLE_TIME_COL_WIDTH = 110
 
     _LED_SIZE = (16, 16)
     _COLOR_LED_OFF = "#060"
@@ -144,8 +144,7 @@ class ViewMain(wx.Frame):
         self._grid_measurements = wx.grid.Grid(grid_panel, IdManager.ID_GRID_MEASUREMENTS)
         self._grid_measurements.CreateGrid(0, 1)
         self._grid_measurements.SetColLabelValue(0, "Time")
-        self._grid_measurements.SetColMinimalWidth(0, self._TABLE_MIN_COL_WIDTH)
-        self._grid_measurements.AutoSizeColLabelSize(0)
+        self._grid_measurements.SetColSize(0, self._TABLE_TIME_COL_WIDTH)
         self._grid_measurements.EnableEditing(False)
         self._grid_measurements.EnableDragRowSize(False)
         self._grid_measurements.EnableDragColMove(False)
@@ -229,19 +228,44 @@ class ViewMain(wx.Frame):
         for i, name in enumerate(measurement_names):
             self._grid_measurements.AppendCols(1)
             self._grid_measurements.SetColLabelValue(i + 1, name)
-            self._grid_measurements.SetColMinimalWidth(i + 1, self._TABLE_MIN_COL_WIDTH)
             self._grid_measurements.AutoSizeColLabelSize(i + 1)
+            size = self._grid_measurements.GetColSize(i + 1) + self._GAP
+            self._grid_measurements.SetColSize(i + 1, size)
+            self._grid_measurements.SetColMinimalWidth(i + 1, size)
         self._grid_measurements.AppendRows(1)
-        for i in range(self._grid_measurements.GetNumberCols()):
-            size = self._grid_measurements.GetColSize(i)
-            if size > self._TABLE_MIN_COL_WIDTH:
-                self._grid_measurements.SetColSize(i, size + self._GAP)
 
     def get_selected_measurement(self):
         cols = self._grid_measurements.GetSelectedCols()
         if len(cols) == 1 and cols[0] > 0:
             return self._grid_measurements.GetColLabelValue(cols[0])
         return None
+
+    def update_measurement_value(self, timestamp, measurement, value):
+        timestamp = TimeConverter.get_timestamp(timestamp)
+        print(timestamp, measurement, value)
+        col = -1
+        for i in range(self._grid_measurements.GetNumberCols()):
+            if self._grid_measurements.GetColLabelValue(i) == measurement:
+                col = i
+                break
+        if col > 0:
+            row = -1
+            # Check from bottom to top (faster)
+            for i in range(self._grid_measurements.GetNumberRows() - 1, -1, -1):
+                if self._grid_measurements.GetCellValue(i, 0) == timestamp:
+                    row = i
+                    break
+            if row < 0:
+                # Timestamp not found, add it
+                row = self._grid_measurements.GetNumberRows() - 1
+                self._grid_measurements.SetCellValue(row, 0, timestamp)
+                self._grid_measurements.AppendRows(1)
+            # Add measured value
+            self._grid_measurements.SetCellValue(row, col, str(value))
+            self._grid_measurements.SetCellAlignment(row, col, wx.ALIGN_CENTER, wx.ALIGN_CENTER)
+            self._grid_measurements.AutoSizeColumn(col)
+            size = self._grid_measurements.GetColSize(col) + self._GAP
+            self._grid_measurements.SetColSize(col, size)
 
 
 if __name__ == "__main__":

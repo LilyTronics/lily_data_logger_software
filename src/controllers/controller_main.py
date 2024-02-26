@@ -105,6 +105,9 @@ class ControllerMain:
 
     def _measurement_callback(self, timestamp, message_type, identifier, value):
         print(timestamp, message_type, identifier, value)
+        if message_type == self._measurement_runner.MESSAGE_TYPE_VALUE:
+            self._main_view.update_measurement_value(timestamp, identifier, value)
+
 
     ##################
     # Event handlers #
