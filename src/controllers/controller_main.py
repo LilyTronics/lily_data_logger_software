@@ -12,10 +12,11 @@ from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
 from src.models.measurement_runner import MeasurementRunner
 from src.models.settings import Settings
+from src.simulators import Simulators
 from src.views.view_dialogs import ViewDialogs
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
-from src.simulators import Simulators
+from src.views.view_progress_dialog import ProgressDialog
 from tests.test_environment.test_configurations import TestConfigurations
 
 
@@ -113,16 +114,27 @@ class ControllerMain:
         self._main_view.update_measurements(map(lambda x: x[self._configuration.KEY_NAME],
                                                 self._configuration.get_measurements()))
 
+    def _show_initialize_dialog(self, value):
+        ProgressDialog(self._main_view, "Initialize instruments", value)
+
     def _measurement_callback(self, timestamp, message_type, identifier, value):
         if message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_CREATE:
             # Create the instruments
             self._logger.debug("Create instruments")
+            wx.CallAfter(self._show_initialize_dialog, value)
         elif message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_INIT:
             # Init the instruments
             self._logger.debug(identifier)
+            # Check if dialog is available
+            while self._main_view.active_dialog is None:
+                wx.MilliSleep(100)
+            if self._main_view.active_dialog is not None:
+                wx.CallAfter(self._main_view.active_dialog.update, value, identifier)
         elif message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_START:
             # Start the measurements
             self._logger.debug("Start measurements")
+            if self._main_view.active_dialog is not None:
+                self._main_view.active_dialog.destroy()
         elif message_type == self._measurement_runner.MESSAGE_TYPE_VALUE:
             self._main_view.update_measurement_value(timestamp, identifier, value)
         elif message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_FINISHED:
