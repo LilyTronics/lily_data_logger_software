@@ -40,6 +40,9 @@ class TestMeasurementRunner(TestSuite):
         self._runner.stop()
         self.fail_if(self._runner.is_running(), "Measurement runner is not stopped")
         self.fail_if(len(self._messages) < 3, "Not enough messages received")
+        self.log.debug(f"Elapsed time: {self._runner.get_elapsed_time():.1f} seconds")
+        self.fail_if(self._runner.get_elapsed_time() < 3, "Elapsed time is too small")
+        self.fail_if(self._runner.get_elapsed_time() > 3.6, "Elapsed time is too big")
 
     def test_start_until_finished(self):
         del self._messages[:]
@@ -51,6 +54,9 @@ class TestMeasurementRunner(TestSuite):
             self.fail("Measurement runner did not finish by itself")
         self.fail_if(self._runner.is_running(), "Measurement runner is not stopped")
         self.fail_if(len(self._messages) < 6, "Not enough messages received")
+        self.log.debug(f"Elapsed time: {self._runner.get_elapsed_time():.1f} seconds")
+        self.fail_if(self._runner.get_elapsed_time() < 7, "Elapsed time is too small")
+        self.fail_if(self._runner.get_elapsed_time() > 7.3, "Elapsed time is too small")
 
     def teardown(self):
         Simulators.stop_simulators(self.log)

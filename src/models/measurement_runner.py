@@ -18,6 +18,7 @@ class MeasurementRunner:
         self._callback = callback
         self._measurement_thread = None
         self._stop_event = threading.Event()
+        self._elapsed_time = 0
 
     def _send_callback(self, timestamp, message_type, identifier, value):
         # Wrapper to force uniform callback data
@@ -81,7 +82,8 @@ class MeasurementRunner:
             while not self._stop_event.is_set():
                 if time.time() - sample_start >= sample_time:
                     break
-                if time.time() - start_time >= end_time:
+                self._elapsed_time = time.time() - start_time
+                if self._elapsed_time >= end_time:
                     self._stop_event.set()
                 time.sleep(0.01)
             sample_start = int(time.time())
@@ -111,6 +113,9 @@ class MeasurementRunner:
 
     def is_running(self):
         return self._measurement_thread is not None and self._measurement_thread.is_alive()
+
+    def get_elapsed_time(self):
+        return self._elapsed_time
 
 
 if __name__ == "__main__":
