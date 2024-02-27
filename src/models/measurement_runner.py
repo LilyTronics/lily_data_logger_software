@@ -10,8 +10,11 @@ from src.models.instrument_pool import InstrumentPool
 
 class MeasurementRunner:
 
-    MESSAGE_TYPE_STATUS = 'status'
-    MESSAGE_TYPE_VALUE = 'value'
+    MESSAGE_TYPE_STATUS_CREATE = "create"
+    MESSAGE_TYPE_STATUS_FINISHED = "finished"
+    MESSAGE_TYPE_STATUS_INIT = "init"
+    MESSAGE_TYPE_STATUS_START = "start"
+    MESSAGE_TYPE_VALUE = "value"
 
     def __init__(self, configuration, callback):
         self._configuration = configuration
@@ -26,7 +29,7 @@ class MeasurementRunner:
 
     def _create_instruments(self):
         instruments = self._configuration.get_measurements()
-        self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS, "Create instruments",
+        self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS_CREATE, "Create instruments",
                             len(instruments))
         for i, measurement in enumerate(instruments):
             settings = measurement[self._configuration.KEY_SETTINGS]
@@ -34,7 +37,7 @@ class MeasurementRunner:
                 settings[self._configuration.KEY_INSTRUMENT_ID])
             self._send_callback(
                 int(time.time()),
-                self.MESSAGE_TYPE_STATUS,
+                self.MESSAGE_TYPE_STATUS_INIT,
                 f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}'",
                 i
             )
@@ -60,6 +63,8 @@ class MeasurementRunner:
     def _requests_measurements(self, timestamp):
         measurements = self._configuration.get_measurements()
         for measurement in measurements:
+            if self._stop_event.is_set():
+                break
             settings = measurement[self._configuration.KEY_SETTINGS]
             instrument_data = self._configuration.get_instrument(
                 settings[self._configuration.KEY_INSTRUMENT_ID])
@@ -75,7 +80,7 @@ class MeasurementRunner:
         InstrumentPool.clear_instruments()
         self._create_instruments()
         start_time = int(time.time())
-        self._send_callback(start_time, self.MESSAGE_TYPE_STATUS, "Start measurements", 0)
+        self._send_callback(start_time, self.MESSAGE_TYPE_STATUS_START, "Start measurements", 0)
         sample_start = start_time
         while not self._stop_event.is_set():
             self._requests_measurements(sample_start)
@@ -87,7 +92,8 @@ class MeasurementRunner:
                     self._stop_event.set()
                 time.sleep(0.01)
             sample_start = int(time.time())
-        self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS, "Process finished", 0)
+        self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS_FINISHED,
+                            "Process finished", 0)
 
     ##########
     # Public #
