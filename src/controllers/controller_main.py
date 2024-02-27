@@ -21,6 +21,8 @@ from tests.test_environment.test_configurations import TestConfigurations
 
 class ControllerMain:
 
+    _TIMER_UPDATE_INTERVAL = 250    # ms
+
     def __init__(self, view_title, logger, show_test_configurations=False):
         self._logger = logger
         self._logger.info("Load main controller")
@@ -37,6 +39,10 @@ class ControllerMain:
 
         self._measurement_runner = MeasurementRunner(self._configuration,
                                                      self._measurement_callback)
+
+        self._update_timer = wx.Timer()
+        self._update_timer.Bind(wx.EVT_TIMER, self._on_update_timer)
+        self._update_timer.Start(self._TIMER_UPDATE_INTERVAL)
 
         wx.CallAfter(self._update_view_from_configuration)
         wx.CallAfter(Simulators.start_simulators, self._logger)
@@ -104,9 +110,25 @@ class ControllerMain:
                                                 self._configuration.get_measurements()))
 
     def _measurement_callback(self, timestamp, message_type, identifier, value):
-        print(timestamp, message_type, identifier, value)
-        if message_type == self._measurement_runner.MESSAGE_TYPE_VALUE:
+        if message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_CREATE:
+            # Create the instruments
+            self._logger.debug("Create instruments")
+        elif message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_INIT:
+            # Init the instruments
+            self._logger.debug(identifier)
+        elif message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_START:
+            # Start the measurements
+            self._logger.debug("Start measurements")
+        elif message_type == self._measurement_runner.MESSAGE_TYPE_VALUE:
             self._main_view.update_measurement_value(timestamp, identifier, value)
+        elif message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_FINISHED:
+            # Measurement runner finished
+            self._logger.info("Measurements finished")
+            wx.CallAfter(self._main_view.update_elapsed_time,
+                         int(self._measurement_runner.get_elapsed_time()))
+        else:
+            self._logger.error("Unknown message type: "
+                               f"{timestamp}, {message_type}, {identifier}, {value}")
 
     ##################
     # Event handlers #
@@ -183,8 +205,10 @@ class ControllerMain:
     ###########
 
     def _on_start_stop_process(self, event):
-        if event.GetId() == IdManager.ID_TOOL_START_PROCESS:
-            dialog_title = "Start Process"
+        if (event.GetId() == IdManager.ID_TOOL_START_PROCESS and
+                not self._measurement_runner.is_running()):
+            self._logger.info("Start measurements")
+            dialog_title = "Start process"
             if len(self._configuration.get_measurements()) == 0:
                 ViewDialogs.show_message(self._main_view, "Create one or more measurements first.",
                                          dialog_title)
@@ -195,9 +219,16 @@ class ControllerMain:
                 # Make sure we run the latest configuration
                 self._measurement_runner.update_configuration(self._configuration)
                 self._measurement_runner.start()
-        elif event.GetId() == IdManager.ID_TOOL_STOP_PROCESS:
+        elif (event.GetId() == IdManager.ID_TOOL_STOP_PROCESS and
+              self._measurement_runner.is_running()):
+            self._logger.info("Stop measurements")
             self._measurement_runner.stop()
 
+        event.Skip()
+
+    def _on_update_timer(self, event):
+        if self._measurement_runner.is_running():
+            self._main_view.update_elapsed_time(int(self._measurement_runner.get_elapsed_time()))
         event.Skip()
 
     ##############
