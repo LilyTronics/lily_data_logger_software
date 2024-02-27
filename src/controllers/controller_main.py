@@ -19,9 +19,11 @@ from src.simulators import Simulators
 from tests.test_environment.test_configurations import TestConfigurations
 
 
+# pylint: disable=too-many-instance-attributes
 class ControllerMain:
 
     _TIMER_UPDATE_INTERVAL = 250    # ms
+    _LED_INTERVAL = 500             # ms
 
     def __init__(self, view_title, logger, show_test_configurations=False):
         self._logger = logger
@@ -29,7 +31,6 @@ class ControllerMain:
 
         self._settings = Settings()
         self._configuration = Configuration()
-        self._elapsed_time = 0
 
         self._main_view = self._initialize_main_view(view_title, show_test_configurations)
         self._log_view = None
@@ -43,6 +44,8 @@ class ControllerMain:
         self._update_timer = wx.Timer()
         self._update_timer.Bind(wx.EVT_TIMER, self._on_update_timer)
         self._update_timer.Start(self._TIMER_UPDATE_INTERVAL)
+
+        self._led_counter = 0
 
         wx.CallAfter(self._update_view_from_configuration)
         wx.CallAfter(Simulators.start_simulators, self._logger)
@@ -103,7 +106,8 @@ class ControllerMain:
         self._main_view.update_configuration_info(self._configuration.get_sample_time(),
                                                   self._configuration.get_end_time(),
                                                   self._configuration.get_continuous_mode())
-        self._main_view.update_elapsed_time(self._elapsed_time)
+        self._main_view.update_elapsed_time(0)
+        self._main_view.update_led(0)
         self._main_view.update_instruments_list(map(lambda x: x[self._configuration.KEY_NAME],
                                                     self._configuration.get_instruments()))
         self._main_view.update_measurements(map(lambda x: x[self._configuration.KEY_NAME],
@@ -126,6 +130,7 @@ class ControllerMain:
             self._logger.info("Measurements finished")
             wx.CallAfter(self._main_view.update_elapsed_time,
                          int(self._measurement_runner.get_elapsed_time()))
+            wx.CallAfter(self._main_view.update_led, 0)
         else:
             self._logger.error("Unknown message type: "
                                f"{timestamp}, {message_type}, {identifier}, {value}")
@@ -217,6 +222,8 @@ class ControllerMain:
                                          dialog_title)
             else:
                 # Make sure we run the latest configuration
+                self._update_view_from_configuration()
+                self._led_counter = 0
                 self._measurement_runner.update_configuration(self._configuration)
                 self._measurement_runner.start()
         elif (event.GetId() == IdManager.ID_TOOL_STOP_PROCESS and
@@ -229,6 +236,10 @@ class ControllerMain:
     def _on_update_timer(self, event):
         if self._measurement_runner.is_running():
             self._main_view.update_elapsed_time(int(self._measurement_runner.get_elapsed_time()))
+            self._led_counter += 1
+            if self._led_counter >= self._LED_INTERVAL / self._TIMER_UPDATE_INTERVAL:
+                self._main_view.update_led(2)
+                self._led_counter = 0
         event.Skip()
 
     ##############

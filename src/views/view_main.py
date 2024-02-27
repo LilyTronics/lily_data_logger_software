@@ -23,6 +23,7 @@ class ViewMain(wx.Frame):
 
     _LED_SIZE = (16, 16)
     _COLOR_LED_OFF = "#060"
+    _COLOR_LED_ON = "#0f0"
 
     _MINIMUM_WINDOW_SIZE = (1100, 700)
 
@@ -201,6 +202,23 @@ class ViewMain(wx.Frame):
     def update_elapsed_time(self, elapsed_time):
         self._lbl_elapsed_time.SetLabel(TimeConverter.create_duration_time_string(elapsed_time))
         self._lbl_elapsed_time.GetParent().Layout()
+
+    def update_led(self, mode):
+        # Three options:
+        # 0: off
+        # 1: on
+        # 2: invert
+        if mode == 0:
+            self._activity_led.SetBackgroundColour(self._COLOR_LED_OFF)
+        elif mode == 1:
+            self._activity_led.SetBackgroundColour(self._COLOR_LED_ON)
+        else:
+            color = self._activity_led.GetBackgroundColour()
+            if color == self._COLOR_LED_OFF:
+                self._activity_led.SetBackgroundColour(self._COLOR_LED_ON)
+            else:
+                self._activity_led.SetBackgroundColour(self._COLOR_LED_OFF)
+        self._activity_led.Refresh()
 
     def update_instruments_list(self, instrument_names):
         self._lst_instruments.DeleteAllItems()
