@@ -242,7 +242,6 @@ class ViewMain(wx.Frame):
 
     def update_measurement_value(self, timestamp, measurement, value):
         timestamp = TimeConverter.get_timestamp(timestamp)
-        print(timestamp, measurement, value)
         col = -1
         for i in range(self._grid_measurements.GetNumberCols()):
             if self._grid_measurements.GetColLabelValue(i) == measurement:
