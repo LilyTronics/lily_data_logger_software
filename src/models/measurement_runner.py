@@ -35,15 +35,16 @@ class MeasurementRunner:
             settings = measurement[self._configuration.KEY_SETTINGS]
             instrument_data = self._configuration.get_instrument(
                 settings[self._configuration.KEY_INSTRUMENT_ID])
-            self._send_callback(
-                int(time.time()),
-                self.MESSAGE_TYPE_STATUS_INIT,
-                f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}'",
-                i
-            )
             instrument = InstrumentPool.create_instrument(instrument_data)
-            instrument.initialize()
-            instrument.start()
+            if not instrument.is_running():
+                self._send_callback(
+                    int(time.time()),
+                    self.MESSAGE_TYPE_STATUS_INIT,
+                    f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}'",
+                    i
+                )
+                instrument.initialize()
+                instrument.start()
 
     def _process_response(self, measurement_id, response):
         request_time, measurement_name = measurement_id.split(" ")
