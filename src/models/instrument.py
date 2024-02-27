@@ -213,14 +213,14 @@ class Instrument:
     ##########
 
     def start(self):
-        if self._queue_handler is None or not self._queue_handler.is_alive():
+        if not self.is_running():
             self._queue_handler = threading.Thread(target=self._process_queue)
             self._queue_handler.daemon = True
             self._stop_event.clear()
             self._queue_handler.start()
 
     def stop(self):
-        if self._queue_handler is not None and self._queue_handler.is_alive():
+        if self.is_running():
             self._stop_event.set()
             self._queue_handler.join()
         self._queue_handler = None
@@ -230,6 +230,9 @@ class Instrument:
                 self._queue.get_nowait()
             except queue.Empty:
                 break
+
+    def is_running(self):
+        return self._queue_handler is not None and self._queue_handler.is_alive()
 
     def export_to_file(self, filename):
         output = {
