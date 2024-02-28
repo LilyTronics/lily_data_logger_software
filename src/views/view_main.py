@@ -276,6 +276,7 @@ class ViewMain(wx.Frame):
                 # Timestamp not found, add it
                 row = self._grid_measurements.GetNumberRows() - 1
                 self._grid_measurements.SetCellValue(row, 0, timestamp)
+                self._grid_measurements.SetCellAlignment(row, 0, wx.ALIGN_CENTER, wx.ALIGN_CENTER)
                 self._grid_measurements.AppendRows(1)
             # Add measured value
             self._grid_measurements.SetCellValue(row, col, str(value))
@@ -284,6 +285,28 @@ class ViewMain(wx.Frame):
             size = self._grid_measurements.GetColSize(col) + self._GAP
             self._grid_measurements.SetColSize(col, size)
             self._grid_measurements.MakeCellVisible(row + 1, 0)
+
+    def get_measurement_data(self):
+        data = []
+        if self._grid_measurements.GetNumberRows() > 0:
+            row_data = []
+            for col in range(self._grid_measurements.GetNumberCols()):
+                row_data.append(self._grid_measurements.GetColLabelValue(col))
+            data.append(row_data)
+            for row in range(self._grid_measurements.GetNumberRows()):
+                row_data = []
+                # Only add row if it has a timestamp
+                if self._grid_measurements.GetCellValue(row, 0) != "":
+                    for col in range(self._grid_measurements.GetNumberCols()):
+                        value = self._grid_measurements.GetCellValue(row, col)
+                        try:
+                            value = float(value)
+                        except (Exception,):
+                            pass
+                        row_data.append(value)
+                    data.append(row_data)
+
+        return data
 
 
 if __name__ == "__main__":
