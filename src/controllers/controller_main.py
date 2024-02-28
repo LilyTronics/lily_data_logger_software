@@ -2,6 +2,7 @@
 Main controller for the application.
 """
 
+import csv
 import wx.grid
 
 from src.controllers.controller_check_instruments import ControllerCheckInstruments
@@ -75,6 +76,7 @@ class ControllerMain:
                    id=IdManager.ID_TOOL_CHECK_INSTRUMENTS)
         frame.Bind(wx.EVT_TOOL, self._on_start_stop_process, id=IdManager.ID_TOOL_START_PROCESS)
         frame.Bind(wx.EVT_TOOL, self._on_start_stop_process, id=IdManager.ID_TOOL_STOP_PROCESS)
+        frame.Bind(wx.EVT_TOOL, self._on_export_to_csv, id=IdManager.ID_TOOL_EXPORT_CSV)
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
         frame.Bind(wx.EVT_COMBOBOX, self._on_test_config, id=IdManager.ID_TOOL_TEST_CONFIG)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
@@ -252,6 +254,32 @@ class ControllerMain:
             if self._led_counter >= self._LED_INTERVAL / self._TIMER_UPDATE_INTERVAL:
                 self._main_view.update_led(2)
                 self._led_counter = 0
+        event.Skip()
+
+    ##########
+    # Export #
+    ##########
+
+    def _on_export_to_csv(self, event):
+        dialog_title = "Export to CSV"
+        measurement_data = self._main_view.get_measurement_data()
+        if len(measurement_data) <= 1:
+            ViewDialogs.show_message(self._main_view, "There is no measurement data.", dialog_title)
+        else:
+            filename = ViewDialogs.show_save_file(self._main_view, dialog_title, "", "",
+                                                  "CSV files (*.csv)|*.csv")
+            if filename is not None:
+                try:
+                    self._logger.debug(f"CSV export to: {filename}")
+                    with open(filename, "w", encoding="utf-8", newline="") as fp:
+                        writer = csv.writer(fp, quoting=csv.QUOTE_NONNUMERIC)
+                        writer.writerow(measurement_data[0])
+                        writer.writerows(measurement_data[1:])
+                except Exception as e:
+                    self._logger.error(str(e))
+                    ViewDialogs.show_message(self._main_view,
+                                             f"Error when writing file {filename}:\n{e}",
+                                             dialog_title)
         event.Skip()
 
     ##############
