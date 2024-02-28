@@ -283,6 +283,7 @@ class ViewMain(wx.Frame):
             self._grid_measurements.AutoSizeColumn(col)
             size = self._grid_measurements.GetColSize(col) + self._GAP
             self._grid_measurements.SetColSize(col, size)
+            self._grid_measurements.MakeCellVisible(row + 1, 0)
 
 
 if __name__ == "__main__":
