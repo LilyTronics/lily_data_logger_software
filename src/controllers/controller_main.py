@@ -134,9 +134,9 @@ class ControllerMain:
             # Start the measurements
             self._logger.debug("Start measurements")
             if self._main_view.active_dialog is not None:
-                self._main_view.active_dialog.destroy()
+                wx.CallAfter(self._main_view.active_dialog.destroy)
         elif message_type == self._measurement_runner.MESSAGE_TYPE_VALUE:
-            self._main_view.update_measurement_value(timestamp, identifier, value)
+            wx.CallAfter(self._main_view.update_measurement_value, timestamp, identifier, value)
         elif message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_FINISHED:
             # Measurement runner finished
             self._logger.info("Measurements finished")

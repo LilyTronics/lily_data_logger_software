@@ -24,17 +24,18 @@ class TestConfigurations:
 
     @classmethod
     def init(cls):
-        cls._CONFIGURATIONS["all simulators"] = cls._create_all_simulators()
+        cls._CONFIGURATIONS["all simulators, 2s/7s"] = cls._create_all_simulators(2, 7)
+        cls._CONFIGURATIONS["all simulators, 2s/5m"] = cls._create_all_simulators(2, 300)
 
     ###########
     # Private #
     ###########
 
     @classmethod
-    def _create_all_simulators(cls):
+    def _create_all_simulators(cls, sample_time, duration):
         conf = Configuration()
-        conf.set_sample_time(2)
-        conf.set_end_time(7)
+        conf.set_sample_time(sample_time)
+        conf.set_end_time(duration)
         cls._add_multimeter(conf)
         cls._add_temperature_meter(conf)
         return conf
