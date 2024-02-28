@@ -82,7 +82,7 @@ class ViewMain(wx.Frame):
             else:
                 self._toolbar.AddTool(tool[0], "", tool[1], tool[2])
         if show_test_configurations:
-            cmb_config = wx.ComboBox(self._toolbar, IdManager.ID_TOOL_TEST_CONFIG)
+            cmb_config = wx.ComboBox(self._toolbar, IdManager.ID_TOOL_TEST_CONFIG, size=(150, -1))
             cmb_config.SetItems(TestConfigurations.get_configuration_names())
             self._toolbar.AddStretchableSpace()
             self._toolbar.AddControl(cmb_config)
