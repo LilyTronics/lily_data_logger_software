@@ -47,7 +47,7 @@ class MeasurementRunner:
                 instrument.start()
 
     def _process_response(self, measurement_id, response):
-        request_time, measurement_name = measurement_id.split(" ")
+        request_time, measurement_name = measurement_id.split(" ", 1)
         request_time = int(request_time)
         response_time = time.time()
         sample_time = self._configuration.get_sample_time()
