@@ -11,6 +11,7 @@ from src.controllers.controller_edit_instrument import ControllerEditInstrument
 from src.controllers.controller_edit_measurement import ControllerEditMeasurement
 from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
+from src.models.instruments import Instruments
 from src.models.measurement_runner import MeasurementRunner
 from src.models.settings import Settings
 from src.simulators import Simulators
@@ -77,6 +78,7 @@ class ControllerMain:
         frame.Bind(wx.EVT_TOOL, self._on_start_stop_process, id=IdManager.ID_TOOL_START_PROCESS)
         frame.Bind(wx.EVT_TOOL, self._on_start_stop_process, id=IdManager.ID_TOOL_STOP_PROCESS)
         frame.Bind(wx.EVT_TOOL, self._on_export_to_csv, id=IdManager.ID_TOOL_EXPORT_CSV)
+        frame.Bind(wx.EVT_TOOL, self._on_export_instrument, id=IdManager.ID_TOOL_EXPORT_INSTRUMENT)
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
         frame.Bind(wx.EVT_COMBOBOX, self._on_test_config, id=IdManager.ID_TOOL_TEST_CONFIG)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
@@ -280,6 +282,29 @@ class ControllerMain:
                     ViewDialogs.show_message(self._main_view,
                                              f"Error when writing file {filename}:\n{e}",
                                              dialog_title)
+        event.Skip()
+
+    def _on_export_instrument(self, event):
+        dialog_title = "Export instrument"
+        name = self._main_view.get_selected_instrument()
+        if name == "":
+            ViewDialogs.show_message(self._main_view, "Select an instrument first", dialog_title)
+        else:
+            instrument = Instruments.get_instrument_by_name(
+                self._configuration.get_instrument(name)[self._configuration.KEY_SETTINGS]
+                [self._configuration.KEY_INSTRUMENT_NAME]
+            )
+            filename = ViewDialogs.show_save_file(self._main_view, dialog_title, "", "",
+                                                  "JSON files (*.json)|*.json")
+            if filename is not None:
+                try:
+                    instrument.export_to_file(filename)
+                except Exception as e:
+                    self._logger.error(str(e))
+                    ViewDialogs.show_message(self._main_view,
+                                             f"Error when writing file {filename}:\n{e}",
+                                             dialog_title)
+
         event.Skip()
 
     ##############
