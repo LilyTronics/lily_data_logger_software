@@ -15,6 +15,11 @@ class TestConfigurations:
     ##########
 
     @classmethod
+    def init(cls):
+        cls._CONFIGURATIONS["all simulators, 2s/7s"] = cls._create_all_simulators(2, 7)
+        cls._CONFIGURATIONS["all simulators, 2s/5m"] = cls._create_all_simulators(2, 300)
+
+    @classmethod
     def get_configuration_names(cls):
         return list(cls._CONFIGURATIONS)
 
@@ -23,9 +28,8 @@ class TestConfigurations:
         return cls._CONFIGURATIONS.get(name, Configuration())
 
     @classmethod
-    def init(cls):
-        cls._CONFIGURATIONS["all simulators, 2s/7s"] = cls._create_all_simulators(2, 7)
-        cls._CONFIGURATIONS["all simulators, 2s/5m"] = cls._create_all_simulators(2, 300)
+    def get_unit_test_configuration(cls):
+        return cls.get_configuration("all simulators, 2s/7s")
 
     ###########
     # Private #
@@ -84,7 +88,7 @@ class TestConfigurations:
                 conf.KEY_GAIN: 1.0,
                 conf.KEY_OFFSET: 0.0
             }
-            conf.update_measurement("Temperature", "Temperature", settings)
+            conf.update_measurement("Outside temperature", "Outside temperature", settings)
         return conf
 
 
