@@ -1,1 +1,1 @@
-pylint --ignored-modules=wx $(git ls-files '*.py?')
+pylint $(git ls-files '*.py')

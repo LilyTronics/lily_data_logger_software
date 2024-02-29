@@ -12,3 +12,5 @@ disable=
 
     # Something to fix later
     duplicate-code
+
+ignored-modules=wx
