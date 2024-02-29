@@ -67,6 +67,8 @@ class ControllerMain:
             frame.SetPosition(pos)
         frame.Maximize(self._settings.get_main_window_maximized())
         frame.Bind(wx.EVT_CLOSE, self._on_view_close)
+        frame.Bind(wx.EVT_TOOL, self._on_new_configuration,
+                   id=IdManager.ID_TOOL_NEW_CONFIGURATION)
         frame.Bind(wx.EVT_TOOL, self._on_open_configuration,
                    id=IdManager.ID_TOOL_OPEN_CONFIGURATION)
         frame.Bind(wx.EVT_TOOL, self._on_save_configuration,
@@ -158,6 +160,13 @@ class ControllerMain:
     #################
     # Configuration #
     #################
+
+    def _on_new_configuration(self, event):
+        btn = ControllerConfiguration.new_config(self._main_view, self._configuration, self._logger)
+        if btn in (wx.ID_YES, wx.ID_NO):
+            self._configuration = Configuration()
+        self._update_view_from_configuration()
+        event.Skip()
 
     def _on_open_configuration(self, event):
         ControllerConfiguration.load_from_file(self._main_view, self._configuration, self._logger)

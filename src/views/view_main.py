@@ -54,6 +54,8 @@ class ViewMain(wx.Frame):
 
     def _create_toolbar(self, parent, show_test_configurations):
         tools = [
+            (IdManager.ID_TOOL_NEW_CONFIGURATION, ImageData.new_config.Bitmap,
+             "New configuration"),
             (IdManager.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap,
              "Open configuration"),
             (IdManager.ID_TOOL_SAVE_CONFIGURATION, ImageData.save_config.Bitmap,

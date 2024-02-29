@@ -14,13 +14,21 @@ class ControllerConfiguration:
 
     @classmethod
     def check_configuration_is_changed(cls, parent, configuration, logger):
+        btn = None
         if configuration.is_changed():
+            buttons = wx.YES_NO | wx.CANCEL
             btn = ViewDialogs.show_confirm(parent,
                                            "The configuration is changed. Save configuration?",
-                                           "Save configuration")
+                                           "Save configuration",
+                                           buttons)
             if btn == wx.ID_YES:
                 cls.save_to_file(parent, configuration, logger)
             wx.YieldIfNeeded()
+        return btn
+
+    @classmethod
+    def new_config(cls, parent, configuration, logger):
+        return cls.check_configuration_is_changed(parent, configuration, logger)
 
     @classmethod
     def load_from_file(cls, parent, configuration, logger):
