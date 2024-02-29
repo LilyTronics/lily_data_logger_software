@@ -18,6 +18,12 @@ class TestInterface(TestSuite):
             super().__init__(params_to_match)
             self._params = (param1, param2, param3)
 
+        def is_open(self):
+            return True
+
+        def open(self):
+            pass
+
         def close(self):
             pass
 

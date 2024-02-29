@@ -264,6 +264,12 @@ class TestInterface(Interface):
     def custom_command(param):
         print(f"Custom command with param {param}")
 
+    def is_open(self):
+        return True
+
+    def open(self):
+        pass
+
     def close(self):
         pass
 
