@@ -25,6 +25,12 @@ class TcpClientInterface(Interface):
         self._rx_buffer_size = rx_buffer_size
         self._socket = None
 
+    def is_open(self):
+        return True
+
+    def open(self):
+        pass
+
     def send_command(self, command, expect_response, pre_response, post_response):
         response = b""
         try:

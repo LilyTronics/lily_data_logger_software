@@ -49,6 +49,12 @@ class SerialPortInterface(Interface):
                                      parity=self._PARITY_VALUES[parity], stopbits=float(stop_bits),
                                      bytesize=int(data_bits), write_timeout=tx_timeout)
 
+    def is_open(self):
+        return self._serial.is_open
+
+    def open(self):
+        self._serial.open()
+
     def toggle_dtr(self):
         for value in (True, False, True):
             self._serial.dtr = value

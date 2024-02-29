@@ -34,6 +34,8 @@ class InterfacePool:
             if interface_object is None:
                 interface_object = interface_class(**parameters)
                 cls._INTERFACES.append(interface_object)
+            if not interface_object.is_open():
+                interface_object.open()
         return interface_object
 
     @classmethod

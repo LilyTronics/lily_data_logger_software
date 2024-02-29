@@ -7,6 +7,7 @@ import wx
 from src.controllers.controller_check_instruments import ControllerCheckInstruments
 from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
+from src.simulators import Simulators
 from tests.unit_tests.lib.test_suite import TestSuite
 
 
@@ -27,6 +28,7 @@ class TestControllerCheckInstrument(TestSuite):
                     self._error = "The progress dialog did not close"
                 view.Close()
 
+        Simulators.start_simulators(self.log)
         self._error = ""
         _ = wx.App(redirect=False)
         t = self.start_thread(_test_check_instruments)
@@ -44,9 +46,7 @@ class TestControllerCheckInstrument(TestSuite):
         ControllerCheckInstruments(None, conf)
         self.wait_for(t.is_alive, False, 10, 0.1)
         self.fail_if(self._error != "", self._error)
-
-    # def teardown(self):
-    #     self._app.MainLoop()
+        Simulators.stop_simulators(self.log)
 
 
 if __name__ == "__main__":

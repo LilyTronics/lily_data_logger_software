@@ -26,6 +26,12 @@ class Interface:
     def send_command(self, command, expect_response, pre_response, post_response):
         raise NotImplementedError("This method must be implemented in the derived class")
 
+    def is_open(self):
+        raise NotImplementedError("This method must be implemented in the derived class")
+
+    def open(self):
+        raise NotImplementedError("This method must be implemented in the derived class")
+
     def close(self):
         raise NotImplementedError("This method must be implemented in the derived class")
 
