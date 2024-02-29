@@ -48,11 +48,12 @@ class Interface:
         raise NotImplementedError("This method must be implemented in the derived class")
 
     def acquire_lock(self):
+        # pylint: disable=consider-using-with
         self._lock.acquire()
 
     def release_lock(self):
         self._lock.release()
-        
+
 
 if __name__ == "__main__":
 
