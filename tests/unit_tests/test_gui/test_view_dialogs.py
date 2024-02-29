@@ -2,7 +2,6 @@
 Test the dialog widgets.
 """
 
-import glob
 import os
 import wx
 
