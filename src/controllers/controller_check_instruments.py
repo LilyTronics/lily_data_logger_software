@@ -7,7 +7,7 @@ import wx
 
 from src.models.id_manager import IdManager
 from src.models.instruments import Instruments
-from src.models.interfaces import Interfaces
+from src.models.interface_pool import InterfacePool
 from src.views.view_check_instruments import ViewCheckInstruments
 
 
@@ -68,16 +68,6 @@ class ControllerCheckInstruments:
             f"Instrument definition '{instrument_definition}' does not exist")
         return instrument_object
 
-    @staticmethod
-    def _get_interface_class(instrument_name, instrument_object):
-        interface_type = instrument_object.get_interface_type()
-        assert interface_type is not None, (
-            f"No interface defined for instrument '{instrument_name}'")
-        interface_class = Interfaces.get_interface_by_name(interface_type)
-        assert interface_class is not None, (
-            f"Interface type '{interface_type}' does not exist")
-        return interface_class
-
     def _get_instrument_settings(self, instrument_name, instrument_object):
         instrument_data = self._config.get_instrument(instrument_name)
         settings = instrument_data[self._config.KEY_SETTINGS]
@@ -93,16 +83,18 @@ class ControllerCheckInstruments:
         interface_object = None
         try:
             instrument_object = self._get_instrument_object(instrument_name)
-            interface_class = self._get_interface_class(instrument_name, instrument_object)
             instrument_settings = self._get_instrument_settings(instrument_name, instrument_object)
-            interface_object = interface_class(**instrument_settings)
+
+            interface_object = InterfacePool.create_interface(
+                instrument_object.get_interface_type(), instrument_settings
+            )
             instrument_object.set_interface_object(interface_object)
             instrument_object.initialize()
             result = "Connection OK"
             input_channels = instrument_object.get_input_channels()
             if len(input_channels) > 0:
                 channel_name = input_channels[0][instrument_object.KEY_NAME]
-                value = instrument_object.get_value(channel_name)
+                value = instrument_object.process_channel(channel_name)
                 result += f" ({channel_name} = {value})"
             self._update_status(instrument_name, True, result)
         except Exception as e:
@@ -126,7 +118,8 @@ class ControllerCheckInstruments:
 if __name__ == "__main__":
 
     import pylint
-    from tests.unit_tests.test_gui.test_controller_check_instruments import TestControllerCheckInstrument
+    from tests.unit_tests.test_gui.test_controller_check_instruments import (
+        TestControllerCheckInstrument)
 
     TestControllerCheckInstrument().run(True)
     pylint.run_pylint([__file__])
