@@ -45,7 +45,8 @@ def generate_image_data():
 
         fp_model.write('\n\nif __name__ == "__main__":\n\n')
         fp_model.write("    import pylint\n")
-        fp_model.write("    from tests.unit_tests.test_image_data import TestImageData\n\n")
+        fp_model.write("    from tests.unit_tests.test_models.test_image_data "
+                       "import TestImageData\n\n")
         fp_model.write("    TestImageData().run(True)\n")
         fp_model.write("    pylint.run_pylint([__file__])\n")
 
