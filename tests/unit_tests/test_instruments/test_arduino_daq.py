@@ -45,12 +45,12 @@ class TestArduinoDAQ(TestSuite):
         def _test_io(d_out, d_in):
             self.log.debug(f"Test D{d_out} to D{d_in}")
             for state in (1, 0):
-                arduino_daq.set_value(f"D{d_out} set state", state)
-                value = arduino_daq.get_value(f"D{d_in} get state")
+                arduino_daq.process_channel(f"D{d_out} set state", state)
+                value = arduino_daq.process_channel(f"D{d_in} get state")
                 self.log.debug(f"Set output: {state}, read input: {value}")
                 self.fail_if(state != value, "IO did not change to the correct value")
             # Make output input by reading
-            arduino_daq.get_value(f"D{d_out} get state")
+            arduino_daq.process_channel(f"D{d_out} get state")
 
         for d in range(2, 13, 2):
             _test_io(d, d + 1)
@@ -61,7 +61,7 @@ class TestArduinoDAQ(TestSuite):
         for ch in range(6):
             expected -= (5 / 7)
             self.log.debug(f"Read voltage A{ch}")
-            value = arduino_daq.get_value(f"A{ch} get voltage")
+            value = arduino_daq.process_channel(f"A{ch} get voltage")
             self.log.debug(f"Voltage : {value} V")
             self.log.debug(f"Expected: {expected:.3f} V")
             diff = abs(value - expected)
