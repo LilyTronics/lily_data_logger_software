@@ -64,7 +64,7 @@ def _create_zip_file(dist_path, artifacts_path):
 
 def create_deployment():
     artifacts_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "artifacts"))
-    init_file = os.path.join(os.path.dirname(src.__file__), "main.pyw")
+    init_file = os.path.join(os.path.dirname(src.__file__), "main.py")
     icon_file = os.path.join(artifacts_path, "app.ico")
     output_folder = os.path.join(os.path.dirname(__file__), 'build_output')
     dist_path = os.path.join(output_folder, "dist")
