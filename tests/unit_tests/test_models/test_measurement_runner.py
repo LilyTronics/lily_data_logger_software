@@ -2,12 +2,8 @@
 Test for the measurement runner.
 """
 
-import os
-
-from src.models.configuration import Configuration
 from src.models.measurement_runner import MeasurementRunner
 from src.simulators import Simulators
-from tests import test_files
 from tests.unit_tests.lib.test_suite import TestSuite
 from tests.test_environment.test_configurations import TestConfigurations
 
