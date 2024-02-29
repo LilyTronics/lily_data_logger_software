@@ -9,6 +9,7 @@ from src.models.measurement_runner import MeasurementRunner
 from src.simulators import Simulators
 from tests import test_files
 from tests.unit_tests.lib.test_suite import TestSuite
+from tests.test_environment.test_configurations import TestConfigurations
 
 
 class TestMeasurementRunner(TestSuite):
@@ -22,11 +23,7 @@ class TestMeasurementRunner(TestSuite):
 
     def setup(self):
         Simulators.start_simulators(self.log)
-        conf = Configuration()
-        conf.load_from_file(os.path.join(os.path.dirname(test_files.__file__),
-                                         "test_configuration.json"))
-        conf.set_sample_time(2)
-        conf.set_end_time(7)
+        conf = TestConfigurations.get_unit_test_configuration()
         self._runner = MeasurementRunner(conf, self._callback)
 
     def test_start_stop(self):
