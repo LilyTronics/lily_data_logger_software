@@ -82,7 +82,7 @@ class ControllerEditInstrument:
             instrument.initialize()
             cls._dlg.write_to_console(
                 f"Get value from channel: '{input_channels[0][instrument.KEY_NAME]}'")
-            value = instrument.get_value(input_channels[0]["name"])
+            value = instrument.process_channel(input_channels[0]["name"])
             cls._dlg.write_to_console(f"Received value: '{value}'")
             cls._dlg.write_to_console("\nTest finished, all seems fine")
         except Exception as e:
