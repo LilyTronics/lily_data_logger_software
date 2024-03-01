@@ -262,7 +262,7 @@ class TestControllerConfiguration(TestSuite):
         if os.path.isfile(self._filename):
             os.remove(self._filename)
         self._app.MainLoop()
-        self._app.Destroy()
+        self.gui.destroy_wx_app()
         del self._app
 
 

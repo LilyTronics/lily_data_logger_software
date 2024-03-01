@@ -45,7 +45,7 @@ class TestControllerMain(TestSuite):
         controller = ControllerMain("ControllerMain Test", self.logger, load_test_configuration)
         self.view_main = controller.get_view_main()
         app.MainLoop()
-        app.Destroy()
+        self.gui.destroy_wx_app()
         self.wait_for(t.is_alive, False, self._thread_time_out, 0.1)
         self.fail_if(self._error != "", self._error.strip())
         self.view_main = None

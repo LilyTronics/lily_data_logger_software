@@ -99,7 +99,7 @@ class TestViewDialogs(TestSuite):
     def teardown(self):
         self._test_frame.Destroy()
         self._app.MainLoop()
-        self._app.Destroy()
+        self.gui.destroy_wx_app()
         del self._app
 
 

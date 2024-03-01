@@ -26,6 +26,12 @@ class GuiUnitTest:
         return wx.GetApp()
 
     @staticmethod
+    def destroy_wx_app():
+        app = wx.GetApp()
+        app.Destroy()
+        print(wx.GetApp())
+
+    @staticmethod
     def is_window_available(window_id):
         return wx.Window.FindWindowById(window_id) is not None
 
@@ -287,6 +293,6 @@ if __name__ == "__main__":
     test_frame.Show()
 
     app3.MainLoop()
-    app3.Destroy()
+    GuiUnitTest.destroy_wx_app()
 
     pylint.run_pylint([__file__])

@@ -44,7 +44,7 @@ class TestControllerCheckInstrument(TestSuite):
         ControllerCheckInstruments(None, conf)
         self.wait_for(t.is_alive, False, 10, 0.1)
         app.MainLoop()
-        app.Destroy()
+        self.gui.destroy_wx_app()
         self.fail_if(self._error != "", self._error)
         Simulators.stop_simulators(self.log)
 

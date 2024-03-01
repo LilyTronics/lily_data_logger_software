@@ -40,7 +40,7 @@ class TestViewProgressDialog(TestSuite):
         ProgressDialog(self._test_frame, self._TITLE, 10)
         t = self.start_thread(_test_thread, (test_function_to_run,))
         app.MainLoop()
-        app.Destroy()
+        self.gui.destroy_wx_app()
         self.wait_for(t.is_alive, False, self._thread_time_out, 0.1)
         self.fail_if(self._error != "", self._error.strip())
 
