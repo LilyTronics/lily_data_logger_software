@@ -27,8 +27,9 @@ class ViewMain(wx.Frame):
 
     _MINIMUM_WINDOW_SIZE = (1100, 700)
 
-    def __init__(self, title, show_test_configurations=False):
+    def __init__(self, title, select_config_callback, show_test_configurations):
         self.active_dialog = None
+        self._select_config_callback = select_config_callback
         self._title = title
         super().__init__(None, wx.ID_ANY, self._title)
         panel = wx.Panel(self)
@@ -53,36 +54,38 @@ class ViewMain(wx.Frame):
     ###########
 
     def _create_toolbar(self, parent, show_test_configurations):
-        tools = [
-            (IdManager.ID_TOOL_NEW_CONFIGURATION, ImageData.new_config.Bitmap,
-             "New configuration"),
-            (IdManager.ID_TOOL_OPEN_CONFIGURATION, ImageData.open_config.Bitmap,
-             "Open configuration"),
-            (IdManager.ID_TOOL_SAVE_CONFIGURATION, ImageData.save_config.Bitmap,
-             "Save configuration"),
-            (0,),
-            (IdManager.ID_TOOL_EDIT_CONFIGURATION, ImageData.settings.Bitmap,
-             "Configuration settings"),
-            (0,),
-            (IdManager.ID_TOOL_CHECK_INSTRUMENTS, ImageData.check_instruments.Bitmap,
-             "Check instruments"),
-            (0,),
-            (IdManager.ID_TOOL_START_PROCESS, ImageData.start.Bitmap, "Start"),
-            (IdManager.ID_TOOL_STOP_PROCESS, ImageData.stop.Bitmap, "Stop"),
-            (0,),
-            (IdManager.ID_TOOL_EXPORT_CSV, ImageData.export_csv.Bitmap,
-             "Export measurement data to CSV"),
-            (IdManager.ID_TOOL_EXPORT_INSTRUMENT, ImageData.export_instrument.Bitmap,
-             "Export instrument"),
-            (0,),
-            (IdManager.ID_TOOL_SHOW_LOG, ImageData.show_log.Bitmap, "Show log"),
-        ]
+        self._recent_configs = wx.Menu()
+        self._recent_configs.Append(1, 'Recent configurations')
+
         self._toolbar = wx.ToolBar(parent, style=wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_NODIVIDER)
-        for tool in tools:
-            if tool[0] == 0:
-                self._toolbar.AddSeparator()
-            else:
-                self._toolbar.AddTool(tool[0], "", tool[1], tool[2])
+        self._toolbar.AddTool(IdManager.ID_TOOL_NEW_CONFIGURATION, "",
+                              ImageData.new_config.Bitmap, "New configuration")
+        self._toolbar.AddTool(IdManager.ID_TOOL_OPEN_CONFIGURATION, "",
+                              ImageData.open_config.Bitmap, "Open configuration",
+                              kind=wx.ITEM_DROPDOWN)
+        self._toolbar.SetDropdownMenu(IdManager.ID_TOOL_OPEN_CONFIGURATION,
+                                      self._recent_configs)
+        self._toolbar.AddTool(IdManager.ID_TOOL_SAVE_CONFIGURATION, "",
+                              ImageData.save_config.Bitmap, "Save configuration")
+        self._toolbar.AddSeparator()
+        self._toolbar.AddTool(IdManager.ID_TOOL_EDIT_CONFIGURATION, "",
+                              ImageData.settings.Bitmap, "Configuration settings")
+        self._toolbar.AddSeparator()
+        self._toolbar.AddTool(IdManager.ID_TOOL_CHECK_INSTRUMENTS, "",
+                              ImageData.check_instruments.Bitmap, "Check instruments")
+        self._toolbar.AddSeparator()
+        self._toolbar.AddTool(IdManager.ID_TOOL_START_PROCESS, "",
+                              ImageData.start.Bitmap, "Start")
+        self._toolbar.AddTool(IdManager.ID_TOOL_STOP_PROCESS, "",
+                              ImageData.stop.Bitmap, "Stop")
+        self._toolbar.AddSeparator()
+        self._toolbar.AddTool(IdManager.ID_TOOL_EXPORT_CSV, "",
+                              ImageData.export_csv.Bitmap, "Export measurement data to CSV")
+        self._toolbar.AddTool(IdManager.ID_TOOL_EXPORT_INSTRUMENT, "",
+                              ImageData.export_instrument.Bitmap, "Export instrument")
+        self._toolbar.AddSeparator()
+        self._toolbar.AddTool(IdManager.ID_TOOL_SHOW_LOG, "",
+                              ImageData.show_log.Bitmap, "Show log")
         if show_test_configurations:
             cmb_config = wx.ComboBox(self._toolbar, IdManager.ID_TOOL_TEST_CONFIG, size=(150, -1))
             cmb_config.SetItems(TestConfigurations.get_configuration_names())
@@ -181,6 +184,18 @@ class ViewMain(wx.Frame):
         if is_changed:
             title += " *"
         self.SetTitle(title)
+
+    def update_recent_configurations(self, filenames):
+        for item in self._recent_configs.GetMenuItems():
+            self._recent_configs.Unbind(wx.EVT_MENU, item, handler=self._select_config_callback)
+            self._recent_configs.DestroyItem(item)
+
+        if len(filenames) == 0:
+            self._recent_configs.Append(wx.ID_ANY, 'Recent configurations')
+        else:
+            for i, filename in enumerate(filenames):
+                item = self._recent_configs.Append(IdManager.ID_RECENT_CONFIG_MENU + i, filename)
+                self._recent_configs.Bind(wx.EVT_MENU, self._select_config_callback, item)
 
     def update_configuration_info(self, sample_time, end_time, continuous_mode):
         self._lbl_sample_time.SetLabel(TimeConverter.create_duration_time_string(sample_time))

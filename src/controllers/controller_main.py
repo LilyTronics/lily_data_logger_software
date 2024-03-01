@@ -3,6 +3,8 @@ Main controller for the application.
 """
 
 import csv
+import os.path
+
 import wx.grid
 
 from src.controllers.controller_check_instruments import ControllerCheckInstruments
@@ -58,7 +60,7 @@ class ControllerMain:
     ###########
 
     def _initialize_main_view(self, view_title, show_test_configurations):
-        frame = ViewMain(view_title, show_test_configurations)
+        frame = ViewMain(view_title, self._on_recent_config_select, show_test_configurations)
         size = self._settings.get_main_window_size()
         if -1 not in size:
             frame.SetSize(size)
@@ -66,6 +68,7 @@ class ControllerMain:
         if -1 not in pos:
             frame.SetPosition(pos)
         frame.Maximize(self._settings.get_main_window_maximized())
+        frame.update_recent_configurations(self._settings.get_recent_configurations())
         frame.Bind(wx.EVT_CLOSE, self._on_view_close)
         frame.Bind(wx.EVT_TOOL, self._on_new_configuration,
                    id=IdManager.ID_TOOL_NEW_CONFIGURATION)
@@ -106,6 +109,12 @@ class ControllerMain:
         frame.Maximize(self._settings.get_log_window_maximized())
         frame.Bind(wx.EVT_CLOSE, self._on_close_log)
         return frame
+
+    def _add_config_to_recent_configs(self):
+        filename = self._configuration.get_filename()
+        if os.path.isfile(filename):
+            self._settings.add_to_recent_configurations(filename)
+        self._main_view.update_recent_configurations(self._settings.get_recent_configurations())
 
     def _update_view_from_configuration(self):
         self._main_view.update_configuration_filename(self._configuration.get_filename(),
@@ -171,17 +180,37 @@ class ControllerMain:
     def _on_open_configuration(self, event):
         ControllerConfiguration.load_from_file(self._main_view, self._configuration, self._logger)
         self._update_view_from_configuration()
+        self._add_config_to_recent_configs()
         event.Skip()
 
     def _on_save_configuration(self, event):
         ControllerConfiguration.save_to_file(self._main_view, self._configuration, self._logger)
         self._update_view_from_configuration()
+        self._add_config_to_recent_configs()
         event.Skip()
 
     def _on_edit_configuration(self, event):
         ControllerConfiguration.edit_configuration(self._main_view, self._configuration,
                                                    self._logger)
         self._update_view_from_configuration()
+        event.Skip()
+
+    def _on_recent_config_select(self, event):
+        index = event.GetId() - IdManager.ID_RECENT_CONFIG_MENU
+        filenames = self._settings.get_recent_configurations()
+        if index < len(filenames):
+            if os.path.isfile(filenames[index]):
+                # Load configuration from file and put it on top of the list
+                self._configuration.load_from_file(filenames[index])
+                self._update_view_from_configuration()
+                self._add_config_to_recent_configs()
+            else:
+                ViewDialogs.show_message(self._main_view,
+                                         f"The file: '{filenames[index]}' no longer exists. "
+                                         "It will be removed from the recent files list.",
+                                         "Open configuration")
+                self._settings.remove_recent_configuration(filenames[index])
+            self._main_view.update_recent_configurations(self._settings.get_recent_configurations())
         event.Skip()
 
     def _on_test_config(self, event):
