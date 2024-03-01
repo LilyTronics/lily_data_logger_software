@@ -12,7 +12,6 @@ class TestViewProgressDialog(TestSuite):
 
     _TITLE = "Test progress dialog"
 
-    _test_frame = None
     _error = ""
     _thread_time_out = 10
 
@@ -24,28 +23,28 @@ class TestViewProgressDialog(TestSuite):
 
     def show_progress_dialog(self, test_function_to_run):
         def _test_thread(test_function):
-            if not self.gui.wait_for_dialog(self._test_frame):
+            if not self.gui.wait_for_dialog(test_frame):
                 self._error = "No dialog was present"
             else:
-                self._error = test_function()
+                self._error = test_function(test_frame)
                 # Dialog must be closed after test
-                if not self.gui.wait_for_dialog(self._test_frame, False):
+                if not self.gui.wait_for_dialog(test_frame, False):
                     self._error = "The dialog did not close"
-                wx.CallAfter(self._test_frame.Close)
+                wx.CallAfter(test_frame.Close)
 
         self._error = ""
         app = self.gui.get_wx_app()
-        self._test_frame = self.TestFrame()
-        self._test_frame.Show()
-        ProgressDialog(self._test_frame, self._TITLE, 10)
+        test_frame = self.TestFrame()
+        test_frame.Show()
+        ProgressDialog(test_frame, self._TITLE, 10)
         t = self.start_thread(_test_thread, (test_function_to_run,))
         app.MainLoop()
-        self.gui.destroy_wx_app()
         self.wait_for(t.is_alive, False, self._thread_time_out, 0.1)
+        self.gui.destroy_wx_app()
         self.fail_if(self._error != "", self._error.strip())
 
     def test_show_dialog(self):
-        def _test_show_dialog():
+        def _test_show_dialog(_):
             self.log.debug("Test show dialog")
             self.gui.send_key_press(self.gui.KEY_ENTER)
             return ""
@@ -53,25 +52,25 @@ class TestViewProgressDialog(TestSuite):
         self.show_progress_dialog(_test_show_dialog)
 
     def test_progress(self):
-        def _test_progress():
+        def _test_progress(test_frame):
             self.log.debug("Test progress")
-            maximum = self._test_frame.active_dialog.GetRange() + 1
+            maximum = test_frame.active_dialog.GetRange() + 1
             for i in range(maximum):
-                self._test_frame.active_dialog.update(i, f"Update {i}")
+                test_frame.active_dialog.update(i, f"Update {i}")
                 self.sleep(0.1)
             return ""
 
         self.show_progress_dialog(_test_progress)
 
     def test_abort(self):
-        def _test_abort():
+        def _test_abort(test_frame):
             self.log.debug("Test abort")
-            maximum = self._test_frame.active_dialog.GetRange()
+            maximum = test_frame.active_dialog.GetRange()
             for i in range(int(maximum / 2)):
-                self._test_frame.active_dialog.update(i, f"Update {i}")
+                test_frame.active_dialog.update(i, f"Update {i}")
                 self.sleep(0.1)
             # Dialog should not be closed
-            if self.gui.wait_for_dialog(self._test_frame, False):
+            if self.gui.wait_for_dialog(test_frame, False):
                 return "The dialog closed"
             self.log.debug("Abort")
             self.gui.send_key_press(self.gui.KEY_ENTER)
