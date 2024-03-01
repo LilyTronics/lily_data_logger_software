@@ -20,6 +20,12 @@ class GuiUnitTest:
     ##########
 
     @staticmethod
+    def get_wx_app():
+        if wx.GetApp() is None:
+            _ = wx.App(redirect=False)
+        return wx.GetApp()
+
+    @staticmethod
     def is_window_available(window_id):
         return wx.Window.FindWindowById(window_id) is not None
 
@@ -259,14 +265,28 @@ if __name__ == "__main__":
             GuiUnitTest.click_button(frame.ID_BUTTON_CLOSE)
 
 
-    app = wx.App(redirect=False)
+    app1 = GuiUnitTest.get_wx_app()
+    app2 = GuiUnitTest.get_wx_app()
+    if app1 is app2:
+        print("Same app")
+    else:
+        print("ERROR: not the same app")
+    app1.MainLoop()
+    app1.Destroy()
+    app3 = GuiUnitTest.get_wx_app()
+    if app1 is app3:
+        print("ERROR: no new app created")
+    else:
+        print("New app created")
+
     test_frame = TestFrame()
 
     t = threading.Thread(target=test_thread, args=(test_frame,))
     t.daemon = True
     t.start()
-
     test_frame.Show()
-    app.MainLoop()
+
+    app3.MainLoop()
+    app3.Destroy()
 
     pylint.run_pylint([__file__])
