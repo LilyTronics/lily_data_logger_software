@@ -54,6 +54,16 @@ class TestSettings(TestSuite):
         self.fail_if(not self._settings.get_log_window_maximized(), "Failed storing settings")
         self._settings.store_log_window_maximized(False)
 
+    def test_recent_configurations(self):
+        self.fail_if(len(self._settings.get_recent_configurations()) > 0,
+                     "Default settings incorrect")
+        for i in range(15):
+            filename = f"config_file_{i}.json"
+            self._settings.add_to_recent_configurations(filename)
+            configs = self._settings.get_recent_configurations()
+            self.fail_if(configs[0] != filename, "Filename is not added properly")
+            self.fail_if(len(configs) > 10, "Too many filenames in the list")
+
 
 if __name__ == "__main__":
 

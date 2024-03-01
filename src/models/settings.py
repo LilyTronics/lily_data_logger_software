@@ -103,6 +103,18 @@ class Settings:
     def store_log_window_maximized(self, is_maximized):
         self._store_property("log_window", "maximized", is_maximized)
 
+    #########################
+    # Recent configurations #
+    #########################
+
+    def get_recent_configurations(self):
+        return self._get_property("configuration", "recent", [])
+
+    def add_to_recent_configurations(self, filename):
+        configs = self.get_recent_configurations()
+        configs.insert(0, filename)
+        self._store_property("configuration", "recent", configs[:10])
+
 
 if __name__ == "__main__":
 
