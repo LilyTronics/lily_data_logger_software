@@ -34,12 +34,13 @@ class TestViewProgressDialog(TestSuite):
                 wx.CallAfter(self._test_frame.Close)
 
         self._error = ""
-        app = wx.App(redirect=False)
+        app = self.gui.get_wx_app()
         self._test_frame = self.TestFrame()
         self._test_frame.Show()
         ProgressDialog(self._test_frame, self._TITLE, 10)
         t = self.start_thread(_test_thread, (test_function_to_run,))
         app.MainLoop()
+        app.Destroy()
         self.wait_for(t.is_alive, False, self._thread_time_out, 0.1)
         self.fail_if(self._error != "", self._error.strip())
 

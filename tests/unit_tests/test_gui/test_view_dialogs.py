@@ -24,7 +24,7 @@ class TestViewDialogs(TestSuite):
             self.active_dialog = None
 
     def setup(self):
-        self._app = wx.App(redirect=False)
+        self._app = self.gui.get_wx_app()
         self._test_frame = self.TestFrame()
         self._title = "Test dialogs"
         self._error = ""
@@ -98,6 +98,7 @@ class TestViewDialogs(TestSuite):
 
     def teardown(self):
         self._test_frame.Destroy()
+        self._app.Destroy()
         del self._app
 
 

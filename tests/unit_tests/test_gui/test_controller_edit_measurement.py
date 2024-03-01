@@ -42,7 +42,7 @@ class TestControllerEditInstrument(TestSuite):
         return conf
 
     def setup(self):
-        self._app = wx.App(redirect=False)
+        self._app = self.gui.get_wx_app()
 
     # pylint: disable=too-many-statements
     def test_add_measurement(self):
@@ -177,6 +177,7 @@ class TestControllerEditInstrument(TestSuite):
                      "the offset is not correct")
 
     def teardown(self):
+        self._app.Destroy()
         del self._app
 
 

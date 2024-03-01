@@ -16,7 +16,7 @@ class TestControllerEditInstrument(TestSuite):
     _error = ""
 
     def setup(self):
-        self._app = wx.App(redirect=False)
+        self._app = self.gui.get_wx_app()
 
     def test_add_instrument(self):
         def _test_add_instrument():
@@ -123,6 +123,7 @@ class TestControllerEditInstrument(TestSuite):
         self.fail_if(settings["rx_timeout"] != "1", "The RX timeout did not change")
 
     def teardown(self):
+        self._app.Destroy()
         del self._app
 
 

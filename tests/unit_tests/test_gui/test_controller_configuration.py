@@ -22,7 +22,7 @@ class TestControllerConfiguration(TestSuite):
     _values = None
 
     def setup(self):
-        self._app = wx.App(redirect=False)
+        self._app = self.gui.get_wx_app()
 
     @staticmethod
     def _convert_seconds_to_time(value):
@@ -261,6 +261,7 @@ class TestControllerConfiguration(TestSuite):
     def teardown(self):
         if os.path.isfile(self._filename):
             os.remove(self._filename)
+        self._app.Destroy()
         del self._app
 
 

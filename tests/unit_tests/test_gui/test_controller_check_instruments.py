@@ -2,8 +2,6 @@
 Test the check instruments' dialog.
 """
 
-import wx
-
 from src.controllers.controller_check_instruments import ControllerCheckInstruments
 from src.models.configuration import Configuration
 from src.models.id_manager import IdManager
@@ -30,7 +28,7 @@ class TestControllerCheckInstrument(TestSuite):
 
         Simulators.start_simulators(self.log)
         self._error = ""
-        _ = wx.App(redirect=False)
+        app = self.gui.get_wx_app()
         t = self.start_thread(_test_check_instruments)
         conf = Configuration()
         name = "Test instrument"
@@ -45,6 +43,7 @@ class TestControllerCheckInstrument(TestSuite):
         conf.update_instrument(name, name, settings)
         ControllerCheckInstruments(None, conf)
         self.wait_for(t.is_alive, False, 10, 0.1)
+        app.Destroy()
         self.fail_if(self._error != "", self._error)
         Simulators.stop_simulators(self.log)
 
