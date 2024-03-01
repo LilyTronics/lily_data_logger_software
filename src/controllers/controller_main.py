@@ -172,7 +172,7 @@ class ControllerMain:
 
     def _on_new_configuration(self, event):
         btn = ControllerConfiguration.new_config(self._main_view, self._configuration, self._logger)
-        if btn in (wx.ID_YES, wx.ID_NO):
+        if btn != wx.ID_CANCEL:
             self._configuration = Configuration()
         self._update_view_from_configuration()
         event.Skip()
