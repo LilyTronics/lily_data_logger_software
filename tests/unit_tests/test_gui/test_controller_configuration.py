@@ -261,6 +261,7 @@ class TestControllerConfiguration(TestSuite):
     def teardown(self):
         if os.path.isfile(self._filename):
             os.remove(self._filename)
+        self._app.MainLoop()
         self._app.Destroy()
         del self._app
 
