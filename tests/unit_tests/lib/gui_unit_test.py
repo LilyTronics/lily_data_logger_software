@@ -29,7 +29,6 @@ class GuiUnitTest:
     def destroy_wx_app():
         app = wx.GetApp()
         app.Destroy()
-        print(wx.GetApp())
 
     @staticmethod
     def is_window_available(window_id):
