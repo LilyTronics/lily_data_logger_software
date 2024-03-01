@@ -112,7 +112,15 @@ class Settings:
 
     def add_to_recent_configurations(self, filename):
         configs = self.get_recent_configurations()
+        if filename in configs:
+            configs.remove(filename)
         configs.insert(0, filename)
+        self._store_property("configuration", "recent", configs[:10])
+
+    def remove_recent_configuration(self, filename):
+        configs = self.get_recent_configurations()
+        if filename in configs:
+            configs.remove(filename)
         self._store_property("configuration", "recent", configs[:10])
 
 

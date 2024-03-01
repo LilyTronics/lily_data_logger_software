@@ -64,6 +64,21 @@ class TestSettings(TestSuite):
             self.fail_if(configs[0] != filename, "Filename is not added properly")
             self.fail_if(len(configs) > 10, "Too many filenames in the list")
 
+    def test_move_to_top(self):
+        configs = self._settings.get_recent_configurations()
+        filename = configs[3]
+        self._settings.add_to_recent_configurations(filename)
+        configs = self._settings.get_recent_configurations()
+        self.fail_if(configs[0] != filename, "The filename is not at the top")
+        self.fail_if(filename in configs[1:], "The filename is two times in the list")
+
+    def test_remove_configuration(self):
+        configs = self._settings.get_recent_configurations()
+        filename = configs[3]
+        self._settings.remove_recent_configuration(filename)
+        configs = self._settings.get_recent_configurations()
+        self.fail_if(filename in configs, "Filename was not removed")
+
 
 if __name__ == "__main__":
 
