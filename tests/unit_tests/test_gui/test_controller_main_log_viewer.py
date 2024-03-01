@@ -50,7 +50,7 @@ class TestControllerMainLogViewer(TestControllerMain):
             else:
                 result = "The log window did not appear"
             self.log.debug("Close log view by closing the main view")
-            self.view_main.Close()
+            self.close_view_main(False)
             if not self.wait_for(self._get_log_view_object, None, 1, 0.1):
                 result = "The log window did not close"
             return result
