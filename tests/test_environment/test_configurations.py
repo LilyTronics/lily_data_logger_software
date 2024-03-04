@@ -18,6 +18,12 @@ class TestConfigurations:
     def init(cls):
         cls._CONFIGURATIONS["all simulators, 2s/7s"] = cls._create_all_simulators(2, 7)
         cls._CONFIGURATIONS["all simulators, 2s/5m"] = cls._create_all_simulators(2, 300)
+        conf = cls._create_all_simulators(2, 7)
+        instrument = conf.get_instrument("Temperature meter")
+        instrument[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT_SETTINGS]["ip_port"] = 17102
+        conf.update_instrument("Temperature meter", "Temperature meter fail",
+                               instrument[conf.KEY_SETTINGS])
+        cls._CONFIGURATIONS["failing initialize"] = conf
 
     @classmethod
     def get_configuration_names(cls):
