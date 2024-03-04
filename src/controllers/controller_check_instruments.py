@@ -95,6 +95,8 @@ class ControllerCheckInstruments:
             if len(input_channels) > 0:
                 channel_name = input_channels[0][instrument_object.KEY_NAME]
                 value = instrument_object.process_channel(channel_name)
+                if isinstance(value, str) and value.startswith("ERROR: "):
+                    raise Exception(value)
                 result += f" ({channel_name} = {value})"
             self._update_status(instrument_name, True, result)
         except Exception as e:
