@@ -23,7 +23,7 @@ class TestConfigurations:
         instrument[conf.KEY_SETTINGS][conf.KEY_INSTRUMENT_SETTINGS]["ip_port"] = 17102
         conf.update_instrument("Temperature meter", "Temperature meter fail",
                                instrument[conf.KEY_SETTINGS])
-        cls._CONFIGURATIONS["failing initialize"] = conf
+        cls._CONFIGURATIONS["failing measurement"] = conf
 
     @classmethod
     def get_configuration_names(cls):
