@@ -12,12 +12,16 @@ Coming up V1.0.0:
 
 ## Features
 
-* Only for logging data (measurements).
-* Provided as is and has no support.
-* Free and open source.
-* Build in driver for the following instruments:
-  * Arduino DAQ: reading analog voltages, reading and writing digital IO, sketch for the Arduino is included in this repo and in the distribution package.
+* Logging data (measurements) in a table.
+* Free and open source for personal and professional use.
+* Build in drivers for the following instruments:
+  * Arduino DAQ: reading analog voltages, reading and writing digital IO. A sketch for the Arduino is included.
   * Multimeter simulator giving random values for voltage and current, for testing measurements.
+* Fixed end time or continuous measurement.
+* Smallest sample interval: 1 second.
+* Adding your own instrument drivers (see manual)
+* Data from the table can be copied and pasted to a spreadsheet (Excel, LibreOffice, etc.).
+* Export to CSV for using data in other applications (databases, scripting, etc.).
 
 ## Adding your own instruments
 
@@ -31,7 +35,7 @@ Requirements for running the software:
 * Upgrade pip: python -m pip install --upgrade pip
 * pip install -r requirements.txt
 
-In `tests` is a script for running the unit tests `run_unit_tests.py`
+In `tests` is are several scripts for running the unit tests.
 Test reports are written to `unit_test/test_reports`.
 
 [![Pylint](https://github.com/LilyTronics/lily-data-logger-studio-ce/actions/workflows/pylint.yml/badge.svg?branch=main)](https://github.com/LilyTronics/lily-data-logger-studio-ce/actions/workflows/pylint.yml)
