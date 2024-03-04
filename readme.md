@@ -2,6 +2,8 @@
 
 Universal data logger software aiming to work with any kind of electronics measurement device (mulitmeters, oscilloscopes, power supplies, etc.).
 
+![main view](docs/images/main_view.png)
+
 ## Releases
 
 Coming up V1.0.0:
