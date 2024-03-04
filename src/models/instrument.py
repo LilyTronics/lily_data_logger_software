@@ -204,6 +204,8 @@ class Instrument:
                     print(self._DEBUG_FORMAT.format("Command data", command_data))
                 if not self._execute_internal_command(command_data, debug):
                     response = self._execute_interface_command(command_data, value, debug)
+        except Exception as e:
+            response = f"ERROR: {e}"
         finally:
             self._interface_object.release_lock()
         return response
