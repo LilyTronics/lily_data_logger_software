@@ -4,7 +4,7 @@ Test the instrument pool.
 
 from src.models.instrument import Instrument
 from src.models.instrument_pool import InstrumentPool
-from tests.test_environment.test_configuration import TestConfiguration
+from tests.test_environment.test_configurations import TestConfigurations
 from tests.unit_tests.lib.test_suite import TestSuite
 
 
@@ -19,13 +19,13 @@ class TestInstrumentPool(TestSuite):
             self.log.debug(f"Run time error: {e}")
 
     def test_add_instrument(self):
-        conf = TestConfiguration(True)
+        conf = TestConfigurations.get_unit_test_configuration()
         instrument = InstrumentPool.create_instrument(conf.get_instruments()[0])
         self.fail_if(not isinstance(instrument, Instrument),
                      "The created instrument has the wrong class")
 
     def test_add_instrument_twice(self):
-        conf = TestConfiguration(True)
+        conf = TestConfigurations.get_unit_test_configuration()
         instrument1 = InstrumentPool.create_instrument(conf.get_instruments()[0])
         self.fail_if(not isinstance(instrument1, Instrument),
                      "The first created instrument has the wrong class")
@@ -36,7 +36,7 @@ class TestInstrumentPool(TestSuite):
                      "The instruments are not the same")
 
     def test_clear_instruments(self):
-        conf = TestConfiguration(True)
+        conf = TestConfigurations.get_unit_test_configuration()
         instrument1 = InstrumentPool.create_instrument(conf.get_instruments()[0])
         self.fail_if(not isinstance(instrument1, Instrument),
                      "The first created instrument has the wrong class")
