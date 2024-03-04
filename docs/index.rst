@@ -10,3 +10,4 @@ Lily Data Logger Studio CE (Community Edition)
     Home                <self>
     Introduction        <introduction.rst>
     Installation        <installation.rst>
+    Main view           <main_view.rst>
