@@ -2,7 +2,9 @@ Installation
 ============
 
 Installing the Lily Data Logger Studio is very easy. After downloading the release package, extract
-the package to a folder of your choosing.
+the package to a folder of your choosing. After extracting the files, you can use the application.
+There is no installer. This makes it easy to run the application from an USB stick or other
+removable media.
 
 After extracting the files, the following files/folders should be there:
 
@@ -16,13 +18,13 @@ After extracting the files, the following files/folders should be there:
 
 Description of the files/folders:
 
+* LilyDataLogerStudioCE.exe: this is the application executable. Double click on this file to
+  start the application.
 * lib: this folder contains all the required libraries for running the application.
   This folder is required for running the application and should not be removed.
 * lily_arduino_daq.ino: this is the Arduino sketch that can be programmed into your Arduino board.
   After programming you can get and set the digital IO states and read the analog voltages.
   This can be used with the application. See the chapter about the Arduino DAQ for more details.
-* LilyDataLogerStudioCE.exe: this is the application executable. Double click on this file to
-  start the application.
 
 The application creates a folder in the user's folder. Let's say your name is 'Joe', the following
 folder will be created when the application is started and the folder does not exist:
