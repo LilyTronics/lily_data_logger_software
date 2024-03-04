@@ -8,6 +8,7 @@ When starting the application, the main view will be shown.
 The main view has the following sections:
 
 1. The toolbar. The toolbar contains the main controls for using the application.
+  The toolbar contains the following buttons, left to right:
   * New configuration: create a new configuration.
   * Open configuration: open an existing configuration. At the right of the button is a small arrow.
     Clicking on that arrow shows a list of recently opened configurations.
