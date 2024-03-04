@@ -32,6 +32,7 @@ class ViewMain(wx.Frame):
         self._select_config_callback = select_config_callback
         self._title = title
         super().__init__(None, wx.ID_ANY, self._title)
+        self.SetIcon(wx.Icon(ImageData.app_icon.Bitmap))
         panel = wx.Panel(self)
 
         lab_box = wx.BoxSizer(wx.HORIZONTAL)

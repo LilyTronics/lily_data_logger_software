@@ -7,6 +7,22 @@ from wx.lib.embeddedimage import PyEmbeddedImage
 
 class ImageData:
 
+    app_icon = PyEmbeddedImage(
+        b'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAC40lEQVRIibWVT'
+        b'2gcZRjGf88yLEUkSCkSQw4hFFlKKewQiA1YPQRqW1oPRdOyA2JRBBWhaiiaw+yntDl6KYUQzcXZVmyLhaoYUQ9F42'
+        b'1WBRPxLEXKHvZQgkjo08M0su4fDdo8t5n3nd/7d74Ptlm638A4CQBP2a6ArkT3OwAwYXxdUgTMbEsATGQZzNiWWxT'
+        b'XwsPAHDhCejfP0t97fJIwAXwClLFvIs1vuQLLZ4Re63j1Sqe9WqvvBV8tnvR43qj/ClsccpyEUezPgH0Ahrakt4Al'
+        b'YMN4L2YZWJd0JM/SXza/HRggTkIEPGCoCBrGO4U+B9pAxeaAxKphBzCMaUs8nWfpT52cvi2Kk1C23ZAUC+8CtWQdz'
+        b'RvpyqZd4lnwh0JFTdJsN7xvBXESSsAp7EUAC2QeyRv1nqFWa/XvgCngD0n78yz9odsnipMQGUYE65jdwCxw2GJDKA'
+        b'JWjHvgRXZ6xvgY0irQAwdQNQnzgtfBLZtdkm4D57G/NoxK+qbfSm5VkfALoDIwImkJeCPP0vZ/BfYEsPUx4pRQy/b'
+        b'ZZqP+v+FxEvZgj4NuRODTQguGW80+g9xUNalHoGmKzfuimaUbA+AV4+8lDdn+NGo26n8CPevVLaFXbb9XrJ3mgHMD'
+        b'XB+TGUIgmCr9GxigWgs7gENIIAGevLfOf8++FsaA00jrtm+C5qM4CY8avwRaE7yfZ2l3yQ8afwCaFm5hypamBSeAi'
+        b'x3wEcRV22OCo5JyoK04CT8C+8DYekdiGfjN+BjWfuHYYhQ0Jzhvewi4LHgS6TngI+NhzLKkYdvHm436jc3AEcVZQv'
+        b'FT+03Q24bbFH0sGSE4CHyVZ+kdoF1NwkngErAIPA8aRzwEnJT0FxygBLwIXAPOSZrEHJdZEpRUhL3VAQegmaUt8Ax'
+        b'2GZjGHscE4MvuFv/TafoyMGlYaGbFIdetahLWBBXMHcQTeZZ+2+0z8MLJs/QCcGGQ/V52M5ga4megbxLbrruFCypX'
+        b'wML6owAAAABJRU5ErkJggg=='
+    )
+
     check_instruments = PyEmbeddedImage(
         b'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADLElEQVRIiZ2WM'
         b'WhkVRSGv//yCMFiCCnCIinCYrWFZF4hFltYKCgi6XRxZtWwpFBECxe0e/MQ2UJccFFsdklzVbQTG7GVTSHr23ULSS'
