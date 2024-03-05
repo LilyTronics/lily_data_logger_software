@@ -1,0 +1,33 @@
+{
+  "general": {
+    "sample_time": 2,
+    "end_time": 15,
+    "continuous_mode": false
+  },
+  "instruments": [
+    {
+      "id": "a43cce1c-c4cd-4dbb-b2fd-1a7f9e1ba499",
+      "name": "Multimeter",
+      "settings": {
+        "instrument_name": "Simulator multimeter failed initialize",
+        "instrument_settings": {
+          "ip_address": "localhost",
+          "ip_port": "17000",
+          "rx_timeout": "0.2"
+        }
+      }
+    }
+  ],
+  "measurements": [
+    {
+      "name": "Volt delayed",
+      "settings": {
+        "instrument_id": "a43cce1c-c4cd-4dbb-b2fd-1a7f9e1ba499",
+        "measurement": "Get DC voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    }
+  ],
+  "process_steps": []
+}

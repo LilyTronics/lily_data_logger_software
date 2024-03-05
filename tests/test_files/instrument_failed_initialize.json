@@ -1,0 +1,32 @@
+{
+    "name": "Simulator multimeter failed initialize",
+    "info": "This instrument does not work properly because of a failing initialize",
+    "interface": {
+        "type": "Ethernet UDP",
+        "settings": {
+            "ip_address": "localhost",
+            "ip_port": 17000,
+            "rx_timeout": 0.2
+        }
+    },
+    "initialize": [
+        {
+            "command": "instrument_delay:0.5"
+        },
+        {
+            "command": "unknown_command\n"
+        }
+    ],
+    "channels": [
+        {
+            "name": "Get DC voltage",
+            "type": "input",
+            "command_list": [
+                {
+                    "command": "VDC?\n",
+                    "response": "VDC={float}V\n"
+                }
+            ]
+        }
+    ]
+}
