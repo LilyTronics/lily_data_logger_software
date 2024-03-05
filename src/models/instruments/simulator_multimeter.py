@@ -17,6 +17,11 @@ simulator_multimeter = Instrument({
             "rx_timeout": SimulatorSettings.MultimeterUdp.RX_TIME_OUT
         }
     },
+    "initialize": [
+        {
+            "command": "instrument_delay:0.5"
+        }
+    ],
     "channels": [
         {
             "name": "Get DC voltage",

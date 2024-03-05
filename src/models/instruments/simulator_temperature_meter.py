@@ -17,6 +17,11 @@ simulator_temperature_meter = Instrument({
             "rx_timeout": SimulatorSettings.TemperatureMeterTcp.RX_TIME_OUT
         }
     },
+    "initialize": [
+        {
+            "command": "instrument_delay:0.5"
+        }
+    ],
     "channels": [
         {
             "name": "Get temperature",
