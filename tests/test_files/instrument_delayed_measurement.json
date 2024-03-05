@@ -1,0 +1,29 @@
+{
+    "name": "Simulator multimeter delayed measurement",
+    "info": "Read random values for voltage (4.9...5.1V) with a delay of a few seconds",
+    "interface": {
+        "type": "Ethernet UDP",
+        "settings": {
+            "ip_address": "localhost",
+            "ip_port": 17000,
+            "rx_timeout": 4
+        }
+    },
+    "initialize": [
+        {
+            "command": "instrument_delay:0.5"
+        }
+    ],
+    "channels": [
+        {
+            "name": "Get DC voltage delayed",
+            "type": "input",
+            "command_list": [
+                {
+                    "command": "VDCD?\n",
+                    "response": "VDCD={float}V\n"
+                }
+            ]
+        }
+    ]
+}

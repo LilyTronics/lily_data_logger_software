@@ -5,6 +5,7 @@ Multimeter using UDP interface.
 import random
 import socket
 import threading
+import time
 
 from src.simulators.simulator_settings import SimulatorSettings
 
@@ -13,6 +14,8 @@ class MultimeterUdp:
 
     _CMD_VOLTAGE_DC = b"VDC?"
     _CMD_CURRENT_DC = b"ADC?"
+    _CMD_VOLTAGE_DC_DELAYED = b"VDCD?"
+    _VOLTAGE_DC_DELAY_TIME = 3
 
     _RX_BUFFER_SIZE = 1500
     _TERMINATOR = b"\n"
@@ -46,6 +49,9 @@ class MultimeterUdp:
                         response = f"VDC={random.uniform(*self._VDC_RANGE):.3f}V"
                     elif data == self._CMD_CURRENT_DC:
                         response = f"ADC={random.uniform(*self._ADC_RANGE):.3f}A"
+                    elif data == self._CMD_VOLTAGE_DC_DELAYED:
+                        time.sleep(self._VOLTAGE_DC_DELAY_TIME)
+                        response = f"VDCD={random.uniform(*self._ADC_RANGE):.3f}V"
                 sock.sendto(response.encode() + self._TERMINATOR, client_address)
             except TimeoutError:
                 pass
