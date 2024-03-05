@@ -40,10 +40,15 @@ class ViewCheckList(wx.Frame):
 
         btn = wx.Button(panel, wx.ID_ANY, "Check")
         btn.Bind(wx.EVT_BUTTON, self._on_check)
+        self._chk_open_in_browser = wx.CheckBox(panel, wx.ID_ANY, "Open report in browser")
+
+        button_box = wx.BoxSizer(wx.HORIZONTAL)
+        button_box.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, self._GAP)
+        button_box.Add(self._chk_open_in_browser, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, self._GAP)
 
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(grid, 1, wx.EXPAND | wx.ALL, self._GAP)
-        box.Add(btn, 0, wx.CENTER | wx.ALL, self._GAP)
+        box.Add(button_box, 0, wx.CENTER | wx.ALL, self._GAP)
         panel.SetSizer(box)
         height = 120
         if len(test_items) > 0:
@@ -55,7 +60,7 @@ class ViewCheckList(wx.Frame):
     ##################
 
     def _on_check(self, event):
-        self._check_callback(self._check, self._remarks)
+        self._check_callback(self._check, self._remarks, self._chk_open_in_browser.GetValue())
         event.Skip()
 
 

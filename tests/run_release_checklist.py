@@ -4,11 +4,17 @@ Runs the release checklist.
 
 import html
 import os
+
 from datetime import datetime
 from string import Template
+
+import webbrowser
 import wx
+
 from src.app_data import AppData
+
 import tests
+
 from tests.unit_tests.test_checklist import view_checklist
 from tests.unit_tests.test_checklist.view_checklist import ViewCheckList
 
@@ -40,7 +46,8 @@ def _get_result_for_item(item, check):
     return result
 
 
-def check_callback(checks, remarks):
+# pylint: disable=too-many-locals
+def check_callback(checks, remarks, open_in_browser):
     now = datetime.now()
     timestamp = now.strftime(REPORT_TIME_STAMP_FORMAT)
 
@@ -83,6 +90,9 @@ def check_callback(checks, remarks):
         template = fp.read()
     with open(report_filename, "w", encoding="utf-8") as fp:
         fp.write(Template(template).substitute(template_values))
+
+    if open_in_browser:
+        webbrowser.open(report_filename)
 
 
 def show_checklist():
