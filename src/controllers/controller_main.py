@@ -201,7 +201,8 @@ class ControllerMain:
         if index < len(filenames):
             if os.path.isfile(filenames[index]):
                 # Load configuration from file and put it on top of the list
-                self._configuration.load_from_file(filenames[index])
+                ControllerConfiguration.load_configuration_from_file(
+                    self._main_view, self._configuration, filenames[index], self._logger)
                 self._update_view_from_configuration()
                 self._add_config_to_recent_configs()
             else:

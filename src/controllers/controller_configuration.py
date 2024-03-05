@@ -31,18 +31,24 @@ class ControllerConfiguration:
         return cls.check_configuration_is_changed(parent, configuration, logger)
 
     @classmethod
+    def load_configuration_from_file(cls, parent, configuration, filename, logger):
+        dlg_title = "Open configuration"
+        logger.debug(f"Load configuration from file: {filename}")
+        try:
+            configuration.load_from_file(filename)
+            logger.debug("Configuration loaded successfully")
+        except Exception as e:
+            logger.error(str(e))
+            ViewDialogs.show_message(parent, f"Error when reading file {filename}:\n{e}",
+                                     dlg_title)
+
+    @classmethod
     def load_from_file(cls, parent, configuration, logger):
         dlg_title = "Open configuration"
         cls.check_configuration_is_changed(parent, configuration, logger)
         filename = ViewDialogs.show_open_file(parent, dlg_title, file_filter=cls._FILE_FILTER)
         if filename is not None:
-            logger.debug(f"Load configuration from file: {filename}")
-            try:
-                configuration.load_from_file(filename)
-            except Exception as e:
-                logger.error(str(e))
-                ViewDialogs.show_message(parent, f"Error when reading file {filename}:\n{e}",
-                                         dlg_title)
+            cls.load_configuration_from_file(parent, configuration, filename, logger)
         wx.YieldIfNeeded()
 
     @classmethod
@@ -53,6 +59,7 @@ class ControllerConfiguration:
             logger.debug(f"Save configuration to file: {filename}")
             try:
                 configuration.save_to_file(filename)
+                logger.debug("Configuration saved successfully")
             except Exception as e:
                 logger.error(str(e))
                 ViewDialogs.show_message(parent, f"Error when writing file {filename}:\n{e}",
