@@ -94,6 +94,8 @@ def check_callback(checks, remarks, open_in_browser):
     if open_in_browser:
         webbrowser.open(report_filename)
 
+    wx.GetTopLevelWindows()[0].Close()
+
 
 def show_checklist():
     app = wx.App(redirect=False)
