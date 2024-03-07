@@ -22,14 +22,16 @@ class UdpClientInterface(Interface):
         self._server_ip_address = ip_address
         self._server_port = int(ip_port)
         self._rx_buffer_size = rx_buffer_size
-        self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._socket.settimeout(float(rx_timeout))
+        self._rx_timeout = float(rx_timeout)
+        self._socket = None
+        self.open()
 
     def is_open(self):
-        return True
+        return self._socket is not None and self._socket.fileno() > -1
 
     def open(self):
-        pass
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._socket.settimeout(self._rx_timeout)
 
     def send_command(self, command, expect_response, pre_response, post_response):
         response = b""
