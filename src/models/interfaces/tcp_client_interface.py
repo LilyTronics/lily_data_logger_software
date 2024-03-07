@@ -26,16 +26,17 @@ class TcpClientInterface(Interface):
         self._socket = None
 
     def is_open(self):
-        return True
+        return self._socket is not None
 
     def open(self):
+        # There is no specific way to open this interface
         pass
 
     def send_command(self, command, expect_response, pre_response, post_response):
         response = b""
         try:
-            self._socket = socket.create_connection((self._server_ip_address, self._server_port),
-                                                    self._rx_timeout)
+            self._socket = socket.create_connection(
+                (self._server_ip_address, self._server_port), self._rx_timeout)
         except (Exception, ):
             self.raise_connection_exception(f"{self._server_ip_address}:{self._server_port}")
 
@@ -51,6 +52,7 @@ class TcpClientInterface(Interface):
     def close(self):
         if self._socket is not None:
             self._socket.close()
+            self._socket = None
 
     @classmethod
     def get_settings_controls(cls):
