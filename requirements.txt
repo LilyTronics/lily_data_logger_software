@@ -2,6 +2,5 @@ lily-unit-test      >= 1.9.0
 pyinstaller         >= 6.3.0
 pyserial            >= 3.5
 wxpython            >= 4.2.1
-pylint              >= 3.0.3
 sphinx              >= 7.2.6
 sphinx-rtd-theme    >= 2.0.0

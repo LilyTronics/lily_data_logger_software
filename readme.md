@@ -46,7 +46,6 @@ Requirements for running the software:
 In `tests` is are several scripts for running the unit tests.
 Test reports are written to `unit_test/test_reports`.
 
-[![Pylint](https://github.com/LilyTronics/lily-data-logger-studio-ce/actions/workflows/pylint.yml/badge.svg?branch=main)](https://github.com/LilyTronics/lily-data-logger-studio-ce/actions/workflows/pylint.yml)
 [![Documentation Status](https://readthedocs.org/projects/lily-data-logger-studio-ce/badge/?version=latest)](https://lily-data-logger-studio-ce.readthedocs.io/en/latest/?badge=latest)
 
 2023 - LilyTronics (https://lilytronics.nl)
