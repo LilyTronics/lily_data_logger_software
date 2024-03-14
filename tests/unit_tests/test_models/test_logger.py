@@ -89,7 +89,4 @@ class TestLogger(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestLogger().run(True)
-    pylint.run_pylint([__file__])

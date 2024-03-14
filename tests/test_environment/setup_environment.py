@@ -43,8 +43,5 @@ def check_for_instruments(skip_instruments=False):
 
 if __name__ == "__main__":
 
-    import pylint
-
     clear_reports("..\\test_reports")
     print("Exclude:", check_for_instruments())
-    pylint.run_pylint([__file__])

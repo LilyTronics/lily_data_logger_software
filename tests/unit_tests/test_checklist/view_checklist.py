@@ -66,8 +66,6 @@ class ViewCheckList(wx.Frame):
 
 if __name__ == "__main__":
 
-    import pylint
-
     _test_items = [
         {"label": "Test item boolean", "type": bool, "pass_if": True, "result": None},
     ]
@@ -78,5 +76,3 @@ if __name__ == "__main__":
     app = wx.App(redirect=False)
     ViewCheckList(_test_items, "99.99", _check_callback).Show()
     app.MainLoop()
-
-    pylint.run_pylint([__file__])

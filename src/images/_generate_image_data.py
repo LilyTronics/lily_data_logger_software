@@ -44,16 +44,12 @@ def generate_image_data():
                 fp_model.write(f"{" " * indent})\n")
 
         fp_model.write('\n\nif __name__ == "__main__":\n\n')
-        fp_model.write("    import pylint\n")
         fp_model.write("    from tests.unit_tests.test_models.test_image_data "
                        "import TestImageData\n\n")
         fp_model.write("    TestImageData().run(True)\n")
-        fp_model.write("    pylint.run_pylint([__file__])\n")
 
 
 if __name__ == "__main__":
-
-    import pylint
 
     print("Generate image data")
     generate_image_data()
@@ -64,4 +60,3 @@ if __name__ == "__main__":
     from tests.unit_tests.test_models.test_image_data import TestImageData
 
     TestImageData().run(True)
-    pylint.run_pylint([__file__])

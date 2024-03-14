@@ -191,7 +191,4 @@ class TestConfiguration(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestConfiguration().run(True)
-    pylint.run_pylint([__file__])

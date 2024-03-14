@@ -49,8 +49,6 @@ class ProgressDialog(wx.ProgressDialog):
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_gui.test_view_progress_dialog import TestViewProgressDialog
 
     TestViewProgressDialog().run()
-    pylint.run_pylint([__file__])

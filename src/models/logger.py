@@ -78,8 +78,6 @@ class Logger:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_models.test_logger import TestLogger
 
     TestLogger().run()
-    pylint.run_pylint([__file__])

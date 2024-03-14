@@ -89,7 +89,4 @@ class TestUdpClientInterface(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestUdpClientInterface().run()
-    pylint.run_pylint([__file__])

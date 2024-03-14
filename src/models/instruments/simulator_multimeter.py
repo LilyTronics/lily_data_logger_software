@@ -49,8 +49,6 @@ simulator_multimeter = Instrument({
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_models.test_simulator_multimeter import TestSimulatorMultimeter
 
     TestSimulatorMultimeter().run(True)
-    pylint.run_pylint([__file__])

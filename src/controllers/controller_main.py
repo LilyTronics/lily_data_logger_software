@@ -24,7 +24,6 @@ from src.views.view_progress_dialog import ProgressDialog
 from tests.test_environment.test_configurations import TestConfigurations
 
 
-# pylint: disable=too-many-instance-attributes
 class ControllerMain:
 
     _TIMER_UPDATE_INTERVAL = 250    # ms
@@ -392,8 +391,6 @@ class ControllerMain:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_gui.test_controller_main import TestControllerMain
 
     TestControllerMain().run(True)
-    pylint.run_pylint([__file__])

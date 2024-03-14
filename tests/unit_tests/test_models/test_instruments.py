@@ -55,7 +55,4 @@ class TestInstruments(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestInstruments().run()
-    pylint.run_pylint([__file__])

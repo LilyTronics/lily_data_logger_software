@@ -48,7 +48,6 @@ class Interface:
         raise NotImplementedError("This method must be implemented in the derived class")
 
     def acquire_lock(self):
-        # pylint: disable=consider-using-with
         self._lock.acquire()
 
     def release_lock(self):
@@ -57,8 +56,6 @@ class Interface:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_models.test_interface import TestInterface
 
     TestInterface().run(True)
-    pylint.run_pylint([__file__])

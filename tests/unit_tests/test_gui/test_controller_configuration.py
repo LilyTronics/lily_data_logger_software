@@ -268,7 +268,4 @@ class TestControllerConfiguration(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestControllerConfiguration().run(True)
-    pylint.run_pylint([__file__])

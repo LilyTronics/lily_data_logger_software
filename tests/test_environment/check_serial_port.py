@@ -6,8 +6,6 @@ import time
 import serial
 
 
-# pylint: disable=too-many-arguments
-# pylint: disable=too-many-nested-blocks
 def check_serial_port(port_name, baud_rate, command, response, rx_timeout=1, toggle_dtr=False):
     write_timeout = 0.2
     with serial.Serial(port_name, baudrate=baud_rate, write_timeout=write_timeout) as s:
@@ -41,12 +39,8 @@ def check_serial_port(port_name, baud_rate, command, response, rx_timeout=1, tog
 
 if __name__ == "__main__":
 
-    import pylint
-
     print(check_serial_port("COM9", 115200, b"rd2\n", b"\n", rx_timeout=2, toggle_dtr=True))
     print(check_serial_port("COM9", 115200, b"rd2\n", [b"0\n", b"1\n"], rx_timeout=2,
                             toggle_dtr=True))
     print(check_serial_port("COM9", 115200, b"rd2\n", (b"0\n", b"1\n"), rx_timeout=2,
                             toggle_dtr=True))
-
-    pylint.run_pylint([__file__])

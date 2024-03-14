@@ -273,7 +273,6 @@ class Instrument:
         if len(command_list) > 0:
             self._process_commands(command_list, None, debug)
 
-    # pylint: disable=too-many-arguments
     def process_channel(self, channel_name, value=None, callback=None, callback_id=None,
                         debug=False):
         if value is None:
@@ -295,8 +294,6 @@ class Instrument:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_models.test_instrument import TestInstrument
 
     TestInstrument().run(True)
-    pylint.run_pylint([__file__])

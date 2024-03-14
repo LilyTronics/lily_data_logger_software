@@ -43,10 +43,8 @@ def _check_serial_port(lock_object, port_name, port_list):
 
 if __name__ == "__main__":
 
-    import pylint
 
     start = time.perf_counter()
     print(get_available_serial_ports())
     stop = time.perf_counter()
     print(f"Ports detected in: {(stop - start):.3f} seconds")
-    pylint.run_pylint([__file__])

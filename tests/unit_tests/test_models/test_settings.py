@@ -82,7 +82,4 @@ class TestSettings(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestSettings().run(True)
-    pylint.run_pylint([__file__])

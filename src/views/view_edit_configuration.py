@@ -137,8 +137,6 @@ class ViewEditConfiguration(wx.Dialog):
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_gui.test_controller_configuration import TestControllerConfiguration
 
     TestControllerConfiguration().run(True)
-    pylint.run_pylint([__file__])

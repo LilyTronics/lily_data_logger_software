@@ -52,7 +52,4 @@ class TestSimulatorTemperatureMeter(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestSimulatorTemperatureMeter().run(True)
-    pylint.run_pylint([__file__])

@@ -62,7 +62,4 @@ class TestSimulatorMultimeter(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestSimulatorMultimeter().run(True)
-    pylint.run_pylint([__file__])

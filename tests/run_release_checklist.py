@@ -21,7 +21,6 @@ from tests.unit_tests.test_checklist.view_checklist import ViewCheckList
 
 ITEMS = [
     {"label": "All issues in GitHub fixed", "type": bool, "pass_if": True, "result": None},
-    {"label": "No Pylint issues", "type": bool, "pass_if": True, "result": None},
     {"label": "All unit tests passed", "type": bool, "pass_if": True, "result": None},
     {"label": "All test configuration runs passed", "type": bool, "pass_if": True, "result": None},
     {"label": "Duration test passed", "type": bool, "pass_if": True, "result": None},
@@ -46,7 +45,6 @@ def _get_result_for_item(item, check):
     return result
 
 
-# pylint: disable=too-many-locals
 def check_callback(checks, remarks, open_in_browser):
     now = datetime.now()
     timestamp = now.strftime(REPORT_TIME_STAMP_FORMAT)
@@ -105,7 +103,4 @@ def show_checklist():
 
 if __name__ == "__main__":
 
-    import pylint
-
     show_checklist()
-    pylint.run_pylint([__file__])

@@ -68,8 +68,6 @@ class Instruments:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_models.test_instruments import TestInstruments
 
     TestInstruments().run()
-    pylint.run_pylint([__file__])

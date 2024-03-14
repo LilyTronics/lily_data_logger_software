@@ -44,7 +44,6 @@ class TestControllerEditInstrument(TestSuite):
     def setup(self):
         self._app = self.gui.get_wx_app()
 
-    # pylint: disable=too-many-statements
     def test_add_measurement(self):
         def _check_for_dialog():
             if not self.gui.wait_for_dialog(ControllerEditMeasurement.get_dialog(), True):
@@ -184,7 +183,4 @@ class TestControllerEditInstrument(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestControllerEditInstrument().run(True)
-    pylint.run_pylint([__file__])

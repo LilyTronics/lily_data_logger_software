@@ -21,12 +21,8 @@ class AppData:
 
 if __name__ == "__main__":
 
-    import pylint
-
     print("App name   :", AppData.APP_NAME)
     print("App version:", AppData.VERSION)
     print("Exe name   :", AppData.EXE_NAME)
     print("User folder:", AppData.USER_FOLDER)
     print("App folder :", AppData.APP_PATH)
-
-    pylint.run_pylint([__file__])

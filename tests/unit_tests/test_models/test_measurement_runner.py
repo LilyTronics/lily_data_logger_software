@@ -57,7 +57,4 @@ class TestMeasurementRunner(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestMeasurementRunner().run()
-    pylint.run_pylint([__file__])

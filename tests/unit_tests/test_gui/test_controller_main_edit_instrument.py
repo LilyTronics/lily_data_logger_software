@@ -100,7 +100,4 @@ class TestControllerMainEditInstrument(TestControllerMain):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestControllerMainEditInstrument().run(True)
-    pylint.run_pylint([__file__])

@@ -24,8 +24,5 @@ class TestSuite(lily_unit_test.TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     ts = TestSuite()
     print("Configuration test filename:", ts.configuration_test_filename)
-    pylint.run_pylint([__file__])

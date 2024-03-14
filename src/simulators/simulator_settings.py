@@ -14,10 +14,3 @@ class SimulatorSettings:
         IP = "localhost"
         PORT = 17100
         RX_TIME_OUT = 0.2
-
-
-if __name__ == "__main__":
-
-    import pylint
-
-    pylint.run_pylint([__file__])

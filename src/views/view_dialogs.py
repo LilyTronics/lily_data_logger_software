@@ -49,8 +49,6 @@ class ViewDialogs:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_gui.test_view_dialogs import TestViewDialogs
 
     TestViewDialogs().run()
-    pylint.run_pylint([__file__])

@@ -98,7 +98,4 @@ class TestInterfacePool(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestInterfacePool().run(True)
-    pylint.run_pylint([__file__])

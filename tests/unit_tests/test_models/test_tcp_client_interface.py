@@ -89,7 +89,4 @@ class TestTcpClientInterface(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestTcpClientInterface().run(True)
-    pylint.run_pylint([__file__])

@@ -42,7 +42,4 @@ def copy_to_user_folder():
 
 if __name__ == "__main__":
 
-    import pylint
-
     copy_to_user_folder()
-    pylint.run_pylint([__file__])

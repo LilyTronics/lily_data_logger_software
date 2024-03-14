@@ -77,8 +77,6 @@ class TcpClientInterface(Interface):
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_models.test_tcp_client_interface import TestTcpClientInterface
 
     TestTcpClientInterface().run(True)
-    pylint.run_pylint([__file__])

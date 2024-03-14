@@ -104,9 +104,5 @@ TestConfigurations.init()
 
 if __name__ == "__main__":
 
-    import pylint
-
     for _name in TestConfigurations.get_configuration_names():
         print(_name, TestConfigurations.get_configuration(_name).__class__)
-
-    pylint.run_pylint([__file__])

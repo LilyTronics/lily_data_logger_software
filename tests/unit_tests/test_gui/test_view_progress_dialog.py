@@ -81,7 +81,4 @@ class TestViewProgressDialog(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestViewProgressDialog().run(True)
-    pylint.run_pylint([__file__])

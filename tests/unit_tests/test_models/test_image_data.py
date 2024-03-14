@@ -32,7 +32,4 @@ class TestImageData(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestImageData().run(True)
-    pylint.run_pylint([__file__])

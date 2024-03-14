@@ -60,7 +60,4 @@ class TestControllerMainLogViewer(TestControllerMain):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestControllerMainLogViewer().run(True)
-    pylint.run_pylint([__file__])

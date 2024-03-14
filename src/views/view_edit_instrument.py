@@ -9,7 +9,6 @@ from src.models.id_manager import IdManager
 from src.views.view_dialogs import ViewDialogs
 
 
-# pylint: disable=too-many-instance-attributes
 class ViewEditInstrument(wx.Dialog):
     _GAP = 5
     _WINDOW_SIZE = (500, -1)
@@ -209,9 +208,8 @@ class ViewEditInstrument(wx.Dialog):
 
 
 if __name__ == "__main__":
-    import pylint
+
     from tests.unit_tests.test_gui.test_controller_edit_instrument import (
         TestControllerEditInstrument)
 
     TestControllerEditInstrument().run()
-    pylint.run_pylint([__file__])

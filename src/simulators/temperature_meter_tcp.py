@@ -73,9 +73,7 @@ class TemperatureMeterTcp:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_models.test_simulator_temperature_meter import (
         TestSimulatorTemperatureMeter)
 
     TestSimulatorTemperatureMeter().run(True)
-    pylint.run_pylint([__file__])

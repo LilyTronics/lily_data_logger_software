@@ -88,9 +88,7 @@ class ControllerCheckInstruments:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_gui.test_controller_check_instruments import (
         TestControllerCheckInstrument)
 
     TestControllerCheckInstrument().run(True)
-    pylint.run_pylint([__file__])

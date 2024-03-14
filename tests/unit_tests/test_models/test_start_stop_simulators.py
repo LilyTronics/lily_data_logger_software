@@ -60,7 +60,4 @@ class TestStartStopSimulators(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestStartStopSimulators().run()
-    pylint.run_pylint([__file__])

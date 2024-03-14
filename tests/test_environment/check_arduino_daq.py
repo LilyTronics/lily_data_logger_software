@@ -21,8 +21,6 @@ def get_arduino_daq_serial_port(serial_ports):
 
 if __name__ == "__main__":
 
-    import pylint
     from src.models.list_serial_ports import get_available_serial_ports
 
     print(get_arduino_daq_serial_port(get_available_serial_ports()))
-    pylint.run_pylint([__file__])

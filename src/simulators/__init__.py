@@ -82,8 +82,6 @@ class Simulators:
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_models.test_start_stop_simulators import TestStartStopSimulators
 
     TestStartStopSimulators().run()
-    pylint.run_pylint([__file__])

@@ -51,7 +51,4 @@ class TestTimeConverter(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestTimeConverter().run(True)
-    pylint.run_pylint([__file__])

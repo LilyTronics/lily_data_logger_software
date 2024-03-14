@@ -17,7 +17,4 @@ class TestInterfaces(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestInterfaces().run()
-    pylint.run_pylint([__file__])

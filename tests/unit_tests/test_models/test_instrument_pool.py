@@ -50,7 +50,4 @@ class TestInstrumentPool(TestSuite):
 
 if __name__ == "__main__":
 
-    import pylint
-
     TestInstrumentPool().run(True)
-    pylint.run_pylint([__file__])

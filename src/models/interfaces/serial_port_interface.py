@@ -34,7 +34,6 @@ class SerialPortInterface(Interface):
     _DATA_BITS = [serial.FIVEBITS, serial.SIXBITS, serial.SEVENBITS, serial.EIGHTBITS]
     _DEFAULT_DATA_BITS = serial.EIGHTBITS
 
-    # pylint: disable=too-many-arguments
     def __init__(self, serial_port, baud_rate=_DEFAULT_BAUD_RATE, parity=_DEFAULT_PARITY,
                  stop_bits=_DEFAULT_STOP_BITS, data_bits=_DEFAULT_DATA_BITS,
                  rx_timeout=DEFAULT_TIMEOUT, tx_timeout=0):
@@ -118,8 +117,6 @@ class SerialPortInterface(Interface):
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_instruments.test_serial_port_interface import TestSerialPortInterface
 
     TestSerialPortInterface().run(True)
-    pylint.run_pylint([__file__])

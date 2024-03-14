@@ -70,7 +70,7 @@ def create_deployment():
     dist_path = os.path.join(output_folder, "dist")
     version_file = os.path.join(output_folder, "app.version")
 
-    print(f"\n{("=" * 120)}")
+    print("\n{}".format("=" * 120))
     print("Build settings:")
     print("Init file       :", init_file)
     print("Application icon:", icon_file)
@@ -78,7 +78,7 @@ def create_deployment():
     print("Output folder   :", output_folder)
     print("Dist folder     :", dist_path)
     print("Version file    :", version_file)
-    print(f"{("=" * 120)}\n")
+    print("{}\n".format("=" * 120))
 
     _clean_output_folder(output_folder)
     _create_version_file(version_file, artifacts_path)
@@ -92,8 +92,8 @@ def create_deployment():
         f"--icon={icon_file}",
         f"--version-file={version_file}",
         "--contents=lib",
-        f"--workpath={os.path.join(output_folder, "work")}",
-        f"--specpath={os.path.join(output_folder, "spec")}",
+        "--workpath={}".format(os.path.join(output_folder, "work")),
+        "--specpath={}".format(os.path.join(output_folder, "spec")),
         f"--distpath={dist_path}"
     ])
 
@@ -104,7 +104,4 @@ def create_deployment():
 
 if __name__ == "__main__":
 
-    import pylint
-
     create_deployment()
-    pylint.run_pylint([__file__])

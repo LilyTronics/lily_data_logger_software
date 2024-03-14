@@ -71,7 +71,6 @@ class ViewLogger(wx.Frame):
 
 if __name__ == "__main__":
 
-    import pylint
     import random
     import threading
     import time
@@ -112,4 +111,3 @@ if __name__ == "__main__":
     app.MainLoop()
 
     log.shut_down()
-    pylint.run_pylint([__file__])

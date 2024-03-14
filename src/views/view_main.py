@@ -10,7 +10,6 @@ from src.models.time_converter import TimeConverter
 from tests.test_environment.test_configurations import TestConfigurations
 
 
-# pylint: disable=too-many-instance-attributes
 class ViewMain(wx.Frame):
 
     _GAP = 5
@@ -329,8 +328,6 @@ class ViewMain(wx.Frame):
 
 if __name__ == "__main__":
 
-    import pylint
     from tests.unit_tests.test_gui.test_controller_main import TestControllerMain
 
     TestControllerMain().run(True)
-    pylint.run_pylint([__file__])
