@@ -28,7 +28,7 @@ class ViewCheckList(wx.Frame):
             if item["type"] is bool:
                 ctrl = wx.CheckBox(panel, wx.ID_ANY)
             else:
-                ctrl = wx.StaticText(panel, wx.ID_ANY, f"Invalid type: {item["type"]}")
+                ctrl = wx.StaticText(panel, wx.ID_ANY, "Invalid type: {}".format(item["type"]))
             self._check.append(ctrl)
             self._remarks.append(wx.TextCtrl(panel, wx.ID_ANY, "", size=self._REMARKS_SIZE))
             row = i + 1

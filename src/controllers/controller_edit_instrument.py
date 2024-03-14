@@ -55,9 +55,11 @@ class ControllerEditInstrument:
     def _on_settings_test(cls, event):
         cls._dlg.clear_console()
         name = cls._dlg.get_name()
-        cls._dlg.write_to_console(f"{"Name":12}: '{name}'")
+        label = "Name"
+        cls._dlg.write_to_console(f"{label:12}: '{name}'")
         instrument_name = cls._dlg.get_selected_instrument_name()
-        cls._dlg.write_to_console(f"{"Instrument":12}: '{instrument_name}'")
+        label = "Instrument"
+        cls._dlg.write_to_console(f"{label:12}: '{instrument_name}'")
         settings = cls._dlg.get_settings()
         for key in settings.keys():
             cls._dlg.write_to_console(f"{key:12}: '{settings[key]}'")

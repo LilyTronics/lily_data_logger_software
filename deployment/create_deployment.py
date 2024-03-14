@@ -70,7 +70,8 @@ def create_deployment():
     dist_path = os.path.join(output_folder, "dist")
     version_file = os.path.join(output_folder, "app.version")
 
-    print("\n{}".format("=" * 120))
+    horizontal_line = "=" * 120
+    print(f"\n{horizontal_line}")
     print("Build settings:")
     print("Init file       :", init_file)
     print("Application icon:", icon_file)
@@ -78,11 +79,13 @@ def create_deployment():
     print("Output folder   :", output_folder)
     print("Dist folder     :", dist_path)
     print("Version file    :", version_file)
-    print("{}\n".format("=" * 120))
+    print(f"{horizontal_line}\n")
 
     _clean_output_folder(output_folder)
     _create_version_file(version_file, artifacts_path)
 
+    work_path = os.path.join(output_folder, "work")
+    spec_path = os.path.join(output_folder, "spec")
     PyInstaller.__main__.run([
         init_file,
         "--clean",
@@ -92,8 +95,8 @@ def create_deployment():
         f"--icon={icon_file}",
         f"--version-file={version_file}",
         "--contents=lib",
-        "--workpath={}".format(os.path.join(output_folder, "work")),
-        "--specpath={}".format(os.path.join(output_folder, "spec")),
+        f"--workpath={work_path}",
+        f"--specpath={spec_path}",
         f"--distpath={dist_path}"
     ])
 

@@ -36,7 +36,7 @@ REPORT_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 def _get_result_for_item(item, check):
-    result = f"unknown type: {item["type"]}"
+    result = "unknown type: {}".format(item["type"])
     if item["type"] is bool:
         if item["pass_if"] == check.GetValue():
             result = "PASSED"
@@ -66,7 +66,7 @@ def check_callback(checks, remarks, open_in_browser):
         if result == "PASSED":
             n_passed += 1
         results += f'<tr class="{result.lower()}">\n'
-        results += f"<td>{html.escape(item["label"])}</td>"
+        results += "<td>{}</td>".format(html.escape(item["label"]))
         results += f'<td class="center">{html.escape(result)}</td>'
         results += f"<td>{html.escape(remarks[i].GetValue().strip())}</td>"
         results += "</tr>\n"

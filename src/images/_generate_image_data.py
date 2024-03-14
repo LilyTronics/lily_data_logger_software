@@ -35,13 +35,15 @@ def generate_image_data():
                 fp_model.write(f"\n    {name} = PyEmbeddedImage(\n")
                 indent = _INDENT_WIDTH * 2
                 max_data_length = _MAX_LINE_LENGTH - indent - 3     # 3 character for b''
+                indent_output = " " * indent
                 while len(content) > max_data_length:
-                    fp_model.write(f"{" " * indent}{content[:max_data_length]}\n")
+                    fp_model.write(f"{indent_output}{content[:max_data_length]}\n")
                     content = content[max_data_length:]
                 if len(content) > 0:
-                    fp_model.write(f"{" " * indent}{content}\n")
+                    fp_model.write(f"{indent_output}{content}\n")
                 indent -= 4
-                fp_model.write(f"{" " * indent})\n")
+                indent_output = " " * indent
+                fp_model.write(f"{indent_output})\n")
 
         fp_model.write('\n\nif __name__ == "__main__":\n\n')
         fp_model.write("    from tests.unit_tests.test_models.test_image_data "

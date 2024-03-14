@@ -165,7 +165,7 @@ class ViewEditInstrument(wx.Dialog):
             row = 0
             for key in settings_controls.keys():
                 control = settings_controls[key]
-                lbl = wx.StaticText(self, wx.ID_ANY, f"{control["label"]}:")
+                lbl = wx.StaticText(self, wx.ID_ANY, "{}:".format(control["label"]))
                 if control["control"] is wx.ComboBox:
                     ctrl = control["control"](self, wx.ID_ANY, style=wx.CB_READONLY)
                     data = control["data"]
@@ -177,7 +177,7 @@ class ViewEditInstrument(wx.Dialog):
                 elif control["control"] is wx.TextCtrl:
                     ctrl = control["control"](self, wx.ID_ANY, control["default"])
                 else:
-                    raise Exception(f"Control '{control["control"]}' is not supported")
+                    raise Exception("Control '{}' is not supported".format(control["control"]))
                 self._settings_controls[key] = ctrl
                 self._settings_grid.Add(lbl, (row, 0), wx.DefaultSpan, wx.ALIGN_CENTER_VERTICAL)
                 self._settings_grid.Add(ctrl, (row, 1), wx.DefaultSpan,

@@ -75,22 +75,25 @@ class TestControllerConfiguration(TestSuite):
                      "End time does not have the correct value, "
                      f"is {end_time} expected {conf.get_end_time()}")
         # Continuous mode
-        self.fail_if(self._values["is_continuous"] != conf.get_continuous_mode(),
+        is_continuous = self._values["is_continuous"]
+        self.fail_if(is_continuous != conf.get_continuous_mode(),
                      "Continuous mode does not have the correct value, "
-                     f"is {self._values["is_continuous"]} expected {conf.get_continuous_mode()}")
+                     f"is {is_continuous} expected {conf.get_continuous_mode()}")
         # Fixed mode
-        self.fail_if(self._values["is_fixed"] == conf.get_continuous_mode(),
+        is_fixed = self._values["is_fixed"]
+        self.fail_if(is_fixed == conf.get_continuous_mode(),
                      "Fixed edn time mode does not have the correct value, "
-                     f"is {self._values["is_fixed"]} expected {not conf.get_continuous_mode()}")
+                     f"is {is_fixed} expected {not conf.get_continuous_mode()}")
         # Total samples, only with fixed end time
+        total_samples = int(self._values["total_samples"])
         if self._values["is_fixed"]:
-            total_samples = int(end_time / sample_time) + 1
-            self.fail_if(int(self._values["total_samples"]) != total_samples,
+            expected_total = int(end_time / sample_time) + 1
+            self.fail_if(total_samples != expected_total,
                          "Total samples does not have the correct value, "
-                         f"is {self._values["total_samples"]} expected {total_samples}")
+                         f"is {total_samples} expected {expected_total}")
         else:
-            self.fail_if(self._values["total_samples"] != "-",
-                         f"Total samples should be '-', but is {self._values["total_samples"]}")
+            self.fail_if(total_samples != "-",
+                         f"Total samples should be '-', but is {total_samples}")
 
     def test_show_edit_configuration(self):
         def _test_show_edit_configuration():
