@@ -17,4 +17,4 @@
 /docs/_build/*
 
 # sandbox for trying things
-/sandbox.py
+/sandbox/*
