@@ -8,6 +8,7 @@ import wx
 from src.models.id_manager import IdManager
 from src.models.instrument_pool import InstrumentPool
 from src.views.view_check_instruments import ViewCheckInstruments
+from src.views.view_progress_dialog import ProgressDialog
 
 
 class ControllerCheckInstruments:
@@ -29,16 +30,15 @@ class ControllerCheckInstruments:
         instruments = self._config.get_instruments()
         if len(instruments) == 0:
             return
-        self._view.active_dialog = wx.ProgressDialog("Checking instruments", " ", len(instruments),
-                                                     self._view, wx.PD_CAN_ABORT | wx.PD_APP_MODAL |
-                                                     wx.PD_AUTO_HIDE)
+        self._view.active_dialog = ProgressDialog(self._view, "Checking instruments",
+                                                  len(instruments))
         i = 0
         t = None
         while i < len(instruments):
             if t is None:
                 instrument_name = instruments[i][self._config.KEY_NAME]
                 message = f"Checking instrument: '{instrument_name}' . . ."
-                self._view.active_dialog.Update(i, message)
+                self._view.active_dialog.update(i, message)
                 t = threading.Thread(target=self._check_instrument, args=(instruments[i], ))
                 t.daemon = True
                 t.start()
@@ -46,11 +46,8 @@ class ControllerCheckInstruments:
                 t = None
                 i += 1
             wx.MilliSleep(100)
-            do_continue, _ = self._view.active_dialog.Update(i)
-            if not do_continue:
+            if not self._view.active_dialog.update(i):
                 break
-        self._view.active_dialog.Destroy()
-        self._view.active_dialog = None
         wx.YieldIfNeeded()
 
     def _check_instrument(self, instrument_data):
