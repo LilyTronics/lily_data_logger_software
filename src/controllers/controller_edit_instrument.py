@@ -85,6 +85,9 @@ class ControllerEditInstrument:
             cls._dlg.write_to_console(
                 f"Get value from channel: '{input_channels[0][instrument.KEY_NAME]}'")
             value = instrument.process_channel(input_channels[0]["name"])
+            if isinstance(value, str) and value.startswith("ERROR: "):
+                value = value.strip("ERROR: ")
+                raise Exception(value)
             cls._dlg.write_to_console(f"Received value: '{value}'")
             cls._dlg.write_to_console("\nTest finished, all seems fine")
         except Exception as e:
