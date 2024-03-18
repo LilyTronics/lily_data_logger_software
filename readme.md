@@ -23,6 +23,10 @@ Coming up V1.0.0:
 * Adding your own instrument drivers (see manual)
 * Data from the table can be copied and pasted to a spreadsheet (Excel, LibreOffice, etc.).
 * Export to CSV for using data in other applications (databases, scripting, etc.).
+* OS compatibility:
+  * Developed and tested primarily for Windows 10/11.
+  * Tested on Ubuntu (22.04 LTS verion).
+  * Not tested on MAC.
 
 ## About GPIB...
 
@@ -43,7 +47,7 @@ You can add your own instruments. A manual for that will be available on the fir
 
 Requirements for running the software:
 
-* Python (>= 3.10)
+* Python 3.10 (Ubuntu 22.04 LTS has Python 3.10)
 * Upgrade pip: python -m pip install --upgrade pip
 * pip install -r requirements.txt
 
