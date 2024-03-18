@@ -203,6 +203,62 @@ if __name__ == "__main__":
             self.Close()
             event.Skip()
 
+    ##################
+    # Test functions #
+    ##################
+
+    def test_get_values(frame):
+        label_text = GuiUnitTest.get_value_from_window(frame.ID_LABEL)
+        print("Label text:", label_text)
+        text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
+        print("Text box text:", text)
+
+    def test_change_text_set_value(frame):
+        print("Change text using set value")
+        GuiUnitTest.set_value_in_control(frame.ID_TEXT,
+                                         "And now for something completely different!")
+        text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
+        print("New text:", text)
+
+    def test_change_text_send_keys(frame):
+        print('Change text using send keys')
+        GuiUnitTest.set_value_in_control(frame.ID_TEXT, "")
+        frame.Raise()
+        GuiUnitTest.send_text("I said: 'Ham, spam and bacon'! OK?", 0.01)
+        text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
+        print("New text:", text)
+
+    def test_click_toolbar_button(frame):
+        print("Click toolbar button")
+        GuiUnitTest.click_toolbar_item(frame, frame.ID_TOOL)
+        text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
+        print("New text:", text)
+
+    def test_toggle_radio_buttons(frame):
+        print("Toggle radio buttons")
+        GuiUnitTest.select_radio_button(frame.ID_RADIO2)
+        text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
+        print("Active radio button:", text)
+        time.sleep(0.5)
+        GuiUnitTest.select_radio_button(frame.ID_RADIO1)
+        text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
+        print("Active radio button:", text)
+
+    def test_show_dialog(frame):
+        print("Click show dialog")
+        GuiUnitTest.click_button(frame.ID_BUTTON_DIALOG)
+        if GuiUnitTest.wait_for_dialog(frame):
+            print("Dialog:", frame.active_dialog)
+            time.sleep(0.5)
+            GuiUnitTest.send_key_press(GuiUnitTest.KEY_ENTER)
+            if GuiUnitTest.wait_for_dialog(frame, False):
+                print("Dialog:", frame.active_dialog)
+                print("Dialog closed")
+            else:
+                print("ERROR: dialog did not close")
+        else:
+            print("ERROR: no dialog")
+
     def test_thread(frame):
         print("Wait for GUI to be available")
         print("Is GUI available:", GuiUnitTest.is_window_available(frame.ID_BUTTON_CLOSE))
@@ -210,59 +266,11 @@ if __name__ == "__main__":
             print("GUI is available")
             print("Is GUI available:", GuiUnitTest.is_window_available(frame.ID_BUTTON_CLOSE))
 
-            label_text = GuiUnitTest.get_value_from_window(frame.ID_LABEL)
-            print("Label text:", label_text)
-
-            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
-            print("Original text:", text)
-            time.sleep(1)
-
-            print("Click toolbar button")
-            GuiUnitTest.click_toolbar_item(frame, frame.ID_TOOL)
-            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
-            print("New text:", text)
-            time.sleep(1)
-
-            print("Change text")
-            GuiUnitTest.set_value_in_control(frame.ID_TEXT,
-                                             "And now for something completely different!")
-            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
-            print("New text:", text)
-            time.sleep(1)
-
-            print('Change text using send keys')
-            GuiUnitTest.set_value_in_control(frame.ID_TEXT, "")
-            frame.Raise()
-            GuiUnitTest.send_text("I said: 'Ham, spam and bacon'! OK?", 0.02)
-            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
-            print("New text:", text)
-            time.sleep(1)
-
-            print("Toggle radio buttons")
-            GuiUnitTest.select_radio_button(frame.ID_RADIO2)
-            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
-            print("Active radio button:", text)
-            time.sleep(1)
-
-            GuiUnitTest.select_radio_button(frame.ID_RADIO1)
-            text = GuiUnitTest.get_value_from_window(frame.ID_TEXT)
-            print("Active radio button:", text)
-            time.sleep(1)
-
-            print("Click show dialog")
-            GuiUnitTest.click_button(frame.ID_BUTTON_DIALOG)
-            if GuiUnitTest.wait_for_dialog(frame):
-                print("Dialog:", frame.active_dialog)
+            for test_function in [test_get_values, test_change_text_set_value,
+                                  test_change_text_send_keys, test_click_toolbar_button,
+                                  test_toggle_radio_buttons, test_show_dialog]:
+                test_function(frame)
                 time.sleep(1)
-                GuiUnitTest.send_key_press(GuiUnitTest.KEY_ENTER)
-                if GuiUnitTest.wait_for_dialog(frame, False):
-                    print("Dialog:", frame.active_dialog)
-                    print("Dialog closed")
-                else:
-                    print("ERROR: dialog did not close")
-            else:
-                print("ERROR: no dialog")
-            time.sleep(1)
 
             print("Click the close button")
             GuiUnitTest.click_button(frame.ID_BUTTON_CLOSE)
