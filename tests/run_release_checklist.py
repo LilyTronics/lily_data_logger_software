@@ -21,13 +21,21 @@ from tests.unit_tests.test_checklist.view_checklist import ViewCheckList
 
 ITEMS = [
     {"label": "All issues in GitHub fixed", "type": bool, "pass_if": True, "result": None},
-    {"label": "All unit tests passed", "type": bool, "pass_if": True, "result": None},
-    {"label": "All test configuration runs passed", "type": bool, "pass_if": True, "result": None},
-    {"label": "Duration test passed", "type": bool, "pass_if": True, "result": None},
+    {"label": "All unit tests passed on Windows", "type": bool, "pass_if": True, "result": None},
+    {"label": "All unit tests passed on Ubuntu", "type": bool, "pass_if": True, "result": None},
+    {"label": "All test configuration runs passed on Windows", "type": bool, "pass_if": True,
+     "result": None},
+    {"label": "All test configuration runs passed on Ubuntu", "type": bool, "pass_if": True,
+     "result": None},
     {"label": "Correct version in AppData", "type": bool, "pass_if": True, "result": None},
     {"label": "Documentation up to date", "type": bool, "pass_if": True, "result": None},
     {"label": "Set tag in git", "type": bool, "pass_if": True, "result": None},
-    {"label": "Create deployment", "type": bool, "pass_if": True, "result": None},
+    {"label": "Create deployment for Windows", "type": bool, "pass_if": True, "result": None},
+    {"label": "Create deployment for Ubuntu", "type": bool, "pass_if": True, "result": None},
+    {"label": "Duration test passed on Windows using deployment", "type": bool, "pass_if": True,
+     "result": None},
+    {"label": "Duration test passed on Ubuntu using deployment", "type": bool, "pass_if": True,
+     "result": None},
     {"label": "Publish deployment on LilyTronics", "type": bool, "pass_if": True, "result": None},
     {"label": "Publish deployment on GitHub", "type": bool, "pass_if": True, "result": None}
 ]
