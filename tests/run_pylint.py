@@ -41,6 +41,9 @@ for current_folder, sub_folders, filenames in os.walk(".."):
     # Skip files used for documentation
     if current_folder.startswith(os.path.join("..", "docs")):
         continue
+    # Skip sandbox files
+    if current_folder.startswith(os.path.join("..", "sandbox")):
+        continue
     for filename in filter(lambda x: x.endswith(".py"), filenames):
         filepath = os.path.join(current_folder, filename)
         print(f"Adding: {filepath}")
