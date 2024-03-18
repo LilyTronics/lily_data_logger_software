@@ -7,6 +7,8 @@ import serial
 
 
 def check_serial_port(port_name, baud_rate, command, response, rx_timeout=1, toggle_dtr=False):
+    if not isinstance(response, (list, tuple)):
+        response = (response, )
     write_timeout = 0.2
     with serial.Serial(port_name, baudrate=baud_rate, write_timeout=write_timeout) as s:
         if toggle_dtr:
@@ -22,12 +24,9 @@ def check_serial_port(port_name, baud_rate, command, response, rx_timeout=1, tog
                 while t > 0:
                     if s.in_waiting > 0:
                         rx_data += s.read(s.in_waiting)
-                    if isinstance(response, (list, tuple)):
-                        for value in response:
-                            if value in rx_data:
-                                return True
-                    elif response in rx_data:
-                        return True
+                    for value in response:
+                        if value in rx_data:
+                            return True
                     time.sleep(0.1)
                     t -= 0.1
             except (Exception, ):
