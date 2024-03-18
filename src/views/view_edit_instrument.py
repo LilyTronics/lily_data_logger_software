@@ -7,6 +7,7 @@ import wx
 
 from src.models.id_manager import IdManager
 from src.views.view_dialogs import ViewDialogs
+from src.views.view_progress_dialog import ProgressDialog
 
 
 class ViewEditInstrument(wx.Dialog):
@@ -84,14 +85,12 @@ class ViewEditInstrument(wx.Dialog):
     def _process_callables(self, callables):
         i = 0
         for label, ctrl, function, default in callables:
-            self.active_dialog.Update(i, f"Update {label.lower()}")
+            self.active_dialog.update(i, f"Update {label.lower()}")
             self.active_dialog.Fit()
             ctrl.SetItems(function())
             ctrl.SetValue(default)
             i += 1
-            self.active_dialog.Update(i)
-        self.active_dialog.Destroy()
-        self.active_dialog = None
+        self.active_dialog.update(i)
 
     ##################
     # Event handlers #
@@ -184,9 +183,7 @@ class ViewEditInstrument(wx.Dialog):
                                         wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
                 row += 1
             if len(callables) > 0:
-                self.active_dialog = wx.ProgressDialog("Update controls", " ",
-                                                       maximum=len(callables), parent=self,
-                                                       style=wx.PD_APP_MODAL | wx.PD_AUTO_HIDE)
+                self.active_dialog = ProgressDialog(self, "Update controls", len(callables))
                 t = threading.Thread(target=self._process_callables, args=(callables, ))
                 t.daemon = True
                 t.start()
