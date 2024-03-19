@@ -7,13 +7,12 @@ Lily Data Logger Studio CE (Community Edition)
    :maxdepth: 2
    :caption: Contents:
 
-    Home                <self>
-    Introduction        <introduction.rst>
-    Installation        <installation.rst>
-    Main view           <main_view.rst>
+    Home                        <self>
+    Introduction                <introduction.rst>
+    Installation                <installation.rst>
+    Main view                   <main_view.rst>
+    Creating a configuration    <create_configuration.rst>
 
-.. Adding instruments
-.. Creating a configuration
 .. Adding instruments
 .. Adding measurements
 .. Running a configuration
