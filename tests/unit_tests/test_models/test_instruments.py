@@ -20,6 +20,10 @@ class TestInstruments(TestSuite):
     _n_instruments = 0
 
     def setup(self):
+        # Delete everything in the users folder except the settings and log file
+        for item in glob.glob(os.path.join(AppData.USER_FOLDER, "*")):
+            if not os.path.basename(item).startswith(AppData.EXE_NAME):
+                os.remove(item)
         n_found = 0
         path = os.path.dirname(instruments.__file__)
         self.log.debug(f"Looking for instruments in: {path}")
