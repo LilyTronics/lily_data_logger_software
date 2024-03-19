@@ -95,6 +95,11 @@ class MeasurementRunner:
             sample_start = int(time.time())
         self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS_FINISHED,
                             "Process finished", 0)
+        self._clean_up()
+
+    def _clean_up(self):
+        self._measurement_thread = None
+        InstrumentPool.clear_instruments()
 
     ##########
     # Public #
@@ -115,8 +120,7 @@ class MeasurementRunner:
         if self.is_running():
             self._stop_event.set()
             self._measurement_thread.join()
-        self._measurement_thread = None
-        InstrumentPool.clear_instruments()
+        self._clean_up()
 
     def is_running(self):
         return self._measurement_thread is not None and self._measurement_thread.is_alive()
