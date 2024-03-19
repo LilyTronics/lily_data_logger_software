@@ -9,7 +9,7 @@ class ViewCheckList(wx.Frame):
 
     _GAP = 10
     _REMARKS_SIZE = (200, -1)
-    _INITIAL_WIDTH = 500
+    _INITIAL_WIDTH = 600
 
     def __init__(self, test_items, app_version, check_callback):
         self._remarks = []
