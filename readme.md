@@ -51,6 +51,11 @@ Requirements for running the software:
 * Upgrade pip: python -m pip install --upgrade pip
 * pip install -r requirements.txt
 
+Ubuntu:
+
+* For installing wxPython you require the GTK development lib:
+  `sudo apt install libgtk-3-dev`
+
 In `tests` is are several scripts for running the unit tests.
 Test reports are written to `unit_test/test_reports`.
 
