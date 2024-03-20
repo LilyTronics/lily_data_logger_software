@@ -53,8 +53,9 @@ Requirements for running the software:
 
 Ubuntu:
 
-* For installing wxPython you require the GTK development lib:
-  `sudo apt install libgtk-3-dev`
+* For installing wxPython you require the following packages:
+  * `sudo apt install python3-dev`
+  * `sudo apt install libgtk-3-dev`
 
 In `tests` is are several scripts for running the unit tests.
 Test reports are written to `unit_test/test_reports`.
