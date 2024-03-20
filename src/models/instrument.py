@@ -190,6 +190,8 @@ class Instrument:
             print(self._DEBUG_FORMAT.format("Post response", post_response))
         response = self._interface_object.send_command(command, expect_response, pre_response,
                                                        post_response)
+        if debug:
+            print(self._DEBUG_FORMAT.format("Response", response))
         if expect_response:
             response = self._parse_response(expected_response, response, debug)
         return response
