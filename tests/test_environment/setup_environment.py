@@ -2,9 +2,11 @@
 Script that runs before all tests to set up the environment
 """
 
+import glob
 import os
 import shutil
 
+from src.app_data import AppData
 from src.models.list_serial_ports import get_available_serial_ports
 from tests.test_environment.check_arduino_daq import get_arduino_daq_serial_port
 from tests.test_environment.check_serial_loopback import get_serial_loopback_port
@@ -39,6 +41,18 @@ def check_for_instruments(skip_instruments=False):
             exclude_tests.append("TestArduinoDAQ")
 
     return exclude_tests
+
+
+def setup_user_folder():
+    _IGNORE_FILES = [
+        os.path.join(AppData.USER_FOLDER, "LilyDataLoggerStudioCE.json"),
+        os.path.join(AppData.USER_FOLDER, "LilyDataLoggerStudioCE.log")
+    ]
+    matches = list(filter(lambda x: x not in _IGNORE_FILES,
+                          glob.glob(os.path.join(AppData.USER_FOLDER, "*.*"))))
+    for item in matches:
+        print(f"Delete {item}")
+        os.unlink(item)
 
 
 if __name__ == "__main__":
