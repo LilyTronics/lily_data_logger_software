@@ -1,0 +1,63 @@
+{
+  "general": {
+    "sample_time": 2,
+    "end_time": 7,
+    "continuous_mode": false
+  },
+  "instruments": [
+    {
+      "id": "ce575483-5c74-4f25-859b-209e49f1b82d",
+      "name": "Multimeter",
+      "settings": {
+        "instrument_name": "Simulator multimeter",
+        "instrument_settings": {
+          "ip_address": "localhost",
+          "ip_port": 17000,
+          "rx_timeout": 0.2
+        }
+      }
+    },
+    {
+      "id": "7529353f-578a-4562-a682-59fa87caeef0",
+      "name": "Temperature meter",
+      "settings": {
+        "instrument_name": "Simulator temperature meter",
+        "instrument_settings": {
+          "ip_address": "localhost",
+          "ip_port": 17100,
+          "rx_timeout": 0.2
+        }
+      }
+    }
+  ],
+  "measurements": [
+    {
+      "name": "Volt",
+      "settings": {
+        "instrument_id": "ce575483-5c74-4f25-859b-209e49f1b82d",
+        "measurement": "Get DC voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Curr",
+      "settings": {
+        "instrument_id": "ce575483-5c74-4f25-859b-209e49f1b82d",
+        "measurement": "Get DC current",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Outside temperature",
+      "settings": {
+        "instrument_id": "7529353f-578a-4562-a682-59fa87caeef0",
+        "measurement": "Get temperature",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    }
+  ],
+  "process_steps": []
+}
