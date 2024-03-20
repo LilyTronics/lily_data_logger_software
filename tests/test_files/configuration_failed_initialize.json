@@ -20,7 +20,7 @@
   ],
   "measurements": [
     {
-      "name": "Volt delayed",
+      "name": "Volt",
       "settings": {
         "instrument_id": "a43cce1c-c4cd-4dbb-b2fd-1a7f9e1ba499",
         "measurement": "Get DC voltage",
