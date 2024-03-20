@@ -7,7 +7,6 @@ import wx.grid
 from src.models.id_manager import IdManager
 from src.models.image_data import ImageData
 from src.models.time_converter import TimeConverter
-from tests.test_environment.test_configurations import TestConfigurations
 
 
 class ViewMain(wx.Frame):
@@ -26,7 +25,7 @@ class ViewMain(wx.Frame):
 
     _MINIMUM_WINDOW_SIZE = (1100, 700)
 
-    def __init__(self, title, select_config_callback, show_test_configurations):
+    def __init__(self, title, select_config_callback):
         self.active_dialog = None
         self._select_config_callback = select_config_callback
         self._title = title
@@ -40,7 +39,7 @@ class ViewMain(wx.Frame):
                     wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, self._GAP)
 
         main_box = wx.BoxSizer(wx.VERTICAL)
-        main_box.Add(self._create_toolbar(panel, show_test_configurations), 0,
+        main_box.Add(self._create_toolbar(panel), 0,
                      wx.EXPAND | wx.ALL, self._GAP)
         main_box.Add(self._create_config_info(panel), 0, wx.EXPAND | wx.ALL, self._GAP)
         main_box.Add(lab_box, 1, wx.EXPAND)
@@ -53,7 +52,7 @@ class ViewMain(wx.Frame):
     # Private #
     ###########
 
-    def _create_toolbar(self, parent, show_test_configurations):
+    def _create_toolbar(self, parent):
         self._recent_configs = wx.Menu()
         self._recent_configs.Append(1, 'Recent configurations')
 
@@ -86,11 +85,6 @@ class ViewMain(wx.Frame):
         self._toolbar.AddSeparator()
         self._toolbar.AddTool(IdManager.ID_TOOL_SHOW_LOG, "",
                               ImageData.show_log.Bitmap, "Show log")
-        if show_test_configurations:
-            cmb_config = wx.ComboBox(self._toolbar, IdManager.ID_TOOL_TEST_CONFIG, size=(150, -1))
-            cmb_config.SetItems(TestConfigurations.get_configuration_names())
-            self._toolbar.AddStretchableSpace()
-            self._toolbar.AddControl(cmb_config)
         self._toolbar.Realize()
         return self._toolbar
 

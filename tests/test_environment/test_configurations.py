@@ -23,7 +23,6 @@ class TestConfigurations:
 
     @classmethod
     def init(cls):
-        cls._copy_user_files()
         cls._CONFIGURATIONS["all simulators, 2s/7s"] = "config_all_simulators_2_7.json"
         cls._CONFIGURATIONS["failing measurement"] = "config_failing_measurement.json"
         cls._CONFIGURATIONS["delayed measurement"] = "configuration_delayed_measurement.json"
@@ -44,18 +43,6 @@ class TestConfigurations:
     @classmethod
     def get_unit_test_configuration(cls):
         return cls.get_configuration("all simulators, 2s/7s")
-
-    ###########
-    # Private #
-    ###########
-
-    @classmethod
-    def _copy_user_files(cls):
-        for filename in cls._REQUIRED_USER_FILES:
-            source = os.path.join(os.path.dirname(__file__), "test_files", filename)
-            destination = os.path.join(AppData.USER_FOLDER, filename)
-            shutil.copy(str(source), str(destination))
-
 
 
 # Initialize the test configurations

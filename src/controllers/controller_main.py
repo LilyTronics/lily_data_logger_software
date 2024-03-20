@@ -21,7 +21,6 @@ from src.views.view_dialogs import ViewDialogs
 from src.views.view_logger import ViewLogger
 from src.views.view_main import ViewMain
 from src.views.view_progress_dialog import ProgressDialog
-from tests.test_environment.test_configurations import TestConfigurations
 
 
 class ControllerMain:
@@ -29,14 +28,14 @@ class ControllerMain:
     _TIMER_UPDATE_INTERVAL = 250    # ms
     _LED_INTERVAL = 500             # ms
 
-    def __init__(self, view_title, logger, show_test_configurations=False):
+    def __init__(self, view_title, logger):
         self._logger = logger
         self._logger.info("Load main controller")
 
         self._settings = Settings()
         self._configuration = Configuration()
 
-        self._main_view = self._initialize_main_view(view_title, show_test_configurations)
+        self._main_view = self._initialize_main_view(view_title)
         self._log_view = None
 
         self._logger.info("Show main view")
@@ -58,8 +57,8 @@ class ControllerMain:
     # Private #
     ###########
 
-    def _initialize_main_view(self, view_title, show_test_configurations):
-        frame = ViewMain(view_title, self._on_recent_config_select, show_test_configurations)
+    def _initialize_main_view(self, view_title):
+        frame = ViewMain(view_title, self._on_recent_config_select)
         size = self._settings.get_main_window_size()
         if -1 not in size:
             frame.SetSize(size)
@@ -84,7 +83,6 @@ class ControllerMain:
         frame.Bind(wx.EVT_TOOL, self._on_export_to_csv, id=IdManager.ID_TOOL_EXPORT_CSV)
         frame.Bind(wx.EVT_TOOL, self._on_export_instrument, id=IdManager.ID_TOOL_EXPORT_INSTRUMENT)
         frame.Bind(wx.EVT_TOOL, self._on_show_log, id=IdManager.ID_TOOL_SHOW_LOG)
-        frame.Bind(wx.EVT_COMBOBOX, self._on_test_config, id=IdManager.ID_TOOL_TEST_CONFIG)
         frame.Bind(wx.EVT_BUTTON, self._on_edit_instrument, id=IdManager.ID_BTN_ADD_INSTRUMENT)
         frame.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._on_edit_instrument,
                    id=IdManager.ID_LIST_INSTRUMENTS)
@@ -211,11 +209,6 @@ class ControllerMain:
                                          "Open configuration")
                 self._settings.remove_recent_configuration(filenames[index])
             self._main_view.update_recent_configurations(self._settings.get_recent_configurations())
-        event.Skip()
-
-    def _on_test_config(self, event):
-        self._configuration = TestConfigurations.get_configuration(event.GetString())
-        self._update_view_from_configuration()
         event.Skip()
 
     ##############
