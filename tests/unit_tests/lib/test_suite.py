@@ -16,6 +16,7 @@ class TestSuite(lily_unit_test.TestSuite):
         self.gui = GuiUnitTest()
         self.configuration_test_filename = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                                         "..", "..",
+                                                                        "test_environment",
                                                                         "test_files",
                                                                         "test_configuration.json"))
         if not os.path.isdir(AppData.USER_FOLDER):

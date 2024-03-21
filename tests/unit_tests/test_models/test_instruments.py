@@ -35,7 +35,7 @@ class TestInstruments(TestSuite):
                 n_found += 1
         self._n_instruments = n_found
         self.log.debug("Copy test instrument to user folder")
-        shutil.copy2(os.path.join(os.path.dirname(tests.__file__),
+        shutil.copy2(os.path.join(os.path.dirname(tests.__file__), "test_environment",
                                   "test_files", "test_instrument.json"),
                      os.path.join(AppData.USER_FOLDER, "test_instrument.json"))
         self._n_instruments += 1
