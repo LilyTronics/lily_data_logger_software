@@ -1,0 +1,188 @@
+{
+  "general": {
+    "sample_time": 5,
+    "end_time": 20,
+    "continuous_mode": false
+  },
+  "instruments": [
+    {
+      "id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+      "name": "Arduino DAQ",
+      "settings": {
+        "instrument_name": "Arduino DAQ",
+        "instrument_settings": {
+          "serial_port": "",
+          "baud_rate": "115200",
+          "parity": "None",
+          "stop_bits": "1",
+          "data_bits": "8"
+        }
+      }
+    }
+  ],
+  "measurements": [
+    {
+      "name": "Analog 0",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "A0 get voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Analog 1",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "A1 get voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Analog 2",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "A2 get voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Analog 3",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "A3 get voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Analog 4",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "A4 get voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Analog 5",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "A5 get voltage",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 2",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D2 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 3",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D3 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 4",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D4 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 5",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D5 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 6",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D6 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 7",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D7 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 8",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D8 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 9",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D9 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 10",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D10 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 11",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D11 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 12",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D12 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Digital 13",
+      "settings": {
+        "instrument_id": "b5952f5f-c5b8-4c8b-88f4-a5983b09875b",
+        "measurement": "D13 get state",
+        "gain": 1.0,
+        "offset": 0.0
+      }
+    }
+  ],
+  "process_steps": []
+}
