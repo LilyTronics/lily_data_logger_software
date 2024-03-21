@@ -7,6 +7,7 @@ import os
 
 from lily_unit_test import TestRunner
 from tests.test_environment.setup_environment import clear_reports
+from tests.test_environment.setup_environment import setup_user_folder
 
 
 REPORT_FOLDER = os.path.join(os.path.dirname(__file__), "test_reports")
@@ -16,6 +17,7 @@ if not os.path.isdir(REPORT_FOLDER):
     os.makedirs(REPORT_FOLDER)
 
 clear_reports(REPORT_FOLDER)
+setup_user_folder()
 
 options = {
     "report_folder": REPORT_FOLDER,
