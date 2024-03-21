@@ -229,6 +229,25 @@ class TestInstrument(TestSuite):
         self.fail_if(callback_id != 1, f"Wrong callback ID: {callback_id}")
         self.fail_if(response != "test instrument", f"Wrong response: '{response}'")
 
+    def test_not_existing_channel(self):
+        def _callback(*args):
+            self._callback_received[0] = True
+            self._callback_received.append(args)
+
+        self.log.debug("Test without using request queue")
+        response = self._instrument.process_channel("not existing channel")
+        self.fail_if(response != "ERROR: unknown channel 'not existing channel'",
+                     f"No error message received: '{response}'")
+        self.log.debug("Test using request queue")
+        del self._callback_received[:1]
+        self._callback_received[0] = False
+        self._instrument.process_channel("not existing channel", None, _callback, 2)
+        if not self.wait_for(self._callback_received, True, 2, 0.1):
+            self.fail("No callback received")
+        callback_id, response = self._callback_received[1]
+        self.fail_if(callback_id != 2, f"Wrong callback ID: {callback_id}")
+        self.fail_if(response != "ERROR: no channel data", f"Wrong response: '{response}'")
+
     def teardown(self):
         self._instrument.stop()
 

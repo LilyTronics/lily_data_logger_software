@@ -63,7 +63,10 @@ class Instrument:
                         print(self._DEBUG_FORMAT.format("Value", value))
                         print(self._DEBUG_FORMAT.format("Callback", callback))
                         print(self._DEBUG_FORMAT.format("Callback ID", callback_id))
-                    response = self._process_commands(channel[self.KEY_COMMAND_LIST], value, debug)
+                    if channel is None:
+                        response = "ERROR: no channel data"
+                    else:
+                        response = self._process_commands(channel[self.KEY_COMMAND_LIST], value, debug)
                     callback(callback_id, response)
 
             except queue.Empty:
@@ -73,8 +76,9 @@ class Instrument:
         channel_data = self._instrument_definition.get(self.KEY_CHANNELS, [])
         matches = list(filter(lambda x: x[self.KEY_TYPE] == channel_type and
                               x[self.KEY_NAME] == channel_name, channel_data))
-        assert len(matches) == 1, f"Channel '{channel_name}' of type {channel_type} not found"
-        return matches[0]
+        if len(matches) == 1:
+            return matches[0]
+        return None
 
     def _parse_mask(self, mask, debug):
         has_mask = False
@@ -283,10 +287,13 @@ class Instrument:
             channel = self._get_channel(self.TYPE_OUTPUT, channel_name)
         response = None
         if callback is None or callback_id is None:
-            if debug:
-                print(self._DEBUG_FORMAT.format("Process channel", channel_name))
-                print(self._DEBUG_FORMAT.format("Channel", channel))
-            response = self._process_commands(channel[self.KEY_COMMAND_LIST], value, debug)
+            if channel is None:
+                response = f"ERROR: unknown channel '{channel_name}'"
+            else:
+                if debug:
+                    print(self._DEBUG_FORMAT.format("Process channel", channel_name))
+                    print(self._DEBUG_FORMAT.format("Channel", channel))
+                response = self._process_commands(channel[self.KEY_COMMAND_LIST], value, debug)
         else:
             if debug:
                 print(self._DEBUG_FORMAT.format("Put request", channel_name))
