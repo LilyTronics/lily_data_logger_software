@@ -36,7 +36,6 @@ def _copy_items(file_filter):
 def copy_to_user_folder():
     _clean_user_folder()
     n_copied = _copy_items("instrument_*.json")
-    n_copied += _copy_items("configuration_*.json")
     print(f"\n{n_copied} files copied")
 
 
