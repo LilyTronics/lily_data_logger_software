@@ -45,9 +45,9 @@ processed parallel. So if each measurement takes up 1 second, the sample time sh
 2 seconds (two measurements). If the measurements come in too slow, a time error will be reported.
 If this happens, you need to increase the sample time or make the instruments measure faster.
 
-The next time setting is the end time. You can choose for a fixed end time. In the given example
-the end time is set to one minute. After 1 minute the measurements will stop automatically.
-With a sample time of 3 seconds, this will give you 21 samples (1 at start and then 20 samples
-every 3 seconds for 60 seconds). The end time can also be set to continuous mode. This way there is
-no end time and the measurements go on until manually stopped. The number of samples will thus
-depend on when the process is stopped.
+The next time setting is the end time. You can choose for a fixed end time or continuous mode.
+In the given example the end time is set to one minute. After 1 minute the measurements will stop
+automatically. With a sample time of 3 seconds, this will give you 21 samples (1 at start and then
+20 samples every 3 seconds for 60 seconds). The end time can also be set to continuous mode.
+This way there is no end time and the measurements go on until manually stopped. The number of
+samples will thus depend on when the process is stopped.
