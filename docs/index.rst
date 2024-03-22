@@ -12,9 +12,9 @@ Lily Data Logger Studio CE (Community Edition)
     Installation                <installation.rst>
     Main view                   <main_view.rst>
     Creating a configuration    <create_configuration.rst>
+    Setup instruments           <setup_instruments.rst>
 
-.. Adding instruments
-.. Adding measurements
+.. Setup measurements
 .. Running a configuration
 .. Export measurement data
 .. Creating your own instruments
