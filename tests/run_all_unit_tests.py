@@ -12,7 +12,8 @@ from tests.test_environment.setup_environment import setup_user_folder
 
 REPORT_FOLDER = os.path.join(os.path.dirname(__file__), "test_reports")
 EXCLUDE_TESTS = ["TestSuite", "TestControllerMain"]
-EXCLUDE_TESTS.extend(check_for_instruments())
+TESTS_SKIPPED = check_for_instruments()
+EXCLUDE_TESTS.extend(TESTS_SKIPPED)
 
 if not os.path.isdir(REPORT_FOLDER):
     os.makedirs(REPORT_FOLDER)
@@ -28,3 +29,5 @@ options = {
     "exclude_test_suites": EXCLUDE_TESTS
 }
 TestRunner.run("./unit_tests", options)
+
+print("Tests skipped:", TESTS_SKIPPED)
