@@ -56,10 +56,13 @@ Ubuntu:
 * For installing wxPython you require the following packages:
   * `sudo apt install python3-dev`
   * `sudo apt install libgtk-3-dev`
+* To use serial ports, you need to add the user to the dialout group:
+  * `sudo adduser <username> dialout`
+  * Log out and log in to make the change effective.
 
 In `tests` is are several scripts for running the unit tests.
 Test reports are written to `unit_test/test_reports`.
 
 [![Documentation Status](https://readthedocs.org/projects/lily-data-logger-studio-ce/badge/?version=latest)](https://lily-data-logger-studio-ce.readthedocs.io/en/latest/?badge=latest)
 
-2023 - LilyTronics (https://lilytronics.nl)
+2024 - LilyTronics (https://lilytronics.nl)
