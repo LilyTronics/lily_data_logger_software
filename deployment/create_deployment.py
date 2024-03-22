@@ -3,6 +3,7 @@ Creates a deployment package.
 """
 
 import os
+import platform
 import shutil
 import zipfile
 import PyInstaller.__main__
@@ -27,7 +28,13 @@ def _clean_output_folder(output_folder):
 def _create_version_file(version_file, artifacts_path):
     print("Create version file . . .")
     version_template = os.path.join(artifacts_path, "version.template")
-    version_tuple = list(map(int, AppData.VERSION.split('.')))
+    version_tuple = []
+    # Version can contain 'rc1', 'beta1', ... Tuple can only contain integers
+    for part in AppData.VERSION.split('.'):
+        try:
+            version_tuple.append(int(part))
+        except (Exception, ):
+            pass
     while len(version_tuple) < 4:
         version_tuple.append(0)
     with open(version_template, "r", encoding="utf-8") as fp:
@@ -44,7 +51,9 @@ def _create_version_file(version_file, artifacts_path):
 
 def _create_zip_file(dist_path, artifacts_path):
     print("Create ZIP file for distribution . . .")
-    zip_filename = os.path.join(dist_path, f"{AppData.EXE_NAME}_{AppData.VERSION}.zip")
+    print(platform.system())
+    filename = f"{AppData.EXE_NAME}_{AppData.VERSION}_{platform.system()}.zip"
+    zip_filename = os.path.join(dist_path, filename)
     with zipfile.ZipFile(zip_filename, "w") as zip_object:
         # Add dist files
         app_path = os.path.join(dist_path, AppData.EXE_NAME)
