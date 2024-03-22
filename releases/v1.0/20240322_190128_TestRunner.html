@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+header {
+    padding: 8px;
+    background-color: #666;
+    color: #fff;
+    font-size: 1.5em;
+}
+
+div {
+    padding: 8px;
+}
+
+span {
+    padding: 2px 4px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    padding: 0px 4px;
+}
+
+pre {
+    margin: 0px;
+    padding: 0px;
+    white-space: pre-wrap;
+}
+
+.expand {
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #ccc;
+    font-weight: bold;
+}
+
+div.test-suite {
+    margin-top: 4px;
+    border: 1px solid #666;
+}
+
+div.log-messages {
+    padding: 0px;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
+}
+
+.failed {
+    background-color: #f66;
+}
+
+.passed {
+    background-color: #0c0;
+}
+
+div.log {
+    padding: 4px;
+    border-bottom: 1px solid #666;
+}
+
+.info {
+    background-color: #9cf;
+}
+
+.debug {
+    background-color: #ddd;
+}
+
+.error {
+    background-color: #f90;
+}
+
+.stdout {
+    background-color: #ddd;
+}
+
+.stderr {
+    background-color: #f90;
+}
+</style>
+<script>
+'use strict';
+
+function show_log(test_id) {
+    let current_symbol = document.getElementById('button_' + test_id).innerHTML;
+    let elms = document.getElementsByClassName('log-messages');
+
+    // Hide all logs
+    for (let i = 0; i < elms.length; i++) {
+        elms[i].style.display = 'none';
+        let button_id = elms[i].id.replace('log_', 'button_');
+        document.getElementById(button_id).innerHTML = '&plus;';
+    }
+    // Show requested log
+    if (current_symbol == '+') {
+        document.getElementById('button_' + test_id).innerHTML = '&minus;';
+        document.getElementById('log_' + test_id).style.display = 'block';
+    }
+}
+</script>
+<title>2024-03-22 19:01:28 Test Run PASSED</title>
+</head>
+<body>
+<header>
+2024-03-22 19:01:28 - Test run: PASSED
+</header>
+<div>
+<p>Run 30 test suites from folder: C:\Work\git\lily-data-logger-studio-ce\tests\unit_tests</p>
+<table>
+<tr><td>Start:</td><td>2024-03-22 19:01:28</td></tr>
+<tr><td>End:</td><td>2024-03-22 19:03:49</td></tr>
+<tr><td>Duration:</td><td>0:02:21</td></tr>
+<tr><td>Result:</td><td><span class="passed">PASSED</span> 30 of 30 test suites passed (100.0%)</td></tr>
+</table>
+</div>
+
+<div>
+<div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_02_TestControllerCheckInstrument" onclick="show_log('02_TestControllerCheckInstrument')">&plus;</span> TestControllerCheckInstrument: PASSED (0:00:13)</div>
+<div class="log-messages" style="display:none" id="log_02_TestControllerCheckInstrument">
+<div class="log info"><pre>2024-03-22 19:01:28.944 | INFO   | Run test suite: TestControllerCheckInstrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:28.944 | INFO   | Run test case: TestControllerCheckInstrument.test_check_instruments</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:28.944 | DEBUG  | Starting simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:28.944 | DEBUG  | Initialize simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:28.944 | DEBUG  | Start simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:28.945 | DEBUG  | Initialize simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:28.945 | DEBUG  | Start simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:28.945 | DEBUG  | Running simulators: &#x27;MultimeterUdp&#x27;, &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.039 | DEBUG  | Stopping simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.039 | DEBUG  | Stop simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.237 | DEBUG  | Stop simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.346 | DEBUG  | No simulators running</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:41.346 | INFO   | Test case TestControllerCheckInstrument.test_check_instruments: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:41.346 | INFO   | Test suite TestControllerCheckInstrument: 1 of 1 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:41.346 | INFO   | Test suite TestControllerCheckInstrument: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_03_TestControllerConfiguration" onclick="show_log('03_TestControllerConfiguration')">&plus;</span> TestControllerConfiguration: PASSED (0:00:24)</div>
+<div class="log-messages" style="display:none" id="log_03_TestControllerConfiguration">
+<div class="log info"><pre>2024-03-22 19:01:41.346 | INFO   | Run test suite: TestControllerConfiguration</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:41.346 | INFO   | Run test case: TestControllerConfiguration.test_show_edit_configuration</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.347 | DEBUG  | Get default values</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:41.525 | INFO   | Test case TestControllerConfiguration.test_show_edit_configuration: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:41.525 | INFO   | Run test case: TestControllerConfiguration.test_edit_time_values</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.691 | DEBUG  | Set time values to 23 seconds</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:41.702 | INFO   | Edit configuration settings</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.702 | DEBUG  | Sample time changed from 3 to 23 seconds</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.702 | DEBUG  | End time changed from 60 to 23 seconds</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.879 | DEBUG  | Set time values to 2 minutes</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:41.886 | INFO   | Edit configuration settings</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.887 | DEBUG  | Sample time changed from 3 to 120 seconds</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:41.887 | DEBUG  | End time changed from 60 to 120 seconds</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.065 | DEBUG  | Set time values to 4 hours</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:42.073 | INFO   | Edit configuration settings</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.074 | DEBUG  | Sample time changed from 3 to 14400 seconds</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.074 | DEBUG  | End time changed from 60 to 14400 seconds</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.253 | DEBUG  | Set time values to 2 days</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:42.261 | INFO   | Edit configuration settings</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.261 | DEBUG  | Sample time changed from 3 to 172800 seconds</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.261 | DEBUG  | End time changed from 60 to 172800 seconds</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:42.266 | INFO   | Test case TestControllerConfiguration.test_edit_time_values: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:42.267 | INFO   | Run test case: TestControllerConfiguration.test_edit_continuous_mode</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.267 | DEBUG  | Set continuous mode to True</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:42.552 | INFO   | Edit configuration settings</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.553 | DEBUG  | Continuous mode changed from False to True</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.559 | DEBUG  | Set continuous mode to False</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:42.833 | INFO   | Edit configuration settings</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.833 | DEBUG  | Continuous mode changed from True to False</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:42.838 | INFO   | Test case TestControllerConfiguration.test_edit_continuous_mode: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:01:42.838 | INFO   | Run test case: TestControllerConfiguration.test_configuration_is_changed</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:42.840 | DEBUG  | Test when configuration is not changed (expecting no dialogs)</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:45.134 | DEBUG  | Test when configuration is changed (expecting dialogs)</pre></div>
+<div class="log debug"><pre>2024-03-22 19:01:59.797 | DEBUG  | Test when configuration is changed (expecting dialogs)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:02.870 | INFO   | Test case TestControllerConfiguration.test_configuration_is_changed: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:02.870 | INFO   | Run test case: TestControllerConfiguration.test_save_configuration</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:03.292 | DEBUG  | Save configuration to C:\Users\Danny\AppData\Local\Temp\test_config.json</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:04.130 | DEBUG  | Save configuration to file: C:\Users\Danny\AppData\Local\Temp\test_config.json</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:04.131 | DEBUG  | Configuration saved successfully</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:04.131 | INFO   | Test case TestControllerConfiguration.test_save_configuration: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:04.131 | INFO   | Run test case: TestControllerConfiguration.test_load_configuration</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:04.549 | DEBUG  | Load configuration from C:\Users\Danny\AppData\Local\Temp\test_config.json</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:05.382 | DEBUG  | Load configuration from file: C:\Users\Danny\AppData\Local\Temp\test_config.json</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:05.383 | DEBUG  | Configuration loaded successfully</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:05.383 | INFO   | Test case TestControllerConfiguration.test_load_configuration: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:05.383 | INFO   | Test suite TestControllerConfiguration: 6 of 6 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:05.384 | INFO   | Test suite TestControllerConfiguration: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_04_TestControllerEditInstrument" onclick="show_log('04_TestControllerEditInstrument')">&plus;</span> TestControllerEditInstrument: PASSED (0:00:02)</div>
+<div class="log-messages" style="display:none" id="log_04_TestControllerEditInstrument">
+<div class="log info"><pre>2024-03-22 19:02:05.384 | INFO   | Run test suite: TestControllerEditInstrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:05.384 | INFO   | Run test case: TestControllerEditInstrument.test_add_instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:05.551 | DEBUG  | Test no name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:06.081 | DEBUG  | Test no instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:06.612 | DEBUG  | Test add instrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:06.668 | INFO   | Test case TestControllerEditInstrument.test_add_instrument: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:06.668 | INFO   | Run test case: TestControllerEditInstrument.test_add_same_name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:06.833 | DEBUG  | Add instrument with same name</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:07.377 | INFO   | Test case TestControllerEditInstrument.test_add_same_name: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:07.377 | INFO   | Run test case: TestControllerEditInstrument.test_edit_instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:07.540 | DEBUG  | Change name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:07.541 | DEBUG  | Change settings</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:07.559 | INFO   | Test case TestControllerEditInstrument.test_edit_instrument: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:07.559 | INFO   | Test suite TestControllerEditInstrument: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:07.559 | INFO   | Test suite TestControllerEditInstrument: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_05_TestControllerEditInstrument" onclick="show_log('05_TestControllerEditInstrument')">&plus;</span> TestControllerEditInstrument: PASSED (0:00:04)</div>
+<div class="log-messages" style="display:none" id="log_05_TestControllerEditInstrument">
+<div class="log info"><pre>2024-03-22 19:02:07.559 | INFO   | Run test suite: TestControllerEditInstrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:07.560 | INFO   | Run test case: TestControllerEditInstrument.test_add_measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:07.728 | DEBUG  | Test no name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:08.255 | DEBUG  | Test no instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:08.787 | DEBUG  | Test no measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:09.317 | DEBUG  | Test no gain</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:09.848 | DEBUG  | Test no offset</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:10.377 | DEBUG  | Add measurement</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:10.389 | INFO   | Test case TestControllerEditInstrument.test_add_measurement: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:10.389 | INFO   | Run test case: TestControllerEditInstrument.test_add_same_name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:10.564 | DEBUG  | Add measurement with same name</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:11.104 | INFO   | Test case TestControllerEditInstrument.test_add_same_name: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:11.104 | INFO   | Run test case: TestControllerEditInstrument.test_edit_measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:11.267 | DEBUG  | Edit measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:11.267 | DEBUG  | Change values</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:11.284 | INFO   | Test case TestControllerEditInstrument.test_edit_measurement: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:11.284 | INFO   | Test suite TestControllerEditInstrument: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:11.284 | INFO   | Test suite TestControllerEditInstrument: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_06_TestControllerMainConfiguration" onclick="show_log('06_TestControllerMainConfiguration')">&plus;</span> TestControllerMainConfiguration: PASSED (0:00:17)</div>
+<div class="log-messages" style="display:none" id="log_06_TestControllerMainConfiguration">
+<div class="log info"><pre>2024-03-22 19:02:11.284 | INFO   | Run test suite: TestControllerMainConfiguration</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:11.284 | INFO   | Run test case: TestControllerMainConfiguration.test_configuration_default_values</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:11.391 | DEBUG  | Check default configuration</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:11.594 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:13.781 | DEBUG  | No configuration changed dialog appeared as expected</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:13.859 | INFO   | Test case TestControllerMainConfiguration.test_configuration_default_values: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:13.859 | INFO   | Run test case: TestControllerMainConfiguration.test_cancel_edit_configuration</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:13.968 | DEBUG  | Edit cancel configuration</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:14.346 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:16.528 | DEBUG  | No configuration changed dialog appeared as expected</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:16.606 | INFO   | Test case TestControllerMainConfiguration.test_cancel_edit_configuration: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:16.606 | INFO   | Run test case: TestControllerMainConfiguration.test_edit_configuration_fixed_mode</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:16.716 | DEBUG  | Edit configuration fixed mode</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:17.105 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:17.992 | INFO   | Test case TestControllerMainConfiguration.test_edit_configuration_fixed_mode: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:17.992 | INFO   | Run test case: TestControllerMainConfiguration.test_edit_configuration_continuous_mode</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:18.103 | DEBUG  | Edit configuration continuous mode</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:18.489 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:19.379 | INFO   | Test case TestControllerMainConfiguration.test_edit_configuration_continuous_mode: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:19.379 | INFO   | Run test case: TestControllerMainConfiguration.test_open_configuration</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:19.488 | DEBUG  | Open configuration from file: C:\Work\git\lily-data-logger-studio-ce\tests\test_environment\test_files\test_configuration.json</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:19.488 | DEBUG  | Check for open configuration dialog</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:21.722 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:23.909 | DEBUG  | No configuration changed dialog appeared as expected</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:23.957 | INFO   | Test case TestControllerMainConfiguration.test_open_configuration: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:23.957 | INFO   | Run test case: TestControllerMainConfiguration.test_save_configuration</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:24.067 | DEBUG  | Change configuration before saving</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:24.457 | DEBUG  | Save configuration to file: C:\Users\Danny\AppData\Local\Temp\tmpwpi74j4d.json</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:25.765 | DEBUG  | Check values in the saved configuration file</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:25.769 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:27.952 | DEBUG  | No configuration changed dialog appeared as expected</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:28.047 | INFO   | Test case TestControllerMainConfiguration.test_save_configuration: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:28.047 | INFO   | Test suite TestControllerMainConfiguration: 6 of 6 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:28.047 | INFO   | Test suite TestControllerMainConfiguration: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_07_TestControllerMainEditInstrument" onclick="show_log('07_TestControllerMainEditInstrument')">&plus;</span> TestControllerMainEditInstrument: PASSED (0:00:05)</div>
+<div class="log-messages" style="display:none" id="log_07_TestControllerMainEditInstrument">
+<div class="log info"><pre>2024-03-22 19:02:28.047 | INFO   | Run test suite: TestControllerMainEditInstrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:28.047 | INFO   | Run test case: TestControllerMainEditInstrument.test_add_instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:28.329 | DEBUG  | Add instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:28.332 | DEBUG  | Check if instrument is in the list</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:28.486 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:29.266 | INFO   | Test case TestControllerMainEditInstrument.test_add_instrument: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:29.266 | INFO   | Run test case: TestControllerMainEditInstrument.test_edit_instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:29.546 | DEBUG  | Add instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:29.549 | DEBUG  | Check if instrument is in the list</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:29.656 | DEBUG  | Edit instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:29.828 | DEBUG  | Change name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:29.937 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:30.825 | INFO   | Test case TestControllerMainEditInstrument.test_edit_instrument: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:30.825 | INFO   | Run test case: TestControllerMainEditInstrument.test_delete_instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:31.106 | DEBUG  | Add instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:31.109 | DEBUG  | Check if instrument is in the list</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:31.261 | DEBUG  | Delete instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:31.789 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:32.678 | INFO   | Test case TestControllerMainEditInstrument.test_delete_instrument: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:32.678 | INFO   | Run test case: TestControllerMainEditInstrument.test_check_instruments</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:32.788 | DEBUG  | Open check instruments dialog</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:32.960 | DEBUG  | Close check instruments dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:33.373 | INFO   | Test case TestControllerMainEditInstrument.test_check_instruments: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:33.373 | INFO   | Test suite TestControllerMainEditInstrument: 4 of 4 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:33.373 | INFO   | Test suite TestControllerMainEditInstrument: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_08_TestControllerMainEditMeasurement" onclick="show_log('08_TestControllerMainEditMeasurement')">&plus;</span> TestControllerMainEditMeasurement: PASSED (0:00:05)</div>
+<div class="log-messages" style="display:none" id="log_08_TestControllerMainEditMeasurement">
+<div class="log info"><pre>2024-03-22 19:02:33.373 | INFO   | Run test suite: TestControllerMainEditMeasurement</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:33.373 | INFO   | Run test case: TestControllerMainEditMeasurement.test_add_measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:33.648 | DEBUG  | Add instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:33.651 | DEBUG  | Check if instrument is in the list</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:33.931 | DEBUG  | Add measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:33.940 | DEBUG  | Check if measurement is in the grid</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:34.056 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:34.950 | INFO   | Test case TestControllerMainEditMeasurement.test_add_measurement: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:34.950 | INFO   | Run test case: TestControllerMainEditMeasurement.test_edit_measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:35.233 | DEBUG  | Add instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:35.236 | DEBUG  | Check if instrument is in the list</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:35.512 | DEBUG  | Add measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:35.521 | DEBUG  | Check if measurement is in the grid</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:35.636 | DEBUG  | Edit measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:35.807 | DEBUG  | Change values</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:35.808 | DEBUG  | Check if measurement is in the grid</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:35.917 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:36.701 | INFO   | Test case TestControllerMainEditMeasurement.test_edit_measurement: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:36.701 | INFO   | Run test case: TestControllerMainEditMeasurement.test_delete_measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:36.983 | DEBUG  | Add instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:36.986 | DEBUG  | Check if instrument is in the list</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:37.263 | DEBUG  | Add measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:37.272 | DEBUG  | Check if measurement is in the grid</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:37.388 | DEBUG  | Delete measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:37.919 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:38.697 | INFO   | Test case TestControllerMainEditMeasurement.test_delete_measurement: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:38.697 | INFO   | Test suite TestControllerMainEditMeasurement: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:38.697 | INFO   | Test suite TestControllerMainEditMeasurement: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_09_TestControllerMainLogViewer" onclick="show_log('09_TestControllerMainLogViewer')">&plus;</span> TestControllerMainLogViewer: PASSED (0:00:03)</div>
+<div class="log-messages" style="display:none" id="log_09_TestControllerMainLogViewer">
+<div class="log info"><pre>2024-03-22 19:02:38.697 | INFO   | Run test suite: TestControllerMainLogViewer</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:38.697 | INFO   | Run test case: TestControllerMainLogViewer.test_log_viewer</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:38.806 | DEBUG  | Open log view</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:38.978 | DEBUG  | Check log messages</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:39.179 | DEBUG  | Close log view</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:39.304 | DEBUG  | Open log view again</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:39.475 | DEBUG  | Close log view by closing the main view</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:39.475 | DEBUG  | Check if there is a configuration changed dialog</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:41.664 | DEBUG  | No configuration changed dialog appeared as expected</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:41.774 | INFO   | Test case TestControllerMainLogViewer.test_log_viewer: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:41.774 | INFO   | Test suite TestControllerMainLogViewer: 1 of 1 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:41.774 | INFO   | Test suite TestControllerMainLogViewer: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_10_TestViewDialogs" onclick="show_log('10_TestViewDialogs')">&plus;</span> TestViewDialogs: PASSED (0:00:07)</div>
+<div class="log-messages" style="display:none" id="log_10_TestViewDialogs">
+<div class="log info"><pre>2024-03-22 19:02:41.774 | INFO   | Run test suite: TestViewDialogs</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:41.776 | INFO   | Run test case: TestViewDialogs.test_show_message</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:41.776 | DEBUG  | Show message</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:42.209 | INFO   | Test case TestViewDialogs.test_show_message: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:42.209 | INFO   | Run test case: TestViewDialogs.test_show_confirm</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:42.209 | DEBUG  | Show confirm</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:42.645 | DEBUG  | Show confirm</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:43.082 | INFO   | Test case TestViewDialogs.test_show_confirm: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:43.082 | INFO   | Run test case: TestViewDialogs.test_show_open_save_file</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:43.083 | DEBUG  | Show open file</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:43.553 | DEBUG  | Show open file</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:45.666 | DEBUG  | Show save file</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:46.139 | DEBUG  | Show save file</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:48.246 | INFO   | Test case TestViewDialogs.test_show_open_save_file: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:48.246 | INFO   | Test suite TestViewDialogs: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:48.246 | INFO   | Test suite TestViewDialogs: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_11_TestViewProgressDialog" onclick="show_log('11_TestViewProgressDialog')">&plus;</span> TestViewProgressDialog: PASSED (0:00:05)</div>
+<div class="log-messages" style="display:none" id="log_11_TestViewProgressDialog">
+<div class="log info"><pre>2024-03-22 19:02:48.246 | INFO   | Run test suite: TestViewProgressDialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:48.246 | INFO   | Run test case: TestViewProgressDialog.test_show_dialog</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:48.677 | DEBUG  | Test show dialog</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:48.908 | INFO   | Test case TestViewProgressDialog.test_show_dialog: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:48.908 | INFO   | Run test case: TestViewProgressDialog.test_progress</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:49.335 | DEBUG  | Test progress</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:50.578 | INFO   | Test case TestViewProgressDialog.test_progress: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:50.578 | INFO   | Run test case: TestViewProgressDialog.test_abort</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:51.001 | DEBUG  | Test abort</pre></div>
+<div class="log debug"><pre>2024-03-22 19:02:53.732 | DEBUG  | Abort</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:53.868 | INFO   | Test case TestViewProgressDialog.test_abort: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:53.868 | INFO   | Test suite TestViewProgressDialog: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:02:53.868 | INFO   | Test suite TestViewProgressDialog: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_12_TestArduinoDAQ" onclick="show_log('12_TestArduinoDAQ')">&plus;</span> TestArduinoDAQ: PASSED (0:00:23)</div>
+<div class="log-messages" style="display:none" id="log_12_TestArduinoDAQ">
+<div class="log info"><pre>2024-03-22 19:02:53.868 | INFO   | Run test suite: TestArduinoDAQ</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:02:59.081 | STDOUT | Checking available ports for Arduino DAQ</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:02:59.081 | STDOUT | Check for Arduino DAQ on port: COM11</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:00.068 | STDOUT | Arduino DAQ not found</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:00.068 | STDOUT | Check for Arduino DAQ on port: COM3</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:06.695 | STDOUT | Arduino DAQ not found</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:06.695 | STDOUT | Check for Arduino DAQ on port: COM6</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:10.038 | STDOUT | Arduino DAQ found on COM6</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:10.038 | DEBUG  | Get interface</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:10.038 | DEBUG  | Initialize interface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:12.215 | INFO   | Run test case: TestArduinoDAQ.test_properties</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.215 | DEBUG  | Check name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.215 | DEBUG  | Check info</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:12.215 | INFO   | Test case TestArduinoDAQ.test_properties: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:12.215 | INFO   | Run test case: TestArduinoDAQ.test_digital_io</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.215 | DEBUG  | Test D2 to D3</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.326 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.436 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.545 | DEBUG  | Test D3 to D2</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.658 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.768 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.878 | DEBUG  | Test D4 to D5</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:12.988 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.098 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.209 | DEBUG  | Test D5 to D4</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.318 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.427 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.536 | DEBUG  | Test D6 to D7</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.645 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.755 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.864 | DEBUG  | Test D7 to D6</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:13.974 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.081 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.191 | DEBUG  | Test D8 to D9</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.300 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.410 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.521 | DEBUG  | Test D9 to D8</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.630 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.740 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.848 | DEBUG  | Test D10 to D11</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:14.959 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.068 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.176 | DEBUG  | Test D11 to D10</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.284 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.394 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.504 | DEBUG  | Test D12 to D13</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.614 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.722 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.834 | DEBUG  | Test D13 to D12</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:15.943 | DEBUG  | Set output: 1, read input: 1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.053 | DEBUG  | Set output: 0, read input: 0</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:16.164 | INFO   | Test case TestArduinoDAQ.test_digital_io: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:16.164 | INFO   | Run test case: TestArduinoDAQ.test_analog_inputs</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.164 | DEBUG  | Read voltage A0</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.272 | DEBUG  | Voltage : 4.286 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.272 | DEBUG  | Expected: 4.286 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.272 | DEBUG  | Read voltage A1</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.384 | DEBUG  | Voltage : 3.573 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.384 | DEBUG  | Expected: 3.571 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.384 | DEBUG  | Read voltage A2</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.492 | DEBUG  | Voltage : 2.864 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.492 | DEBUG  | Expected: 2.857 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.492 | DEBUG  | Read voltage A3</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.599 | DEBUG  | Voltage : 2.151 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.599 | DEBUG  | Expected: 2.143 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.599 | DEBUG  | Read voltage A4</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.709 | DEBUG  | Voltage : 1.437 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.709 | DEBUG  | Expected: 1.429 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.709 | DEBUG  | Read voltage A5</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.818 | DEBUG  | Voltage : 0.709 V</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:16.818 | DEBUG  | Expected: 0.714 V</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:16.818 | INFO   | Test case TestArduinoDAQ.test_analog_inputs: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:16.818 | INFO   | Test suite TestArduinoDAQ: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:16.819 | INFO   | Test suite TestArduinoDAQ: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_13_TestSerialPortInterface" onclick="show_log('13_TestSerialPortInterface')">&plus;</span> TestSerialPortInterface: PASSED (0:00:07)</div>
+<div class="log-messages" style="display:none" id="log_13_TestSerialPortInterface">
+<div class="log info"><pre>2024-03-22 19:03:16.819 | INFO   | Run test suite: TestSerialPortInterface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:16.819 | INFO   | Get available serial ports</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:22.019 | STDOUT | Checking available ports for a loopback</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:22.019 | STDOUT | Check for loopback on port: COM11</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:22.950 | STDOUT | Loopback not found</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:22.950 | STDOUT | Check for loopback on port: COM3</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:23.080 | STDOUT | Loopback found on COM3</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.080 | INFO   | Loopback found on port: COM3</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.101 | INFO   | Run test case: TestSerialPortInterface.test_send_command</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.217 | INFO   | Test case TestSerialPortInterface.test_send_command: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.217 | INFO   | Run test case: TestSerialPortInterface.test_no_response</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.217 | INFO   | Test case TestSerialPortInterface.test_no_response: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.217 | INFO   | Test suite TestSerialPortInterface: 2 of 2 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.237 | INFO   | Test suite TestSerialPortInterface: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_14_TestConfiguration" onclick="show_log('14_TestConfiguration')">&plus;</span> TestConfiguration: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_14_TestConfiguration">
+<div class="log info"><pre>2024-03-22 19:03:23.237 | INFO   | Run test suite: TestConfiguration</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.237 | INFO   | Run test case: TestConfiguration.test_empty_configuration</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.237 | INFO   | Test case TestConfiguration.test_empty_configuration: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.237 | INFO   | Run test case: TestConfiguration.test_general_settings</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.237 | INFO   | Test case TestConfiguration.test_general_settings: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.237 | INFO   | Run test case: TestConfiguration.test_save_to_load_from_file</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.238 | INFO   | Test case TestConfiguration.test_save_to_load_from_file: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.238 | INFO   | Run test case: TestConfiguration.test_load_empty_file</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.239 | DEBUG  | Error message:</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.239 | DEBUG  | Error reading file: test_config.json:</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.239 | DEBUG  | Expecting value: line 1 column 1 (char 0)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.239 | INFO   | Test case TestConfiguration.test_load_empty_file: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.239 | INFO   | Run test case: TestConfiguration.test_load_invalid_file</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Error message:</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Error reading file: test_config.json:</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Expecting value: line 1 column 1 (char 0)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Test case TestConfiguration.test_load_invalid_file: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Run test case: TestConfiguration.test_add_update_instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Add instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Instrument has ID: 79d41bba-5cc9-4290-83f2-4f09a0106d2c</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Update instrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Test case TestConfiguration.test_add_update_instrument: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Run test case: TestConfiguration.test_delete_instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Add instrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Test case TestConfiguration.test_delete_instrument: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Run test case: TestConfiguration.test_add_update_measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Add instrument</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Add measurement</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Update measurement</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Test case TestConfiguration.test_add_update_measurement: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Test suite TestConfiguration: 8 of 8 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Test suite TestConfiguration: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_15_TestIdManager" onclick="show_log('15_TestIdManager')">&plus;</span> TestIdManager: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_15_TestIdManager">
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Run test suite: TestIdManager</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.240 | INFO   | Run test case: TestIdManager.test_id_manager_class</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.240 | DEBUG  | Try create an instance</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.241 | DEBUG  | Expected run time error was raised</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.241 | INFO   | Test case TestIdManager.test_id_manager_class: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.241 | INFO   | Run test case: TestIdManager.test_ids</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.241 | DEBUG  | Test if IDs are valid</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.241 | INFO   | Test case TestIdManager.test_ids: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.241 | INFO   | Test suite TestIdManager: 2 of 2 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.241 | INFO   | Test suite TestIdManager: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_16_TestImageData" onclick="show_log('16_TestImageData')">&plus;</span> TestImageData: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_16_TestImageData">
+<div class="log info"><pre>2024-03-22 19:03:23.241 | INFO   | Run test suite: TestImageData</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.241 | INFO   | Run test case: TestImageData.test_image_data</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.243 | INFO   | Test case TestImageData.test_image_data: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.243 | INFO   | Test suite TestImageData: 1 of 1 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.243 | INFO   | Test suite TestImageData: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_17_TestInstrument" onclick="show_log('17_TestInstrument')">&plus;</span> TestInstrument: PASSED (0:00:02)</div>
+<div class="log-messages" style="display:none" id="log_17_TestInstrument">
+<div class="log info"><pre>2024-03-22 19:03:23.243 | INFO   | Run test suite: TestInstrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Run test case: TestInstrument.test_default_values</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Check default name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Check default info</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Check default interface type</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Check default interface settings</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Test case TestInstrument.test_default_values: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Run test case: TestInstrument.test_instrument_data</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Check name</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Check info</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Check interface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Test case TestInstrument.test_instrument_data: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Run test case: TestInstrument.test_float_input</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Test float input</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Test case TestInstrument.test_float_input: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Run test case: TestInstrument.test_int_input</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Test int input</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Test case TestInstrument.test_int_input: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.244 | INFO   | Run test case: TestInstrument.test_str_input</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.244 | DEBUG  | Test str input</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.747 | INFO   | Test case TestInstrument.test_str_input: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.747 | INFO   | Run test case: TestInstrument.test_float_output</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.747 | DEBUG  | Test float 1 output</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.747 | DEBUG  | Test float 2 output</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.747 | INFO   | Test case TestInstrument.test_float_output: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.747 | INFO   | Run test case: TestInstrument.test_int_output</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.748 | DEBUG  | Test int output</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.748 | INFO   | Test case TestInstrument.test_int_output: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:23.748 | INFO   | Run test case: TestInstrument.test_str_output</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:23.748 | DEBUG  | Test str output</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.261 | INFO   | Test case TestInstrument.test_str_output: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.261 | INFO   | Run test case: TestInstrument.test_no_response</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:24.261 | DEBUG  | Test command with no response</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.261 | INFO   | Test case TestInstrument.test_no_response: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.261 | INFO   | Run test case: TestInstrument.test_initialize</pre></div>
+<div class="log stdout"><pre>2024-03-22 19:03:24.765 | STDOUT | Custom command with param b&#x27;param&#x27;</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.765 | INFO   | Test case TestInstrument.test_initialize: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.765 | INFO   | Run test case: TestInstrument.test_export_to_file</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.766 | INFO   | Test case TestInstrument.test_export_to_file: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.766 | INFO   | Run test case: TestInstrument.test_get_inputs</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.766 | INFO   | Test case TestInstrument.test_get_inputs: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:24.766 | INFO   | Run test case: TestInstrument.test_request_queue</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:24.766 | DEBUG  | Test str input by using the request queue</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.313 | INFO   | Test case TestInstrument.test_request_queue: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.313 | INFO   | Run test case: TestInstrument.test_not_existing_channel</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.313 | DEBUG  | Test without using request queue</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.313 | DEBUG  | Test using request queue</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.423 | INFO   | Test case TestInstrument.test_not_existing_channel: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.423 | INFO   | Test suite TestInstrument: 14 of 14 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.438 | INFO   | Test suite TestInstrument: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_18_TestInstrumentPool" onclick="show_log('18_TestInstrumentPool')">&plus;</span> TestInstrumentPool: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_18_TestInstrumentPool">
+<div class="log info"><pre>2024-03-22 19:03:25.438 | INFO   | Run test suite: TestInstrumentPool</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.438 | INFO   | Run test case: TestInstrumentPool.test_instantiating</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.438 | DEBUG  | Run time error generated as expected</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.438 | DEBUG  | Run time error: Creating an instance of this class is not permitted</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.438 | INFO   | Test case TestInstrumentPool.test_instantiating: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.438 | INFO   | Run test case: TestInstrumentPool.test_add_instrument</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.440 | INFO   | Test case TestInstrumentPool.test_add_instrument: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.440 | INFO   | Run test case: TestInstrumentPool.test_add_instrument_twice</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.440 | INFO   | Test case TestInstrumentPool.test_add_instrument_twice: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.440 | INFO   | Run test case: TestInstrumentPool.test_clear_instruments</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.441 | INFO   | Test case TestInstrumentPool.test_clear_instruments: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.441 | INFO   | Test suite TestInstrumentPool: 4 of 4 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.441 | INFO   | Test suite TestInstrumentPool: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_19_TestInstruments" onclick="show_log('19_TestInstruments')">&plus;</span> TestInstruments: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_19_TestInstruments">
+<div class="log info"><pre>2024-03-22 19:03:25.441 | INFO   | Run test suite: TestInstruments</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.441 | DEBUG  | Looking for instruments in: C:\Work\git\lily-data-logger-studio-ce\src\models\instruments</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.444 | DEBUG  | Copy test instrument to user folder</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.444 | INFO   | Run test case: TestInstruments.test_instruments</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.453 | DEBUG  | Arduino DAQ                   : &lt;src.models.instrument.Instrument object at 0x000001C99E437E50&gt;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.453 | DEBUG  | Test instrument               : &lt;src.models.instrument.Instrument object at 0x000001C99E67F460&gt;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.454 | DEBUG  | Simulator multimeter          : &lt;src.models.instrument.Instrument object at 0x000001C99E480E20&gt;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.454 | DEBUG  | Simulator temperature meter   : &lt;src.models.instrument.Instrument object at 0x000001C99E4BCFA0&gt;</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.454 | INFO   | Test case TestInstruments.test_instruments: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.454 | INFO   | Test suite TestInstruments: 1 of 1 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Test suite TestInstruments: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_20_TestInterface" onclick="show_log('20_TestInterface')">&plus;</span> TestInterface: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_20_TestInterface">
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Run test suite: TestInterface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Run test case: TestInterface.test_is_match</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Match with the same parameters and values should be a match</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Is match: True</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Match with a different value should not be a match</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Is match: False</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Match with a missing parameter should not be a match</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Is match: False</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Test case TestInterface.test_is_match: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Test suite TestInterface: 1 of 1 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Test suite TestInterface: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_21_TestInterfacePool" onclick="show_log('21_TestInterfacePool')">&plus;</span> TestInterfacePool: PASSED (0:00:05)</div>
+<div class="log-messages" style="display:none" id="log_21_TestInterfacePool">
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Run test suite: TestInterfacePool</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Run test case: TestInterfacePool.test_instantiating</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Run time error generated as expected</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Run time error: Creating an instance of this class is not permitted</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Test case TestInterfacePool.test_instantiating: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:25.455 | INFO   | Run test case: TestInterfacePool.test_serial_interface</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:25.455 | DEBUG  | Get available serial ports</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.665 | DEBUG  | Found ports: [&#x27;COM11&#x27;, &#x27;COM3&#x27;, &#x27;COM6&#x27;]</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.665 | DEBUG  | Create serial interface for port: COM11</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.665 | DEBUG  | Try create a serial interface with the same port</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.666 | DEBUG  | Create serial interface for port: COM3</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.686 | DEBUG  | Try create a serial interface with the same port</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.686 | DEBUG  | Create serial interface for port: COM6</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Try create a serial interface with the same port</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.699 | INFO   | Test case TestInterfacePool.test_serial_interface: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.699 | INFO   | Run test case: TestInterfacePool.test_udp_interface</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Create UDP interfaces</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Create UDP interface with address: 1.2.3.4:17000</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Try create a UDP interface with the same address</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Create UDP interface with address: 1.2.3.4:18000</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Try create a UDP interface with the same address</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Create UDP interface with address: 5.6.7.8:17000</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Try create a UDP interface with the same address</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Create UDP interface with address: 5.6.7.8:18000</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.699 | DEBUG  | Try create a UDP interface with the same address</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.700 | INFO   | Test case TestInterfacePool.test_udp_interface: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.700 | INFO   | Run test case: TestInterfacePool.test_tcp_interface</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Create TCP interfaces</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Create TCP interface with address: 1.2.3.4:17000</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Try create a TCP interface with the same address</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Create TCP interface with address: 1.2.3.4:18000</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Try create a TCP interface with the same address</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Create TCP interface with address: 5.6.7.8:17000</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Try create a TCP interface with the same address</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Create TCP interface with address: 5.6.7.8:18000</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Try create a TCP interface with the same address</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.700 | INFO   | Test case TestInterfacePool.test_tcp_interface: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.700 | INFO   | Run test case: TestInterfacePool.test_clear_interfaces</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Create UDP interface</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.700 | DEBUG  | Clear interfaces</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.706 | DEBUG  | Create new UDP interface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.706 | INFO   | Test case TestInterfacePool.test_clear_interfaces: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.706 | INFO   | Test suite TestInterfacePool: 5 of 5 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.706 | INFO   | Test suite TestInterfacePool: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_22_TestInterfaces" onclick="show_log('22_TestInterfaces')">&plus;</span> TestInterfaces: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_22_TestInterfaces">
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Run test suite: TestInterfaces</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Run test case: TestInterfaces.test_interfaces</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.707 | DEBUG  | Ethernet TCP: &lt;class &#x27;src.models.interfaces.tcp_client_interface.TcpClientInterface&#x27;&gt;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.707 | DEBUG  | Ethernet UDP: &lt;class &#x27;src.models.interfaces.udp_client_interface.UdpClientInterface&#x27;&gt;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:30.707 | DEBUG  | Serial port : &lt;class &#x27;src.models.interfaces.serial_port_interface.SerialPortInterface&#x27;&gt;</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Test case TestInterfaces.test_interfaces: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Test suite TestInterfaces: 1 of 1 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Test suite TestInterfaces: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_23_TestLogger" onclick="show_log('23_TestLogger')">&plus;</span> TestLogger: PASSED (0:00:01)</div>
+<div class="log-messages" style="display:none" id="log_23_TestLogger">
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Run test suite: TestLogger</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Run test case: TestLogger.test_log_file_empty</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Test case TestLogger.test_log_file_empty: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.707 | INFO   | Run test case: TestLogger.test_logger</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.715 | INFO   | Test case TestLogger.test_logger: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:30.715 | INFO   | Run test case: TestLogger.test_exception</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:31.854 | INFO   | Test case TestLogger.test_exception: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:31.854 | INFO   | Test suite TestLogger: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:31.854 | INFO   | Test suite TestLogger: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_24_TestMeasurementRunner" onclick="show_log('24_TestMeasurementRunner')">&plus;</span> TestMeasurementRunner: PASSED (0:00:11)</div>
+<div class="log-messages" style="display:none" id="log_24_TestMeasurementRunner">
+<div class="log info"><pre>2024-03-22 19:03:31.854 | INFO   | Run test suite: TestMeasurementRunner</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:31.854 | DEBUG  | Starting simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:31.854 | DEBUG  | Start simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:31.854 | DEBUG  | Start simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:31.855 | DEBUG  | Running simulators: &#x27;MultimeterUdp&#x27;, &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:31.855 | INFO   | Run test case: TestMeasurementRunner.test_start_stop</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:31.855 | DEBUG  | Start measurement runner</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:31.855 | DEBUG  | Callback message: ((1711130611, &#x27;create&#x27;, &#x27;Create instruments&#x27;, 3))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:31.855 | DEBUG  | Wait a few seconds</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:31.855 | DEBUG  | Callback message: ((1711130611, &#x27;init&#x27;, &quot;Initialize instrument &#x27;Multimeter&#x27;&quot;, 0))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:32.362 | DEBUG  | Callback message: ((1711130612, &#x27;init&#x27;, &quot;Initialize instrument &#x27;Multimeter&#x27;&quot;, 1))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:32.362 | DEBUG  | Callback message: ((1711130612, &#x27;init&#x27;, &quot;Initialize instrument &#x27;Temperature meter&#x27;&quot;, 2))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:32.875 | DEBUG  | Callback message: ((1711130612, &#x27;start&#x27;, &#x27;Start measurements&#x27;, 0))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:32.876 | DEBUG  | Callback message: ((1711130612, &#x27;value&#x27;, &#x27;Volt&#x27;, 4.982))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:32.876 | DEBUG  | Callback message: ((1711130612, &#x27;value&#x27;, &#x27;Curr&#x27;, 0.392))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:33.091 | DEBUG  | Callback message: ((1711130612, &#x27;value&#x27;, &#x27;Outside temperature&#x27;, 24.6))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.015 | DEBUG  | Callback message: ((1711130614, &#x27;value&#x27;, &#x27;Volt&#x27;, 4.974))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.016 | DEBUG  | Callback message: ((1711130614, &#x27;value&#x27;, &#x27;Curr&#x27;, 0.403))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.236 | DEBUG  | Callback message: ((1711130614, &#x27;value&#x27;, &#x27;Outside temperature&#x27;, 15.9))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.855 | DEBUG  | Stop measurement runner</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.871 | DEBUG  | Callback message: ((1711130614, &#x27;finished&#x27;, &#x27;Process finished&#x27;, 0))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.934 | DEBUG  | Number of messages: 12</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.934 | DEBUG  | Duration: 2</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.934 | DEBUG  | Elapsed time: 2.9 seconds</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:34.934 | INFO   | Test case TestMeasurementRunner.test_start_stop: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:34.934 | INFO   | Run test case: TestMeasurementRunner.test_start_until_finished</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.934 | DEBUG  | Start measurement runner</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.934 | DEBUG  | Callback message: ((1711130614, &#x27;create&#x27;, &#x27;Create instruments&#x27;, 3))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.934 | DEBUG  | Wait for measurement runner to finish</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:34.935 | DEBUG  | Callback message: ((1711130614, &#x27;init&#x27;, &quot;Initialize instrument &#x27;Multimeter&#x27;&quot;, 0))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:35.450 | DEBUG  | Callback message: ((1711130615, &#x27;init&#x27;, &quot;Initialize instrument &#x27;Multimeter&#x27;&quot;, 1))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:35.450 | DEBUG  | Callback message: ((1711130615, &#x27;init&#x27;, &quot;Initialize instrument &#x27;Temperature meter&#x27;&quot;, 2))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:35.964 | DEBUG  | Callback message: ((1711130615, &#x27;start&#x27;, &#x27;Start measurements&#x27;, 0))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:35.965 | DEBUG  | Callback message: ((1711130615, &#x27;value&#x27;, &#x27;Volt&#x27;, 5.095))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:35.965 | DEBUG  | Callback message: ((1711130615, &#x27;value&#x27;, &#x27;Curr&#x27;, 0.393))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:36.181 | DEBUG  | Callback message: ((1711130615, &#x27;value&#x27;, &#x27;Outside temperature&#x27;, 21.4))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:37.012 | DEBUG  | Callback message: ((1711130617, &#x27;value&#x27;, &#x27;Volt&#x27;, 4.926))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:37.012 | DEBUG  | Callback message: ((1711130617, &#x27;value&#x27;, &#x27;Curr&#x27;, 0.406))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:37.230 | DEBUG  | Callback message: ((1711130617, &#x27;value&#x27;, &#x27;Outside temperature&#x27;, 21.7))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:39.010 | DEBUG  | Callback message: ((1711130619, &#x27;value&#x27;, &#x27;Volt&#x27;, 4.91))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:39.011 | DEBUG  | Callback message: ((1711130619, &#x27;value&#x27;, &#x27;Curr&#x27;, 0.394))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:39.219 | DEBUG  | Callback message: ((1711130619, &#x27;value&#x27;, &#x27;Outside temperature&#x27;, 24.0))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:41.001 | DEBUG  | Callback message: ((1711130621, &#x27;value&#x27;, &#x27;Volt&#x27;, 4.97))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:41.001 | DEBUG  | Callback message: ((1711130621, &#x27;value&#x27;, &#x27;Curr&#x27;, 0.399))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:41.218 | DEBUG  | Callback message: ((1711130621, &#x27;value&#x27;, &#x27;Outside temperature&#x27;, 15.3))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.020 | DEBUG  | Callback message: ((1711130622, &#x27;finished&#x27;, &#x27;Process finished&#x27;, 0))</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.052 | DEBUG  | Number of messages: 18</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.052 | DEBUG  | Duration: 7</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.052 | DEBUG  | Elapsed time: 7.0 seconds</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.052 | INFO   | Test case TestMeasurementRunner.test_start_until_finished: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.052 | INFO   | Test suite TestMeasurementRunner: 2 of 2 test cases passed (100.0%)</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.052 | DEBUG  | Stopping simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.052 | DEBUG  | Stop simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.225 | DEBUG  | Stop simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.241 | DEBUG  | No simulators running</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.241 | INFO   | Test suite TestMeasurementRunner: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_25_TestSettings" onclick="show_log('25_TestSettings')">&plus;</span> TestSettings: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_25_TestSettings">
+<div class="log info"><pre>2024-03-22 19:03:42.241 | INFO   | Run test suite: TestSettings</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.242 | INFO   | Run test case: TestSettings.test_main_window_size</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.253 | INFO   | Test case TestSettings.test_main_window_size: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.253 | INFO   | Run test case: TestSettings.test_main_window_position</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.255 | INFO   | Test case TestSettings.test_main_window_position: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.255 | INFO   | Run test case: TestSettings.test_main_window_maximized</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.258 | INFO   | Test case TestSettings.test_main_window_maximized: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.258 | INFO   | Run test case: TestSettings.test_log_window_size</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.267 | INFO   | Test case TestSettings.test_log_window_size: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.267 | INFO   | Run test case: TestSettings.test_log_window_position</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.269 | INFO   | Test case TestSettings.test_log_window_position: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.269 | INFO   | Run test case: TestSettings.test_log_window_maximized</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.270 | INFO   | Test case TestSettings.test_log_window_maximized: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.270 | INFO   | Run test case: TestSettings.test_recent_configurations</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.302 | INFO   | Test case TestSettings.test_recent_configurations: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.302 | INFO   | Run test case: TestSettings.test_move_to_top</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.306 | INFO   | Test case TestSettings.test_move_to_top: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.306 | INFO   | Run test case: TestSettings.test_remove_configuration</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.308 | INFO   | Test case TestSettings.test_remove_configuration: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.308 | INFO   | Test suite TestSettings: 9 of 9 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.308 | INFO   | Test suite TestSettings: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_26_TestSimulatorMultimeter" onclick="show_log('26_TestSimulatorMultimeter')">&plus;</span> TestSimulatorMultimeter: PASSED (0:00:01)</div>
+<div class="log-messages" style="display:none" id="log_26_TestSimulatorMultimeter">
+<div class="log info"><pre>2024-03-22 19:03:42.308 | INFO   | Run test suite: TestSimulatorMultimeter</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.308 | DEBUG  | Starting simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.308 | DEBUG  | Start simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.308 | DEBUG  | Start simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.308 | DEBUG  | Running simulators: &#x27;MultimeterUdp&#x27;, &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.308 | DEBUG  | Get interface</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.308 | DEBUG  | Initialize interface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.823 | INFO   | Run test case: TestSimulatorMultimeter.test_properties</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.823 | INFO   | Test case TestSimulatorMultimeter.test_properties: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.823 | INFO   | Run test case: TestSimulatorMultimeter.test_dc_voltage</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.823 | DEBUG  | Get 10 voltages</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.827 | DEBUG  | Voltages: [5.008, 4.905, 5.049, 5.027, 5.08, 4.996, 5.003, 4.936, 5.096, 5.089]</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.827 | INFO   | Test case TestSimulatorMultimeter.test_dc_voltage: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.827 | INFO   | Run test case: TestSimulatorMultimeter.test_dc_current</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.827 | DEBUG  | Get 10 currents</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.830 | DEBUG  | Currents: [0.405, 0.403, 0.409, 0.398, 0.394, 0.397, 0.392, 0.407, 0.4, 0.409]</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.830 | INFO   | Test case TestSimulatorMultimeter.test_dc_current: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:42.830 | INFO   | Test suite TestSimulatorMultimeter: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.830 | DEBUG  | Stopping simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:42.830 | DEBUG  | Stop simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.045 | DEBUG  | Stop simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.123 | DEBUG  | No simulators running</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:43.123 | INFO   | Test suite TestSimulatorMultimeter: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_27_TestSimulatorTemperatureMeter" onclick="show_log('27_TestSimulatorTemperatureMeter')">&plus;</span> TestSimulatorTemperatureMeter: PASSED (0:00:02)</div>
+<div class="log-messages" style="display:none" id="log_27_TestSimulatorTemperatureMeter">
+<div class="log info"><pre>2024-03-22 19:03:43.123 | INFO   | Run test suite: TestSimulatorTemperatureMeter</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.123 | DEBUG  | Starting simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.123 | DEBUG  | Start simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.123 | DEBUG  | Start simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.124 | DEBUG  | Running simulators: &#x27;MultimeterUdp&#x27;, &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.124 | DEBUG  | Get interface</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.124 | DEBUG  | Initialize interface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:43.639 | INFO   | Run test case: TestSimulatorTemperatureMeter.test_properties</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:43.639 | INFO   | Test case TestSimulatorTemperatureMeter.test_properties: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:43.639 | INFO   | Run test case: TestSimulatorTemperatureMeter.test_dc_voltage</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:43.639 | DEBUG  | Get 10 temperatures</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.793 | DEBUG  | Temperatures: [22.0, 15.5, 15.7, 16.1, 21.1, 15.8, 18.1, 22.8, 17.3, 24.2]</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:45.793 | INFO   | Test case TestSimulatorTemperatureMeter.test_dc_voltage: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:45.793 | INFO   | Test suite TestSimulatorTemperatureMeter: 2 of 2 test cases passed (100.0%)</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.793 | DEBUG  | Stopping simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.793 | DEBUG  | Stop simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.965 | DEBUG  | Stop simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.996 | DEBUG  | No simulators running</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:45.996 | INFO   | Test suite TestSimulatorTemperatureMeter: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_28_TestStartStopSimulators" onclick="show_log('28_TestStartStopSimulators')">&plus;</span> TestStartStopSimulators: PASSED (0:00:01)</div>
+<div class="log-messages" style="display:none" id="log_28_TestStartStopSimulators">
+<div class="log info"><pre>2024-03-22 19:03:45.996 | INFO   | Run test suite: TestStartStopSimulators</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:45.996 | INFO   | Run test case: TestStartStopSimulators.test_start_simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.996 | DEBUG  | Start simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.996 | DEBUG  | Starting simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.996 | DEBUG  | Start simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Start simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Running simulators: &#x27;MultimeterUdp&#x27;, &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | &#x27;MultimeterUdp&#x27; running: True</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | &#x27;TemperatureMeterTcp&#x27; running: True</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Start simulators while already running</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Starting simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Start simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Start simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Running simulators: &#x27;MultimeterUdp&#x27;, &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | &#x27;MultimeterUdp&#x27; running: True</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | &#x27;TemperatureMeterTcp&#x27; running: True</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:45.997 | INFO   | Test case TestStartStopSimulators.test_start_simulators: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:45.997 | INFO   | Run test case: TestStartStopSimulators.test_stop_start_single_simulator</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Stop a simulator</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Start simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Starting simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.997 | DEBUG  | Start simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.998 | DEBUG  | Start simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.998 | DEBUG  | Running simulators: &#x27;MultimeterUdp&#x27;, &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.998 | DEBUG  | &#x27;MultimeterUdp&#x27; running: True</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.998 | DEBUG  | &#x27;TemperatureMeterTcp&#x27; running: True</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:45.998 | INFO   | Test case TestStartStopSimulators.test_stop_start_single_simulator: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:45.998 | INFO   | Run test case: TestStartStopSimulators.test_stop_start_all_simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.998 | DEBUG  | Stop simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.998 | DEBUG  | Stopping simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.998 | DEBUG  | Stop simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:45.998 | DEBUG  | Stop simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.198 | DEBUG  | No simulators running</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.198 | DEBUG  | Start simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.198 | DEBUG  | Starting simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.198 | DEBUG  | Start simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.199 | DEBUG  | Start simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.199 | DEBUG  | Running simulators: &#x27;MultimeterUdp&#x27;, &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.199 | DEBUG  | &#x27;MultimeterUdp&#x27; running: True</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.199 | DEBUG  | &#x27;TemperatureMeterTcp&#x27; running: True</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:46.199 | INFO   | Test case TestStartStopSimulators.test_stop_start_all_simulators: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:46.199 | INFO   | Run test case: TestStartStopSimulators.test_stop_simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.199 | DEBUG  | Stop simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.199 | DEBUG  | Stopping simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.199 | DEBUG  | Stop simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.199 | DEBUG  | Stop simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.200 | DEBUG  | No simulators running</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.200 | DEBUG  | Stop simulators again</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.200 | DEBUG  | Stopping simulators</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.200 | DEBUG  | Stop simulator &#x27;MultimeterUdp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.200 | DEBUG  | Stop simulator &#x27;TemperatureMeterTcp&#x27;</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:46.200 | DEBUG  | No simulators running</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:46.200 | INFO   | Test case TestStartStopSimulators.test_stop_simulators: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:46.200 | INFO   | Test suite TestStartStopSimulators: 4 of 4 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:46.200 | INFO   | Test suite TestStartStopSimulators: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_29_TestTcpClientInterface" onclick="show_log('29_TestTcpClientInterface')">&plus;</span> TestTcpClientInterface: PASSED (0:00:02)</div>
+<div class="log-messages" style="display:none" id="log_29_TestTcpClientInterface">
+<div class="log info"><pre>2024-03-22 19:03:46.200 | INFO   | Run test suite: TestTcpClientInterface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:46.200 | INFO   | Run test case: TestTcpClientInterface.test_no_server_running</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:47.229 | DEBUG  | Error message: Could not connect to localhost:21000</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:47.229 | INFO   | Test case TestTcpClientInterface.test_no_server_running: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:47.229 | INFO   | Run test case: TestTcpClientInterface.test_server_running</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:47.746 | DEBUG  | Response: b&#x27;test TCP interface&#x27;</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:47.746 | INFO   | Test case TestTcpClientInterface.test_server_running: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:47.746 | INFO   | Run test case: TestTcpClientInterface.test_timeout</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:48.768 | DEBUG  | Error message: Error receiver timeout</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.768 | INFO   | Test case TestTcpClientInterface.test_timeout: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.768 | INFO   | Test suite TestTcpClientInterface: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Test suite TestTcpClientInterface: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_30_TestTimeConverter" onclick="show_log('30_TestTimeConverter')">&plus;</span> TestTimeConverter: PASSED (0:00:00)</div>
+<div class="log-messages" style="display:none" id="log_30_TestTimeConverter">
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Run test suite: TestTimeConverter</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Run test case: TestTimeConverter.test_create_duration_time_string</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Test case TestTimeConverter.test_create_duration_time_string: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Run test case: TestTimeConverter.test_convert_seconds_to_time_with_unit</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Test case TestTimeConverter.test_convert_seconds_to_time_with_unit: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Run test case: TestTimeConverter.test_convert_time_with_unit_to_seconds</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Test case TestTimeConverter.test_convert_time_with_unit_to_seconds: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Run test case: TestTimeConverter.test_create_time_stamp</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Test case TestTimeConverter.test_create_time_stamp: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.815 | INFO   | Test suite TestTimeConverter: 4 of 4 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.816 | INFO   | Test suite TestTimeConverter: PASSED</pre></div>
+</div><div class="test-suite passed"><span class="expand" title="Show/hide log messages" id="button_31_TestUdpClientInterface" onclick="show_log('31_TestUdpClientInterface')">&plus;</span> TestUdpClientInterface: PASSED (0:00:01)</div>
+<div class="log-messages" style="display:none" id="log_31_TestUdpClientInterface">
+<div class="log info"><pre>2024-03-22 19:03:48.816 | INFO   | Run test suite: TestUdpClientInterface</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.816 | INFO   | Run test case: TestUdpClientInterface.test_no_server_running</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:48.816 | DEBUG  | Error message: Could not connect to localhost:20000</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.816 | INFO   | Test case TestUdpClientInterface.test_no_server_running: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.816 | INFO   | Run test case: TestUdpClientInterface.test_server_running</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:48.817 | DEBUG  | Response: b&#x27;test UDP interface&#x27;</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.817 | INFO   | Test case TestUdpClientInterface.test_server_running: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:48.817 | INFO   | Run test case: TestUdpClientInterface.test_timeout</pre></div>
+<div class="log debug"><pre>2024-03-22 19:03:49.331 | DEBUG  | Error message: Error receiver timeout</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:49.331 | INFO   | Test case TestUdpClientInterface.test_timeout: PASSED</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:49.331 | INFO   | Test suite TestUdpClientInterface: 3 of 3 test cases passed (100.0%)</pre></div>
+<div class="log info"><pre>2024-03-22 19:03:49.362 | INFO   | Test suite TestUdpClientInterface: PASSED</pre></div>
+</div>
+</div>
+
+<p>&nbsp;</p>
+</body>
+</html>
