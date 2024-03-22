@@ -144,7 +144,7 @@ class ViewMain(wx.Frame):
         self._grid_measurements = wx.grid.Grid(grid_panel, IdManager.ID_GRID_MEASUREMENTS)
         self._grid_measurements.CreateGrid(0, 1)
         self._grid_measurements.SetColLabelValue(0, "Time")
-        self._grid_measurements.SetColSize(0, self._TABLE_TIME_COL_WIDTH)
+        # self._grid_measurements.SetColSize(0, self._TABLE_TIME_COL_WIDTH)
         self._grid_measurements.EnableEditing(False)
         self._grid_measurements.EnableDragRowSize(False)
         self._grid_measurements.EnableDragColMove(False)
@@ -165,6 +165,11 @@ class ViewMain(wx.Frame):
         box.Add(buttons, 0, wx.ALL, self._GAP)
 
         return box
+
+    def _auto_size_column(self, col):
+        self._grid_measurements.AutoSizeColumn(col)
+        size = self._grid_measurements.GetColSize(col) + self._GAP
+        self._grid_measurements.SetColSize(col, size)
 
     ##########
     # Public #
@@ -257,10 +262,7 @@ class ViewMain(wx.Frame):
         for i, name in enumerate(measurement_names):
             self._grid_measurements.AppendCols(1)
             self._grid_measurements.SetColLabelValue(i + 1, name)
-            self._grid_measurements.AutoSizeColLabelSize(i + 1)
-            size = self._grid_measurements.GetColSize(i + 1) + self._GAP
-            self._grid_measurements.SetColSize(i + 1, size)
-            self._grid_measurements.SetColMinimalWidth(i + 1, size)
+            self._auto_size_column(i + 1)
         self._grid_measurements.AppendRows(1)
 
     def get_selected_measurement(self):
@@ -288,13 +290,12 @@ class ViewMain(wx.Frame):
                 row = self._grid_measurements.GetNumberRows() - 1
                 self._grid_measurements.SetCellValue(row, 0, timestamp)
                 self._grid_measurements.SetCellAlignment(row, 0, wx.ALIGN_CENTER, wx.ALIGN_CENTER)
+                self._auto_size_column(0)
                 self._grid_measurements.AppendRows(1)
             # Add measured value
             self._grid_measurements.SetCellValue(row, col, str(value))
             self._grid_measurements.SetCellAlignment(row, col, wx.ALIGN_CENTER, wx.ALIGN_CENTER)
-            self._grid_measurements.AutoSizeColumn(col)
-            size = self._grid_measurements.GetColSize(col) + self._GAP
-            self._grid_measurements.SetColSize(col, size)
+            self._auto_size_column(col)
             self._grid_measurements.MakeCellVisible(row + 1, 0)
 
     def get_measurement_data(self):
