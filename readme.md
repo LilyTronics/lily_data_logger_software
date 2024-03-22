@@ -7,9 +7,8 @@ Universal data logger software aiming to work with any kind of electronics measu
 
 ## Releases
 
-Coming up V1.0.0:
-
-[![GitHub milestone details](https://img.shields.io/github/milestones/issues-open/lilytronics/lily-data-logger-studio-ce/1)](https://github.com/LilyTronics/lily-data-logger-studio-ce/milestone/1)
+We are excited to announce that we are in a state hat we have the first release candidate V1.0.RC1.
+We are still working on finalizing the manual and doing some final testing.
 
 ## Features
 
