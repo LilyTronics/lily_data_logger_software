@@ -24,7 +24,7 @@ We are still working on finalizing the manual and doing some final testing.
 * Export to CSV for using data in other applications (databases, scripting, etc.).
 * OS compatibility:
   * Developed and tested primarily for Windows 10/11.
-  * Tested on Ubuntu (22.04 LTS verion).
+  * Tested on Ubuntu (22.04 LTS version).
   * Not tested on MAC.
 
 ## About GPIB...
