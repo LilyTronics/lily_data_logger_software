@@ -44,11 +44,11 @@ def check_for_instruments(skip_instruments=False):
 
 
 def setup_user_folder():
-    _IGNORE_FILES = [
+    ignore_files = [
         os.path.join(AppData.USER_FOLDER, "LilyDataLoggerStudioCE.json"),
         os.path.join(AppData.USER_FOLDER, "LilyDataLoggerStudioCE.log")
     ]
-    matches = list(filter(lambda x: x not in _IGNORE_FILES,
+    matches = list(filter(lambda x: x not in ignore_files,
                           glob.glob(os.path.join(AppData.USER_FOLDER, "*.*"))))
     for item in matches:
         print(f"Delete {item}")
