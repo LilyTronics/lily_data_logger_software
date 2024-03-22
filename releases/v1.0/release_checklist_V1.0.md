@@ -19,3 +19,6 @@ Result: in progress
 | Set tag in git                                   |  todo  | waiting previous tasks |
 | Publish deployment on LilyTronics                |  todo  | waiting previous tasks |
 | Publish deployment on GitHub                     |  todo  | waiting previous tasks |
+
+
+`unit tests report V1.0 <https://htmlpreview.github.io/?https://github.com/LilyTronics/lily-data-logger-studio-ce/blob/main/releases/v1.0/20240322_190128_TestRunner.html>`_.
