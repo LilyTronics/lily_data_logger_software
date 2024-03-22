@@ -11,8 +11,8 @@ from src.views.view_progress_dialog import ProgressDialog
 
 
 class ViewEditInstrument(wx.Dialog):
+
     _GAP = 5
-    _WINDOW_SIZE = (500, -1)
     _CONSOLE_SIZE = (-1, 150)
 
     def __init__(self, parent, title, configuration, name):
@@ -28,7 +28,7 @@ class ViewEditInstrument(wx.Dialog):
         box.Add(self._create_buttons_box(), 0, wx.ALIGN_RIGHT | wx.ALL, self._GAP)
         self.Bind(wx.EVT_BUTTON, self._on_ok_click, id=wx.ID_OK)
         self.SetSizer(box)
-        self.SetInitialSize(self._WINDOW_SIZE)
+        self.SetInitialSize()
         self.CenterOnParent()
 
     ###########
@@ -188,7 +188,7 @@ class ViewEditInstrument(wx.Dialog):
                 t.daemon = True
                 t.start()
 
-        self.SetInitialSize(self._WINDOW_SIZE)
+        self.SetInitialSize()
         self.CenterOnParent()
 
     def get_settings(self):
