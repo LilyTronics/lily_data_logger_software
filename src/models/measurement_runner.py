@@ -11,6 +11,7 @@ from src.models.instrument_pool import InstrumentPool
 class MeasurementRunner:
 
     MESSAGE_TYPE_STATUS_CREATE = "create"
+    MESSAGE_TYPE_STATUS_ERROR = "error"
     MESSAGE_TYPE_STATUS_FINISHED = "finished"
     MESSAGE_TYPE_STATUS_INIT = "init"
     MESSAGE_TYPE_STATUS_START = "start"
@@ -35,16 +36,28 @@ class MeasurementRunner:
             settings = measurement[self._configuration.KEY_SETTINGS]
             instrument_data = self._configuration.get_instrument(
                 settings[self._configuration.KEY_INSTRUMENT_ID])
-            instrument = InstrumentPool.create_instrument(instrument_data)
-            if not instrument.is_running():
+            self._send_callback(
+                int(time.time()),
+                self.MESSAGE_TYPE_STATUS_INIT,
+                f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}'",
+                i
+            )
+            try:
+                instrument = InstrumentPool.create_instrument(instrument_data)
+                if not instrument.is_running():
+                    instrument.initialize()
+                    instrument.start()
+            except Exception as e:
+                message = "ERROR: initializing instrument "
+                message += f"'{instrument_data[self._configuration.KEY_NAME]}'\n{e}"
                 self._send_callback(
                     int(time.time()),
-                    self.MESSAGE_TYPE_STATUS_INIT,
-                    f"Initialize instrument '{instrument_data[self._configuration.KEY_NAME]}'",
+                    self.MESSAGE_TYPE_STATUS_ERROR,
+                    message,
                     i
                 )
-                instrument.initialize()
-                instrument.start()
+                return False
+        return True
 
     def _process_response(self, measurement_id, response):
         request_time, measurement_name = measurement_id.split(" ", 1)
@@ -79,20 +92,20 @@ class MeasurementRunner:
         sample_time = self._configuration.get_sample_time()
         end_time = self._configuration.get_end_time()
         InstrumentPool.clear_instruments()
-        self._create_instruments()
-        start_time = int(time.time())
-        self._send_callback(start_time, self.MESSAGE_TYPE_STATUS_START, "Start measurements", 0)
-        sample_start = start_time
-        while not self._stop_event.is_set():
-            self._requests_measurements(sample_start)
+        if self._create_instruments():
+            start_time = int(time.time())
+            self._send_callback(start_time, self.MESSAGE_TYPE_STATUS_START, "Start measurements", 0)
+            sample_start = start_time
             while not self._stop_event.is_set():
-                if time.time() - sample_start >= sample_time:
-                    break
-                self._elapsed_time = time.time() - start_time
-                if self._elapsed_time >= end_time:
-                    self._stop_event.set()
-                time.sleep(0.01)
-            sample_start = int(time.time())
+                self._requests_measurements(sample_start)
+                while not self._stop_event.is_set():
+                    if time.time() - sample_start >= sample_time:
+                        break
+                    self._elapsed_time = time.time() - start_time
+                    if self._elapsed_time >= end_time:
+                        self._stop_event.set()
+                    time.sleep(0.01)
+                sample_start = int(time.time())
         self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS_FINISHED,
                             "Process finished", 0)
         self._clean_up()

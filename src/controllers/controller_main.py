@@ -130,7 +130,11 @@ class ControllerMain:
         ProgressDialog(self._main_view, "Initialize instruments", value)
 
     def _measurement_callback(self, timestamp, message_type, identifier, value):
-        if message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_CREATE:
+        if message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_ERROR:
+            if self._main_view.active_dialog is not None:
+                wx.CallAfter(self._main_view.active_dialog.destroy)
+            wx.CallAfter(ViewDialogs.show_message, self._main_view, identifier, "Process error")
+        elif message_type == self._measurement_runner.MESSAGE_TYPE_STATUS_CREATE:
             # Create the instruments
             self._logger.debug("Create instruments")
             wx.CallAfter(self._show_initialize_dialog, value)
