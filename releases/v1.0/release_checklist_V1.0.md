@@ -6,7 +6,7 @@ Result: in progress
 | Test                                             | Result | Remarks                |
 |:-------------------------------------------------|:------:|:-----------------------|
 | All issues in GitHub fixed                       | passed |                        |
-| Correct version in AppData                       | passed |                        |
+| Correct version in AppData                       | passed | V1.0.RC1               |
 | All unit tests passed on Windows                 | passed |                        |
 | All unit tests passed on Ubuntu                  | failed | tests needs fixing     |
 | All test configuration runs passed on Windows    | passed |                        |
