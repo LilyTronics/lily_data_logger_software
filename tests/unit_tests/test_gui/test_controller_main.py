@@ -28,7 +28,7 @@ class TestControllerMain(TestSuite):
         self._error = "View main did not load"
         return False
 
-    def show_view_main(self, test_function_to_run, load_test_configuration=False):
+    def show_view_main(self, test_function_to_run):
         def _test_thread(test_function):
             if self._wait_until_view_main_available():
                 if self.gui.is_window_available(IdManager.ID_LABEL_ELAPSED_TIME):
