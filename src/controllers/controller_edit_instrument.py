@@ -35,7 +35,8 @@ class ControllerEditInstrument:
                     for key in instrument_defaults.keys():
                         settings_controls[key]["default"] = str(instrument_defaults[key])
                     for key in instrument_settings.keys():
-                        settings_controls[key]["default"] = str(instrument_settings[key])
+                        if key in settings_controls:
+                            settings_controls[key]["default"] = str(instrument_settings[key])
                     cls._dlg.update_instrument_settings_controls(settings_controls)
 
     ##################
