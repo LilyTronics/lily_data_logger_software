@@ -23,7 +23,7 @@ class ViewEditMeasurement(wx.Dialog):
         box.Add(self._create_buttons_box(), 0, wx.ALIGN_RIGHT | wx.ALL, self._GAP)
 
         self.SetSizer(box)
-        self.SetInitialSize((400, -1))
+        self.SetInitialSize()
         self.CenterOnParent()
 
         self.Bind(wx.EVT_BUTTON, self._on_ok_click, id=wx.ID_OK)
