@@ -21,6 +21,7 @@ class ControllerEditInstrument:
 
     @classmethod
     def _update_instrument_settings_controls(cls, instrument_name, instrument_settings=None):
+        settings_controls = {}
         if instrument_settings is None:
             instrument_settings = {}
         instrument = Instruments.get_instrument_by_name(instrument_name)
@@ -37,7 +38,7 @@ class ControllerEditInstrument:
                     for key in instrument_settings.keys():
                         if key in settings_controls:
                             settings_controls[key]["default"] = str(instrument_settings[key])
-                    cls._dlg.update_instrument_settings_controls(settings_controls)
+        cls._dlg.update_instrument_settings_controls(settings_controls)
 
     ##################
     # Event handlers #
