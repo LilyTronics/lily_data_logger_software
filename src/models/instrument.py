@@ -66,7 +66,8 @@ class Instrument:
                     if channel is None:
                         response = "ERROR: no channel data"
                     else:
-                        response = self._process_commands(channel[self.KEY_COMMAND_LIST], value, debug)
+                        response = self._process_commands(channel[self.KEY_COMMAND_LIST],
+                                                          value, debug)
                     callback(callback_id, response)
 
             except queue.Empty:

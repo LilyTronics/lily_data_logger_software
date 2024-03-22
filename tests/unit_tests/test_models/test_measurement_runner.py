@@ -43,7 +43,8 @@ class TestMeasurementRunner(TestSuite):
         self.log.debug(f"Duration: {self._duration}")
         self.log.debug(f"Elapsed time: {self._runner.get_elapsed_time():.1f} seconds")
         self.fail_if(self._runner.get_elapsed_time() < self._duration, "Elapsed time is too small")
-        self.fail_if(self._runner.get_elapsed_time() > self._duration + 1, "Elapsed time is too big")
+        self.fail_if(self._runner.get_elapsed_time() > self._duration + 1,
+                     "Elapsed time is too big")
 
     def test_start_until_finished(self):
         del self._messages[:]
