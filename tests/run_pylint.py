@@ -21,11 +21,6 @@ arguments = [
     "--disable=broad-exception-raised",
     # Not relevant how many public methods there are
     "--disable=too-few-public-methods",
-    # We want to use as many as needed,
-    # except for too-many-statements and too-many-nested-blocks
-    "--disable=too-many-instance-attributes",
-    "--disable=too-many-arguments",
-    "--disable=too-many-locals",
     # We have our own preferred import order
     "--disable=wrong-import-order"
 ]
