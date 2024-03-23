@@ -15,7 +15,8 @@ We are still working on finalizing the manual and doing some final testing.
 * Logging data (measurements) in a table.
 * Free and open source for personal and professional use.
 * Build in drivers for the following instruments:
-  * Arduino DAQ: reading analog voltages, reading and writing digital IO. A sketch for the Arduino is included.
+  * Arduino DAQ: reading analog voltages, reading and writing digital IO. A sketch for the Arduino
+    is included.
   * Multimeter simulator giving random values for voltage and current, for testing measurements.
 * Fixed end time or continuous measurement.
 * Smallest sample interval: 1 second.
@@ -33,10 +34,14 @@ We get some questions if GPIB will be supported. GPIB is a standardized communic
 But the standardization is only on the GPIB part. The command and response structure are standardized.
 What is not standardized is the GPIB PC controller. In the past PCs used ISA cards. 
 Nowadays, you need to have a USB to GPIB controller. And in this controller lies the problem. 
-Supporting the GPIB protocol is fairly easy. Supporting all available GPIB controllers on the market is a headache.
-Every GPIB controller requires its own specific driver. And to test it, we need a sample of each controller available.
-And those controllers are not cheap. So for now it is not very feasible to have GPIB supported. 
-But... if someone is willing to donate a GPIB controller, we will be happy to add support for it.
+Supporting the GPIB protocol is fairly easy. Supporting all available GPIB controllers on the market
+is a headache. Every GPIB controller requires its own specific driver. And to test it, we need a 
+sample of each controller available. And those controllers are not cheap. So for now it is not very 
+feasible to have GPIB supported. But... if someone is willing to donate a GPIB controller, we will 
+be happy to add support for it.
+
+Some GPIB controllers are using a virtual com port. Those controllers might work using the
+serial port interface. We say might work, because it has not been tested.
 
 ## Adding your own instruments
 

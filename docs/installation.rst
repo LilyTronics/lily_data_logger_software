@@ -19,7 +19,8 @@ After extracting the files, the following files/folders should be there:
 Description of the files/folders:
 
 * LilyDataLogerStudioCE.exe: this is the application executable. Double click on this file to
-  start the application.
+  start the application. This is the executable for Windows. On Ubuntu the executable has the same
+  name but without the extension (.exe).
 * lib: this folder contains all the required libraries for running the application.
   This folder is required for running the application and should not be removed.
 * lily_arduino_daq.ino: this is the Arduino sketch that can be programmed into your Arduino board.
@@ -31,7 +32,8 @@ folder will be created when the application is started and the folder does not e
 
 .. code-block:: console
 
-    C:\users\joe\LilyDataLoggerStudioCE
+    Windows: C:\users\joe\LilyDataLoggerStudioCE
+    Ubuntu : /home/joe/LilyDataLoggerStudioCE
 
 This folder will contain at least two files:
 

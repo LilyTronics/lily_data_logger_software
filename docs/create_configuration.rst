@@ -36,14 +36,15 @@ When clicking the forth button, the following dialog appears.
 .. image:: images/time_settings.png
 
 The sample time is the time between measurements. This time depends on your instruments.
-If your instruments are fast, this time can be short. But if your instruments are slower, this time
-should be longer. This time depends on how many measurement are done on the slowest instrument.
-All measurements are performed parallel as much as possible. When you have two instruments in your
-configuration and they both do one measurement, both measurements can be processed parallel, because
-they are separate instruments. If you have two measurements done on one instrument, they cannot be
-processed parallel. So if each measurement takes up 1 second, the sample time should be larger than
-2 seconds (two measurements). If the measurements come in too slow, a time error will be reported.
-If this happens, you need to increase the sample time or make the instruments measure faster.
+If your instruments are fast, this time can be short. But if your instruments are slower,
+or if you have a lot of measurements, this time should be longer. This time depends on how many
+measurement are done on the slowest instrument. All measurements are performed parallel as much as
+possible. When you have two instruments in your configuration and they both do one measurement,
+both measurements can be processed parallel, because they are separate instruments. If you have two
+measurements done on one instrument, they cannot be processed parallel. So if each measurement takes
+up 1 second, the sample time should be larger than 2 seconds (two measurements). If the measurements
+come in too slow, a time error will be reported. If this happens, you need to increase the sample
+time or make the instruments measure faster.
 
 The next time setting is the end time. You can choose for a fixed end time or continuous mode.
 In the given example the end time is set to one minute. After 1 minute the measurements will stop

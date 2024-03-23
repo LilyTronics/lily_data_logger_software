@@ -20,7 +20,7 @@ Next select the instrument 'Multimeter' from the dropdown list. And next select 
 The multimeter has two measurements 'DC voltage' and 'DC current'. In this example we will add the
 voltage measurement so select 'Get DC voltage' from the list.
 
-For each measurement you can set a gain and a offset. The value measured by the instrument is
+For each measurement you can set a gain and an offset. The value measured by the instrument is
 multiplied with the gain and the offset is added to that. The outcome is the the value that is
 written to the table. This gain and offset can be used to measure values from sensors and convert
 them to real values. We will explain this more in the following example.
@@ -30,7 +30,7 @@ LM335. This sensor delivers an output voltage of 10mV/K (K=Kelvin). Let's say ou
 Then our voltage is: 295 * 0.01 = 2.95V. The table will show then 2.95. Using the gain, we can make
 the value in the table show 295. All we need to do is set the gain to 100 and the offset to 0.
 The value in the table will be 2.95V * 100 + 0 = 295. The temperature in Kelvin. This makes
-it easier to read te values in the table. If we want to have the temperature in degrees celsius,
+it easier to read the values in the table. If we want to have the temperature in degrees celsius,
 we simply need to set the offset to -273.15. Then the value in the table will be
 2.95V * 100 - 273.15 = 21.85. The table then will show the temperature in degrees celsius.
 
