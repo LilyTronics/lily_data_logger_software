@@ -1,8 +1,8 @@
 Setup instruments
 =================
 
-The list of instruments is by default empty. This chapter describes how to add the multimeter
-simulator. Below the list are two buttons. One for adding instruments and one for deleting instruments.
+This chapter describes how to add the multimeter simulator.
+Below the list of instruments are two buttons. One for adding instruments and one for deleting instruments.
 
 Click the add button to add an instrument. The following dialog will show:
 
