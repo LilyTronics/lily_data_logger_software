@@ -15,8 +15,8 @@ Lily Data Logger Studio CE (Community Edition)
     Setup instruments           <setup_instruments.rst>
     Setup measurements          <setup_measurements.rst>
     Running a configuration     <running_configuration.rst>
+    Export measurement data     <export_measurements.rst>
 
-.. Export measurement data
 .. Creating your own instruments
 .. Interfaces: supported interfaces
 .. Interfaces: serial interface
