@@ -7,19 +7,20 @@ Lily Data Logger Studio CE (Community Edition)
    :maxdepth: 2
    :caption: Contents:
 
-    Home                        <self>
-    Introduction                <introduction.rst>
-    Installation                <installation.rst>
-    Main view                   <main_view.rst>
-    Creating a configuration    <create_configuration.rst>
-    Setup instruments           <setup_instruments.rst>
-    Setup measurements          <setup_measurements.rst>
-    Running a configuration     <running_configuration.rst>
-    Export measurement data     <export_measurements.rst>
+    Home                            <self>
+    Introduction                    <introduction.rst>
+    Installation                    <installation.rst>
+    Main view                       <main_view.rst>
+    Creating a configuration        <create_configuration.rst>
+    Setup instruments               <setup_instruments.rst>
+    Setup measurements              <setup_measurements.rst>
+    Running a configuration         <running_configuration.rst>
+    Export measurement data         <export_measurements.rst>
+    Supported interfaces            <supported_interfaces.rst>
+    Serial interface                <serial_interface.rst>
 
-.. Creating your own instruments
-.. Interfaces: supported interfaces
-.. Interfaces: serial interface
+.. Creating your own instruments   <creating_instruments.rst>
+.. Special instrument commands
 .. Interfaces: UDP interface
 .. Interfaces: TCP interface
 .. Using the Arduino for doing measurements
