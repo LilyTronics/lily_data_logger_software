@@ -18,9 +18,9 @@ Lily Data Logger Studio CE (Community Edition)
     Export measurement data         <export_measurements.rst>
     Supported interfaces            <supported_interfaces.rst>
     Serial interface                <serial_interface.rst>
+    Ethernet UDP interface          <udp_interface.rst>
 
 .. Creating your own instruments   <creating_instruments.rst>
 .. Special instrument commands
-.. Interfaces: UDP interface
 .. Interfaces: TCP interface
 .. Using the Arduino for doing measurements
