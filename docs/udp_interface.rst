@@ -1,9 +1,10 @@
 Ethernet UDP interface
 ======================
 
-This interface is using the standard Python socket library. This interface is transfers packages
-over an Ethernet connection using the UDP protocol. The UDP protocol is not a secure protocol and
-messages can be lost without knowing it. The interface has the following parameters:
+This interface is using the standard Python socket library. This interface transfers packages
+over an Ethernet connection using the UDP protocol. The UDP protocol is not a reliable protocol and
+messages can be lost without knowing it. The advantage is that UDP is faster than TCP.
+The interface has the following parameters:
 
 ================ ================================= ================================== =========
  Parameter        Description                       Possible values                    Default
