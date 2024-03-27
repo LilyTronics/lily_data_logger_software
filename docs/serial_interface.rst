@@ -50,16 +50,3 @@ These are the most common values used when creating this application. Should you
 that is not listed, let us know and we will add it.
 
 The names of the parity values, must be matching one of the names as shown in the table (case sensitive).
-
-Special commands
-----------------
-
-The following special commands can be used in your instrument definition.
-
-============ =====================================================================================
- Command      Description
-============ =====================================================================================
- toggle_dtr   Toggles the DTR line from not-active to active. This can be used for Arduino boards
-
-              to toggle the reset pin and make sure the board is properly started.
-============ =====================================================================================
