@@ -32,7 +32,7 @@ folder will be created when the application is started and the folder does not e
 
 .. code-block:: console
 
-    Windows: C:\users\joe\LilyDataLoggerStudioCE
+    Windows: C:\Users\joe\LilyDataLoggerStudioCE
     Ubuntu : /home/joe/LilyDataLoggerStudioCE
 
 This folder will contain at least two files:
