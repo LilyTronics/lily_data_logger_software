@@ -22,5 +22,4 @@ Lily Data Logger Studio CE (Community Edition)
     Ethernet UDP interface          <udp_interface.rst>
     Ethernet TCP interface          <tcp_interface.rst>
     Special commands                <special_commands.rst>
-
-.. Using the Arduino for doing measurements
+    Using an Arduino board          <using_arduino_board.rst>
