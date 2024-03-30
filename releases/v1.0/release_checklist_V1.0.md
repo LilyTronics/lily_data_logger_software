@@ -11,7 +11,7 @@ Result: in progress
 | All unit tests passed on Ubuntu                  | failed | tests needs fixing     |
 | All test configuration runs passed on Windows    | passed |                        |
 | All test configuration runs passed on Ubuntu     | passed |                        |
-| Documentation up to date                         |  todo  | in progress            |
+| Documentation up to date                         | passed |                        |
 | Create deployment for Windows                    |  todo  | waiting previous tasks | 
 | Create deployment for Ubuntu                     |  todo  | waiting previous tasks |
 | Duration test passed on Windows using deployment |  todo  | waiting previous tasks |
