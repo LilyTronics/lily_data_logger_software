@@ -20,7 +20,7 @@ open file dialog is shown and a configuration file can be selected. If the file 
 configuration is loaded from the file. If the configuration is invalid, an error message will be
 shown.
 When the arrow next to the folder icon is clicked, a list of recent opened configurations is shown.
-A maximum of 10 configurations is stored in this list and can be easily opened by selecting a
+A maximum of 10 configurations are stored in this list and can be easily opened by selecting a
 file from that list. In case the file no longer exists, the file is removed from the list.
 
 The third button is for saving the configuration to a file. A save file dialog is shown to select a

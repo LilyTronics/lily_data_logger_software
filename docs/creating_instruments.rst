@@ -111,7 +111,7 @@ be automatically set to 9600.
 
 The next section is the initialize section. The initialize section can be used to set up the
 instrument before doing any measurements. This is optional. If no initialization is needed, just
-keep the list empty. The initialization command are executed only one time, before starting the
+keep the list empty. The initialization commands are executed only one time, before starting the
 measurements.
 
 The TDS220 can do up to four measurements. But when doing all measurements at the same time,
@@ -148,8 +148,8 @@ We do this in the initialize section.
   }
 
 The initialize section now has four commands that are send to the instrument. They disable all four
-measurements. The '\n' at the end is the termination character. When the TDS receives this character,
-it knows the command is finished. By default the termination character is the '\n' character (line
+measurements. The '\\n' at the end is the termination character. When the TDS receives this character,
+it knows the command is finished. By default the termination character is the '\\n' character (line
 feed).
 
 The last step is adding channels. Channels are the measurements. We start with adding one channel
@@ -261,7 +261,7 @@ The commands can also be special commands (see the chapter about special command
     "response": "{float}\n"
   }
 
-In the above examples the responses only contain the value followed by a termination character ('\n').
+In the above examples the responses only contain the value followed by a termination character ('\\n').
 Some instruments can have a response with some character preceding the value and/or characters after
 the value. This can also be implemented:
 
