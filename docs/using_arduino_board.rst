@@ -48,9 +48,31 @@ First we add the Arduino board as an instrument. Click on the add instrument but
 
 .. image:: images/add_arduino.png
 
-Name the instrument and select the instrument: 'Arduino DAQ'. After selecting the Arduino DAQ,
+Give the instrument a name and select the instrument: 'Arduino DAQ'. After selecting the Arduino DAQ,
 the serial ports are detected. This can take a few moments depending on your system.
 Then select the proper serial port in our case it is 'COM8', but this completely depends on your
 system. All other settings (baud rate, parity, etc.) should be good. No need to change them
 Then click the 'Test settings' button to test the settings. As a test it reads the state of D2.
 When all is fine, click the OK button to save the settings.
+
+Next we add some measurements using the arduino. Click the add measurement button.
+We add a measurement for the digital IO D2. Give the measurement a name and select the instrument
+'Arduino' and the measurement 'D2 get state'.
+
+.. image:: images/add_arduino_d2.png
+
+Click the OK button to save the measurement. Click the add measurement button again.
+This time we add a measurement for the analog input A0.
+
+.. image:: images/add_arduino_a0.png
+
+You can add more measurements if you want.
+
+When you have all the measurements added, click the start button in the toolbar to start the measurements.
+After initialization the measurements start and you can see the values appearing in the table.
+
+.. image:: images/arduino_measurements.png
+
+This is not only limited to the Arduino platform. There are many platforms that can be used in a
+similar way for doing measurements. Think of an ESP32 using WiFi and combining this with the
+UDP or TCP interface for doing measurements.
