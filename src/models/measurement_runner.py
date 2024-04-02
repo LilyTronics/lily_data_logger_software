@@ -23,10 +23,18 @@ class MeasurementRunner:
         self._measurement_thread = None
         self._stop_event = threading.Event()
         self._elapsed_time = 0
+        self._start_time = 0
+        self._finished_time = 0
 
     def _send_callback(self, timestamp, message_type, identifier, value):
-        # Wrapper to force uniform callback data
-        self._callback(timestamp, message_type, identifier, value)
+        # Check if callback should be made:
+        # If message_type is not type 'value' always send
+        # If message_type is type 'value' only send if timestamp is within the correct time
+        print("Response", self._start_time, self._finished_time, timestamp, message_type)
+        if (message_type != self.MESSAGE_TYPE_VALUE) or ((0 < self._start_time <= timestamp) and
+           (self._finished_time == 0 or timestamp <= self._finished_time)):
+            print("Callback", self._finished_time, timestamp)
+            self._callback(timestamp, message_type, identifier, value)
 
     def _create_instruments(self):
         instruments = self._configuration.get_measurements()
@@ -89,30 +97,32 @@ class MeasurementRunner:
                                                    f"{measurement[self._configuration.KEY_NAME]}")
 
     def _run_measurements(self):
+        self._start_time = 0
+        self._finished_time = 0
         sample_time = self._configuration.get_sample_time()
         end_time = self._configuration.get_end_time()
         InstrumentPool.clear_instruments()
         if self._create_instruments():
-            start_time = int(time.time())
-            self._send_callback(start_time, self.MESSAGE_TYPE_STATUS_START, "Start measurements", 0)
-            sample_start = start_time
+            self._start_time = int(time.time())
+            self._send_callback(self._start_time, self.MESSAGE_TYPE_STATUS_START, "Start measurements", 0)
+            sample_start = self._start_time
             while not self._stop_event.is_set():
                 self._requests_measurements(sample_start)
                 while not self._stop_event.is_set():
                     if time.time() - sample_start >= sample_time:
                         break
-                    self._elapsed_time = time.time() - start_time
+                    self._elapsed_time = time.time() - self._start_time
                     if self._elapsed_time >= end_time:
                         self._stop_event.set()
                     time.sleep(0.01)
                 sample_start = int(time.time())
-        self._send_callback(int(time.time()), self.MESSAGE_TYPE_STATUS_FINISHED,
+        self._finished_time = int(time.time())
+        self._send_callback(self._finished_time, self.MESSAGE_TYPE_STATUS_FINISHED,
                             "Process finished", 0)
         self._clean_up()
 
     def _clean_up(self):
         self._measurement_thread = None
-        InstrumentPool.clear_instruments()
 
     ##########
     # Public #
