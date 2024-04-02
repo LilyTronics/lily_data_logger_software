@@ -14,7 +14,7 @@ Result: in progress
 | Documentation up to date                         |   passed    |                    |
 | Create deployment for Windows                    |   passed    |                    | 
 | Create deployment for Ubuntu                     |   passed    |                    |
-| Duration test passed on Windows using deployment | in progress |                    |
+| Duration test passed on Windows using deployment |   passed    |                    |
 | Duration test passed on Ubuntu using deployment  |    todo     |                    |
 | Set tag in git                                   |    todo     |                    |
 | Publish deployment on LilyTronics                |    todo     |                    |
