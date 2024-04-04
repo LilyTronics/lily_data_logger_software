@@ -6,6 +6,28 @@ the package to a folder of your choosing. After extracting the files, you can us
 There is no installer. This makes it easy to run the application from an USB stick or other
 removable media.
 
+Downloading
+-----------
+
+The package can be downloaded from https://www.lilytronics.nl/lily-data-logger-studio .
+There are two downloads: one for Windows and one for Ubuntu. Click on the appropriate link to
+start the download. If you have problems downloading the file, let us know.
+
+After downloading you may need to 'unblock' the zip file. Open the file explorer and go to the folder
+where the zip file is. Right click with the mouse on the zip file and select properties from
+the context menu. At the bottom is a security section where you can unblock the file (marked in blue).
+
+.. image:: images/unblock_zip.png
+
+Note that the filename may be different and depends on the version you have downloaded.
+Click the 'Unblock' checkbox and click the 'OK' button.
+
+Extracting the files
+--------------------
+
+First create a folder where you want to install the application, for example:
+``C:\LilyDataLoggerStudio``. But this can be any other folder you like. Also on Ubuntu this may
+be a different name. Open the zip file and extract the files to that folder.
 After extracting the files, the following files/folders should be there:
 
 .. code-block:: console
