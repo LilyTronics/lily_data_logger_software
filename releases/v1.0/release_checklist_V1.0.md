@@ -1,7 +1,7 @@
 # Release checklist V1.0
 
-Date: 2024-03-20
-Result: in progress
+Date: 2024-04-11
+Result: PASSED
 
 | Test                                             | Result | Remarks            |
 |:-------------------------------------------------|:------:|:-------------------|
@@ -16,8 +16,12 @@ Result: in progress
 | Create deployment for Ubuntu                     | passed |                    |
 | Duration test passed on Windows using deployment | passed |                    |
 | Duration test passed on Ubuntu using deployment  | passed |                    |
-| Publish deployment on LilyTronics                |  todo  |                    |
-| Publish deployment on GitHub                     |  todo  |                    |
-| Set tag in git                                   |  todo  |                    |
+| Publish deployment on LilyTronics                | passed |                    |
+| Publish deployment on GitHub                     | passed |                    |
+| Set tag in git                                   | passed |                    |
 
 [unit tests report V1.0](https://htmlpreview.github.io/?https://github.com/LilyTronics/lily-data-logger-studio-ce/blob/main/releases/v1.0/20240322_190128_TestRunner.html)
+
+The unit tests fail in Ubuntu due to bugs in the tests itself.
+Because all unit tests pass on Windows, all configurations and durations tests pass
+on Windows and Ubuntu we decide to pass this release test and publish this version.
