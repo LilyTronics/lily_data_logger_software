@@ -7,9 +7,8 @@ Universal data logger software aiming to work with any kind of electronics measu
 
 ## Releases
 
-We are excited to announce that we are in a state hat we have the first release candidate V1.0.RC1.
-We are still working on finalizing the manual and doing some final testing.
-
+We are excited to announce that we have released the first official release V1.0.
+Download the packages at: https://www.lilytronics.nl/lily-data-logger-studio
 The manual can be found here: https://lily-data-logger-studio-ce.readthedocs.io
 
 ## Features
