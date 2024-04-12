@@ -25,6 +25,10 @@ Click the 'Unblock' checkbox and click the 'OK' button.
 Extracting the files
 --------------------
 
+Unfortunately Windows Defender sees our software as a threat. We can guaranty that this is not the issue.
+To use the software you need to add it as exception to the Windows Defender.
+We are looking into this to solve this in a more elegant way.
+
 First create a folder where you want to install the application, for example:
 ``C:\LilyDataLoggerStudio``. But this can be any other folder you like. Also on Ubuntu this may
 be a different name. Open the zip file and extract the files to that folder.
