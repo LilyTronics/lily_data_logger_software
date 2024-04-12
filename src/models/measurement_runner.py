@@ -30,10 +30,8 @@ class MeasurementRunner:
         # Check if callback should be made:
         # If message_type is not type 'value' always send
         # If message_type is type 'value' only send if timestamp is within the correct time
-        print("Response", self._start_time, self._finished_time, timestamp, message_type)
         if (message_type != self.MESSAGE_TYPE_VALUE) or ((0 < self._start_time <= timestamp) and
            (self._finished_time == 0 or timestamp <= self._finished_time)):
-            print("Callback", self._finished_time, timestamp)
             self._callback(timestamp, message_type, identifier, value)
 
     def _create_instruments(self):
