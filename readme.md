@@ -13,6 +13,10 @@ Download the packages at: https://www.lilytronics.nl/lily-data-logger-studio
 
 The manual can be found here: https://lily-data-logger-studio-ce.readthedocs.io
 
+Unfortunately Windows Defender sees our software as a threat. We can guaranty that this is not the issue.
+To use the software you need to add it as exception to the Windows Defender.
+We are looking into this to solve this in a more elegant way.
+
 ## Features
 
 * Logging data (measurements) in a table.
